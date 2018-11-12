@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="CladosLibrary" default="jar" basedir=".">
+
+	<description>
+	Ant build script for clados and cladosviewer
+	</description>
+
+	<property 	name="NoDyad" 	value="true" />
+	<property	name="appName" 	value="clados" />
+	<property 	name="coName" 	value="Interworld Transport" />
+	<property 	name="appHome" 	value="http://www.interworldtransport.com" />
+	<property 	name="buildDir"	value="./class" />
+	<property 	name="libDir" 	value="lib" />
+	<property 	name="clados"	value="com/interworldtransport/clados/" />
+	<property 	name="viewer"	value="com/interworldtransport/cladosviewer/" />
+	<property 	name="copyleft"	value="&lt;p&gt;
+--------------------------------------------------------------------------------
+&lt;br&gt;
+Clados_API_Documentation&lt;br&gt;
+--------------------------------------------------------------------------------
+&lt;br&gt;
+Copyright (c) 2002-2005 Interworld Transport.  All rights reserved.
+&lt;p&gt;
+Interworld Transport grants you (Licensee) a license to this documentation
+under the terms of the Design Science License.  A full copy of the license can
+be found bundled with this documentation and published within it.
+&lt;p&gt;
+Use of this documentation beyond the legal definition of &apos;fair use&apos; by the
+Licensee states their willingness to accept the terms of the license.
+&lt;p&gt;
+A prospective Licensee unable to find a copy of the license terms should contact
+Dr. Alfred Differ (adiffer@gmail.com) for a free copy." />
+
+
+	<path id="classpath">
+		<pathelement path="./class" />
+	</path>
+
+	<target name="clean"
+			description="Removes all Clados files down to a basic src package.">
+		<delete dir="./class" /> <!-- made by compile target -->
+		<delete file="./clados.jar" /> <!-- made by jar target -->
+		<delete file="./clados_API_Docs.jar" /> <!-- made by a jar target -->
+	</target>
+
+	<target name="prepare"
+		description="Creates output directories" >
+		<mkdir dir="./class" />
+	</target>
+
+	<target name="compile"
+		description="Compiles all the Clados source files" >
+		<javac 	debug="on"
+				destdir="./class"
+				nowarn="on"
+				srcdir="."
+				verbose="false">
+			<exclude name="com/interworldtransport/clados/Dyad.java"></exclude>
+			<exclude name="com/interworldtransport/clados/Nyadic.java"></exclude>
+			<exclude name="com/interworldtransport/clados/MonadG.java"></exclude>
+			<include name="com/interworldtransport/clados/*.java"></include>
+			<include name="com/interworldtransport/cladosviewer/*.java"></include>
+			<exclude name="./**/CVS/*"></exclude>
+		</javac>
+	</target>
+
+	<target name="compile_lib"
+		description="Compiles all the Clados source files" >
+		<javac 	debug="on"
+				destdir="./class"
+				nowarn="on"
+				srcdir="."
+				verbose="false">
+			<exclude name="com/interworldtransport/clados/Dyad.java"></exclude>
+			<exclude name="com/interworldtransport/clados/Nyadic.java"></exclude>
+			<exclude name="com/interworldtransport/clados/MonadG.java"></exclude>
+			<include name="com/interworldtransport/clados/*.java"></include>
+			<exclude name="./**/CVS/*"></exclude>
+		</javac>
+	</target>
+
+	<target name="javadoc"
+		description="Generates the API documentation for clados." >
+		<javadoc author="true"
+					bottom="${copyleft}"
+					destdir="./docs/api"
+					doctitle="Clados Package Documentation"
+					header="&lt;a target=_top href=${appHome}&gt;${coName}&lt;/a&gt;"
+					overview="com/interworldtransport/overview.html"
+					packagenames="com.interworldtransport.*"
+					sourcepath="."
+					verbose="false"
+					windowtitle="Clados API Documentation">
+		</javadoc>
+	</target>
+
+	<target name="jar"
+			depends="compile"
+			description="Package the clados code"
+			>
+		<jar 	manifest="clados.manifest"
+			index="true"
+			jarfile="./clados.jar">
+
+			<fileset dir="icons">
+				<include name="*.gif" />
+				<include name="*.png" />
+			</fileset>
+			<fileset dir=".">
+				<include name="./clados.manifest"/>	
+			</fileset>
+			<fileset dir="class">
+				<include name="com/interworldtransport/clados/*.class"/>
+				<include name="com/interworldtransport/cladosviewer/*.class"/>
+			</fileset>
+			<fileset dir="conf">
+				<include name="MonadViewer.conf" />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar_lib"
+			depends="compile_lib"
+			description="Package the clados code"
+			>
+		<jar 	index="true"
+			jarfile="./clados.jar">
+
+			<fileset dir="class">
+				<include name="com/interworldtransport/clados/*.class"/>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar_API_docs"
+		depends="javadoc"
+		description="Package the source code and support docs for install." >
+		<jar
+			jarfile="./clados_API_Docs.jar"
+			>
+			<fileset dir="docs">
+				<include name="api/**/*.*"/>
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="install"
+			depends="jar, jar_API_docs"
+			description="This one is not ready yet.  It needs to know where to put libraries." >
+	</target>
+
+	<target name="uninstall" description="This one is not ready yet." >
+	</target>
+</project>

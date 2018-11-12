@@ -1,0 +1,22 @@
+	Clados API Documentation
+
+API Documentation can be generated much like a compiled version
+of Clados can be generated.
+
+From the top of a working copy of the repository, do the 
+following:
+
+	ant javadoc
+	
+	or 
+	
+	ant jar_API_docs
+
+This command will fill a directory alongside the Clados
+directory called doc/api.  Within the api directory can be found the
+output of javadoc as applied to the com.interworldtransport
+trees.
+
+The first Ant target will create all the html files from javadoc.
+The second Ant target will run the first one and then jar all the 
+html generated..

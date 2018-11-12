@@ -1,0 +1,11 @@
+
+2002/02/19  Alfred Differ
+I created an 'install' target within the ANT buildfile.  At the moment it
+creates jar files for clados and the API documentation and places them in the 
+top directory for the project.
+
+The clados.jar file is a library that may be placed where java libraries are
+stored on your system.  Be sure to include it in your classpath statement to
+ensure other applications know where to find it's contents.
+
+

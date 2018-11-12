@@ -1,0 +1,24 @@
+
+	Clados Development Plan
+
+This file, DEVELOPMENT-PLAN, contains the plan by which the
+Clados development group will operate.
+
+----------------------------------------------------------------------
+Policies regarding the Clados source repository:
+
+By discussing items on the clados mailing lists, authors agree to 
+permit inclusion of their ideas and implementation of them under the
+terms of the GNU Public License.
+
+----------------------------------------------------------------------
+Procedure for dealing with people who want to be application planners:
+
+People who have checkin access are welcome to discuss the overall
+direction of the application on clados-plan.  If the list traffic 
+becomes too large, we will move the discussion to a BBS or IRC.  It is intended
+that developers that want a say in direction will be able to make their
+voices heard.  If they can convince the maintainer and community of the 
+worthiness of their ideas, those ideas will be incorporated into the 
+application plan.
+

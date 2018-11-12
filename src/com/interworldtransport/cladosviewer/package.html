@@ -1,0 +1,162 @@
+<html>
+<head>
+<title>Package Comments</title>
+</head>
+<body>
+Clifford Algebra Multivector Viewer:  Utility for viewing and working with clados.
+<h2>Copyright</h2>
+Copyright (c) 2005 Interworld Transport.  All rights reserved.
+---com.interworldtransport.cladosviewer-------------------------------------------
+<p>
+Interworld Transport grants you ("Licensee") a license to this software
+under the terms of the GNU General Public License.<br>
+A full copy of the license can be found bundled with this package or code file.
+<p>
+If the license file has become separated from the package, code file, or binary
+executable, the Licensee is still expected to read about the license at the
+following URL before accepting this material.
+<blockquote><code>http://www.opensource.org/gpl-license.html</code></blockquote>
+<p>
+Use of this code or executable objects derived from it by the Licensee states their
+willingness to accept the terms of the license.
+<p>
+A prospective Licensee unable to find a copy of the license terms should contact
+Interworld Transport for a free copy.
+<p>
+---com.interworldtransport.cladosviewer-------------------------------------------
+<h2>Package Contents</h2>
+<table border=0 width=90%>
+<tr>
+	<th align=left>
+		Classes
+	</th>
+	<th align=left>
+		Interfaces
+	</th>
+	<th align=left>
+		Exceptions
+	</th>
+</tr>
+<tr>
+	<td valign=top align=left>
+		<ul>
+		<li>AboutDialog
+		<li>BOpsEqualEvents
+		<li>BOpsEvents
+		<li>BOpsGradeEvents
+		<li>BOpsIdempotentEvents
+		<li>BOpsMGradeEvents
+		<li>BOpsMIdempotentEvents
+		<li>BOpsNilpotentEvents
+		<li>BOpsRMatchEvents
+		<li>BOpsZeroEvents
+		<li>COpsAddEvents
+		<li>COpsDotEvents
+		<li>COpsEvents
+		<li>COpsLMultEvents
+		<li>COpsRMultEvents
+		<li>COpsRotateEvents
+		<li>COpsSubtractEvents
+		<li>COpsTranslateEvents
+		<li>COpsWedgeEvents
+		<li>CreateDialog
+		<li>FileEvents
+		<li>FileExitEvents
+		<li>HelpAboutEvents
+		<li>HelpEvents
+		<li>HelpSupportEvents
+		<li>MonadPanel
+		<li>MonadViewer
+		<li>NyadPanel
+		<li>OptionsDialog
+		<li>SOpsEvents
+		<li>SOpsGradeEvents
+		<li>SOpsGradePartEvents
+		<li>SOpsGradeSupressEvents
+		<li>SOpsInverseEvents
+		<li>SOpsInvertEvents
+		<li>SOpsLocalDualEvents
+		<li>SOpsMagnitudeEvents
+		<li>SOpsNormalizeEvents
+		<li>SOpsReverseEvents
+		<li>SOpsScaleEvents
+		<li>SOpsSQMagnitudeEvents
+		<li>SplashWindow
+		<li>SupportDialog
+		<li>ToolsCreate
+		<li>ToolsEvents
+		<li>ToolsOptions
+		<li>UtilityStatusBar
+		<li>ViewerEventModel
+		<li>ViewerMenu
+		<li>ViewerPanel
+		</ul>
+
+	</td>
+	<td valign=top align=left>
+		None As Of Yet
+	</td>
+	<td valign=top align=left>
+		<ul>
+		<li>CantGetIniException
+		<li>UtilitiesException
+		</ul>
+	</td>
+
+</tr>
+</table>
+<h2>Background</h2>
+Clifford Algebras were invented by William Kingdon Clifford in 1878 as part of his attempt
+to represent geometry in an algebraic manner.  The biquaternions are an example of such an
+algebra and are immediately useful as a space-time algebra.  Clifford Algebras might have
+been in use today in place of the current Gibbs derived systems if Clifford's proponents
+had better understood his work.  Clifford died shortly afterwards in 1879.
+<p>
+Clifford Algebras are a compact, efficient way of representing geometry in an encapsulated
+way.  Clifford algebras capture most of the physical needs for vectors, matricies, and
+higher order tensors in physical applications.  The clados package implements Clifford
+Algebras of at least one generator in a manner that actively blocks many of the simpler
+programmatic errors an applicaton developer can make while creating physical simulations.
+<p>
+The word 'Clados' is an acronym for CLifford Algebra Derived ObjectS.  This acronym was
+chosen largely to avoid name collisions with other JAVA math packages.  The Monad class
+within Clados implements a single algebra object.  Most people familiar with Clifford
+Algebras are more familiar with the term 'Multivector' over 'Monad'.  Again, in the
+interests of avoiding name collisions with the other JAVA packages and their classes,
+the term 'Monad' will be used and may be treated as a synonym for 'Multivector.'  This
+choice does leave an unplanned benefit for future advancements within Clados.  Two algebra
+objects will be implemented in classes named Dyad and Dyadic.  Higher order objects will
+follow this naming convention.
+<h2>Academic Style</h2>
+The subject of Clifford Algebra and Clifford Analysis is well developed within Mathematics.
+The use of these algebras in Physics is generally more primitive.  The implementation of
+Clifford Algebras within Clados is done in the 'physicist' style.  This means the
+implementation is a little sloppy compared to its Mathematical roots.  The author recognizes
+that Clados needs a fair amount of work to improve its pedigree, but is satisfied for now
+with a package that works.
+<p>
+Those interested in the academic studies invloving Clifford Algebras are encouraged to visit
+the Clados <a href="http://clados.sourceforge.net">project site for pointers to other references.</a>.
+<h2>Other Resources</h2>
+<h5>Books</h5>
+<ul>
+<li><a href="http://www.clifford.org/books/">Clifford.org book list</a>
+</ul>
+<h5>Dissertations</h5>
+<ul>
+<li>Ross, M.F. 1980 <i>Geometric Algebra in Classical and Quantum Physics</i>, University of California at Davis, Davis CA USA
+<li>Morris, F.G. 1983 <i>Classical Fields Derived from Quantum Sources</i>,University of California at Davis, Davis CA USA
+<li>Pezzaglia, W.M. 1984 <i>A Clifford Algebra Multivector Reformulation of Field Theory</i>, University of California at Davis, Davis CA USA
+<li>Weideman, T.E. 1990 <i>A New Linearization of Einstein's General Relativity</i>, University of California at Davis, Davis CA USA
+<li>Differ, A.W. 1991 <i>The Gyric Theory, A Classical Field Theory for Spin</i>, University of California at Davis, Davis CA USA
+<li>Newman, F.   1991 <i> </i>, University of California at Davis, Davis CA USA
+</ul>
+<h5>Journals</h5>
+<ul>
+<li><a href="http://www.clifford.org/journals/jadvclfa.html">Advances in Applied Clifford Algebra</a>
+</ul>
+<h5>Web Resources</h5>
+<a href="http://www.clifford.org">Clifford.org</a><br>
+<a href="http://clados.sourceforge.net">Clados Project site</a>
+</body>
+</html>

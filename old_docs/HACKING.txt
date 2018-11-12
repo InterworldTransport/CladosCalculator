@@ -1,0 +1,95 @@
+		How to write code for Clados
+
+* Portability
+
+The general rule for portability is that the package must be
+runnable in any version of Java.  We try to avoid deprecated features
+within all the runtime versions of Java in all sections of the application. 
+We also try to avoid features from any Java environment that appear to be
+a kludge that will be altered in later releases.  
+
+* Coding standards in general
+
+Readability is the primary concern regarding coding standards in Clados.
+If individual developers wish to use their own styles, there should be no
+problem as long as others can read the code.
+
+Our team does try to hold to the notion that each source file should 
+contain only one class definition.  We recognize the usefullness of 
+internal classes, but we do shy away from them.
+
+* Writing code (strategy)
+
+Only some kinds of changes are suitable for inclusion in the 'official'
+version of Clados.  
+
+Bugfixes, where the application's behavior contradicts the documentation 
+and/or expectations that everyone agrees upon, should be OK. 
+
+If your code section is for a feature approved for inclusion by the 
+application planners, committing the code should also be OK.
+
+If your design is not yet clear (which is true of most features), then
+the design is likely to benefit from more work and community input.
+Make a list of issues or write documentation including rationales for
+how one would use the feature.  Discuss it with the Clados development
+team, researchers, or a mailing list to see what other people think.
+
+If your code section is for a feature not on the approved list yet,
+get the application planners involved in your discussions.  Follow
+the same plan you would if your design were not yet clear.
+
+The intention of all this is to arrive at some kind of rough community 
+consensus before changing the "official" Clados. It is likely that 
+experimental packages will be distributed as a way to break in new features
+in any section. 
+
+* Writing code (tactics)
+
+When you first distribute a patch it may be suitable to just put forth
+a rough patch, or even just an idea.  But before the end of the
+process the following should exist:
+
+  - ChangeLog entry
+
+  - Changes to the NEWS file, if the change is a user-visible change
+    worth mentioning
+
+  - Somewhere, a description of what the patch fixes (often in
+    comments in the code, or maybe the ChangeLog or documentation or
+    all of the above)
+
+  - Most of the time, a test case (see TESTS).  If your code fixes a bug, 
+    it can be quite frustrating to fix it only to see it reappear later
+    Adding a test case to the testsuite, where feasible, solves this and other
+    problems.
+
+If you solve several unrelated problems, it is generally easier to
+consider the desirability of the changes if there is a separate patch
+for each bug/issue.  Use context diffs or unidiffs for a bug fix/patch.
+
+Include words like "I grant permission to distribute this patch under
+the terms of the GNU Public License" with your patch.  By sending a
+patch to the Clados team, you implicitly grant this permission, but we
+would prefer it to be spelled out for clarity.
+
+* What is the schedule for the next release?
+
+There isn't one.  That is, upcoming releases are not announced (or
+even hinted at, really) until the feature freeze which is
+approximately 2 weeks before the final release (at this time test
+releases start appearing and are announced).  This is
+intentional, to avoid a last minute rush to get new features in.
+
+* Mailing lists
+
+We intend to have mailing lists supporting aspects of the project.
+
+		Application Planners
+		Application Developers
+		Bug reports and comments
+		General Information
+
+Each of these can be found on our SourceForge site once they are built. 
+Subscription instructions are there too. 
+

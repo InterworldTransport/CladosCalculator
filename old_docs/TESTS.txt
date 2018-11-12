@@ -1,0 +1,10 @@
+		Clados Testing Plan
+
+The application is in a maintenance mode at the moment.  Work is underway to
+include a Dyad class, but it could be awhile before it is added to the source
+tree.  There are still some fundamental choices to be made about how Dyads are
+to be represented.
+
+In the mean time, work will begin on a Monad Viewer utility.  With it a use
+should be able to see how Monads and their methods work.  We will also use it to
+debug a refactoring attempt to clean up the Monad's implementation.

@@ -1,0 +1,44 @@
+2005/07/16  Alfred Differ
+The 0.8 version of the clados calculator is done.  I have a few 
+improvements in the CVS already for the next version, but I want 
+to work up the nyad class a bit more before tagging the code.
+
+2005/06/04	Alfred Differ
+Starting to build up the Monad Viewer utility.  I've had some 
+practice now writing crude applications, so I should be able to 
+make a simple viewer with buttons or menu options that allow the 
+user to construct many monads in the viewer and then act on them 
+through the use of each method in each Monad.
+
+This viewer will also be useful as a debugger for larger applications
+where the developer might wish to graft it in instead of making
+their own from scratch.
+
+2002/02/19	Alfred Differ
+Switching over to the use of Ant for building this library.
+I have also extracted all traces of clados source code from 
+SailAway in order to separate the two projects.  I did this in
+anticipation of other projects using this library and/or getting
+help from others in enhancing it or maintaining it.
+
+2000/04/10	Alfred Differ
+The rotation method needed fixing.  I found this while doing
+unit testing on SailAway.
+
+2000/03/03	Alfred Differ
+I've altered some of the names of the internal and external
+members having to do with Blade Projection, Blade counting,
+and related parts.  There was a difference between the 
+standard terminology used in Geometric Algebra and the way
+I was using it.  Rather than confuse everyone, I have
+adjusted the package to match the standard.
+
+This results in a minor change to the API.  Methods that 
+used to be called Blade<something> are now called
+Grade<something>.
+
+I have also added more comments and clarified a few of 
+the older ones.  There is still a lot of commenting work
+to go to make this class readable to other geometric algebra
+developers, let alone to users of the package who want 
+to avoid having to understand internal details.
