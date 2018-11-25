@@ -22,10 +22,17 @@ Interworld Transport for a free copy.
  */
 
 package com.interworldtransport.cladosviewer ;
-import com.interworldtransport.clados.*;
+
+import com.interworldtransport.cladosF.*;
+//import com.interworldtransport.cladosFExceptions.*;
+import com.interworldtransport.cladosG.*;
+import com.interworldtransport.cladosGExceptions.*;
+import com.interworldtransport.cladosviewerExceptions.UtilitiesException;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.util.*;
 
 /** com.interworldtransport.cladosviewer.ViewerPanel
@@ -37,12 +44,13 @@ import java.util.*;
  * @author Dr Alfred W Differ
  */
 
- public class ViewerPanel extends JPanel
+ public class ViewerPanel extends JPanel //implements ActionListener
 {
-    public		ImageIcon		tabicon;
-    public		MonadViewer		TheGUI;
-    public		JTabbedPane		NyadPanes;
-    protected	ArrayList		NyadPanelList;
+	private static final long serialVersionUID = 8067075019491290702L;
+	public		ImageIcon				tabicon;
+    public		MonadViewer				TheGUI;
+    public		JTabbedPane				NyadPanes;
+    protected	ArrayList<NyadPanel>	NyadPanelList;
 
 /**
  * The ViewerPanel class is intended to be a tabbed pane that displays all
@@ -50,104 +58,127 @@ import java.util.*;
  * know what it holds and adjust the tabs when push and pop operations are
  * performed.
  */
-    public 	ViewerPanel(MonadViewer pGUI)
-    throws 		UtilitiesException, BadSignatureException
+    public 	ViewerPanel(MonadViewer pGUI) 
+    	throws 		UtilitiesException, BadSignatureException
     {
     	super();
-    	if (pGUI!=null)
-    	{
-    		this.TheGUI=pGUI;
-    		this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    		this.setBackground(new Color(200, 200, 200));
-    		this.setLayout(new BorderLayout());
-    		
-    		this.createLayout();
-    	}
-    	else
-    	{
-    		System.out.println("A GUI must be passed to the StatusLine");
-    		System.exit(0);
-    	}
     	
-    }
-
-    protected ImageIcon createImageIcon(String path)
-    {
-    	ImageIcon temp = new ImageIcon(path);
-    	if (temp != null) 
-    	{
-    		return temp;
-    	} 
-    	else 
-    	{
-    		TheGUI.StatusLine.setStatusMsg("(Viewer)Could not get: "+path+"\n");
-    		return null;
-    	}
+    	TheGUI=pGUI;
+    	setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+    	setBackground(new Color(255, 255, 222));
+    	setLayout(new BorderLayout());
+    		
+    	createLayout();
     }
 
     public 	void 		createLayout()
     throws 		UtilitiesException, BadSignatureException
     {
+    	//Get the nyad tab image for the nyad panes being constructed
+    	tabicon = new ImageIcon(TheGUI.IniProps.getProperty("MonadViewer.Desktop.TabNImage"));
     	
-    	String logoFile=TheGUI.IniProps.getProperty("MonadViewer.Desktop.TabImage2");
-    	//TheGUI.StatusLine.setStatusMsg("Tab Icon File(Viewer): "+logoFile+"\n");
-    	this.tabicon = createImageIcon(logoFile);
-    	
-    	this.NyadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
-    	//this.NyadPanelList=new ArrayList(2);
-    	
-    	String tempCount=TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.Count");
-    	int intCount=new Integer(tempCount).intValue();
-    	this.NyadPanelList=new ArrayList(intCount);
-    	
-    	String tempOrd=TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.Order");
-    	int intOrd=new Integer(tempOrd).intValue();
-    	
-    	
-    	for (int j=0; j<intCount; j++)
+    	//The Viewer contains NyadPanels displayed as a JTabbedPanes containing 
+    	//JScrollPanes containing a NyadPanel each. We initiate the JTabbedPanel here
+    	NyadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
+    	NyadPanes.addChangeListener(new ChangeListener() 
     	{
-    		String count=new Integer(j).toString();
-    		Monad check=new Monad(	"M0",
-									"test0",
-									"basic",
-									"basic",
-									TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.Sig"));
-    		Nyad check2=new Nyad("N"+count, check);
-    		try
-    		{
-    			if (intOrd>1)
-        		{
-        			for (int m=1; m<intOrd; m++)
-            		{
-        				String countm=new Integer(m).toString();
-            			check2.addMonad(new Monad(	"M"+countm,
-    												"test"+countm,
-    												"basic",
-    												"basic",
-    												TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.Sig")
-    											)
-            							);
-            		}
-        		}	
-    		}
-    		catch (ListAppendException e)
-    		{
-    			//Do nothing.  Let the Nyad be of order 1 for now
-    		}
-    		NyadPanel tempPanel=new NyadPanel(TheGUI, check2);
-    		NyadPanelList.add(j, tempPanel);
-    		JScrollPane tempPane=new JScrollPane((JPanel)NyadPanelList.get(j));
-    		NyadPanes.addTab(count, tabicon, tempPane);
-    	}
+    		@Override
+            public void stateChanged(ChangeEvent e) 
+            {
+            	TheGUI._StatusBar.setFieldType(NyadPanelList.get(NyadPanes.getSelectedIndex()).getNyad().protoOne.getFieldType());
+            }
+        }							);
+ 
+    	//Look in the conf file and determine how many nyads to initiate
+    	int intCount=new Integer((String) TheGUI.IniProps.get("MonadViewer.Desktop.Default.Count"));
+    	NyadPanelList=new ArrayList<NyadPanel>(intCount);
+    	//Note that we initialize the NyadPanelList, but don't create a NyadPanel for it yet
     	
-    	this.add(NyadPanes, "Center");
-    }
+    	//Look in the conf file and determine how many monads in each nyad get initiated
+    	int intOrd=new Integer((String) TheGUI.IniProps.get("MonadViewer.Desktop.Default.Order"));
+    	
+    	
+    	// the j counter covers the number of nyads to be initiated.
+    	// the m counter covers the number of monads in each nyad are to be initiated.
+    	short j=0;
+    	while (j < intCount)
+    	{
+    		NyadRealF aNyad=null;
+    		MonadRealF aMonad=null;
+    		try
+	    	{
+	    		aMonad=new MonadRealF("M",
+	    				TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.AlgebraName"),
+	    				TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.FrameName"),
+	    				TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.FootName"),
+	    				TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.Sig"),
+	    				new RealF(new DivFieldType(TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.FieldType")), 1.0f)
+	    										);
+	    		String cnt =new StringBuffer("N").append(j).toString();
+	    		aNyad=new NyadRealF(cnt, aMonad);
+    		}
+    		catch (CladosMonadException em)
+    		{
+    			System.out.println("CladosMonad Exception found when constructing first part of the Viewer Panel");
+    			System.out.println(em.getSourceMessage());
+    			System.exit(-1);
+    		} 
+    		
+    		
+    		short m=1;
+    		while (m<intOrd)
+    		{
+    			try
+        		{
+    				//Maybe this section should make use of Nyad's .createMonad method to ensure Foot re-use the easy way
+    				
+    				String nextMonadName = (new StringBuffer(aMonad.getName()).append(m)).toString();
+    				String nextAlgebraName=(new StringBuffer(aMonad.getAlgebra().getAlgebraName()).append(m)).toString();
+    				String nextFrameName=(new StringBuffer(aMonad.getFrameName()).append(m)).toString();
+    				
+    				aNyad.createMonad(	nextMonadName, 
+    									nextAlgebraName, 
+    									nextFrameName, 
+    									TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.Sig")
+    								);
+        		}
+        		catch (CladosMonadException em)
+        		{
+        			System.out.println("CladosMonad Exception found when constructing the Viewer Panel");
+        			System.out.println(em.getSourceMessage());
+        		}
+        		catch (CladosNyadException en)
+        		{
+        			System.out.println("CladosNyad Exception found when adding >1 Nyad to the Viewer Panel");
+        			System.out.println(en.getSourceMessage());
+        		}
+    			m++;
+    		}
+    		String cnt =new StringBuffer().append(j).toString();
+    		
+    		//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
+    		NyadPanelList.add(j, new NyadPanel(TheGUI, aNyad));
+    		//JScrollPane tempPane=new JScrollPane(NyadPanelList.get(j));
+    		
+    		if (tabicon != null)
+    			NyadPanes.addTab(cnt, tabicon, new JScrollPane(NyadPanelList.get(j)));
+    		else
+    			NyadPanes.addTab(cnt, new JScrollPane(NyadPanelList.get(j)));
 
+    		j++;
+    	}
+    	//and now we finally add the JTabbedPane in the center of the Viewer
+    	add(NyadPanes, "Center");
+    }
+    /**
+     * This method pushes the selected Nyad downward on the stack if possible.
+     * It does NOT create any new slots in the stack. 
+     */
     public	void		push()
     {
 	    int size=NyadPanes.getTabCount();
 	    int where=NyadPanes.getSelectedIndex();
-	    if (where<size)
+	    if (where<size-1)
 	    {
 		    String otherTitle=new String(NyadPanes.getTitleAt(where+1));
 		    JScrollPane otherPane=new JScrollPane((JPanel)NyadPanelList.get(where+1));
@@ -207,38 +238,37 @@ import java.util.*;
     
     public	NyadPanel	getNyadPanel(int pInd)
     {
-	    int limit=NyadPanelList.size();
-	    if (pInd<limit)
-	    {
-		    NyadPanel temp = (NyadPanel)NyadPanelList.get(pInd);
-		    return temp;
-	    }
-	    else return null;
+	    if (pInd<NyadPanelList.size())
+		    return NyadPanelList.get(pInd);
+	  
+	    return null;
     }
-
-    public	void		removeTab(int pInd)
+    
+    public void removeNyadPanel(int pInd)
     {
-	    NyadPanes.remove(pInd);
-	    NyadPanel temp=(NyadPanel)NyadPanelList.remove(pInd);
-	    temp=null;
+    	if (pInd<NyadPanelList.size())
+    	{
+    		NyadPanes.remove(pInd);
+    		NyadPanelList.remove(pInd);
+    	}
     }
 
-    public	void		addSTab(Nyad pN)
+    public	void		addNyadPanel(NyadRealF pN)
     	throws BadSignatureException, UtilitiesException
     {
+    	
 	    int next=NyadPanes.getTabCount();
-	    String count=new Integer(next).toString();
-
-	    //Nyad tempN=new Nyad("0", pM);
+	    String cnt=new StringBuffer().append(next).toString();
 	    
 	    NyadPanel newP=new NyadPanel(TheGUI, pN);
 	    NyadPanelList.ensureCapacity(next+1);
 	    boolean test=NyadPanelList.add(newP);
 	    if (test)
 	    {
-	    	JScrollPane tempPane=new JScrollPane(newP);
-	    	NyadPanes.addTab(count, tabicon, tempPane);
+	    	if (tabicon != null)
+	    		NyadPanes.addTab(cnt, tabicon, new JScrollPane(newP));
+	    	else
+	    		NyadPanes.addTab(cnt, new JScrollPane(newP));
 	    }
     }
-
 }

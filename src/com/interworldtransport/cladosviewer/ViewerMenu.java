@@ -1,24 +1,26 @@
-/*
-<h2>Copyright</h2>
-Copyright (c) 2005 Interworld Transport.  All rights reserved.<br>
----com.interworldtransport.cladosviewer.ViewerMenu------------------------------------
-<p>
-Interworld Transport grants you ("Licensee") a license to this software
-under the terms of the GNU General Public License.<br>
-A full copy of the license can be found bundled with this package or code file.
-<p>
-If the license file has become separated from the package, code file, or binary
-executable, the Licensee is still expected to read about the license at the
-following URL before accepting this material.
-<blockquote><code>http://www.opensource.org/gpl-license.html</code></blockquote>
-<p>
-Use of this code or executable objects derived from it by the Licensee states
-their willingness to accept the terms of the license.
-<p>
-A prospective Licensee unable to find a copy of the license terms should contact
-Interworld Transport for a free copy.
-<p>
----com.interworldtransport.cladosviewer.ViewerMenu------------------------------------
+/**
+ * <h2>Copyright</h2> © 2018 Alfred Differ.<br>
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.ViewerMenu<br>
+ * -------------------------------------------------------------------- <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.<p>
+ * 
+ * Use of this code or executable objects derived from it by the Licensee 
+ * states their willingness to accept the terms of the license. <p> 
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * 
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.ViewerMenu<br>
+ * ------------------------------------------------------------------------ <br>
  */
 
 package com.interworldtransport.cladosviewer;
@@ -33,24 +35,25 @@ import javax.swing.*;
  * should not be instantiated except by the MonadViewer application.  Alterations
  * to this class should be made in careful coordination with the classes of the
  * event model.
- * @version 0.80. $Date: 2005/07/31 05:00:25 $
+ * @version 0.85
  * @author Dr Alfred W Differ
  */
 
 public class ViewerMenu extends JMenuBar
 {
+	private static final long serialVersionUID = 7342710714923838976L;
 
-	public 	MonadViewer		ParentGUI;
+	public 	MonadViewer		_parentGUI;
 
 /**
  * The File Parent Menu for the application.
  */
     public	JMenu			mnuFile;
-    //public	JMenuItem		mniNew;
-    //public	JMenuItem		mniOpen;
+    //public	JMenuItem	mniNew;
+    //public	JMenuItem	mniOpen;
     public	JMenuItem		mniSave;
     public	JMenuItem		mniSaveAs;
-    //public	JMenuItem		mniPrint;
+    //public	JMenuItem	mniPrint;
     public	JMenuItem		mniExit;
 
 /**
@@ -82,7 +85,6 @@ public class ViewerMenu extends JMenuBar
     public	JMenuItem		mniSQMagnitudeOf;
     public	JMenuItem		mniNormalize;
     public	JMenuItem		mniLocalDual;
-    public	JMenuItem		mniInverse;
     public	JMenuItem		mniInvert;
     public	JMenuItem		mniReverse;
     public	JMenuItem		mniScale;
@@ -97,10 +99,8 @@ public class ViewerMenu extends JMenuBar
     public	JMenuItem		mniSubtract;
     public	JMenuItem		mniLeftMultiply;
     public	JMenuItem		mniRightMultiply;
-    public	JMenuItem		mniDot;
-    public	JMenuItem		mniWedge;
-    public	JMenuItem		mniRotate;
-    public	JMenuItem		mniTranslate;
+    public	JMenuItem		mniSymm;
+    public	JMenuItem		mniASymm;
 
 /**
  * The Tools Parent Menu for the application.
@@ -124,100 +124,100 @@ public class ViewerMenu extends JMenuBar
     public	ViewerMenu(MonadViewer pParentGUI)
     {
     	super();
-    	this.ParentGUI=pParentGUI;
+    	_parentGUI=pParentGUI;
     	
-    	this.mnuFile=new JMenu("File");
-    	this.add(this.mnuFile);
-    	this.mnuBOperations=new JMenu("Booleans");
-    	this.add(this.mnuBOperations);
-    	this.mnuSOperations=new JMenu("Simple");
-    	this.add(this.mnuSOperations);
-    	this.mnuCOperations=new JMenu("Complex");
-    	this.add(this.mnuCOperations);
-    	this.mnuTools=new JMenu("Tools");
-    	this.add(this.mnuTools);
-    	this.mnuHelp=new JMenu("Help");
-    	this.add(this.mnuHelp);  //Primary Menus are added
+    	mnuFile=new JMenu("File");
+    	add(mnuFile);
+    	mnuBOperations=new JMenu("Booleans");
+    	add(mnuBOperations);
+    	mnuSOperations=new JMenu("Unary");
+    	add(mnuSOperations);
+    	mnuCOperations=new JMenu("Binary");
+    	add(mnuCOperations);
+    	mnuTools=new JMenu("Tools");
+    	add(mnuTools);
+    	mnuHelp=new JMenu("Help");
+    	add(mnuHelp);  //Primary Menus are added
     	
-    	this.mniSave=new JMenuItem("Save");
-    	this.mnuFile.add(this.mniSave);
-    	this.mniSaveAs=new JMenuItem("Save As");
-    	this.mnuFile.add(this.mniSaveAs);
-    	this.mniExit=new JMenuItem("Exit");
-    	this.mnuFile.add(this.mniExit);
+    	mniSave=new JMenuItem("Save");
+    	mnuFile.add(mniSave);
+    	mniSaveAs=new JMenuItem("Save As");
+    	mnuFile.add(mniSaveAs);
+    	mniExit=new JMenuItem("Exit");
+    	mnuFile.add(mniExit);
     	
-    	this.mniisZero=new JMenuItem("is Zero?");
-    	this.mnuBOperations.add(this.mniisZero);
-    	this.mniisEqual=new JMenuItem("is Equal?");
-    	this.mnuBOperations.add(this.mniisEqual);
-    	this.mniisReferenceMatch=new JMenuItem("is Reference Match?");
-    	this.mnuBOperations.add(this.mniisReferenceMatch);
-    	this.mniisGrade=new JMenuItem("is Grade?");
-    	this.mnuBOperations.add(this.mniisGrade);
-    	this.mniisMultiGrade=new JMenuItem("is Multigrade?");
-    	this.mnuBOperations.add(this.mniisMultiGrade);
-    	this.mniisNilpotent=new JMenuItem("is Nilpotent?");
-    	this.mnuBOperations.add(this.mniisNilpotent);
-    	this.mniisIdempotent=new JMenuItem("is Idempotent?");
-    	this.mnuBOperations.add(this.mniisIdempotent);
-    	this.mniisIdempotentMultiple=new JMenuItem("is Idempotent Multiple?");
-    	this.mnuBOperations.add(this.mniisIdempotentMultiple);
+    	mniisZero=new JMenuItem("is Zero?");
+    	mnuBOperations.add(mniisZero);
+    	mniisEqual=new JMenuItem("is Equal?");
+    	mnuBOperations.add(mniisEqual);
+    	mniisReferenceMatch=new JMenuItem("is Reference Match?");
+    	mnuBOperations.add(mniisReferenceMatch);
+    	mniisGrade=new JMenuItem("is Grade?");
+    	mnuBOperations.add(mniisGrade);
+    	mniisMultiGrade=new JMenuItem("is Multigrade?");
+    	mnuBOperations.add(mniisMultiGrade);
+    	mniisNilpotent=new JMenuItem("is Nilpotent?");
+    	mnuBOperations.add(mniisNilpotent);
+    	mniisIdempotent=new JMenuItem("is Idempotent?");
+    	mnuBOperations.add(mniisIdempotent);
+    	mniisIdempotentMultiple=new JMenuItem("is Idempotent Multiple?");
+    	mnuBOperations.add(mniisIdempotentMultiple);
     	
     	
-    	this.mniisSGrade=new JMenuItem("what Grade?");
-    	this.mnuSOperations.add(this.mniisSGrade);
-    	this.mniMagnitudeOf=new JMenuItem("what Magnitude?");
-    	this.mnuSOperations.add(this.mniMagnitudeOf);
-    	this.mniSQMagnitudeOf=new JMenuItem("what SQ Magnitude?");
-    	this.mnuSOperations.add(this.mniSQMagnitudeOf);
-    	this.mniNormalize=new JMenuItem("Normalize");
-    	this.mnuSOperations.add(this.mniNormalize);
-    	this.mniLocalDual=new JMenuItem("Local Dual");
-    	this.mnuSOperations.add(this.mniLocalDual);
-    	this.mniInverse=new JMenuItem("Inverse");
-    	this.mnuSOperations.add(this.mniInverse);
-    	this.mniInvert=new JMenuItem("Invert");
-    	this.mnuSOperations.add(this.mniInvert);
-    	this.mniReverse=new JMenuItem("Reverse");
-    	this.mnuSOperations.add(this.mniReverse);
-    	this.mniScale=new JMenuItem("reScale");
-    	this.mnuSOperations.add(this.mniScale);
-    	this.mniGradePart=new JMenuItem("preserve Grade?");
-    	this.mnuSOperations.add(this.mniGradePart);
-    	this.mniGradeSupress=new JMenuItem("supress Grade?");
-    	this.mnuSOperations.add(this.mniGradeSupress);
+    	mniisSGrade=new JMenuItem("what Grade?");
+    	mnuSOperations.add(mniisSGrade);
+    	mniMagnitudeOf=new JMenuItem("what Magnitude?");
+    	mnuSOperations.add(mniMagnitudeOf);
+    	mniSQMagnitudeOf=new JMenuItem("what SQ Magnitude?");
+    	mnuSOperations.add(mniSQMagnitudeOf);
+    	mniNormalize=new JMenuItem("Normalize");
+    	mnuSOperations.add(mniNormalize);
+    	mniLocalDual=new JMenuItem("Left Dual");
+    	mnuSOperations.add(mniLocalDual);
+    	//mniInverse=new JMenuItem("Inverse");
+    	//mnuSOperations.add(mniInverse);
+    	mniInvert=new JMenuItem("Invert");
+    	mnuSOperations.add(mniInvert);
+    	mniReverse=new JMenuItem("Reverse");
+    	mnuSOperations.add(mniReverse);
+    	mniScale=new JMenuItem("reScale");
+    	mnuSOperations.add(mniScale);
+    	mniGradePart=new JMenuItem("preserve Grade?");
+    	mnuSOperations.add(mniGradePart);
+    	mniGradeSupress=new JMenuItem("supress Grade?");
+    	mnuSOperations.add(mniGradeSupress);
     	
-    	this.mniAdd=new JMenuItem("Add");
-    	this.mnuCOperations.add(mniAdd);
-    	this.mniSubtract=new JMenuItem("Subtract");
-    	this.mnuCOperations.add(mniSubtract);
-    	this.mniLeftMultiply=new JMenuItem("Left Multiply");
-    	this.mnuCOperations.add(mniLeftMultiply);
-    	this.mniRightMultiply=new JMenuItem("Right Multiply");
-    	this.mnuCOperations.add(mniRightMultiply);
-    	this.mniDot=new JMenuItem("Dot");
-    	this.mnuCOperations.add(mniDot);
-    	this.mniWedge=new JMenuItem("Wedge");
-    	this.mnuCOperations.add(mniWedge);
-    	this.mniRotate=new JMenuItem("Rotate");
-    	this.mnuCOperations.add(mniRotate);
-    	this.mniRotate.setEnabled(false);
-    	this.mniTranslate=new JMenuItem("Translate");
-    	this.mnuCOperations.add(mniTranslate);
-    	this.mniTranslate.setEnabled(false);
+    	mniAdd=new JMenuItem("Add");
+    	mnuCOperations.add(mniAdd);
+    	mniSubtract=new JMenuItem("Subtract");
+    	mnuCOperations.add(mniSubtract);
+    	mniLeftMultiply=new JMenuItem("Left Multiply");
+    	mnuCOperations.add(mniLeftMultiply);
+    	mniRightMultiply=new JMenuItem("Right Multiply");
+    	mnuCOperations.add(mniRightMultiply);
+    	mniSymm=new JMenuItem("Symm Multiply");
+    	mnuCOperations.add(mniSymm);
+    	mniASymm=new JMenuItem("ASymm Multiply");
+    	mnuCOperations.add(mniASymm);
+    	//mniRotate=new JMenuItem("Rotate");
+    	//mnuCOperations.add(mniRotate);
+    	//mniRotate.setEnabled(false);
+    	//mniTranslate=new JMenuItem("Translate");
+    	//mnuCOperations.add(mniTranslate);
+    	//mniTranslate.setEnabled(false);
     	//Operations Menus items added
     	
-    	this.mniCreate=new JMenuItem("Create Monad");
-    	this.mnuTools.add(this.mniCreate);
-    	//this.mniCreate.setEnabled(false);
-    	this.mniOptions=new JMenuItem("Options");
-    	this.mnuTools.add(this.mniOptions);
+    	mniCreate=new JMenuItem("Create Monad");
+    	mnuTools.add(mniCreate);
+    	//mniCreate.setEnabled(false);
+    	mniOptions=new JMenuItem("Options");
+    	mnuTools.add(mniOptions);
     	//Options Menu items added
     	
-    	this.mniSupport=new JMenuItem("Support");
-    	this.mnuHelp.add(this.mniSupport);
-    	this.mniAbout=new JMenuItem("About");
-    	this.mnuHelp.add(this.mniAbout);
+    	mniSupport=new JMenuItem("Support");
+    	mnuHelp.add(mniSupport);
+    	mniAbout=new JMenuItem("About");
+    	mnuHelp.add(mniAbout);
     	//Help Menu items added
     }
     

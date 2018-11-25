@@ -1,28 +1,33 @@
-/*
-<h2>Copyright</h2>
-Copyright (c) 2005 Interworld Transport.  All rights reserved.<br>
----com.interworldtransport.cladosviewer.NyadPanel------------------------------------------
-<p>
-Interworld Transport grants you ("Licensee") a license to this software
-under the terms of the GNU General Public License.<br>
-A full copy of the license can be found bundled with this package or code file.
-<p>
-If the license file has become separated from the package, code file, or binary
-executable, the Licensee is still expected to read about the license at the
-following URL before accepting this material.
-<blockquote><code>http://www.opensource.org/gpl-license.html</code></blockquote>
-<p>
-Use of this code or executable objects derived from it by the Licensee states
-their willingness to accept the terms of the license.
-<p>
-A prospective Licensee unable to find a copy of the license terms should contact
-Interworld Transport for a free copy.
-<p>
----com.interworldtransport.cladosviewer.NyadPanel------------------------------------------
+/**
+ * <h2>Copyright</h2> © 2018 Alfred Differ.<br>
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.NyadPanel<br>
+ * -------------------------------------------------------------------- <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.<p>
+ * 
+ * Use of this code or executable objects derived from it by the Licensee 
+ * states their willingness to accept the terms of the license. <p> 
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * 
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.NyadPanel<br>
+ * ------------------------------------------------------------------------ <br>
  */
 
 package com.interworldtransport.cladosviewer ;
-import com.interworldtransport.clados.*;
+
+import com.interworldtransport.cladosG.*;
+import com.interworldtransport.cladosGExceptions.*;
+import com.interworldtransport.cladosviewerExceptions.UtilitiesException;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -35,234 +40,190 @@ import java.util.*;
  * The ViewerPanel class is intended to be the main panel of the Monad Viewer
  * utility.
  * <p>
- * @version 0.80, $Date: 2005/08/25 06:36:13 $
+ * @version 0.85
  * @author Dr Alfred W Differ
  */
 
  public class NyadPanel extends JPanel implements ActionListener
 {
-	 public		MonadViewer		TheGUI;
-	 public		Nyad			rep;
-	 private	JPanel 			controls;
-	 private	JPanel 			refPanel;
-	 protected	JButton			syncButton=new JButton("Save");
-	 protected	JButton			editButton=new JButton("Edit");
-	 protected	JButton			copyButton=new JButton("Copy");
-	 protected	JButton			restoreButton=new JButton("Restore");
-	 protected	JButton			removeButton=new JButton("Remove");
-	 public		JTextField		name=new JTextField(10);
-	 public		JTextField		aname=new JTextField(10);
-	 public		JTextField		foot=new JTextField(10);
-	 public		JTextField		order=new JTextField(10);
-	 public		ImageIcon		tabicon;
-	 public		JTabbedPane		MonadPanes;
-	 protected	ArrayList		MonadPanelList;
+	private static final long serialVersionUID = -2756670949416830884L;
+	public		MonadViewer		TheGUI;
 
-/**
- * The ViewerPanel class is intended to be a tabbed pane that displays all
- * the Monad Panels.  ViewerPanel must be smart enough to
- * know what it holds and adjust the tabs when push and pop operations are
- * performed.
- */
-/*	 public 		NyadPanel(MonadViewer pGUI, String pTitle, String pSig)
-	 throws 		UtilitiesException, BadSignatureException
-	 {
-		 super();
-		 if (pGUI!=null)
-		 {
-			 this.TheGUI=pGUI;
-			 this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-			 this.setBackground(new Color(192, 128, 192));
-			 this.setLayout(new BorderLayout());
-
-			 this.createLayout(pTitle, pSig);
-		 }
-		 else
-		 {
-			 System.out.println("A GUI must be passed to the StatusLine");
-			 System.exit(0);
-		 }
-		 
-	 }
-*/	 
+	private		JPanel 			_controlPanel;
+	protected	JButton			saveButton;
+	protected	JButton			editButton;
+	protected	JButton			copyButton;
+	protected	JButton			restoreButton;
+	protected	JButton			removeButton;
+	 
+	private		JPanel 			_refPanel;
+	public		JTextField		_name=new JTextField(10);
+	public		JLabel			_foot=new JLabel();
+	public		JLabel			_order=new JLabel();
+	 
+	private		Color			_backColor = new Color(192, 164, 192);
+	private		Color			_unlockColor = new Color(255, 164, 164);
+	public		ImageIcon		tabicon;
+	
+	public		JTabbedPane				MonadPanes;
+	protected	ArrayList<MonadPanel>	MonadPanelList;
+	public		NyadRealF				_repNyad;
+ 
 /**
  * This constructor is the copy one used when a Monad alread exists
  */
 	 public NyadPanel(	MonadViewer pGUI,
-			 			Nyad pN)
+			 			NyadRealF pN)
 	 throws 	UtilitiesException, BadSignatureException
 	 {
 		 super();
 		 if (pGUI!=null || pN!=null)
 		 {
-			 this.TheGUI=pGUI;
-			 this.rep=pN;
-			 this.setTopFields();
+			 TheGUI=pGUI;
+			 _repNyad=pN;
+			 setReferences();
 			 
-			 this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-			 this.setBackground(new Color(192, 128, 192));
-			 this.setLayout(new BorderLayout());
-			 
-			 String logoFile=TheGUI.IniProps.getProperty("MonadViewer.Desktop.TabImage");
-			 this.tabicon = createImageIcon(logoFile);
+			 setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+			 setBackground(_backColor);
+			 setLayout(new BorderLayout());
+
+			 tabicon = new ImageIcon(TheGUI.IniProps.getProperty("MonadViewer.Desktop.TabMImage"));
 			 
 			 createControlLayout();
-			 this.add(controls, "North");
+			 add(_controlPanel, "West");
 			 createReferenceLayout();
-			 this.add(refPanel, "South");
+			 add(_refPanel, "South");
 			 
-			 this.MonadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
-			 this.MonadPanelList=new ArrayList(rep.getOrder());
+			 MonadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
+			 MonadPanelList=new ArrayList<MonadPanel>(_repNyad.getMonadList().size());
 			 
-			 for (int j=0; j<rep.getOrder(); j++)
+			 for (short j=0; j<_repNyad.getMonadList().size(); j++)
 			 {
-				 String count=new Integer(j).toString();
-				 MonadPanelList.add(j, new MonadPanel(TheGUI, rep.getMList(j)));
-				 JScrollPane tempPane=new JScrollPane((JPanel)MonadPanelList.get(j));
+				 String count =new StringBuffer().append(j).toString();
+				 MonadPanelList.add(j, new MonadPanel(TheGUI, _repNyad.getMonadList(j)));
+				 JScrollPane tempPane=new JScrollPane(MonadPanelList.get(j));
 				 tempPane.setWheelScrollingEnabled(true);
-				 MonadPanes.addTab(count, tabicon, tempPane);
+				 if (tabicon != null)
+					 MonadPanes.addTab(count, tabicon, tempPane);
+				 else
+					 MonadPanes.addTab(count, tempPane);
 			 }
 			 
-			 this.add(MonadPanes, "Center");
+			 add(MonadPanes, "Center");
 		 }
 		 else
-		 {
-			 System.out.println("A GUI and Nyad must be passed to this constructor");
 			 throw new UtilitiesException("A GUI and Nyad must be passed to this constructor");
-		 }
+		 
 	 }
 
-    protected ImageIcon createImageIcon(String path)
+    public 	void 		setReferences()
     {
-    	ImageIcon temp = new ImageIcon(path);
-    	if (temp != null) 
-    	{
-    		return temp;
-    	} 
-    	else 
-    	{
-    		TheGUI.StatusLine.setStatusMsg("(Viewer)Could not get: "+path+"\n");
-    		return null;
-    	}
-    }
-
-    public 	void 		setTopFields()
-    {
-    	this.name.setText(rep.getName());
-    	this.aname.setText(rep.getAlgebraName());
-    	this.order.setText(new Integer(rep.getOrder()).toString());
-    	this.foot.setText(rep.getFootName());
+    	_name.setText(_repNyad.getName());
+    	_order.setText((new StringBuffer().append(_repNyad.getMonadList().size())).toString());
+    	_foot.setText(_repNyad.getFootPoint().getFootName());
     }
 
     public 	void		createControlLayout()
     {
-    	controls=new JPanel();
-    	controls.setBackground(new Color(192, 128, 192));
-    	String temp = TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.Object");
-    	if (temp.equals("Monad")) return;
+    	_controlPanel=new JPanel();
+    	_controlPanel.setBackground(_backColor);
+    	if ((TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.Object")).equals("Monad")) return;
     	
-    	controls.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-    	controls.setLayout(new GridBagLayout());
+    	_controlPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+    	_controlPanel.setLayout(new GridBagLayout());
     	
     	GridBagConstraints cn = new GridBagConstraints();
-    	cn.insets = new Insets(2, 2, 2, 2);
-    	cn.fill=GridBagConstraints.HORIZONTAL;
-    	cn.anchor=GridBagConstraints.NORTHWEST;
-    	this.makeNotWritable();
+    	cn.insets = new Insets(0, 0, 0, 0);
+    	//cn.fill=GridBagConstraints.HORIZONTAL;
+    	cn.anchor=GridBagConstraints.NORTH;
+    	makeNotWritable();
+    	
+   	 	saveButton=new JButton("save", new ImageIcon(TheGUI.IniProps.getProperty("MonadViewer.Desktop.SaveImage")));
+   	 	saveButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+	 	saveButton.setHorizontalTextPosition(SwingConstants.CENTER);
+	 	saveButton.setPreferredSize(new Dimension(50,50));
+   	 	
+   	 	editButton=new JButton("edit", new ImageIcon(TheGUI.IniProps.getProperty("MonadViewer.Desktop.EditImage")));
+   	 	editButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+	 	editButton.setHorizontalTextPosition(SwingConstants.CENTER);
+	 	editButton.setPreferredSize(new Dimension(50,50));
+   	 	
+   	 	copyButton=new JButton("copy", new ImageIcon(TheGUI.IniProps.getProperty("MonadViewer.Desktop.CopyImage")));
+   	 	copyButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+   	 	copyButton.setHorizontalTextPosition(SwingConstants.CENTER);
+   	 	copyButton.setPreferredSize(new Dimension(50,50));
+   	 	
+   	 	restoreButton=new JButton("abort", new ImageIcon(TheGUI.IniProps.getProperty("MonadViewer.Desktop.RestoreImage")));
+   	 	restoreButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+	 	restoreButton.setHorizontalTextPosition(SwingConstants.CENTER);
+	 	restoreButton.setPreferredSize(new Dimension(50,50));
+   	 	
+   	 	removeButton=new JButton("erase", new ImageIcon(TheGUI.IniProps.getProperty("MonadViewer.Desktop.RemoveImage")));
+   	 	removeButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+   	 	removeButton.setHorizontalTextPosition(SwingConstants.CENTER);
+   	 	removeButton.setPreferredSize(new Dimension(50,50));
     	
     	cn.gridx = 0;
     	cn.gridy = 0;
     	cn.weightx=1;
     	cn.weighty=1;
     	
-    	syncButton.addActionListener(this);
-    	controls.add(syncButton, cn);
-    	cn.gridx++;
+    	saveButton.addActionListener(this);
+    	_controlPanel.add(saveButton, cn);
+    	cn.gridy++;
+    	
     	restoreButton.addActionListener(this);
-    	controls.add(restoreButton, cn);
-    	cn.gridx++;
-    	removeButton.addActionListener(this);
-    	controls.add(removeButton, cn);
-    	cn.gridx++;
+    	_controlPanel.add(restoreButton, cn);
+    	cn.gridy++;
+    	
     	copyButton.addActionListener(this);
-    	controls.add(copyButton, cn);
-    	copyButton.setEnabled(false);
-    	cn.gridx++;
+    	_controlPanel.add(copyButton, cn);
+    	//copyButton.setEnabled(false);
+    	cn.gridy++;
+    	
+    	removeButton.addActionListener(this);
+    	_controlPanel.add(removeButton, cn);
+    	cn.gridy++;
+    	
     	editButton.addActionListener(this);
-    	controls.add(editButton, cn);
+    	_controlPanel.add(editButton, cn);
     }
     
     public 	void		createReferenceLayout()
     {
-    	refPanel=new JPanel();
-    	refPanel.setBackground(new Color(192, 128, 192));
-    	String temp = TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.Object");
-    	if (temp.equals("Monad")) return;
+    	_refPanel=new JPanel();
+    	_refPanel.setBackground(_backColor);
     	
-    	refPanel.setBorder(BorderFactory.createTitledBorder("Nyad Reference"));
-    	refPanel.setLayout(new GridBagLayout());
+    	if ((TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.Object")).equals("Monad")) return;
+    	
+    	_refPanel.setBorder(BorderFactory.createTitledBorder("Nyad"));
+    	_refPanel.setLayout(new GridBagLayout());
     	
     	GridBagConstraints cn0 = new GridBagConstraints();
-    	cn0.insets = new Insets(2, 2, 2, 2);
-    	cn0.fill=GridBagConstraints.HORIZONTAL;
-    	cn0.anchor=GridBagConstraints.NORTHWEST;
-    	
-    	
-    	
+    	cn0.insets = new Insets(0, 0, 0, 0);
+    	//cn0.fill=GridBagConstraints.HORIZONTAL;
+    	cn0.anchor=GridBagConstraints.NORTH;
+
     	cn0.gridx = 0;
     	cn0.gridy = 0;
     	cn0.weightx=1;
     	cn0.weighty=1;
     	
-    	refPanel.add(new JLabel("Order", SwingConstants.RIGHT), cn0);
+    	_refPanel.add(new JLabel("Name", SwingConstants.RIGHT), cn0);
     	cn0.gridx++;
-    	refPanel.add(order, cn0);
+    	_refPanel.add(_name, cn0);	
     	cn0.gridx++;
-    	refPanel.add(new JLabel("Algebra Name", SwingConstants.RIGHT), cn0);
-    	cn0.gridx++;
-    	refPanel.add(aname, cn0);
-    	cn0.gridx++;
-    	refPanel.add(new JLabel("Foot Name", SwingConstants.RIGHT), cn0);
-    	cn0.gridx++;
-    	refPanel.add(foot, cn0);
-    	cn0.gridx++;
-    	refPanel.add(new JLabel("Nyad Name", SwingConstants.RIGHT), cn0);
-    	cn0.gridx++;
-    	refPanel.add(name, cn0);
     	
+    	_refPanel.add(new JLabel("Foot", SwingConstants.RIGHT), cn0);
+    	cn0.gridx++;
+    	_refPanel.add(_foot, cn0);
+    	cn0.gridx++;
     	
+    	_refPanel.add(new JLabel("Order", SwingConstants.RIGHT), cn0);
+    	cn0.gridx++;
+    	_refPanel.add(_order, cn0);
     }
-/*
-    public 	void 		createLayout(String pName, String pSg)
-    throws 		UtilitiesException, BadSignatureException
-    {
-    	String logoFile=TheGUI.IniProps.getProperty("MonadViewer.Desktop.TabImage");
-		this.tabicon = createImageIcon(logoFile);
-    	
-    	createControlLayout();
-    	this.add(controls, "North");
-    	createReferenceLayout();
-    	this.add(refPanel, "South");
-    	
-    	String tempOrder=TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.Order");
-    	int intOrder=new Integer(tempOrder).intValue();
-    	
-    	this.MonadPanes=new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.WRAP_TAB_LAYOUT);
-    	this.MonadPanelList=new ArrayList(intOrder);
-    	
-    	for (int j=0; j<intOrder; j++)
-    	{
-    		String count=new Integer(j).toString();
-    		MonadPanelList.add(j, new MonadPanel(TheGUI, pName, "test",  "basic", "basic", pSg));
-    		JScrollPane tempPane=new JScrollPane((JPanel)MonadPanelList.get(j));
-    		tempPane.setWheelScrollingEnabled(true);
-    		MonadPanes.addTab(count, tabicon, tempPane);
-    	}
-    	
-    	this.add(MonadPanes, "Center");
 
-    }
- */
     public	void		push()
     {
 	    int size=MonadPanes.getTabCount();
@@ -315,14 +276,19 @@ import java.util.*;
 	    }
     }
 
-    public Nyad 	getNyad()
+    public NyadRealF 	getNyad()
     {
-	    return this.rep;
+	    return _repNyad;
     }
     
     public int 		getOrder()
     {
     	return MonadPanelList.size();
+    }
+    
+    public	int			getPaneFocus()
+    {
+	    return MonadPanes.getSelectedIndex();
     }
     
     public	MonadPanel	getMonadPanel(int pInd)
@@ -333,142 +299,111 @@ import java.util.*;
 		    MonadPanel temp = (MonadPanel)MonadPanelList.get(pInd);
 		    return temp;
 	    }
-	    else return null;
+	    return null;
     }
 
-    //public	void		removeTab(int pInd)
-    //{
-    //	MonadPanes.remove(pInd);
-    //	MonadPanel temp=(MonadPanel)MonadPanelList.remove(pInd);
-    //	temp=null;
-    //}
-
-    public	void		addSTab(MonadPanel pMP)
+    public	void		addMonadPanel(MonadPanel pMP)
     {
 	    int next=MonadPanes.getTabCount();
-	    String count=new Integer(next).toString();
 	    MonadPanelList.ensureCapacity(next+1);
 	    boolean test=MonadPanelList.add(pMP);
 	    if (test)
 	    {
-	    	JScrollPane tempPane=new JScrollPane((JPanel)MonadPanelList.get(next));
-	    	MonadPanes.addTab(count, tabicon, tempPane);
+	    	if (tabicon != null)
+	    		MonadPanes.addTab((new StringBuffer()).append(next).toString(), tabicon, new JScrollPane(pMP));
+	    	else
+	    		MonadPanes.addTab((new StringBuffer()).append(next).toString(), new JScrollPane(pMP));
+	    	
+	    	_order.setText((new StringBuffer()).append(next+1).toString());
 	    }
     }
     
-    public	void		addSTab(Monad pM)
+    public	void		addMonadTab(MonadRealF pM)
     throws BadSignatureException, UtilitiesException
     {
     	MonadPanel pMP=new MonadPanel(TheGUI, pM);
-	    int next=MonadPanes.getTabCount();
-	    String count=new Integer(next).toString();
-	    MonadPanelList.ensureCapacity(next+1);
-	    boolean test=MonadPanelList.add(pMP);
-	    if (test)
-	    {
-	    	JScrollPane tempPane=new JScrollPane((JPanel)MonadPanelList.get(next));
-	    	MonadPanes.addTab(count, tabicon, tempPane);
-	    }
+    	addMonadPanel(pMP); 
     }
     
-    public	void		removeTab(int pInd)
+    public	void		removeMonadTab(int pInd)
     {
+    	int newOrder=MonadPanes.getTabCount()-1;
 	    MonadPanes.remove(pInd);
-	    MonadPanel temp=(MonadPanel)MonadPanelList.remove(pInd);
-	    temp=null;
+	    MonadPanelList.remove(pInd);
+	    _order.setText(new StringBuffer().append(newOrder).toString());
     }
     
     public 	void 		makeWritable()
     {
-    	name.setEditable(true);
-    	order.setEditable(false);
-    	foot.setEditable(true);
-    	aname.setEditable(true);
+    	if (_refPanel!=null)
+    		_refPanel.setBackground(_unlockColor);
+    	_name.setEditable(true);
+    	//_order.setEditable(false);
+    	//_foot.setEditable(false);
     }
     
     public 	void 		makeNotWritable()
     {
-    	name.setEditable(false);
-    	order.setEditable(false);
-    	foot.setEditable(false);
-    	aname.setEditable(false);
+    	if (_refPanel!=null)
+    		_refPanel.setBackground(_backColor);
+    	_name.setEditable(false);
+    	//_order.setEditable(false);
+    	//_foot.setEditable(false);
     }
     
     public 	void 		actionPerformed(ActionEvent event)
     {
     	String command = event.getActionCommand();
-    	if (command=="Restore")
+    	if (command=="abort")
     	{
-    		if (!name.getText().equals("Create"))
+    		if (!_name.getText().equals("Create"))
     		{
-    			this.setTopFields();
+    			setReferences();
     			getMonadPanel(0).restoreButton.doClick(100);
-    			TheGUI.StatusLine.setStatusMsg("Nyad reset to stored values.\n");
+    			TheGUI._StatusBar.setStatusMsg("Nyad reset to stored values.\n");
     		}
     	}
     	
-    	if (command=="Copy")
+    	if (command=="copy")
     	{
-    		TheGUI.StatusLine.setStatusMsg("Nothing here yet.\n");
+    		TheGUI._StatusBar.setStatusMsg("Nothing here yet.\n");
     	}
     	
-    	if (command=="Remove")
+    	if (command=="erase")
     	{
-    		int temp=MonadPanes.getTabCount();
-    		if (temp>1)
+    		if (MonadPanes.getTabCount()>1)
     		{
-    			this.removeTab(MonadPanes.getSelectedIndex());
-    			rep.removeMonad(MonadPanes.getSelectedIndex());
-    		}
-    		TheGUI.StatusLine.setStatusMsg("Monad removed from list.\n");
-    	}
-    	
-    	if (command=="Edit")
-    	{
-    		if (name.isEditable())
-    		{
-    			this.makeNotWritable();
-    			TheGUI.StatusLine.setStatusMsg("Monad Headers Locked.\n");
-    		}
-    		else
-    		{
-    			this.makeWritable();
-    			TheGUI.StatusLine.setStatusMsg("Monad Headers Unlocked.\n");
-    		}
-    	}
-    	
-    	if (command=="Save")
-    	{
-    		getMonadPanel(0).syncButton.doClick(100);
-    		/*
-    		try
-    		{
-    			
-    			for (int j=1; j<rep.getLinearDimension()+1; j++)
+    			try 
     			{
-    				JTextField temp= (JTextField)jcoeffs.get(j);
-    				coeffs[j]= new Double(temp.getText()).doubleValue();
-    			}
-    			
-    			this.rep=new Monad(	name.getText(),
-    					"test",
-    					frame.getText(),
-    					foot.getText(),
-    					sig.getText(), coeffs);
-    			setBottomFields();
-    			TheGUI.StatusLine.setStatusMsg("Changes saved.\n");
-    			
-    			
+    				int point = MonadPanes.getSelectedIndex();
+    				removeMonadTab(point);
+					_repNyad.removeMonad(point);
+				} 
+    			catch (CladosNyadException e) 
+    			{
+					e.printStackTrace();
+				}
     		}
-    		catch (UtilitiesException e)
-    		{
-    			System.out.println("Could not create monad copy from Save");
-    		}
-    		catch (BadSignatureException es)
-    		{
-    			System.out.println("Could not create monad copy from Save");
-    		}
-    		*/
+    		TheGUI._StatusBar.setStatusMsg("Monad removed from list.\n");
+    	}
+    	
+    	if (command=="edit")
+    	{
+    		editButton.setText(".edit.");
+    		makeWritable();
+    		TheGUI._StatusBar.setStatusMsg("Nyad references unlocked... ");
+    	}
+    	
+    	if (command==".edit.")
+    	{
+    		editButton.setText("edit");
+    		makeNotWritable();
+    		TheGUI._StatusBar.setStatusMsg(" ... and now locked\n");
+    	}
+    	
+    	if (command=="save")
+    	{
+    		_repNyad.setName(_name.getText());
     	}
     }
 }

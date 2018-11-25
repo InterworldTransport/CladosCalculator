@@ -22,7 +22,14 @@ Interworld Transport for a free copy.
  */
 
 package com.interworldtransport.cladosviewer;
-import com.interworldtransport.clados.*;
+import com.interworldtransport.cladosGExceptions.*;
+import com.interworldtransport.cladosviewerEvents.BOpsEvents;
+import com.interworldtransport.cladosviewerEvents.COpsEvents;
+import com.interworldtransport.cladosviewerEvents.FileEvents;
+import com.interworldtransport.cladosviewerEvents.HelpEvents;
+import com.interworldtransport.cladosviewerEvents.SOpsEvents;
+import com.interworldtransport.cladosviewerEvents.ToolsEvents;
+import com.interworldtransport.cladosviewerExceptions.UtilitiesException;
 
 /** com.interworldtransport.cladosviewer.ViewerEventModel
  *
@@ -88,19 +95,16 @@ public class ViewerEventModel
     public ViewerEventModel(ViewerMenu pGUIParentMenu)
         	throws 		UtilitiesException, BadSignatureException
     {
-	//super(pGUIParentMenu);
-	this.GUIParentMenu=pGUIParentMenu;
+    	//super(pGUIParentMenu);
+    	GUIParentMenu=pGUIParentMenu;
 
-	this.FileParts = new FileEvents(this.GUIParentMenu);
+    	FileParts = new FileEvents(GUIParentMenu);
 
-	this.BOpsParts = new BOpsEvents(this.GUIParentMenu);
-	this.SOpsParts = new SOpsEvents(this.GUIParentMenu);
-	this.COpsParts = new COpsEvents(this.GUIParentMenu);
-
-	this.ToolParts = new ToolsEvents(this.GUIParentMenu);
-	this.HelpParts = new HelpEvents(this.GUIParentMenu);
-
-    }//end of ViewerEventModel constructor
-
-
-    }//end of ViewerEventModel class
+    	BOpsParts = new BOpsEvents(GUIParentMenu);
+    	SOpsParts = new SOpsEvents(GUIParentMenu);
+		COpsParts = new COpsEvents(GUIParentMenu);
+	
+		ToolParts = new ToolsEvents(GUIParentMenu);
+		HelpParts = new HelpEvents(GUIParentMenu);
+    }
+}

@@ -53,7 +53,8 @@ import javax.swing.*;
  */
 public class SplashWindow extends JWindow 
 {
-	
+	private static final long serialVersionUID = 6273808919001485568L;
+
 /**
  * The constructor loads an image and displays the splash window.
  * The image must be in the ImageIcon passed to the constructor at present.

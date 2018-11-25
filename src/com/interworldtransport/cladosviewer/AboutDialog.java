@@ -38,6 +38,7 @@ import javax.swing.border.*;
  */
 public class AboutDialog extends JDialog implements ActionListener
 {
+	private static final long serialVersionUID = -6870724243642467353L;
 	private 	MonadViewer		TheGUI;
 	private 	JButton 		closeButton;
 
