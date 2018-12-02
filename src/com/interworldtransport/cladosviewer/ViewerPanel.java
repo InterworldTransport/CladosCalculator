@@ -31,6 +31,8 @@ import com.interworldtransport.cladosviewerExceptions.UtilitiesException;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.util.*;
@@ -48,7 +50,7 @@ import java.util.*;
 {
 	private static final long serialVersionUID = 8067075019491290702L;
 	public		ImageIcon				tabicon;
-    public		MonadViewer				TheGUI;
+    public		CladosCalculator				TheGUI;
     public		JTabbedPane				NyadPanes;
     protected	ArrayList<NyadPanel>	NyadPanelList;
 
@@ -58,14 +60,14 @@ import java.util.*;
  * know what it holds and adjust the tabs when push and pop operations are
  * performed.
  */
-    public 	ViewerPanel(MonadViewer pGUI) 
+    public 	ViewerPanel(CladosCalculator pGUI) 
     	throws 		UtilitiesException, BadSignatureException
     {
     	super();
     	
     	TheGUI=pGUI;
     	setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-    	setBackground(new Color(255, 255, 222));
+    	setBackground(new Color(255, 255, 220));
     	setLayout(new BorderLayout());
     		
     	createLayout();
@@ -80,6 +82,7 @@ import java.util.*;
     	//The Viewer contains NyadPanels displayed as a JTabbedPanes containing 
     	//JScrollPanes containing a NyadPanel each. We initiate the JTabbedPanel here
     	NyadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
+    	NyadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
     	NyadPanes.addChangeListener(new ChangeListener() 
     	{
     		@Override

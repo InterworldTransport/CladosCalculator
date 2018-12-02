@@ -44,7 +44,7 @@ public class OptionsDialog extends JDialog implements ActionListener
 /**
  * The constructor sets up the options dialog box and displays it.
  */
-    public OptionsDialog(MonadViewer mainWindow, String pContent)
+    public OptionsDialog(CladosCalculator mainWindow, String pContent)
     {
 		super(mainWindow, "Options Panel for Monad Viewer", true); //Use parent's constructor
 	

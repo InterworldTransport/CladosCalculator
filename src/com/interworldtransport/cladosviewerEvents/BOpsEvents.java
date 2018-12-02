@@ -26,7 +26,7 @@
 package com.interworldtransport.cladosviewerEvents;
 import java.awt.event.*;
 
-import com.interworldtransport.cladosviewer.ViewerMenu;
+import com.interworldtransport.cladosviewer.*;
 
 /** com.interworldtransport.cladosviewer.BOpsEvents
  * This class groups the event listeners associated with the Boolean Operations
@@ -34,23 +34,24 @@ import com.interworldtransport.cladosviewer.ViewerMenu;
  * entire menu by having it register as a Listener with all of its controlled
  * listeners.  The controlled listeners will create an event or call their
  * parent.  It could also register with all the components to which its
- * listeners register..maybe.
+ * listeners register..maybe. [None of this is done yet, of course.]
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
 public class BOpsEvents implements ActionListener
 {
+	protected BOpsZeroEvents		zero;
+	protected BOpsEqualEvents		equal;
+	protected BOpsRMatchEvents		rmatch;
+	protected BOpsGradeEvents		grade;
     protected BOpsMGradeEvents		mgrade;
-    protected BOpsGradeEvents		grade;
     protected BOpsNilpotentEvents	nilp;
     protected BOpsIdempotentEvents	idemp;
     protected BOpsMIdempotentEvents	midemp;
-    protected BOpsEqualEvents		equal;
-    protected BOpsZeroEvents		zero;
-    protected BOpsRMatchEvents		rmatch;
 
-    protected ViewerMenu 			ParentGUIMenu;
+    protected ViewerMenu 			_GUIMenu;
+    protected CladosCalculator			_GUI;
 
 /** 
  * This is the default constructor.  The event structure of the
@@ -58,31 +59,29 @@ public class BOpsEvents implements ActionListener
  */
     public BOpsEvents(ViewerMenu pTheGUIMenu)
     {
-		ParentGUIMenu=pTheGUIMenu;
+		_GUIMenu=pTheGUIMenu;
+		_GUI=_GUIMenu._parentGUI;
 	
-		mgrade = new BOpsMGradeEvents(	ParentGUIMenu,
-										ParentGUIMenu.mniisMultiGrade,
+		mgrade = new BOpsMGradeEvents(	_GUIMenu,
+										_GUIMenu.mniisMultiGrade,
 										this);
-		grade = new BOpsGradeEvents(	ParentGUIMenu,
-										ParentGUIMenu.mniisGrade,
+		grade = new BOpsGradeEvents(	_GUIMenu.mniisGrade,
 										this);
-		nilp = new BOpsNilpotentEvents(	ParentGUIMenu,
-										ParentGUIMenu.mniisNilpotent,
+		nilp = new BOpsNilpotentEvents(	_GUIMenu,
+										_GUIMenu.mniisNilpotent,
 										this);
-		idemp = new BOpsIdempotentEvents(	ParentGUIMenu,
-											ParentGUIMenu.mniisIdempotent,
+		idemp = new BOpsIdempotentEvents(	_GUIMenu,
+											_GUIMenu.mniisIdempotent,
 											this);
-		midemp = new BOpsMIdempotentEvents(	ParentGUIMenu,
-											ParentGUIMenu.mniisIdempotentMultiple,
+		midemp = new BOpsMIdempotentEvents(	_GUIMenu,
+											_GUIMenu.mniisIdempotentMultiple,
 											this);
-		equal = new BOpsEqualEvents(	ParentGUIMenu,
-										ParentGUIMenu.mniisEqual,
+		equal = new BOpsEqualEvents(	_GUIMenu.mniisEqual,
 										this);
-		zero = new BOpsZeroEvents(		ParentGUIMenu,
-										ParentGUIMenu.mniisZero,
+		zero = new BOpsZeroEvents(		_GUIMenu.mniisZero,
 										this);
-		rmatch = new BOpsRMatchEvents(	ParentGUIMenu,
-										ParentGUIMenu.mniisReferenceMatch,
+		rmatch = new BOpsRMatchEvents(	_GUIMenu,
+										_GUIMenu.mniisReferenceMatch,
 										this);
     }
 

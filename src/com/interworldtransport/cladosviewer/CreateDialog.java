@@ -44,7 +44,7 @@ import javax.swing.border.*;
 public class CreateDialog extends JDialog implements ActionListener
 {
 	private static final long serialVersionUID = -8814503714946803185L;
-	private	MonadViewer	TheGUI;
+	private	CladosCalculator	TheGUI;
 	private	MonadPanel	mainPane;
 	private	JButton		closeButton;
 	private	JButton		saveNyadButton;
@@ -53,7 +53,7 @@ public class CreateDialog extends JDialog implements ActionListener
 /**
  * The constructor sets up the options dialog box and displays it.
  */
-	public CreateDialog(MonadViewer mainWindow)
+	public CreateDialog(CladosCalculator mainWindow)
 	throws 		UtilitiesException, BadSignatureException, CladosMonadException
 	{
 		

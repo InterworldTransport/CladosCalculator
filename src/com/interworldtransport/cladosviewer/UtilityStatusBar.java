@@ -61,7 +61,7 @@ import javax.swing.*;
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEtchedBorder());
 		
-		stmesgt = new JTextArea("Initializing GUI...", 20, 50);
+		stmesgt = new JTextArea("Initializing GUI...", 20, 40);
 		stmesgt.setFont(new Font("Serif", Font.PLAIN, 8));
 		stmesgt.setLineWrap(true);
 		stmesgt.setWrapStyleWord(true);
@@ -82,8 +82,8 @@ import javax.swing.*;
     	
     	cn.gridx = 0;
     	cn.gridy = 0;
-    	cn.weightx=1;
-    	cn.weighty=1;
+    	cn.weightx=0;
+    	cn.weighty=0;
     	
     	nPanel.add(new JLabel("field"), cn);
     	cn.gridy++;
@@ -107,6 +107,11 @@ import javax.swing.*;
 		stImgIO.setColumns(8);
 		stImgIO.setFont(new Font("Serif", Font.PLAIN, 12));
 		nPanel.add(stImgIO, cn);
+		cn.gridy++;
+		
+		cn.weightx=1;
+    	cn.weighty=1;
+    	nPanel.add(new JLabel(), cn);
 		
 		add(nPanel, "East");
     }

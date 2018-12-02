@@ -1,2 +1,2 @@
 clear
-java -jar cladosCalculator.jar -cp clados.jar -t "Interworld Transport - clados Viewer" -c "./conf/MonadViewer.conf"
+java -jar cladosCalculator.jar -cp lib/clados.jar -t "Interworld Transport - Clados Calculator" -c "conf/CladosCalculator.conf"

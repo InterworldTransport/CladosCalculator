@@ -39,13 +39,13 @@ import javax.swing.border.*;
 public class AboutDialog extends JDialog implements ActionListener
 {
 	private static final long serialVersionUID = -6870724243642467353L;
-	private 	MonadViewer		TheGUI;
+	private 	CladosCalculator		TheGUI;
 	private 	JButton 		closeButton;
 
 /**
  * The constructor sets up the about dialog box and displays it.
  */
-    public AboutDialog(MonadViewer mainWindow, String pContent)
+    public AboutDialog(CladosCalculator mainWindow, String pContent)
     {
 
 	super(mainWindow, "About Monad Viewer Utility", true); //Use parent's constructor

@@ -44,7 +44,7 @@ public class SupportDialog extends JDialog implements ActionListener
 /**
  * The constructor sets up the about dialog box and displays it.
  */
-    public SupportDialog(MonadViewer mainWindow, String pContent)
+    public SupportDialog(CladosCalculator mainWindow, String pContent)
     {
 
 	super(mainWindow, "Support for Monad Viewer Utility", true); //Use parent's constructor

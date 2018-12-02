@@ -18,20 +18,25 @@
 	<property 	name="copyleft"	value="&lt;p&gt;
 --------------------------------------------------------------------------------
 &lt;br&gt;
-Clados_API_Documentation&lt;br&gt;
+CladosCalculator_API_Documentation&lt;br&gt;
 --------------------------------------------------------------------------------
 &lt;br&gt;
-Copyright (c) 2002-2005 Interworld Transport.  All rights reserved.
+Copyright © 2018 Alfred Differ.  All rights reserved.
 &lt;p&gt;
-Interworld Transport grants you (Licensee) a license to this documentation
-under the terms of the Design Science License.  A full copy of the license can
-be found bundled with this documentation and published within it.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version. 
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+&lt;p&gt;	
+Use of this code or executable objects derived from it by the Licensee 
+states their willingness to accept the terms of the license.
 &lt;p&gt;
-Use of this documentation beyond the legal definition of &apos;fair use&apos; by the
-Licensee states their willingness to accept the terms of the license.
-&lt;p&gt;
-A prospective Licensee unable to find a copy of the license terms should contact
-Dr. Alfred Differ (adiffer@gmail.com) for a free copy." />
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see https://www.gnu.org/licenses/."/>
 
 	<target name="clean"
 			description="Removes all Clados files down to a basic src package.">
@@ -42,20 +47,21 @@ Dr. Alfred Differ (adiffer@gmail.com) for a free copy." />
 		description="Creates output directories" >
 		<mkdir dir="./build" />
 	</target>
-
-	
 	
 	<target name="compile"
 			depends="prepare"
 			description="Compiles all the Clados Calculator source files" >
 		<javac 	includeantruntime="false"
-				
+				classpath="lib/clados.jar"
 				debug="on"
 				destdir="${buildDir}"
 				nowarn="on"
 				srcdir="${srcDir}"
-				verbose="false">
-			<include name="com/interworldtransport/cladosviewer/*.java"></include>
+				verbose="false" >
+			<exclude name="com/interworldtransport/cladosG/*.java"/>
+			<exclude name="com/interworldtransport/cladosGExceptions/*.java"/>
+			<exclude name="com/interworldtransport/cladosF/*.java"/>
+			<exclude name="com/interworldtransport/cladosFExceptions/*.java"/>
 		</javac>
 	</target>
 

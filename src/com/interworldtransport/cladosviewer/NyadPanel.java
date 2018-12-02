@@ -33,6 +33,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
+
 import java.util.*;
 
 
@@ -47,7 +50,7 @@ import java.util.*;
  public class NyadPanel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = -2756670949416830884L;
-	public		MonadViewer		TheGUI;
+	public		CladosCalculator		TheGUI;
 
 	private		JPanel 			_controlPanel;
 	protected	JButton			saveButton;
@@ -57,12 +60,12 @@ import java.util.*;
 	protected	JButton			removeButton;
 	 
 	private		JPanel 			_refPanel;
-	public		JTextField		_name=new JTextField(10);
+	public		JTextField		_name=new JTextField(40);
 	public		JLabel			_foot=new JLabel();
 	public		JLabel			_order=new JLabel();
 	 
-	private		Color			_backColor = new Color(192, 164, 192);
-	private		Color			_unlockColor = new Color(255, 164, 164);
+	private		Color			_backColor = new Color(212, 192, 212);
+	private		Color			_unlockColor = new Color(255, 192, 192);
 	public		ImageIcon		tabicon;
 	
 	public		JTabbedPane				MonadPanes;
@@ -72,7 +75,7 @@ import java.util.*;
 /**
  * This constructor is the copy one used when a Monad alread exists
  */
-	 public NyadPanel(	MonadViewer pGUI,
+	 public NyadPanel(	CladosCalculator pGUI,
 			 			NyadRealF pN)
 	 throws 	UtilitiesException, BadSignatureException
 	 {
@@ -83,7 +86,7 @@ import java.util.*;
 			 _repNyad=pN;
 			 setReferences();
 			 
-			 setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+			 setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 			 setBackground(_backColor);
 			 setLayout(new BorderLayout());
 
@@ -95,6 +98,7 @@ import java.util.*;
 			 add(_refPanel, "South");
 			 
 			 MonadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
+			 MonadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 			 MonadPanelList=new ArrayList<MonadPanel>(_repNyad.getMonadList().size());
 			 
 			 for (short j=0; j<_repNyad.getMonadList().size(); j++)
@@ -129,7 +133,7 @@ import java.util.*;
     	_controlPanel.setBackground(_backColor);
     	if ((TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.Object")).equals("Monad")) return;
     	
-    	_controlPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+    	_controlPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
     	_controlPanel.setLayout(new GridBagLayout());
     	
     	GridBagConstraints cn = new GridBagConstraints();
@@ -165,8 +169,12 @@ import java.util.*;
     	
     	cn.gridx = 0;
     	cn.gridy = 0;
-    	cn.weightx=1;
-    	cn.weighty=1;
+    	cn.weightx=0;
+    	cn.weighty=0;
+    	
+    	editButton.addActionListener(this);
+    	_controlPanel.add(editButton, cn);
+    	cn.gridy++;
     	
     	saveButton.addActionListener(this);
     	_controlPanel.add(saveButton, cn);
@@ -185,8 +193,8 @@ import java.util.*;
     	_controlPanel.add(removeButton, cn);
     	cn.gridy++;
     	
-    	editButton.addActionListener(this);
-    	_controlPanel.add(editButton, cn);
+    	cn.weighty=1;
+    	_controlPanel.add(new JLabel(), cn);
     }
     
     public 	void		createReferenceLayout()
@@ -196,31 +204,39 @@ import java.util.*;
     	
     	if ((TheGUI.IniProps.getProperty("MonadViewer.Desktop.Default.Object")).equals("Monad")) return;
     	
-    	_refPanel.setBorder(BorderFactory.createTitledBorder("Nyad"));
+    	_refPanel.setBorder(BorderFactory.createTitledBorder("nyad"));
     	_refPanel.setLayout(new GridBagLayout());
     	
     	GridBagConstraints cn0 = new GridBagConstraints();
-    	cn0.insets = new Insets(0, 0, 0, 0);
+    	//cn0.insets = new Insets(5, 5, 5, 5);
     	//cn0.fill=GridBagConstraints.HORIZONTAL;
-    	cn0.anchor=GridBagConstraints.NORTH;
+    	cn0.anchor=GridBagConstraints.WEST;
 
     	cn0.gridx = 0;
     	cn0.gridy = 0;
-    	cn0.weightx=1;
-    	cn0.weighty=1;
+    	cn0.weightx=0;
+    	cn0.weighty=0;
     	
-    	_refPanel.add(new JLabel("Name", SwingConstants.RIGHT), cn0);
+    	_refPanel.add(new JLabel("Name ", SwingConstants.RIGHT), cn0);
     	cn0.gridx++;
+    	_name.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	cn0.weightx=1;
     	_refPanel.add(_name, cn0);	
     	cn0.gridx++;
     	
-    	_refPanel.add(new JLabel("Foot", SwingConstants.RIGHT), cn0);
+    	cn0.weightx=0;
+    	cn0.ipadx=20;
+    	_refPanel.add(new JLabel("Foot ", SwingConstants.RIGHT), cn0);
     	cn0.gridx++;
+    	_foot.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	_foot.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     	_refPanel.add(_foot, cn0);
     	cn0.gridx++;
     	
-    	_refPanel.add(new JLabel("Order", SwingConstants.RIGHT), cn0);
+    	_refPanel.add(new JLabel("Order ", SwingConstants.RIGHT), cn0);
     	cn0.gridx++;
+    	//_order.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	_order.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     	_refPanel.add(_order, cn0);
     }
 
@@ -354,6 +370,11 @@ import java.util.*;
     public 	void 		actionPerformed(ActionEvent event)
     {
     	String command = event.getActionCommand();
+    	if (command=="save")
+    	{
+    		_repNyad.setName(_name.getText());
+    		command=".edit.";
+    	}
     	if (command=="abort")
     	{
     		if (!_name.getText().equals("Create"))
@@ -362,6 +383,7 @@ import java.util.*;
     			getMonadPanel(0).restoreButton.doClick(100);
     			TheGUI._StatusBar.setStatusMsg("Nyad reset to stored values.\n");
     		}
+    		command=".edit.";
     	}
     	
     	if (command=="copy")
@@ -399,11 +421,6 @@ import java.util.*;
     		editButton.setText("edit");
     		makeNotWritable();
     		TheGUI._StatusBar.setStatusMsg(" ... and now locked\n");
-    	}
-    	
-    	if (command=="save")
-    	{
-    		_repNyad.setName(_name.getText());
     	}
     }
 }

@@ -1,84 +1,80 @@
-/*
-<h2>Copyright</h2>
-Copyright (c) 2005 Interworld Transport.  All rights reserved.<br>
----com.interworldtransport.cladosviewer.BOpsEqualEvents------------------------------------------
-<p>
-Interworld Transport grants you ("Licensee") a license to this software
-under the terms of the GNU General Public License.<br>
-A full copy of the license can be found bundled with this package or code file.
-<p>
-If the license file has become separated from the package, code file, or binary
-executable, the Licensee is still expected to read about the license at the
-following URL before accepting this material.
-<blockquote><code>http://www.opensource.org/gpl-license.html</code></blockquote>
-<p>
-Use of this code or executable objects derived from it by the Licensee states their
-willingness to accept the terms of the license.
-<p>
-A prospective Licensee unable to find a copy of the license terms should contact
-Interworld Transport for a free copy.
-<p>
----com.interworldtransport.cladosviewer.BOpsEqualEvents------------------------------------------
-*/
+/**
+ * <h2>Copyright</h2> © 2018 Alfred Differ.<br>
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewerEvents.BOpsEqualEvents<br>
+ * -------------------------------------------------------------------- <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.<p>
+ * 
+ * Use of this code or executable objects derived from it by the Licensee 
+ * states their willingness to accept the terms of the license. <p> 
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * 
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewerEvents.BOpsEqualEvents<br>
+ * ------------------------------------------------------------------------ <br>
+ */
 
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosG.*;
-import com.interworldtransport.cladosviewer.MonadPanel;
-import com.interworldtransport.cladosviewer.ViewerMenu;
+
+import com.interworldtransport.cladosG.NyadRealF;
 
 import java.awt.event.*;
 import javax.swing.*;
 
-/** com.interworldtransport.cladosviewer.BOpsEqualEvents
+/** 
  *  This class manages events relating to the answering of a boolean question.
- *  Is the Monad equal to another Monad?
+ *  Is the selected nyad equal to the one following it on the stack?
  *
- * @version 0.80, $Date: 2005/07/25 01:44:25 $
+ * @version 0.85
  * @author Dr Alfred W Differ
  */
 public class BOpsEqualEvents implements ActionListener
  {
-    protected ViewerMenu		ParentGUIMenu;
-    protected JMenuItem 		ControlIt;
-    protected BOpsEvents 		Parent;
+    protected BOpsEvents 		_parent;
+    protected JMenuItem 		_control;
 
 /** 
  * This is the default constructor.
  */
-    public BOpsEqualEvents(	ViewerMenu pGUIMenu,
-    						JMenuItem pmniControlled,
+    public BOpsEqualEvents(	JMenuItem pmniControlled,
     						BOpsEvents pParent)
     {
-		ParentGUIMenu=pGUIMenu;
-		ControlIt=pmniControlled;
-		ControlIt.addActionListener(this);
-		Parent=pParent;
-
-    }//end of BOpsEqualEvents constructor
+		_control=pmniControlled;
+		_control.addActionListener(this);
+		_parent=pParent;
+    }
 
 /** 
  * This is the actual action to be performed by this member of the menu.
  */
     public void actionPerformed(ActionEvent evt)
     {
-		MonadPanel temp0=ParentGUIMenu._parentGUI._GeometryDisplay.getNyadPanel(0).getMonadPanel(0);
-		MonadPanel temp1=ParentGUIMenu._parentGUI._GeometryDisplay.getNyadPanel(1).getMonadPanel(0);
-		
-		MonadRealF Monad0=null;
-		MonadRealF Monad1=null;
+    	NyadRealF tNyadFirst;
+    	NyadRealF tNyadSecond;
+    	int tNyadFirstIndex=_parent._GUI._GeometryDisplay.getPaneFocus();
 
-		if (temp0!=null)
-			Monad0=temp0.getMonad();
-		
-		if (temp1!=null)
-			Monad1=temp1.getMonad();
-		
-		if (Monad0!=null || Monad1!=null)
-		{
-			if (Monad0.isGEqual(Monad1))
-				ParentGUIMenu._parentGUI._StatusBar.setStatusMsg("Second Monad is judged equal to the first.\n");
-			else
-				ParentGUIMenu._parentGUI._StatusBar.setStatusMsg("Second Monad is judged unequal to the first.\n");
-		}
+    	if (_parent._GUI._GeometryDisplay.getNyadListSize()>(tNyadFirstIndex+1))
+    	{
+    		tNyadFirst=_parent._GUI._GeometryDisplay.getNyadPanel(tNyadFirstIndex).getNyad();
+    		tNyadSecond=_parent._GUI._GeometryDisplay.getNyadPanel(tNyadFirstIndex+1).getNyad();
+    		if(NyadRealF.isMEqual(tNyadFirst, tNyadSecond))
+    			_parent._GUI._StatusBar.setStatusMsg(" selected nyad is equal to the next nyad\n");
+    		else
+    			_parent._GUI._StatusBar.setStatusMsg(" selected nyad is NOT equal to the next nyad\n");
+    	}
+    	else 
+    		_parent._GUI._StatusBar.setStatusMsg(" selected nyad is at the end of the stack so no comparison attempted\n");
+    		
+    	tNyadFirst=null;
+    	tNyadSecond=null;
     }
  }

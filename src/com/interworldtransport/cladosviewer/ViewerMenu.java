@@ -43,7 +43,7 @@ public class ViewerMenu extends JMenuBar
 {
 	private static final long serialVersionUID = 7342710714923838976L;
 
-	public 	MonadViewer		_parentGUI;
+	public 	CladosCalculator		_parentGUI;
 
 /**
  * The File Parent Menu for the application.
@@ -121,7 +121,7 @@ public class ViewerMenu extends JMenuBar
  * used in the MonadViewer Utility.  For the sake of maintenance
  * this definition is in a separate class and file.
  */
-    public	ViewerMenu(MonadViewer pParentGUI)
+    public	ViewerMenu(CladosCalculator pParentGUI)
     {
     	super();
     	_parentGUI=pParentGUI;
