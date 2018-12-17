@@ -26,7 +26,6 @@ package com.interworldtransport.cladosviewerEvents;
 import javax.swing.*;
 
 import com.interworldtransport.cladosviewer.SupportDialog;
-import com.interworldtransport.cladosviewer.ViewerMenu;
 
 import java.awt.event.*;
 
@@ -39,18 +38,16 @@ import java.awt.event.*;
 public class HelpSupportEvents implements ActionListener
 {
 
-    protected JMenuItem			ControlIt;
-    protected ViewerMenu		ParentGUIMenu;
-    protected HelpEvents		Parent;
+    protected JMenuItem			_control;
+    protected HelpEvents		_parent;
 
 /** This is the default constructor.
  */
-    public HelpSupportEvents(ViewerMenu pGUIMenu, JMenuItem pHelp, HelpEvents pParent)
+    public HelpSupportEvents(JMenuItem pHelp, HelpEvents pParent)
     {
-		ParentGUIMenu=pGUIMenu;
-		Parent=pParent;
-		ControlIt=pHelp;
-		ControlIt.addActionListener(this);
+		_parent=pParent;
+		_control=pHelp;
+		_control.addActionListener(this);
     }
 
 /** This is the default action to be performed by all members of the Help menu.
@@ -58,21 +55,6 @@ public class HelpSupportEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-		String tempVersion = ParentGUIMenu._parentGUI.IniProps.getProperty("MonadViewer.Desktop.Version");
-	
-		StringBuffer content = new StringBuffer();
-	
-		content.append("Monad Viewer ");
-		content.append(tempVersion);
-		content.append("\n\n");
-		content.append("Web Site: https://github.com/InterworldTransport/CladosViewer\n\n");
-	
-		content.append("For support issues that would help us make a better viewer please visit ");
-		content.append("the GitHub home page.  From this page you should be able to find the Viewer's ");
-		content.append("associated docs and support features. Please list your support issues there.\n\n");
-		content.append("For complex support or licensing issues, please contact Dr Alfred Differ at adiffer@gmail.com");
-	
-		String contentstring = new String(content);
-		new SupportDialog(this.ParentGUIMenu._parentGUI, contentstring);
+		new SupportDialog(_parent._GUI);
     }
 }

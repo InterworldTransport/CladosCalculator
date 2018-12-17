@@ -1,88 +1,79 @@
-/*
-<h2>Copyright</h2>
-Copyright (c) 2005 Interworld Transport.  All rights reserved.<br>
----com.interworldtransport.cladosviewer.SOpsSQMagnitudeEvents------------------------------------------
-<p>
-Interworld Transport grants you ("Licensee") a license to this software
-under the terms of the GNU General Public License.<br>
-A full copy of the license can be found bundled with this package or code file.
-<p>
-If the license file has become separated from the package, code file, or binary
-executable, the Licensee is still expected to read about the license at the
-following URL before accepting this material.
-<blockquote><code>http://www.opensource.org/gpl-license.html</code></blockquote>
-<p>
-Use of this code or executable objects derived from it by the Licensee states their
-willingness to accept the terms of the license.
-<p>
-A prospective Licensee unable to find a copy of the license terms should contact
-Interworld Transport for a free copy.
-<p>
----com.interworldtransport.cladosviewer.SOpsSQMagnitudeEvents------------------------------------------
-*/
+/**
+ * <h2>Copyright</h2> © 2018 Alfred Differ.<br>
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewerEvents.SOpsSQMagnitudeEvents<br>
+ * -------------------------------------------------------------------- <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.<p>
+ * 
+ * Use of this code or executable objects derived from it by the Licensee 
+ * states their willingness to accept the terms of the license. <p> 
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * 
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewerEvents.SOpsSQMagnitudeEvents<br>
+ * ------------------------------------------------------------------------ <br>
+ */
 
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosF.*;
-import com.interworldtransport.cladosG.*;
-import com.interworldtransport.cladosGExceptions.*;
+
+import com.interworldtransport.cladosF.RealF;
+import com.interworldtransport.cladosGExceptions.CladosMonadException;
 import com.interworldtransport.cladosviewer.MonadPanel;
-import com.interworldtransport.cladosviewer.ViewerMenu;
+import com.interworldtransport.cladosviewer.NyadPanel;
 
 import java.awt.event.*;
 import javax.swing.*;
 
-/** com.interworldtransport.cladosviewer.SOpsSQMagnitudeEvents
+/** 
  *  This class manages events relating to the answering of a simple question.
  *  What is the squared magnitude of this Monad?
  *
- * @version 0.80, $Date: 2005/07/25 01:44:25 $
+ * @version 0.85
  * @author Dr Alfred W Differ
  */
 public class SOpsSQMagnitudeEvents implements ActionListener
  {
-    protected ViewerMenu		ParentGUIMenu;
-    protected JMenuItem 		ControlIt;
-    protected SOpsEvents 		Parent;
+    protected JMenuItem 		_control;
+    protected SOpsEvents 		_parent;
 
-/** This is the default constructor.
+/** 
+ * This is the default constructor.
  */
-    public SOpsSQMagnitudeEvents(	ViewerMenu pGUIMenu,
-    					JMenuItem pmniControlled,
-					SOpsEvents pParent)
+    public SOpsSQMagnitudeEvents(	JMenuItem pmniControlled,
+									SOpsEvents pParent)
     {
-		ParentGUIMenu=pGUIMenu;
-		ControlIt=pmniControlled;
-		ControlIt.addActionListener(this);
-		Parent=pParent;
-
+		_control=pmniControlled;
+		_control.addActionListener(this);
+		_parent=pParent;
     }
 
-/** This is the actual action to be performed by this member of the menu.
+/** 
+ * This is the actual action to be performed by this member of the menu.
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	MonadPanel MP0=ParentGUIMenu._parentGUI._GeometryDisplay.getNyadPanel(0).getMonadPanel(0);
-    	MonadRealF Monad0=MP0.getMonad();
-    	RealF scale = null;
+    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
+    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
+    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+
     	try 
     	{
-    		scale = Monad0.sqMagnitude();
+    		RealF scale = tMSpotPnl.getMonad().sqMagnitude();
+    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad sqMagnitude has been computed.\n");
+    		_parent._GUI._StatusBar.setWhatFloat(scale.getModulus());
     	} 
     	catch (CladosMonadException e) 
     	{
-    		// This should not ever happen, but a field conflicted Monad might do it.
-    		e.printStackTrace();
+    		_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad sqMagnitude has NOT been computed.\n");
     	}
-    	MP0.setCoefficientDisplay();
-    	if (scale != null)
-    	{
-    		ParentGUIMenu._parentGUI._StatusBar.setStatusMsg("First Monad magnitude squared is: \n");
-			ParentGUIMenu._parentGUI._StatusBar.setWhatFloat(scale.getModulus());
-    	}
-    	else
-    	{
-    		ParentGUIMenu._parentGUI._StatusBar.setStatusMsg("First Monad couldn't be squared. \n");
-    	}
-
     }
  }

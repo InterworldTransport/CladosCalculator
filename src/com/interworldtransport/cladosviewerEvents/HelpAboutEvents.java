@@ -25,7 +25,6 @@ package com.interworldtransport.cladosviewerEvents;
 import javax.swing.*;
 
 import com.interworldtransport.cladosviewer.AboutDialog;
-import com.interworldtransport.cladosviewer.ViewerMenu;
 
 import java.awt.event.*;
 
@@ -37,65 +36,23 @@ import java.awt.event.*;
  */
 public class HelpAboutEvents implements ActionListener
 {
-    protected HelpEvents		Parent;
-    protected ViewerMenu		ParentGUIMenu;
-    protected JMenuItem			ControlIt;
+   
+    protected JMenuItem			_control;
+    protected HelpEvents		_parent;
 
 /** This is the default constructor.
  */
-    public HelpAboutEvents(ViewerMenu pGUIMenu, JMenuItem pHelp, HelpEvents pParent)
+    public HelpAboutEvents(JMenuItem pHelp, HelpEvents pParent)
     {
-	this.ParentGUIMenu=pGUIMenu;
-	this.ControlIt=pHelp;
-	this.Parent=pParent;
-	this.ControlIt.addActionListener(this);
-
-    }//end of HelpAboutEvents Menu constructor
+		_control=pHelp;
+		_parent=pParent;
+		_control.addActionListener(this);
+    }
 
 /** This is the actual action to be performed by this menu item.
  */
     public void actionPerformed(ActionEvent evt)
     {
-	//Show the about feature;
-	String tempVersion = ParentGUIMenu._parentGUI.IniProps.getProperty("MonadViewer.Desktop.Version");
-	String tempUserName = ParentGUIMenu._parentGUI.IniProps.getProperty("MonadViewer.User.Name");
-
-	StringBuffer content = new StringBuffer();
-
-	content.append("Monad Viewer ");
-	content.append(tempVersion);
-	content.append("\n\n");
-
-	content.append("Copyright 2018 Alfred Differ");
-	content.append("\n\n");
-
-	content.append("Web Site: https://github.com/InterworldTransport/CladosViewer\n\n");
-
-	content.append("Developers:\n");
-	content.append("  Dr. Alfred Differ - Physics, Java\n");
-	content.append("  Your name could be here! \n\n");
-
-	content.append("Licensed to {");
-	content.append(tempUserName);
-	content.append("}\n\n");
-	
-	content.append("This program is distributed in the hope that it will be useful, ");
-	content.append("it under the terms of the GNU Affero General Public License as ");
-	content.append("published by the Free Software Foundation, either version 3 of the ");
-	content.append("License, or (at your option) any later version. \n\n");
-
-	content.append("This program is distributed in the hope that it will be useful, ");
-	content.append("but WITHOUT ANY WARRANTY; without even the implied warranty of ");
-	content.append("MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the ");
-	content.append("GNU Affero General Public License for more details.\n\n");
-	
-	content.append("Use of this code or executable objects derived from it by the Licensee ");
-	content.append("states their willingness to accept the terms of the license.\n\n");
-	
-	content.append("You should have received a copy of the GNU Affero General Public License ");
-	content.append("along with this program.  If not, see <https://www.gnu.org/licenses/>.\n");
-	
-	String contentstring = new String(content);
-	new AboutDialog(this.ParentGUIMenu._parentGUI, contentstring);
+    	new AboutDialog(_parent._GUI);
     }
 }

@@ -28,7 +28,7 @@ import java.awt.event.*;
 
 import com.interworldtransport.cladosviewer.*;
 
-/** com.interworldtransport.cladosviewer.BOpsEvents
+/** 
  * This class groups the event listeners associated with the Boolean Operations
  * menu.  It may be used in the future to act on events associated with the
  * entire menu by having it register as a Listener with all of its controlled
@@ -51,7 +51,7 @@ public class BOpsEvents implements ActionListener
     protected BOpsMIdempotentEvents	midemp;
 
     protected ViewerMenu 			_GUIMenu;
-    protected CladosCalculator			_GUI;
+    protected CladosCalculator		_GUI;
 
 /** 
  * This is the default constructor.  The event structure of the
@@ -62,27 +62,14 @@ public class BOpsEvents implements ActionListener
 		_GUIMenu=pTheGUIMenu;
 		_GUI=_GUIMenu._parentGUI;
 	
-		mgrade = new BOpsMGradeEvents(	_GUIMenu,
-										_GUIMenu.mniisMultiGrade,
-										this);
-		grade = new BOpsGradeEvents(	_GUIMenu.mniisGrade,
-										this);
-		nilp = new BOpsNilpotentEvents(	_GUIMenu,
-										_GUIMenu.mniisNilpotent,
-										this);
-		idemp = new BOpsIdempotentEvents(	_GUIMenu,
-											_GUIMenu.mniisIdempotent,
-											this);
-		midemp = new BOpsMIdempotentEvents(	_GUIMenu,
-											_GUIMenu.mniisIdempotentMultiple,
-											this);
-		equal = new BOpsEqualEvents(	_GUIMenu.mniisEqual,
-										this);
-		zero = new BOpsZeroEvents(		_GUIMenu.mniisZero,
-										this);
-		rmatch = new BOpsRMatchEvents(	_GUIMenu,
-										_GUIMenu.mniisReferenceMatch,
-										this);
+		mgrade = new BOpsMGradeEvents(		_GUIMenu.mniisMultiGrade, this);
+		grade = new BOpsGradeEvents(		_GUIMenu.mniisGrade, this);
+		nilp = new BOpsNilpotentEvents(		_GUIMenu.mniisNilpotent, this);
+		idemp = new BOpsIdempotentEvents(	_GUIMenu.mniisIdempotent, this);
+		midemp = new BOpsMIdempotentEvents(	_GUIMenu.mniisIdempotentMultiple, this);
+		equal = new BOpsEqualEvents(		_GUIMenu.mniisEqual, this);
+		zero = new BOpsZeroEvents(			_GUIMenu.mniisZero,	this);
+		rmatch = new BOpsRMatchEvents(		_GUIMenu.mniisReferenceMatch, this);
     }
 
 /** 

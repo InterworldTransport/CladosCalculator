@@ -29,71 +29,87 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-/** com.interworldtransport.cladosviewer.SupportDialog
+/** 
  * The SupportDialog is an information window that is called from the
  * "Help|Support" menu on the main Atmosphere application window.
  * It provides information about support for the application.
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class SupportDialog extends JDialog implements ActionListener
+public final class SupportDialog extends JDialog implements ActionListener
 {
-	private static final long serialVersionUID = -8805846547511967367L;
-	private JButton closeButton;  // The close button
+	private 	CladosCalculator	TheGUI;
+	private 	JButton 			closeButton;  // The close button
 
 /**
  * The constructor sets up the about dialog box and displays it.
  */
-    public SupportDialog(CladosCalculator mainWindow, String pContent)
+    public SupportDialog(CladosCalculator mainWindow)
     {
-
-	super(mainWindow, "Support for Monad Viewer Utility", true); //Use parent's constructor
-
-	JPanel mainPane = new JPanel(new BorderLayout());
-	mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-	setContentPane(mainPane);
-
-	// Create content text area
-	JTextArea contentArea = new JTextArea(pContent);
-	contentArea.setBackground(Color.lightGray);
-	contentArea.setBorder(new EmptyBorder(2, 2, 2, 2));
-	contentArea.setLineWrap(true);
-	contentArea.setWrapStyleWord(true);
-	contentArea.setEditable(false);
-	mainPane.add(new JScrollPane(contentArea), "Center");
-
-	// Create close button panel
-
-	JPanel closeButtonPane = new JPanel(new FlowLayout());
-	closeButtonPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-	mainPane.add(closeButtonPane, "South");
-
-	// Create close button
-
-	closeButton = new JButton("Close");
-	closeButton.addActionListener(this);
-	closeButtonPane.add(closeButton);
-
-	// Set the size of the window
-
-	setSize(300, 400);
-
-	// Center the window on the parent window.
-
-	Point parentLocation = mainWindow.getLocation();
-	int Xloc = (int) parentLocation.getX() + ((mainWindow.getWidth() - 300) / 2);
-	int Yloc = (int) parentLocation.getY();// + ((mainWindow.getHeight() - 400) / 2);
-	setLocation(Xloc, Yloc);
-
-	// Display window
-
-	setVisible(true);
+		super(mainWindow, "Support for Clados Calculator Utility", true); //Use parent's constructor
+		TheGUI=mainWindow;
+	
+		JPanel mainPane = new JPanel(new BorderLayout());
+		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(mainPane);
+	
+		// Create content text area
+		
+		JTextArea contentArea = new JTextArea(constructContent());
+		contentArea.setBackground(Color.lightGray);
+		contentArea.setBorder(new EmptyBorder(2, 2, 2, 2));
+		contentArea.setLineWrap(true);
+		contentArea.setWrapStyleWord(true);
+		contentArea.setEditable(false);
+		mainPane.add(new JScrollPane(contentArea), "Center");
+	
+		// Create close button panel
+	
+		JPanel closeButtonPane = new JPanel(new FlowLayout());
+		closeButtonPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		mainPane.add(closeButtonPane, "South");
+	
+		// Create close button
+	
+		closeButton = new JButton("Close");
+		closeButton.addActionListener(this);
+		closeButtonPane.add(closeButton);
+	
+		setSize(300, 400);
+	
+		// Center the window on the parent window.
+	
+		Point parentLocation = mainWindow.getLocation();
+		int Xloc = (int) parentLocation.getX() + ((mainWindow.getWidth() - 300) / 2);
+		int Yloc = (int) parentLocation.getY();// + ((mainWindow.getHeight() - 400) / 2);
+		setLocation(Xloc, Yloc);
+	
+		// Display window
+	
+		setVisible(true);
     }
-
-	// Implementing ActionListener method
+    
+    private String constructContent()
+    {
+    	String tempVersion = TheGUI.IniProps.getProperty("MonadViewer.Desktop.Version");
+    	
+    	StringBuffer content = new StringBuffer();
+	
+		content.append("Clados Calculator ");
+		content.append(tempVersion);
+		content.append("\n\n");
+		content.append("Web Site: https://github.com/InterworldTransport/CladosViewer\n\n");
+	
+		content.append("For support issues that would help us make a better viewer please visit ");
+		content.append("the GitHub home page.  From this page you should be able to find the Viewer's ");
+		content.append("associated docs and support features. Please list your support issues there.\n\n");
+		content.append("For complex support or licensing issues, please contact Dr Alfred Differ at adiffer@gmail.com");
+	
+    	return content.toString();
+    }
 
     public void actionPerformed(ActionEvent event)
     {
-		dispose();
+		dispose(); // Any action is enough to close the window.
     }
-}//End of SupportDialog class
+}

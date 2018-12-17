@@ -84,12 +84,13 @@ public class ViewerMenu extends JMenuBar
     public	JMenuItem		mniMagnitudeOf;
     public	JMenuItem		mniSQMagnitudeOf;
     public	JMenuItem		mniNormalize;
-    public	JMenuItem		mniLocalDual;
+    public	JMenuItem		mniDualLeft;
+    public	JMenuItem		mniDualRight;
     public	JMenuItem		mniInvert;
     public	JMenuItem		mniReverse;
     public	JMenuItem		mniScale;
     public	JMenuItem		mniGradePart;
-    public	JMenuItem		mniGradeSupress;
+    public	JMenuItem		mniGradeSuppress;
 
 /**
  * The Complex Operations Parent Menu for the application.
@@ -160,32 +161,34 @@ public class ViewerMenu extends JMenuBar
     	mnuBOperations.add(mniisNilpotent);
     	mniisIdempotent=new JMenuItem("is Idempotent?");
     	mnuBOperations.add(mniisIdempotent);
-    	mniisIdempotentMultiple=new JMenuItem("is Idempotent Multiple?");
+    	mniisIdempotentMultiple=new JMenuItem("is Scaled Idempotent?");
     	mnuBOperations.add(mniisIdempotentMultiple);
     	
     	
-    	mniisSGrade=new JMenuItem("what Grade?");
+    	mniisSGrade=new JMenuItem("grade?");
     	mnuSOperations.add(mniisSGrade);
-    	mniMagnitudeOf=new JMenuItem("what Magnitude?");
+    	mniMagnitudeOf=new JMenuItem("magnitude?");
     	mnuSOperations.add(mniMagnitudeOf);
-    	mniSQMagnitudeOf=new JMenuItem("what SQ Magnitude?");
+    	mniSQMagnitudeOf=new JMenuItem("sq magnitude?");
     	mnuSOperations.add(mniSQMagnitudeOf);
-    	mniNormalize=new JMenuItem("Normalize");
+    	mniNormalize=new JMenuItem("normalize");
     	mnuSOperations.add(mniNormalize);
-    	mniLocalDual=new JMenuItem("Left Dual");
-    	mnuSOperations.add(mniLocalDual);
+    	mniDualLeft=new JMenuItem("dual left");
+    	mnuSOperations.add(mniDualLeft);
+    	mniDualRight=new JMenuItem("dual right");
+    	mnuSOperations.add(mniDualRight);
     	//mniInverse=new JMenuItem("Inverse");
     	//mnuSOperations.add(mniInverse);
-    	mniInvert=new JMenuItem("Invert");
+    	mniInvert=new JMenuItem("invert");
     	mnuSOperations.add(mniInvert);
-    	mniReverse=new JMenuItem("Reverse");
+    	mniReverse=new JMenuItem("reverse");
     	mnuSOperations.add(mniReverse);
-    	mniScale=new JMenuItem("reScale");
+    	mniScale=new JMenuItem("scale");
     	mnuSOperations.add(mniScale);
-    	mniGradePart=new JMenuItem("preserve Grade?");
+    	mniGradePart=new JMenuItem("grade part");
     	mnuSOperations.add(mniGradePart);
-    	mniGradeSupress=new JMenuItem("supress Grade?");
-    	mnuSOperations.add(mniGradeSupress);
+    	mniGradeSuppress=new JMenuItem("grade supress");
+    	mnuSOperations.add(mniGradeSuppress);
     	
     	mniAdd=new JMenuItem("Add");
     	mnuCOperations.add(mniAdd);
@@ -207,16 +210,16 @@ public class ViewerMenu extends JMenuBar
     	//mniTranslate.setEnabled(false);
     	//Operations Menus items added
     	
-    	mniCreate=new JMenuItem("Create Monad");
+    	mniCreate=new JMenuItem("create");
     	mnuTools.add(mniCreate);
     	//mniCreate.setEnabled(false);
-    	mniOptions=new JMenuItem("Options");
+    	mniOptions=new JMenuItem("options");
     	mnuTools.add(mniOptions);
     	//Options Menu items added
     	
-    	mniSupport=new JMenuItem("Support");
+    	mniSupport=new JMenuItem("support");
     	mnuHelp.add(mniSupport);
-    	mniAbout=new JMenuItem("About");
+    	mniAbout=new JMenuItem("about");
     	mnuHelp.add(mniAbout);
     	//Help Menu items added
     }

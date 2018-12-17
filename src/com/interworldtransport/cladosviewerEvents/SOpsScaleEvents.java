@@ -24,12 +24,11 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosF.*;
-import com.interworldtransport.cladosFExceptions.*;
-import com.interworldtransport.cladosG.*;
+import com.interworldtransport.cladosF.RealF;
+import com.interworldtransport.cladosFExceptions.FieldBinaryException;
+import com.interworldtransport.cladosG.MonadRealF;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
-import com.interworldtransport.cladosviewer.ViewerMenu;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -43,21 +42,18 @@ import javax.swing.*;
  */
 public class SOpsScaleEvents implements ActionListener
  {
-    protected ViewerMenu		_parentMenu;
-    protected JMenuItem 		ControlIt;
-    protected SOpsEvents 		Parent;
+    protected JMenuItem 		_control;
+    protected SOpsEvents 		_parent;
 
 /** 
  * This is the default constructor.
  */
-    public SOpsScaleEvents(	ViewerMenu pGUIMenu,
-    						JMenuItem pmniControlled,
+    public SOpsScaleEvents(	JMenuItem pmniControlled,
     						SOpsEvents pParent)
     {
-    	_parentMenu=pGUIMenu;
-		ControlIt=pmniControlled;
-		ControlIt.addActionListener(this);
-		Parent=pParent;
+		_control=pmniControlled;
+		_control.addActionListener(this);
+		_parent=pParent;
     }
 
 /** 
@@ -65,27 +61,34 @@ public class SOpsScaleEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
+    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
     	try 
     	{	//Find the selected nyad and monad panels
-    		NyadPanel tNSpotPnl = _parentMenu._parentGUI._GeometryDisplay.getNyadPanel(_parentMenu._parentGUI._GeometryDisplay.getPaneFocus());
+    		NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
         	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
         	
         	//Now point to the monad to be scaled
-        	MonadRealF Monad0=tMSpotPnl.getMonad();
+        	MonadRealF tMonad=tMSpotPnl.getMonad();
         	
         	//...and scale it
-    		Monad0.scale(	new RealF(	Monad0.getCoeff((short) 0).getFieldType(), 
-							new Float(_parentMenu._parentGUI._StatusBar.stRealIO.getText()).floatValue()));
+        	/*
+        	 * TODO
+        	 * Uh oh. This scale command builds a DivFieldType based on the selected Monad
+        	 * Should it not be using the Nyad's proto number?
+        	 * Looks like the Utility Status Bar actually points at the active DivFieldType
+        	 * at some point. I don't know if it resets based on a selected monad or nyad's proto number.
+        	 */
+    		tMonad.scale(new RealF(	tMonad.getCoeff((short) 0).getFieldType(), 
+    								Float.parseFloat(_parent._GUI._StatusBar.stRealIO.getText())));
     		
     		//redraw the UI's Monad Panel to show the rescaled Monad there
     		tMSpotPnl.setCoefficientDisplay();
-    		_parentMenu._parentGUI._StatusBar.setStatusMsg(" monad has been rescaled by | ");
-    		_parentMenu._parentGUI._StatusBar.setStatusMsg(_parentMenu._parentGUI._StatusBar.stRealIO.getText()+"\n");
-    	
+    		_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by | ");
+    		_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._StatusBar.stRealIO.getText()+"\n");
     	}
     	catch (FieldBinaryException eb)
     	{
-    		_parentMenu._parentGUI._StatusBar.setStatusMsg("monad has NOT been rescaled due to field binary exception.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\t\tmonad has NOT been rescaled due to field binary exception.\n");
     	}
     }
  }

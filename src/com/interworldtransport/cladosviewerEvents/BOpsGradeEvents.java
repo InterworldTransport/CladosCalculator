@@ -32,7 +32,7 @@ import javax.swing.*;
 
 /** 
  *  This class manages events relating to the answering of a boolean question.
- *  Is the Monad a particular grade?
+ *  Is the selected monad a particular grade?
  *
  * @version 0.85
  * @author Dr Alfred W Differ
@@ -48,28 +48,28 @@ public class BOpsGradeEvents implements ActionListener
     public BOpsGradeEvents(	JMenuItem pmniControlled,
 							BOpsEvents pParent)
     {
-		//ParentGUIMenu=pGUIMenu;
 		_control=pmniControlled;
 		_control.addActionListener(this);
 		_parent=pParent;
     }
 
-/** This is the actual action to be performed by this member of the menu.
+/** 
+ * This is the actual action to be performed by this member of the menu.
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	int indexNyadPanelSelected=_parent._GUI._GeometryDisplay.getPaneFocus();
-    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
+    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
     	MonadRealF monadSelected = panelNyadSelected.getMonadPanel(panelNyadSelected.getPaneFocus()).getMonad();
     	
-    	int grade2Test = new Integer(_parent._GUI._StatusBar.stRealIO.getText()).intValue();
+    	int grade2Test=0;
+    	
+    	if (!_parent._GUI._StatusBar.stRealIO.getText().isEmpty())
+    		grade2Test = Integer.parseInt(_parent._GUI._StatusBar.stRealIO.getText());
     
     	if (MonadRealF.isGrade(monadSelected, grade2Test))
-    		_parent._GUI._StatusBar.setStatusMsg(" selected monad is a pure ["+grade2Test+"] grade match\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is a pure ["+grade2Test+"] grade match\n");
     	else
-    		_parent._GUI._StatusBar.setStatusMsg("selected monad is NOT a pure ["+grade2Test+"] grade match\n");
-    	
-    	panelNyadSelected=null;
-    	monadSelected=null;
+    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT a pure ["+grade2Test+"] grade match\n");
     }
  }

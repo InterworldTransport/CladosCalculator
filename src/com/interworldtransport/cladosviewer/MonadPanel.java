@@ -50,37 +50,100 @@ import java.util.*;
 
  public class MonadPanel extends JPanel implements ActionListener
 {
-	private static final long serialVersionUID = 875676153714673037L;
-	public		CladosCalculator						theGUI;
-	
-	public		JPanel 							_monadControls;
-	public		JButton							syncButton;
-	protected	JButton							editButton;
-	public		JButton							restoreButton;
-	 
-	public		JPanel 							_monadReferences;
-	public		JTextField						name=new JTextField(20);
-	public		JTextField						foot=new JTextField(10);
-	public		JTextField						aname=new JTextField(10);
-	public		JTextField						sig=new JTextField(10);
-	public		JTextField						frame=new JTextField(20);
-	public		JTextField						gradeKey=new JTextField(10);
-	 
 	public		MonadRealF						_repMonad;
-	protected	RealF[]							_repMonadCoeffs;
-	 
-	public		JPanel 							_monadCoeffPanel;
-	private		String							orient;
-	protected	ArrayList<JFormattedTextField>	_jCoeffs;
-	 
+	protected	JTextField						aname=new JTextField(10);
+	protected	JTextField						foot=new JTextField(10);
+	protected	JTextField						frame=new JTextField(20);
+	protected	JTextField						gradeKey=new JTextField(10);
+	protected	JTextField						name=new JTextField(20);
+	protected	JTextField						sig=new JTextField(10);
+	public		CladosCalculator				theGUI;
 	private		Color							_backColor = new Color(212, 212, 192);
+	private		ArrayList<JFormattedTextField>	_jCoeffs;
+	private		JPanel 							_monadCoeffPanel;
+	private		JPanel 							_monadControls;
+	private		JPanel 							_monadReferences;
 	private		Color							_unlockColor = new Color(255, 192, 192);
+	private		String							orient;
+	/*
+	 * This boolean is for knowing whether to render the coefficients or not
+	 * This panel doubles up as a create dialog when no coefficients array exists.
+	 * It can't exist until after the signature is given.
+	 */
+	private		boolean							useFullPanel;
+	protected	RealF[]							_repMonadCoeffs;
+	protected	JButton							editButton;
+	protected	JRadioButton					orientH;
+	protected	JRadioButton					orientV;
+	protected	JButton							restoreButton;
+	protected	JButton							syncButton;
 
+/**
+ * 
+ * @param pGUI				CladosCalculator
+ * @throws UtilitiesException 
+ */
+   public MonadPanel(CladosCalculator pGUI) throws UtilitiesException
+    {
+	   super();
+	   useFullPanel=false;	// Use this panel in it's small sense
+	   if (pGUI==null)
+		   throw new UtilitiesException("A GUI must be passed to a MonadPanel");
+	   theGUI=pGUI;
+	   
+	   name.setText("Object Name Here");
+	   aname.setText("Algebra Name Here");
+	   frame.setText("Frame Name Here");
+	   foot.setText("Foot Name Here");
+	   sig.setText("Sig Here");	
+	   
+	   setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+	   setBackground(_backColor);
+	   setLayout(new BorderLayout());
+	   orient=theGUI.IniProps.getProperty("MonadViewer.Desktop.MVRender");
+	   
+	   createMinReferenceLayout();
+    }
+
+/**
+ * The MonadPanel class is intended to hold a single Monad and act as its GUI.
+ * This constructor is the base one.
+ * @param pGUI				MonadViewer
+ * @param pM				MonadRealF	The Monad to be handled in this panel
+ */
+    public MonadPanel(	CladosCalculator pGUI,
+    					MonadRealF pM)
+    		throws 		UtilitiesException			
+    {
+    	super();
+    	useFullPanel=true;
+    	if (pGUI==null)
+    		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
+    	theGUI=pGUI;
+    	
+    	if (pM==null)
+    		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
+
+    	orient=theGUI.IniProps.getProperty("MonadViewer.Desktop.MVRender");
+    	
+    	_repMonad=pM;
+        _repMonadCoeffs=_repMonad.getCoeff();
+        setReferences();
+        		
+        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        setBackground(_backColor);
+        setLayout(new BorderLayout());
+       
+        createLayout();
+        createReferenceLayout();
+        createControlLayout();
+    }
+    
 /**
  * The MonadPanel class is intended to hold a single Monad and act as its GUI.
  * This constructor is the base one upon which the others call with their
  * special cases.
- * @param pGUI				MonadViewer
+ * @param pGUI				CladosCalculator
  * @param pName 			String	Name of the Monad to be constructed
  * @param pAName 			String	Name of the Algebra to be constructed
  * @param pFrame 			String	Frame name to be associated with the Monad
@@ -96,106 +159,73 @@ import java.util.*;
     throws 		UtilitiesException, BadSignatureException, CladosMonadException
     {
     	super();
-    	
+    	useFullPanel=true;	// Use this panel in it's full sense
     	if (pGUI==null)
     		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
     	
     	theGUI=pGUI;
-    		
-    	if (!pName.equals("Create"))
-    	{
-    		RealF tZero=RealF.ZERO(pAName);
-    		_repMonad=new MonadRealF(pName, pAName, pFrame, pFoot, pSig, tZero );
-    		_repMonadCoeffs=_repMonad.getCoeff();
-    		setReferences();
-    	}
-    	else
-    	{
-    		name.setText(pName);
-    		aname.setText(pAName);
-    		frame.setText(pFrame);
-    		foot.setText(pFoot);
-    		sig.setText(pSig);		
-    	}
+    	orient=theGUI.IniProps.getProperty("MonadViewer.Desktop.MVRender");
+    
+    	RealF tZero=RealF.newZERO(pAName);
+    	_repMonad=new MonadRealF(pName, pAName, pFrame, pFoot, pSig, tZero );
+    	_repMonadCoeffs=_repMonad.getCoeff();
+    	setReferences();
+    	
     	setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
     	setBackground(_backColor);
     	setLayout(new BorderLayout());
-    	orient=theGUI.IniProps.getProperty("MonadViewer.Desktop.MVRender");
+    	
     	createLayout();
-    }
-
-/**
- * The MonadPanel class is intended to hold a single Monad and act as its GUI.
- * This constructor is the base one.
- * @param pGUI				MonadViewer
- * @param pM				MonadRealF	The Monad to be handled in this panel
- */
-    public MonadPanel(	CladosCalculator pGUI,
-    					MonadRealF pM)
-    		throws 		UtilitiesException			
-    {
-    	super();
-    	if (pGUI==null)
-    		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
-    	
-    	theGUI=pGUI;
-    	
-    	if (pM==null)
-    		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
-
-    	_repMonad=pM;
-        _repMonadCoeffs=_repMonad.getCoeff();
-        setReferences();
-        		
-        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        setBackground(_backColor);
-        setLayout(new BorderLayout());
-        orient=theGUI.IniProps.getProperty("MonadViewer.Desktop.MVRender");
-        createLayout();
-    }
-
-    public ArrayList<JFormattedTextField> getJCoeffs()
-    {
-	    return _jCoeffs;
-    }
-
-    public void 	setReferences()
-    {
-    	name.setText(_repMonad.getName());
-    	aname.setText(_repMonad.getAlgebra().getAlgebraName());
-    	sig.setText(_repMonad.getAlgebra().getGProduct().getSignature());
-    	frame.setText(_repMonad.getFrameName());
-    	foot.setText(_repMonad.getAlgebra().getFootPoint().getFootName());
-    	gradeKey.setText(new StringBuffer().append(_repMonad.getGradeKey()).toString());
-    }
-
-    public void 	setCoefficientDisplay()
-    {
-	    for (short j=0; j<_repMonad.getAlgebra().getGProduct().getBladeCount(); j++)	
-	    	_jCoeffs.get(j).setValue(new Float(_repMonad.getCoeff(j).getModulus()));
-	    
-	    gradeKey.setText(new StringBuffer().append(_repMonad.getGradeKey()).toString());
+    	createReferenceLayout();
+    	createControlLayout();
     }
 
     public void 	actionPerformed(ActionEvent event)
     {
     	String command = event.getActionCommand();
+    	//System.out.println("MonadPanel says "+command);
     	
-    	if (command=="save")
+    	if (command == "grdXbld") //Horizontal layout call
+    	{
+    		orient="Horizontal";
+    		createLayout();
+    		orientV.setEnabled(true);
+    		orientH.setEnabled(false);
+    		validate();
+    		theGUI.pack();
+    	}
+    	
+    	if (command == "bldXgrd") //Vertical layout call
+    	{
+    		orient="Vertical";
+    		createLayout();
+    		orientH.setEnabled(true);
+    		orientV.setEnabled(false);
+    		validate();
+    		theGUI.pack();
+    	}
+    	
+    	if (command == "save")
     	{
     		try
     		{
+    			if (name.getText() != _repMonad.getName())
+    				_repMonad.setName(name.getText());
+    			
+    			if (frame.getText() != _repMonad.getFrameName())
+    				_repMonad.setFrameName(frame.getText());
+    			
     			DivFieldType tFieldType = _repMonadCoeffs[0].getFieldType();
     			RealF[] tempCoeffs = new RealF[_repMonad.getAlgebra().getGProduct().getBladeCount()];
     			
     			for (short j=0; j<_repMonad.getAlgebra().getGProduct().getBladeCount(); j++)
     			{
     				_jCoeffs.get(j).commitEdit();
-    				tempCoeffs[j]=new RealF(tFieldType, new Float(_jCoeffs.get(j).getText()).floatValue());
+    				tempCoeffs[j]=new RealF(tFieldType, Float.parseFloat(_jCoeffs.get(j).getText()));
     			}
     			_repMonad.setCoeff(tempCoeffs);
     			gradeKey.setText(new StringBuffer().append(_repMonad.getGradeKey()).toString());
-    				
+
     			theGUI._StatusBar.setStatusMsg(" changes saved...");
     		}
     		catch (ParseException e) 
@@ -209,7 +239,7 @@ import java.util.*;
     		command=".edit.";
     	}
     	
-    	if (command=="abort")
+    	if (command == "abort")
     	{
     		setReferences();
     		setCoefficientDisplay();
@@ -217,49 +247,38 @@ import java.util.*;
     		command=".edit.";
     	}
     	
-    	if (command==".edit.")
+    	if (command == ".edit.")
     	{
-    	    editButton.setText("edit");
+    		editButton.setActionCommand("edit");
+    		editButton.setToolTipText("start edits");
+    		syncButton.setEnabled(false);
+        	restoreButton.setEnabled(false);
     	   	makeNotWritable();
     		theGUI._StatusBar.setStatusMsg(" ... and now locked\n");
     	}
     	
-    	if (command=="edit")
+    	if (command == "edit")
     	{
-    	    editButton.setText(".edit.");
+    		editButton.setActionCommand(".edit.");
+    		editButton.setToolTipText("end edits w/o save");
+    		syncButton.setEnabled(true);
+        	restoreButton.setEnabled(true);
     		makeWritable();
     		theGUI._StatusBar.setStatusMsg("Monad references unlocked...");
     	}
     }
 
+    public ArrayList<JFormattedTextField> getJCoeffs()
+    {
+	    return _jCoeffs;
+    }
+    
     public MonadRealF 	getMonad()
     {
 	    return _repMonad;
     }
 
-    public void 	makeWritable()
-    {
-    	if (_monadReferences!=null)
-    		_monadReferences.setBackground(_unlockColor);
-    	if (_monadCoeffPanel!=null)
-    		_monadCoeffPanel.setBackground(_unlockColor);
-    	
-	    name.setEditable(true);
-	    aname.setEditable(true);
-	    foot.setEditable(false);
-	    frame.setEditable(true);
-	    
-	    if (name.getText().equals("Create"))
-	    	sig.setEditable(true);
-	    else
-	    {
-	    	sig.setEditable(false);
-		    for (JFormattedTextField point : _jCoeffs)
-		    	point.setEditable(true);
-	    }    
-    }
-    
-    public void 	makeNotWritable()
+    private void 	makeNotWritable()
     {
     	if (_monadReferences!=null)
     		_monadReferences.setBackground(_backColor);
@@ -270,12 +289,58 @@ import java.util.*;
 	    frame.setEditable(false);
 	    foot.setEditable(false);
 	    aname.setEditable(false);
-	    if (!name.getText().equals("Create"))
+	    gradeKey.setEditable(false);
+	    
+	    if (useFullPanel)
 	    	for (JFormattedTextField point : _jCoeffs)
 	    		point.setEditable(false);
     }
+    
+    protected void 	makeWritable()
+    {
+    	if (_monadReferences!=null)
+    		_monadReferences.setBackground(_unlockColor);
+    	if (_monadCoeffPanel!=null)
+    		_monadCoeffPanel.setBackground(_unlockColor);
+    	
+	    name.setEditable(true);
+	    aname.setEditable(true);
+	    frame.setEditable(true);
+	    gradeKey.setEditable(false);
+	    
+	    if (useFullPanel)
+	    {
+	    	sig.setEditable(false);
+	    	foot.setEditable(false);
+		    for (JFormattedTextField point : _jCoeffs)
+		    	point.setEditable(true);
+	    }
+	    else
+	    {
+	    	sig.setEditable(true);
+	    	foot.setEditable(true);
+	    }    
+    }
 
-    public void		createControlLayout()
+    public void 	setCoefficientDisplay()
+    {
+	    for (short j=0; j<_repMonad.getAlgebra().getGProduct().getBladeCount(); j++)	
+	    	_jCoeffs.get(j).setValue(Float.valueOf(_repMonad.getCoeff(j).getModulus()));
+	    
+	    gradeKey.setText(new StringBuffer().append(_repMonad.getGradeKey()).toString());
+    }
+
+    private void 	setReferences()
+    {
+    	name.setText(_repMonad.getName());
+    	aname.setText(_repMonad.getAlgebra().getAlgebraName());
+    	sig.setText(_repMonad.getAlgebra().getGProduct().getSignature());
+    	frame.setText(_repMonad.getFrameName());
+    	foot.setText(_repMonad.getAlgebra().getFoot().getFootName());
+    	gradeKey.setText(new StringBuffer().append(_repMonad.getGradeKey()).toString());
+    }
+
+    private void		createControlLayout()
     {
     	_monadControls=new JPanel();
     	_monadControls.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -283,49 +348,215 @@ import java.util.*;
     	_monadControls.setLayout(new GridBagLayout());
     	
     	GridBagConstraints cn = new GridBagConstraints();
-    	//Insets tGeneric = new Insets(1,1,1,1);
-    	//cn.insets = new Insets(1, 1, 1, 1);
-    	//cn.fill=GridBagConstraints.HORIZONTAL;
-    	//cn.anchor=GridBagConstraints.NORTH;
     	makeNotWritable();
     	
     	cn.gridx = 0;
     	cn.gridy = 0;
     	cn.weightx=0;
     	cn.weighty=0;
+    	cn.gridwidth=2;
     	
-    	editButton=new JButton("edit", new ImageIcon(theGUI.IniProps.getProperty("MonadViewer.Desktop.EditImage")));
-    	editButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-	 	editButton.setHorizontalTextPosition(SwingConstants.CENTER);
-	 	//editButton.setMargin(tGeneric);
+    	editButton=new JButton(new ImageIcon(theGUI.IniProps.getProperty("MonadViewer.Desktop.EditImage")));
+    	editButton.setActionCommand("edit");
+    	editButton.setToolTipText("start edits");
 	 	editButton.setPreferredSize(new Dimension(50,50));
 	 	editButton.addActionListener(this);
     	_monadControls.add(editButton, cn);
     	cn.gridy++;
     	
-    	syncButton=new JButton("save", new ImageIcon(theGUI.IniProps.getProperty("MonadViewer.Desktop.SaveImage")));
-    	syncButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-	 	syncButton.setHorizontalTextPosition(SwingConstants.CENTER);
-	 	//syncButton.setMargin(tGeneric);
+    	syncButton=new JButton(new ImageIcon(theGUI.IniProps.getProperty("MonadViewer.Desktop.SaveImage")));
+    	syncButton.setActionCommand("save");
+    	syncButton.setToolTipText("save edits");
+	 	syncButton.setEnabled(false);
 	 	syncButton.setPreferredSize(new Dimension(50,50));
 	 	syncButton.addActionListener(this);
     	_monadControls.add(syncButton, cn);
     	cn.gridy++;
     	
-    	restoreButton=new JButton("abort", new ImageIcon(theGUI.IniProps.getProperty("MonadViewer.Desktop.RestoreImage")));
-    	restoreButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-	 	restoreButton.setHorizontalTextPosition(SwingConstants.CENTER);
-	 	//restoreButton.setMargin(tGeneric);
+    	restoreButton=new JButton(new ImageIcon(theGUI.IniProps.getProperty("MonadViewer.Desktop.RestoreImage")));
+    	restoreButton.setActionCommand("abort");
+    	restoreButton.setToolTipText("abandon edits");
+    	restoreButton.setEnabled(false);
 	 	restoreButton.setPreferredSize(new Dimension(50,50));
     	restoreButton.addActionListener(this);
     	_monadControls.add(restoreButton, cn);
     	cn.gridy++;
     	
+    	cn.gridwidth=1;
     	cn.weighty=1;
-    	_monadControls.add(new JLabel(), cn);
+    	orientH = new JRadioButton(new ImageIcon(theGUI.IniProps.getProperty("MonadViewer.Desktop.HorizImage")));
+    	orientH.setToolTipText("Monad grades as rows");
+    	orientH.setPreferredSize(new Dimension(24,24));
+    	orientH.setActionCommand("grdXbld");
+    	orientH.setMnemonic(KeyEvent.VK_H);
+    	orientH.addActionListener(this);
+    	_monadControls.add(orientH, cn);
+    	cn.gridx++;
+    	
+    	
+    	orientV = new JRadioButton(new ImageIcon(theGUI.IniProps.getProperty("MonadViewer.Desktop.VertImage")));
+    	orientV.setToolTipText("Monad grades as columns");
+    	orientV.setPreferredSize(new Dimension(24,24));
+    	orientV.setActionCommand("bldXgrd");
+    	orientV.setMnemonic(KeyEvent.VK_V);
+    	orientV.addActionListener(this);
+    	_monadControls.add(orientV, cn);
+    	
+    	if (orient.equals("Horizontal"))
+    	{
+    		orientV.setEnabled(true);
+    		orientH.setEnabled(false);
+    	}
+    	else
+    	{
+    		orientH.setEnabled(true);
+    		orientV.setEnabled(false);
+    	}
+    	
+    	
+    	add(_monadControls, "West");
     }
     
-    public void		createReferenceLayout()
+    private void 	createLayout()
+    {		
+    	if (_jCoeffs == null)
+    	{
+	    	_jCoeffs=new ArrayList<JFormattedTextField>(_repMonad.getAlgebra().getGProduct().getBladeCount());
+	    	NumberFormat amountFormat = NumberFormat.getNumberInstance();
+	    	for (int j=0; j<_repMonad.getAlgebra().getGProduct().getBladeCount(); j++)
+	    	{
+	    		JFormattedTextField tSpot = new JFormattedTextField(amountFormat);
+	    		tSpot.setColumns(8);
+	    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+	    		tSpot.setValue(_repMonadCoeffs[j].getReal());
+	    		_jCoeffs.add(j, tSpot);
+	    	}
+    	}
+    	if (_monadCoeffPanel != null)
+    		remove(_monadCoeffPanel);
+    		
+	    _monadCoeffPanel=new JPanel();
+	    _monadCoeffPanel.setBorder(BorderFactory.createTitledBorder("magnitudes"));
+	    _monadCoeffPanel.setBackground(_backColor);
+	    _monadCoeffPanel.setLayout(new GridBagLayout());
+    	
+    	GridBagConstraints cn1 = new GridBagConstraints();
+    	cn1.insets = new Insets(0, 0, 0, 0);
+    		
+    	cn1.gridx = 0;
+    	cn1.gridy = 0;
+    	cn1.weightx=0;
+    	cn1.weighty=0;
+    	cn1.ipadx=0;
+    	cn1.ipady=0;
+    		
+    	if (orient.equals("Vertical"))
+    	{
+    		for (short j=0; j<_repMonad.getAlgebra().getGProduct().getGradeCount(); j++)
+    		{
+    			JLabel headLabel = new JLabel(j+"-blades", SwingConstants.CENTER);
+    			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    				
+    			_monadCoeffPanel.add(headLabel, cn1);
+    			cn1.gridy++;
+    				
+    			short[] tSpot = _repMonad.getAlgebra().getGProduct().getGradeRange(j);
+    			for (short k=tSpot[0]; k<tSpot[1]+1; k++)
+    			{
+    				_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+    				_monadCoeffPanel.add(_jCoeffs.get(k), cn1);
+    				cn1.gridy++;
+    			}
+    			cn1.gridx++;
+    			cn1.gridy=0;
+    		}
+    	}
+    	if (orient.equals("Horizontal"))
+    	{
+    		for (short j=0; j<_repMonad.getAlgebra().getGProduct().getGradeCount(); j++)
+    		{
+    			JLabel headLabel = new JLabel(j+"-blades", SwingConstants.RIGHT);
+    			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    				
+    			_monadCoeffPanel.add(headLabel, cn1);
+    			cn1.gridx++;
+    				
+    			short[] tSpot = _repMonad.getAlgebra().getGProduct().getGradeRange(j);
+    			for (short k=tSpot[0]; k<tSpot[1]+1; k++)
+    			{
+    				_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+    				_monadCoeffPanel.add(_jCoeffs.get(k), cn1);
+    				cn1.gridx++;
+    			}
+    			cn1.gridx=0;
+    			cn1.gridy++;
+    		}
+    	}
+    	add(_monadCoeffPanel, "Center");
+    	setCoefficientDisplay();
+    }
+    
+    private void		createMinReferenceLayout()
+    {
+    	_monadReferences=new JPanel();
+    	//_monadReferences.setBorder(BorderFactory.createTitledBorder("monad"));
+    	_monadReferences.setBackground(_backColor);
+    	_monadReferences.setLayout(new GridBagLayout());
+    	
+    	GridBagConstraints cn0 = new GridBagConstraints();
+    	//cn0.insets = new Insets(0, 0, 0, 0);
+    	//cn0.fill=GridBagConstraints.HORIZONTAL;
+    	cn0.anchor=GridBagConstraints.WEST;
+    	
+    	cn0.gridx = 0;
+    	cn0.gridy = 0;
+    	cn0.weightx=0;
+    	cn0.weighty=0;
+    	
+    	_monadReferences.add(new JLabel("Name", SwingConstants.RIGHT), cn0);
+    	cn0.gridx++;
+    	name.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	_monadReferences.add(name, cn0);
+    	cn0.gridx=0;
+    	cn0.gridy++;
+    	
+    	_monadReferences.add(new JLabel("Foot", SwingConstants.RIGHT), cn0);
+    	cn0.gridx++;
+    	foot.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	_monadReferences.add(foot, cn0);
+    	cn0.gridx=0;
+    	cn0.gridy++;
+    	
+    	_monadReferences.add(new JLabel("Sig", SwingConstants.RIGHT), cn0);
+    	cn0.gridx++;
+    	sig.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	_monadReferences.add(sig, cn0);
+    	cn0.gridx = 0;
+    	cn0.gridy++;
+    	
+    	_monadReferences.add(new JLabel("Algebra", SwingConstants.RIGHT), cn0);
+    	cn0.gridx++;
+    	aname.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	_monadReferences.add(aname, cn0);
+    	cn0.gridx=0;
+    	cn0.gridy++;
+    	
+    	_monadReferences.add(new JLabel("Frame", SwingConstants.RIGHT), cn0);
+    	cn0.gridx++;
+    	frame.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	_monadReferences.add(frame, cn0);
+    	cn0.gridx=0;
+    	cn0.gridy++;
+
+    	//_monadReferences.add(new JLabel("gradeKey", SwingConstants.RIGHT), cn0);
+    	//cn0.gridx++;
+    	//gradeKey.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	//_monadReferences.add(gradeKey, cn0);
+    	
+    	add(_monadReferences,"South");
+    }
+    
+    private void		createReferenceLayout()
     {
     	_monadReferences=new JPanel();
     	_monadReferences.setBorder(BorderFactory.createTitledBorder("monad"));
@@ -384,100 +615,7 @@ import java.util.*;
     	gradeKey.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
     	_monadReferences.add(gradeKey, cn0);
     	
-    }
-    
-    public void 	createLayout()
-    {
-    	createReferenceLayout();
     	add(_monadReferences,"South");
-    	
-    	if (_repMonad!=null) 
-    	{
-    		_jCoeffs=new ArrayList<JFormattedTextField>(_repMonad.getAlgebra().getGProduct().getBladeCount());
-    		NumberFormat amountFormat = NumberFormat.getNumberInstance();
-    		for (int j=0; j<_repMonad.getAlgebra().getGProduct().getBladeCount(); j++)
-    		{
-    			JFormattedTextField tSpot = new JFormattedTextField(amountFormat);
-    			tSpot.setColumns(8);
-    			tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-    			tSpot.setValue(_repMonadCoeffs[j].getReal());
-    			_jCoeffs.add(j, tSpot);
-    		}
-    		
-    		_monadCoeffPanel=new JPanel();
-    		_monadCoeffPanel.setBorder(BorderFactory.createTitledBorder("magnitudes"));
-    		_monadCoeffPanel.setBackground(_backColor);
-    		_monadCoeffPanel.setLayout(new GridBagLayout());
-    		
-    		GridBagConstraints cn1 = new GridBagConstraints();
-    		cn1.insets = new Insets(0, 0, 0, 0);
-    		//cn1.fill=GridBagConstraints.HORIZONTAL;
-    		//cn1.anchor=GridBagConstraints.NORTH;
-    		
-    		cn1.gridx = 0;
-    		cn1.gridy = 0;
-    		cn1.weightx=0;
-    		cn1.weighty=0;
-    		cn1.ipadx=0;
-    		cn1.ipady=0;
-    		
-    		if (orient.equals("Vertical"))
-    		{
-    			for (short j=0; j<_repMonad.getAlgebra().getGProduct().getGradeCount(); j++)
-    			{
-    				JLabel header = new JLabel(j+"-blades", SwingConstants.CENTER);
-    				header.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-    				
-    				_monadCoeffPanel.add(header, cn1);
-    				cn1.gridy++;
-    				
-    				short[] tSpot = _repMonad.getAlgebra().getGProduct().getGradeRange(j);
-    				for (short k=tSpot[0]; k<tSpot[1]+1; k++)
-    				{
-    					_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-    					_monadCoeffPanel.add(_jCoeffs.get(k), cn1);
-    					cn1.gridy++;
-    				}
-    				cn1.gridx++;
-    				cn1.gridy=0;
-    			}
-    		}
-    		else
-    		{
-    			for (short j=0; j<_repMonad.getAlgebra().getGProduct().getGradeCount(); j++)
-    			{
-    				JLabel header = new JLabel(j+"-blades", SwingConstants.RIGHT);
-    				header.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-    				
-    				_monadCoeffPanel.add(header, cn1);
-    				cn1.gridx++;
-    				
-    				short[] tSpot = _repMonad.getAlgebra().getGProduct().getGradeRange(j);
-    				for (short k=tSpot[0]; k<tSpot[1]+1; k++)
-    				{
-    					_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-    					_monadCoeffPanel.add(_jCoeffs.get(k), cn1);
-    					cn1.gridx++;
-    				}
-    				cn1.gridx=0;
-    				cn1.gridy++;
-    			}
-    		}
-    		
-    		add(_monadCoeffPanel, "Center");
-    		setCoefficientDisplay();
-    		
-    		createControlLayout();
-        	add(_monadControls, "West");
-    	}
-    	else
-    	{
-    		_monadCoeffPanel=new JPanel();
-    		_monadCoeffPanel.setBorder(BorderFactory.createTitledBorder("Coefficients"));
-    		_monadCoeffPanel.setBackground(_backColor);
-    		_monadCoeffPanel.setLayout(new GridBagLayout());
-    		add(_monadCoeffPanel, "Center");
-    	}
     	
     }
     	

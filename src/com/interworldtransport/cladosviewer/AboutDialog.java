@@ -36,74 +36,116 @@ import javax.swing.border.*;
  * @version 0.80, $Date: 2005/07/31 05:00:25 $
  * @author Dr Alfred W Differ
  */
-public class AboutDialog extends JDialog implements ActionListener
+public final class AboutDialog extends JDialog implements ActionListener
 {
-	private static final long serialVersionUID = -6870724243642467353L;
-	private 	CladosCalculator		TheGUI;
-	private 	JButton 		closeButton;
+	private 	CladosCalculator	TheGUI;
+	private 	JButton 			closeButton;
 
 /**
  * The constructor sets up the about dialog box and displays it.
  */
-    public AboutDialog(CladosCalculator mainWindow, String pContent)
+    public AboutDialog(CladosCalculator mainWindow)
     {
-
-	super(mainWindow, "About Monad Viewer Utility", true); //Use parent's constructor
-	TheGUI=mainWindow;
+		super(mainWindow, "About Clados Calculator Utility", true); //Use parent's constructor
+		TheGUI=mainWindow;
+		
+		JPanel mainPane = new JPanel(new BorderLayout());
+		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(mainPane);
+		
+		//Create Logo panel
+		
+		JPanel topspot=new JPanel();
+		String logoFile=TheGUI.IniProps.getProperty("MonadViewer.Desktop.HeaderImage");
+		ImageIcon temp = new ImageIcon(logoFile);
+		topspot.add(new JLabel(temp));
+		mainPane.add(topspot, "North");
 	
-	JPanel mainPane = new JPanel(new BorderLayout());
-	mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-	setContentPane(mainPane);
+		// Create content text area
+		constructContent();
+		JTextArea contentArea = new JTextArea(constructContent());
+		contentArea.setBackground(Color.lightGray);
+		contentArea.setBorder(new EmptyBorder(2, 2, 2, 2));
+		contentArea.setLineWrap(true);
+		contentArea.setWrapStyleWord(true);
+		contentArea.setEditable(false);
+		mainPane.add(new JScrollPane(contentArea), "Center");
 	
-	//Create Logo panel
+		// Create close button panel
 	
-	JPanel topspot=new JPanel();
-	String logoFile=TheGUI.IniProps.getProperty("MonadViewer.Desktop.HeaderImage");
-	ImageIcon temp = new ImageIcon(logoFile);
-	topspot.add(new JLabel(temp));
-	mainPane.add(topspot, "North");
-
-	// Create content text area
-
-	JTextArea contentArea = new JTextArea(pContent);
-	contentArea.setBackground(Color.lightGray);
-	contentArea.setBorder(new EmptyBorder(2, 2, 2, 2));
-	contentArea.setLineWrap(true);
-	contentArea.setWrapStyleWord(true);
-	contentArea.setEditable(false);
-	mainPane.add(new JScrollPane(contentArea), "Center");
-
-	// Create close button panel
-
-	JPanel closeButtonPane = new JPanel(new FlowLayout());
-	closeButtonPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-	mainPane.add(closeButtonPane, "South");
-
-	// Create close button
-
-	closeButton = new JButton("Close");
-	closeButton.addActionListener(this);
-	closeButtonPane.add(closeButton);
-
-	// Set the size of the window
-
-	setSize(400, 700);
-
-	// Center the window on the parent window.
-
-	Point parentLocation = mainWindow.getLocation();
-	int Xloc = (int) parentLocation.getX() + ((mainWindow.getWidth() - 300) / 2);
-	int Yloc = (int) parentLocation.getY(); //+ ((mainWindow.getHeight() - 400) / 2);
-	setLocation(Xloc, Yloc);
-
-	// Display window
-	setVisible(true);
+		JPanel closeButtonPane = new JPanel(new FlowLayout());
+		closeButtonPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		mainPane.add(closeButtonPane, "South");
+	
+		// Create close button
+	
+		closeButton = new JButton("Close");
+		closeButton.addActionListener(this);
+		closeButtonPane.add(closeButton);
+	
+		// Set the size of the window
+	
+		setSize(500, 700);
+	
+		// Center the window on the parent window.
+	
+		Point parentLocation = mainWindow.getLocation();
+		int Xloc = (int) parentLocation.getX() + ((mainWindow.getWidth() - 300) / 2);
+		int Yloc = (int) parentLocation.getY(); //+ ((mainWindow.getHeight() - 400) / 2);
+		setLocation(Xloc, Yloc);
+	
+		// Display window
+		setVisible(true);
     }
+    
+    private String constructContent()
+    {
+    	String tempVersion = TheGUI.IniProps.getProperty("MonadViewer.Desktop.Version");
+    	String tempUserName = TheGUI.IniProps.getProperty("MonadViewer.User.Name");
+    	String tempInstitution = TheGUI.IniProps.getProperty("MonadViewer.User.Institution");
 
-	// Implementing ActionListener method
+    	StringBuffer content = new StringBuffer();
+
+    	content.append("Clados Calculator ");
+    	content.append(tempVersion);
+    	content.append("\n\n");
+
+    	content.append("Copyright 2018 Alfred Differ");
+    	content.append("\n\n");
+
+    	content.append("Web Site: https://github.com/InterworldTransport/CladosViewer\n\n");
+
+    	content.append("Developers:\n");
+    	content.append("  Dr. Alfred Differ - Physics, Java\n");
+    	content.append("  Your name could be here! \n\n");
+
+    	content.append("Licensed to {");
+    	content.append(tempUserName);
+    	content.append("}\n");
+    	content.append(tempInstitution);
+    	content.append("\n\n");
+    	
+    	content.append("This program is distributed in the hope that it will be useful, ");
+    	content.append("it under the terms of the GNU Affero General Public License as ");
+    	content.append("published by the Free Software Foundation, either version 3 of the ");
+    	content.append("License, or (at your option) any later version. \n\n");
+
+    	content.append("This program is distributed in the hope that it will be useful, ");
+    	content.append("but WITHOUT ANY WARRANTY; without even the implied warranty of ");
+    	content.append("MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the ");
+    	content.append("GNU Affero General Public License for more details.\n\n");
+    	
+    	content.append("Use of this code or executable objects derived from it by the Licensee ");
+    	content.append("states their willingness to accept the terms of the license.\n\n");
+    	
+    	content.append("You should have received a copy of the GNU Affero General Public License ");
+    	content.append("along with this program.  If not, see <https://www.gnu.org/licenses/>.\n");
+    	
+    	return content.toString();
+    }
 
     public void actionPerformed(ActionEvent event)
     {
-		dispose();
+		dispose();	// Any action is enough to close the window.
     }
-}//End of AboutDialog class
+}

@@ -37,9 +37,7 @@ import javax.swing.*;
  */
 
  public class UtilityStatusBar extends JPanel
-{
-
-	private static final long serialVersionUID = -4893753957995222179L;
+ {
 	public		JTextArea		stmesgt;
 	public		DivFieldType	stFieldType;
 	public		JTextField 		stFieldTypeIO = new JTextField();
@@ -119,7 +117,10 @@ import javax.swing.*;
     public void setFieldType(DivFieldType pField)
     {
     	stFieldType=pField;
-    	stFieldTypeIO.setText(pField.getType());
+    	if (pField!=null)
+    		stFieldTypeIO.setText(pField.getType());
+    	else
+    		stFieldTypeIO.setText("null");
     }
 
     public void setStatusMsg(String pMsg)

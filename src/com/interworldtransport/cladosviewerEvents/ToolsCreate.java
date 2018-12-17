@@ -24,16 +24,17 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosGExceptions.*;
+
+import com.interworldtransport.cladosGExceptions.BadSignatureException;
+import com.interworldtransport.cladosGExceptions.CladosMonadException;
 import com.interworldtransport.cladosviewer.CreateDialog;
-import com.interworldtransport.cladosviewer.ViewerMenu;
 import com.interworldtransport.cladosviewerExceptions.UtilitiesException;
 
 import javax.swing.*;
 import java.awt.event.*;
 
-/** com.interworldtransport.cladosviewer.ToolsCreate
- * This class shows the Create Monad dialog box.
+/** 
+ * This class shows the Create Nyad dialog box from the menu.
  *
  * @version 0.85
  * @author Dr Alfred W Differ
@@ -41,32 +42,26 @@ import java.awt.event.*;
 public class ToolsCreate implements ActionListener
 {
 
-    protected ToolsEvents		Parent;
-    protected ViewerMenu		ParentGUIMenu;
-    protected JMenuItem			ControlIt;
+    protected ToolsEvents		_parent;
+    protected JMenuItem			_control;
 
 /** This is the default constructor.
  */
-    public ToolsCreate(ViewerMenu pGUIMenu, JMenuItem pOpt, ToolsEvents pParent)
+    public ToolsCreate(JMenuItem pOpt, ToolsEvents pParent)
     		throws 		UtilitiesException, BadSignatureException
     {
-		ParentGUIMenu=pGUIMenu;
-		ControlIt=pOpt;
-		Parent=pParent;
-		ControlIt.addActionListener(this);
+		_control=pOpt;
+		_parent=pParent;
+		_control.addActionListener(this);
     }
 
 /** This is the actual action to be performed by this menu item.
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	
     	try
     	{
-    		ParentGUIMenu._parentGUI._StatusBar.setStatusMsg("CreateDialog opening...");
-    		CreateDialog create=new CreateDialog(ParentGUIMenu._parentGUI);
-    		if (create != null)
-				ParentGUIMenu._parentGUI._StatusBar.setStatusMsg(" ... and dialog is now closing.\n");
+    		CreateDialog.createNyad(_parent._GUI);
     	}
     	catch (UtilitiesException e)
     	{
@@ -86,7 +81,5 @@ public class ToolsCreate implements ActionListener
     		//a new Monad, so nothing is the correct action.
     		System.out.println("Couldn't construct create dialog.");
     	}
-    	
     }
-    
 }

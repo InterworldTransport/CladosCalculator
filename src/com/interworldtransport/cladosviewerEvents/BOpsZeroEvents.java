@@ -33,9 +33,9 @@ import javax.swing.*;
 
 /** 
  *  This class manages events relating to the answering of a boolean question.
- *  Is the Monad equivalent to zero?
+ *  Is the selected monad equivalent to zero?
  *
- * @version 0.80, $Date: 2005/07/25 01:44:25 $
+ * @version 0.85
  * @author Dr Alfred W Differ
  */
 public class BOpsZeroEvents implements ActionListener
@@ -60,13 +60,15 @@ public class BOpsZeroEvents implements ActionListener
     public void actionPerformed(ActionEvent evt)
     {
     	int indexNyadPanelSelected=_parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (indexNyadPanelSelected<0) return;
+    	
     	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
     	MonadRealF monadSelected = panelNyadSelected.getMonadPanel(panelNyadSelected.getPaneFocus()).getMonad();
 
     	if (MonadRealF.isGZero(monadSelected))
-    		_parent._GUI._StatusBar.setStatusMsg(" selected monad is additive ZERO.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is + ZERO.\n");
     	else
-    		_parent._GUI._StatusBar.setStatusMsg(" selected monad is NOT additive zero.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT + zero.\n");
     	
     	panelNyadSelected=null;
     	monadSelected=null;

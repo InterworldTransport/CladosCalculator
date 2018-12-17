@@ -24,10 +24,10 @@
  */
 package com.interworldtransport.cladosviewer;
 
-import com.interworldtransport.cladosF.*;
-import com.interworldtransport.cladosFExceptions.*;
-import com.interworldtransport.cladosG.*;
-import com.interworldtransport.cladosGExceptions.*;
+import com.interworldtransport.cladosG.MonadRealF;
+import com.interworldtransport.cladosG.NyadRealF;
+import com.interworldtransport.cladosGExceptions.BadSignatureException;
+
 import com.interworldtransport.cladosviewerExceptions.CantGetIniException;
 import com.interworldtransport.cladosviewerExceptions.CantGetSaveException;
 import com.interworldtransport.cladosviewerExceptions.UtilitiesException;
@@ -49,11 +49,11 @@ import java.io.*;
  */
 public class CladosCalculator extends JFrame implements ActionListener
 {
-	private static final long serialVersionUID = 2888655434121808487L;
 	public static void main(String[] args)
 	{
-		 String TitleName="Monad Viewer Utility";
-		 String ConfName="conf/MonadViewer.conf";
+		//default string entries in case someone starts this without any arg's at all
+		 String TitleName="Clados Calculator Utility";
+		 String ConfName="conf/CladosCalculator.conf";
 	
 		 if (args.length%2==1)
 		 {
@@ -77,63 +77,94 @@ public class CladosCalculator extends JFrame implements ActionListener
 		 catch (BadSignatureException be)
 		 {
 		 	 System.out.println("Bad Signature Exception occured while constructing a Monad");
+		 	 System.gc();
+		 	 System.exit(0);
+		 }
+		 catch (CantGetIniException e)
+		 {
+		 	 System.out.println("Ini Exception occured while constructing main GUI");
+		 	 System.gc();
 		 	 System.exit(0);
 		 }
 		 catch (UtilitiesException e)
 		 {
 		 	 System.out.println("Exception occured while constructing main GUI");
+		 	 System.gc();
 		 	 System.exit(0);
 		 }
 	}
-	/**
-	 * The in-window Menu for the application.
-	 */
-	    public		ViewerMenu			_MenuBar;
-	/**
-	 * The EventModel for the application.
-	 */
-	    public		ViewerEventModel	_EventModel;
-	/**
-	 * The Center Display Panel for the application.
-	 * Located in the center of the GUI and intended for display panels.
-	 */
-	    public		ViewerPanel			_GeometryDisplay;
-	    
-	/**
-	 * The Status Display Panel for the application.
-	 * Located at the bottom of the GUI and intended for status information.
-	 */
-	    public		UtilityStatusBar	_StatusBar;
 	/**
 	 * The global button display panel for the application.
 	 * Located at the top of the GUI and intended for nyad management.
 	 */
     public		JPanel				_ControlBar;
-    /**
-	 * Buttons for use in the header bar for nyad management.    
+	/**
+	 * The EventModel for the application.
 	 */
-	    public		JButton			swapBelow;
-    public		JButton			swapAbove;
-    public		JButton			copyNyad;
-    public		JButton			removeNyad;
-    public		JButton			newNyad;
-
+	public		ViewerEventModel	_EventModel;
+	/**
+	 * The Center Display Panel for the application.
+	 * Located in the center of the GUI and intended for display panels.
+	 */
+	public		ViewerPanel			_GeometryDisplay;
+	    
+	/**
+	 * The in-window Menu for the application.
+	 */
+	public		ViewerMenu			_MenuBar;
+	/**
+	 * The Status Display Panel for the application.
+	 * Located at the bottom of the GUI and intended for status information.
+	 */
+	public		UtilityStatusBar	_StatusBar;
+    public		JButton			dualLeft;
+    public		JButton			dualRight;
+    public		JButton			gradePart;
+    public		JButton			gradeSuppress;
+    public		JButton			invertMonad; //This is NOT multiplicative inverse
+    public		JButton			isEqual;
+    public		JButton			isGrade;
+    public		JButton			isIdempotent;
+    public		JButton			isMIdempotent;
+    public		JButton			isMultiGrade;
+    public		JButton			isNilpotent;
+    /**
+	 * Buttons for use in the control bar for nyad management.    
+	 */
+    public		JButton			isRefMatch;
+    public		JButton			isZero;
+    
+    public		JButton			normalizeMonad;
+    public		JButton			reverseMonad;
+    public		JButton			scaleMonad;
+    public		JButton			whatGrade;
+    
+    public		JButton			whatMagn;
+    public		JButton			whatSQMagn;
+    
     //public	JButton			addNyads;
     //public	JButton			lmultNyads;
     //public	JButton			rmultNyads;
-    public		JButton			scaleNyad;
-    public		Properties		IniProps;
-    /** This FileWriter points to the actual save file for historical snapshot data
+    
+    /*
+	 * 
 	 */
-    public		FileWriter		to;
-	//public	File 			fIni;
     private		JFileChooser 	fc;
+    /*
+     * This FileWriter points to the actual save file for historical snapshot data
+	 */
+    private		FileWriter		saveItTo;
+	/*
+     * This is the properties object containing key/value pairs from the config file
+     * and any system settings that might be useful.
+     */
+    protected	Properties		IniProps;
 
     /**
 	 * This is the main constructor the the Monad Viewer
 	 */
 	public CladosCalculator(	String pTitle,
-	   					String pConfig)
+	   							String pConfig)
 	   	throws 	UtilitiesException,
 	  			BadSignatureException,
 	   			CantGetIniException
@@ -143,6 +174,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 	    	{
 		   		public void windowClosing(WindowEvent e)
 		   		{
+		   			System.gc();
 		   			System.exit(0);
 		   		}
 	    	}
@@ -161,7 +193,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 	    _ControlBar.setLayout(new GridBagLayout());
 	    _ControlBar.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 	    _ControlBar.setBackground(new Color(255, 255, 220));
-	    createNyadControls();
+	    constructControls();
 	    cp.add(_ControlBar,"West");
 	    	
 	    _GeometryDisplay=new ViewerPanel(this);
@@ -179,132 +211,148 @@ public class CladosCalculator extends JFrame implements ActionListener
     {
     	String command = event.getActionCommand();
     	
-    	if (command.equals("push"))
-    		_GeometryDisplay.push();	//Swaps the currently selected nyad with the one below it
+    	if (command.equals("reference match"))
+    		_MenuBar.mniisReferenceMatch.doClick();
     	
-    	if (command.equals("pop"))
-    		_GeometryDisplay.pop();		//Swaps the currently selected nyad with the one above it
+    	if (command.equals("equal"))
+    		_MenuBar.mniisEqual.doClick();
     	
-    	if (command.equals("copy"))
-	    	copyNyadCommand();
+    	if (command.equals("zero"))
+    		_MenuBar.mniisZero.doClick();
     	
-    	if (command.equals("erase"))
-    		eraseCommand();
+    	if (command.equals("nilpotent"))
+    		_MenuBar.mniisNilpotent.doClick();
     	
-    	if (command.equals("create"))
-    		createCommand();
+    	if (command.equals("idempotent"))
+    		_MenuBar.mniisIdempotent.doClick();
+    	
+    	if (command.equals("scaled idempotent"))
+    		_MenuBar.mniisIdempotentMultiple.doClick();
+    	
+    	if (command.equals("is grade"))
+    		_MenuBar.mniisGrade.doClick();
+    	
+    	if (command.equals("is mgrade"))
+    		_MenuBar.mniisMultiGrade.doClick();
+    	
+    	if (command.equals("is grade!"))
+    		_MenuBar.mniisSGrade.doClick();
+    	
+    	if (command.equals("grade suppress"))
+    		_MenuBar.mniGradeSuppress.doClick();
+    	
+    	if (command.equals("grade part"))
+    		_MenuBar.mniGradePart.doClick();
+    	
+    	if (command.equals("magnitude of"))
+    		_MenuBar.mniMagnitudeOf.doClick();
+    	
+    	if (command.equals("sqmagnitude of"))
+    		_MenuBar.mniSQMagnitudeOf.doClick();
   
     	if (command.equals("scale"))
-    		scaleCommand();
+    		_MenuBar.mniScale.doClick();
+    		//scaleCommand();
+    	
+    	if (command.equals("normalize"))
+    		_MenuBar.mniNormalize.doClick();
+    	
+    	if (command.equals("invert"))
+    		_MenuBar.mniInvert.doClick();
+    	
+    	if (command.equals("reverse"))
+    		_MenuBar.mniReverse.doClick();
+    	
+    	if (command.equals("dual>"))
+    		_MenuBar.mniDualLeft.doClick();
+    	
+    	if (command.equals("<dual"))
+    		_MenuBar.mniDualRight.doClick();
     }
     /**
 	 * This method saves snapshot data to the save file.
 	 */
-	    public void saveSnapshot(String pType)
-	    	throws 	IOException, 
-	    			CantGetSaveException
+	public void saveSnapshot(String pType)	throws 	CantGetSaveException
+	{
+		//Looks like arrival strings for pType are 'As' or null
+		//That means the app uses this method with an assumed switch.
+		
+	    String SaveName=IniProps.getProperty("MonadViewer.Desktop.Snapshot");
+	    if (pType==null) 	// switch setting for 'save' with current snapshot target if known
 	    {
-	    	String SaveName=IniProps.getProperty("MonadViewer.Desktop.Snapshot");
-	    	if (pType==null)
+	    	if (saveItTo==null)	// but if it is not known, make one up from conf setting
 	    	{
-	    		if (to==null)
-	    		{
-	    			File fIni=null;
-	    	    	boolean bSave=false;
-	    	    	
-	    	    	fIni=new File(SaveName);
-	    	    	bSave=fIni.exists();
-	    	    	if (bSave) bSave=fIni.isFile();
-	    	    	if (bSave) bSave=fIni.canWrite();
-	    	    	if (!bSave)
-	    	    		throw new CantGetSaveException("No access to snapshot save file.");
-	    	    	
-	    	    	//Getting here implies the Save file has been found and is writeable
-	    	    	to=new FileWriter(fIni, true);    	    	
-	    		}
+	    		File fIni=new File(SaveName);
+	    	    if (!(fIni.exists() & fIni.isFile() & fIni.canWrite()))
+	    	    	throw new CantGetSaveException("No access to snapshot save file.");
+	    	    
+	    	    try
+	    	    {
+	    	    	saveItTo=new FileWriter(fIni, true);
+	    	    	saveItTo.write(makeSnapshotContent());
+	    	    	saveItTo.write("\r\n");
+	    	    	saveItTo.flush();
+	    	    	saveItTo.close();
+		    		_StatusBar.setStatusMsg("\tsnapshot of stack is saved.\n");
+	    	    }
+	    	    catch (IOException e)
+	    	    {
+	    	    	_StatusBar.setStatusMsg("\t\tsnapshot of stack is NOT saved due to IO Exception.\n");
+	    	    }
 	    	}
-	    	else
-	    	{
-	    		int returnVal = fc.showSaveDialog(this);
-	    		if (returnVal == JFileChooser.APPROVE_OPTION) 
-	    		{
-	    			File fIni = fc.getSelectedFile();
-	    			SaveName=fIni.getName();
-	    			//This is where a real application would open the file.
-	    			boolean bSave=false;
-	    			bSave=fIni.exists();
-	    			if (bSave) bSave=fIni.isFile();
-	    			if (bSave) bSave=fIni.canWrite();
-	    			if (!bSave)
-	    				throw new CantGetSaveException("No access to snapshot save file.");
-	    			
-	    			//Getting here implies the Save file has been found and is writeable
-	    			to=new FileWriter(fIni, true);
-	    			//Change the Snapshot property so it can be used for 'Save' next
-	    			//time.  No chooser dialog should be needed then.
-	    			IniProps.setProperty("MonadViewer.Desktop.Snapshot", SaveName);
-	    		} 
-	    	}
-		to.write(makeSnapshotContent());
-		to.write("\r\n");
-		to.flush();
-		_StatusBar.setStatusMsg("Snapshot of stack is saved.\n");
-	
 	    }
-    private void copyNyadCommand()
-    {
-    	if (_GeometryDisplay.getNyadListSize()>0)
-		{
-			try
-			{
-				NyadRealF focusNyad=_GeometryDisplay.getNyadPanel(_GeometryDisplay.getPaneFocus()).getNyad();
-				String buildName=new StringBuffer(focusNyad.getName()).append("_c").toString();
-				NyadRealF newNyadCopy=new NyadRealF(buildName, focusNyad);
-				_GeometryDisplay.addNyadPanel(newNyadCopy);
-			}
-			catch (UtilitiesException e)
-			{
-				_StatusBar.setStatusMsg("Could not create copy from toolbar.\n");
-			}
-			catch (BadSignatureException es)
-			{
-				_StatusBar.setStatusMsg("Could not create copy from toolbar due to signature issue.\n");
-			}
-		}
-    }
-   
-    private void createCommand()
-    {
-    	try
-		{
-    		_StatusBar.setStatusMsg("CreateDialog opening...");
-			CreateDialog create = new CreateDialog(this);
-			if (create != null)
-				_StatusBar.setStatusMsg(" ... and dialog is now closing.\n");
-			
-		}
-		catch (UtilitiesException e)
-		{
-			//Do nothing.  Exception implies user doesn't get to create
-			//a new Monad, so nothing is the correct action.
-			System.out.println("Couldn't construct create dialog.");
-		}
-		catch (BadSignatureException es)
-		{
-			//Do nothing.  Exception implies user doesn't get to create
-			//a new Monad, so nothing is the correct action.
-			System.out.println("Couldn't construct create dialog.");
-		}
-		catch (CladosMonadException em)
-		{
-			//Do nothing.  Exception implies user doesn't get to create
-			//a new Monad, so nothing is the correct action.
-			System.out.println("Couldn't construct create dialog.");
-		}
-    }
+	    else
+	    {
+	    	int returnVal = fc.showSaveDialog(this);
+	    	if (returnVal == JFileChooser.APPROVE_OPTION) 
+	    	{
+	    		File fIni = fc.getSelectedFile();
+	    		SaveName=fIni.getName();
+	    		if (!(fIni.exists() & fIni.isFile() & fIni.canWrite()))
+		    	    	throw new CantGetSaveException("No access to snapshot save file.");
+	  
+	    		try 
+	    		{
+		    		saveItTo=new FileWriter(fIni, true);
+		    		saveItTo.write(makeSnapshotContent());
+		    		saveItTo.write("\r\n");
+		    		saveItTo.flush();
+		    		saveItTo.close();
+		    		_StatusBar.setStatusMsg("\tsnapshot of stack is saved.\n");
+		    		
+		    		//Change the Snapshot property so it can be used for 'Save' next
+		    		//time.  No chooser dialog should be needed then.
+		    		IniProps.setProperty("MonadViewer.Desktop.Snapshot", SaveName);
+	    		}
+	    		catch (IOException e)
+	    		{
+	    			_StatusBar.setStatusMsg("\t\tsnapshot of stack is NOT saved due to IO Exception.\n");
+	    		}
+	    	} 
+	    }
+	}
     
-    private void createNyadControls()
+    public void terminateModel() 
     {
+		try 
+		{
+			if (saveItTo != null)
+				saveItTo.close();
+		} 
+		catch (IOException e) 
+		{
+			System.out.println("Couldn't close the snapshot save file. Resource leakage is occuring.");
+			e.printStackTrace();
+		}
+		finally
+		{
+			System.exit(0);
+		}
+    }
+
+    private void constructControls()
+    {
+    	Dimension square = new Dimension(50,50);
     	GridBagConstraints cn = new GridBagConstraints();
 		cn.insets = new Insets(0, 0, 0, 0);
 		
@@ -315,259 +363,287 @@ public class CladosCalculator extends JFrame implements ActionListener
 		cn.weightx=1;
 		cn.weighty=1;
 		cn.gridheight=2;
-		cn.gridwidth=2;
+		cn.gridwidth=3;
 		cn.fill=GridBagConstraints.BOTH;
     	_ControlBar.add(new JLabel(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.HeaderImage2"))),cn);
 		cn.gridy++;
 		cn.gridy++;
 		cn.fill=GridBagConstraints.HORIZONTAL;
-		
 		cn.weightx=0;
 		cn.weighty=0;
 		cn.gridheight=1;
 		cn.gridwidth=1;
-    	swapBelow=new JButton("push", new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.PushImage")));
-    	swapBelow.setVerticalTextPosition(SwingConstants.BOTTOM);
-    	swapBelow.setHorizontalTextPosition(SwingConstants.CENTER);
-    	swapBelow.setPreferredSize(new Dimension(50,50));
-    	swapBelow.addActionListener(this);
-    	_ControlBar.add(swapBelow, cn);
+
+    	// button triple
+    	isRefMatch = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.RefMatchImage")));
+    	isRefMatch.setActionCommand("reference match");
+    	isRefMatch.setToolTipText("Refernce Match Nyad Test");
+    	isRefMatch.setPreferredSize(square);
+    	isRefMatch.addActionListener(this);
+    	_ControlBar.add(isRefMatch, cn);
     	cn.gridx++;
     	
-    	swapAbove=new JButton("pop", new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.PopImage")));
-    	swapAbove.setVerticalTextPosition(SwingConstants.BOTTOM);
-    	swapAbove.setHorizontalTextPosition(SwingConstants.CENTER);
-    	swapAbove.setPreferredSize(new Dimension(50,50));
-    	swapAbove.addActionListener(this);
-    	_ControlBar.add(swapAbove, cn);
-    	cn.gridx = 0;
-		cn.gridy++;
-    	
-    	copyNyad = new JButton("copy", new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.CopyImage")));
-    	copyNyad.setVerticalTextPosition(SwingConstants.BOTTOM);
-    	copyNyad.setHorizontalTextPosition(SwingConstants.CENTER);
-    	copyNyad.setPreferredSize(new Dimension(50,50));
-    	copyNyad.addActionListener(this);
-    	_ControlBar.add(copyNyad, cn);
+    	isEqual = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.EqualImage")));
+    	isEqual.setActionCommand("equal");
+    	isEqual.setToolTipText("Strong Equality Nyad Test");
+    	isEqual.setPreferredSize(square);
+    	isEqual.addActionListener(this);
+    	_ControlBar.add(isEqual, cn);
     	cn.gridx++;
+
+    	isZero = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.ZeroImage")));
+    	isZero.setActionCommand("zero");
+    	isZero.setToolTipText("Additive Identity (Zero) Monad Test");
+    	isZero.setPreferredSize(square);
+    	isZero.addActionListener(this);
+    	_ControlBar.add(isZero, cn);
     	
-    	removeNyad = new JButton("erase", new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.RemoveImage")));
-    	removeNyad.setVerticalTextPosition(SwingConstants.BOTTOM);
-    	removeNyad.setHorizontalTextPosition(SwingConstants.CENTER);
-    	removeNyad.setPreferredSize(new Dimension(50,50));
-    	removeNyad.addActionListener(this);
-    	_ControlBar.add(removeNyad, cn);
     	cn.gridx = 0;
-		cn.gridy++;
-    	
-    	newNyad = new JButton("create", new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.CreateImage")));
-    	newNyad.setVerticalTextPosition(SwingConstants.BOTTOM);
-    	newNyad.setHorizontalTextPosition(SwingConstants.CENTER);
-    	newNyad.setPreferredSize(new Dimension(50,50));
-    	newNyad.addActionListener(this);
-    	_ControlBar.add(newNyad, cn);
     	cn.gridy++;
     	
-    	scaleNyad = new JButton("scale", new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.ScaleImage")));
-    	scaleNyad.setVerticalTextPosition(SwingConstants.BOTTOM);
-    	scaleNyad.setHorizontalTextPosition(SwingConstants.CENTER);
-    	scaleNyad.setPreferredSize(new Dimension(50,50));
-    	scaleNyad.addActionListener(this);
-    	_ControlBar.add(scaleNyad, cn);
+    	// button triple
+    	isMIdempotent = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.MIdempotentImage")));
+    	isMIdempotent.setActionCommand("scaled idempotent");
+    	isMIdempotent.setToolTipText("Multiple of Idempotent Monad Test");
+    	isMIdempotent.setPreferredSize(square);
+    	isMIdempotent.addActionListener(this);
+    	_ControlBar.add(isMIdempotent, cn);
+    	cn.gridx++;
+    	
+    	isIdempotent = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.IdempotentImage")));
+    	isIdempotent.setActionCommand("idempotent");
+    	isIdempotent.setToolTipText("Idempotent Monad Test");
+    	isIdempotent.setPreferredSize(square);
+    	isIdempotent.addActionListener(this);
+    	_ControlBar.add(isIdempotent, cn);
+    	cn.gridx++;
+    	
+    	isNilpotent = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.NilpotentImage")));
+    	isNilpotent.setActionCommand("nilpotent");
+    	isNilpotent.setToolTipText("Nilpotent Monad Test");
+    	isNilpotent.setPreferredSize(square);
+    	isNilpotent.addActionListener(this);
+    	_ControlBar.add(isNilpotent, cn);
+    	
+    	cn.gridx = 0;
+    	cn.gridy++;
+    	//end button triple
+    	
+    	// button triple
+    	isGrade = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.GradeImage")));
+    	isGrade.setActionCommand("is grade");
+    	isGrade.setToolTipText("Is Grade() Monad Test");
+    	isGrade.setPreferredSize(square);
+    	isGrade.addActionListener(this);
+    	_ControlBar.add(isGrade, cn);
+    	cn.gridx++;
+    	
+    	isMultiGrade = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.MultiGradeImage")));
+    	isMultiGrade.setActionCommand("is mgrade");
+    	isMultiGrade.setToolTipText("Is MultiGrade Monad Test");
+    	isMultiGrade.setPreferredSize(square);
+    	isMultiGrade.addActionListener(this);
+    	_ControlBar.add(isMultiGrade, cn);
+    	cn.gridx++;
+    	
+    	whatGrade = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.WhatGradeImage")));
+    	whatGrade.setActionCommand("is grade!");
+    	whatGrade.setToolTipText("What Unique Grade Monad Test");
+    	whatGrade.setPreferredSize(square);
+    	whatGrade.addActionListener(this);
+    	_ControlBar.add(whatGrade, cn);
+    	
+    	cn.gridx = 0;
+    	cn.gridy++;
+    	//end button triple
+    	
+    	// button triple
+    	whatMagn = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.MagnitudeImage")));
+    	whatMagn.setActionCommand("magnitude of");
+    	whatMagn.setToolTipText("Discover Monad Magnitude");
+    	whatMagn.setPreferredSize(square);
+    	whatMagn.addActionListener(this);
+    	_ControlBar.add(whatMagn, cn);
+    	cn.gridx++;
+    	
+    	whatSQMagn = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.SQMagnitudeImage")));
+    	whatSQMagn.setActionCommand("sqmagnitude of");
+    	whatSQMagn.setToolTipText("Discover Monad Magnitude^2");
+    	whatSQMagn.setPreferredSize(square);
+    	whatSQMagn.addActionListener(this);
+    	_ControlBar.add(whatSQMagn, cn);
+    	//cn.gridx++;
+   
+    	
+    	cn.gridx = 0;
+    	cn.gridy++;
+    	//end button triple
+    	
+    	invertMonad = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.InvertImage")));
+    	invertMonad.setActionCommand("invert");
+    	invertMonad.setToolTipText("Invert [+/-] Monad generators");
+    	invertMonad.setPreferredSize(square);
+    	invertMonad.addActionListener(this);
+    	_ControlBar.add(invertMonad, cn);
+    	cn.gridx++;
+    	
+    	reverseMonad = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.ReverseImage")));
+    	reverseMonad.setActionCommand("reverse");
+    	reverseMonad.setToolTipText("Reverse [ab->ba] Monad blades");
+    	reverseMonad.setPreferredSize(square);
+    	reverseMonad.addActionListener(this);
+    	_ControlBar.add(reverseMonad, cn);
+    	cn.gridx++;
+    	
+    	gradePart = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.GradePartImage")));
+    	gradePart.setActionCommand("grade part");
+    	gradePart.setToolTipText("Zero OTHER grades()");
+    	gradePart.setPreferredSize(square);
+    	gradePart.addActionListener(this);
+    	_ControlBar.add(gradePart, cn);
+    	
+    	cn.gridx=0;
+    	cn.gridy++;
+    	
+    	scaleMonad = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.ScaleImage")));
+    	scaleMonad.setActionCommand("scale");
+    	scaleMonad.setToolTipText("Scale() THIS Monad");
+    	scaleMonad.setPreferredSize(square);
+    	scaleMonad.addActionListener(this);
+    	_ControlBar.add(scaleMonad, cn);
+    	cn.gridx++;
+    	
+    	normalizeMonad = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.NormImage")));
+    	normalizeMonad.setActionCommand("normalize");
+    	normalizeMonad.setToolTipText("Normalize THIS Monad");
+    	normalizeMonad.setPreferredSize(square);
+    	normalizeMonad.addActionListener(this);
+    	_ControlBar.add(normalizeMonad, cn);
+    	cn.gridx++;
+    	
+    	gradeSuppress = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.GradeSuppressImage")));
+    	gradeSuppress.setActionCommand("grade suppress");
+    	gradeSuppress.setToolTipText("Zero THIS grade()");
+    	gradeSuppress.setPreferredSize(square);
+    	gradeSuppress.addActionListener(this);
+    	_ControlBar.add(gradeSuppress, cn);
+    	cn.gridx=0;
+    	cn.gridy++;
+    	
+    	dualLeft = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.DualLeftImage")));
+    	dualLeft.setActionCommand("dual>");
+    	dualLeft.setToolTipText("Left Dual of THIS Monad using algebra's PS");
+    	dualLeft.setPreferredSize(square);
+    	dualLeft.addActionListener(this);
+    	_ControlBar.add(dualLeft, cn);
+    	cn.gridx++;
+    	
+    	dualRight = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.DualRightImage")));
+    	dualRight.setActionCommand("<dual");
+    	dualRight.setToolTipText("Right Dual of THIS Monad using algebra's PS");
+    	dualRight.setPreferredSize(square);
+    	dualRight.addActionListener(this);
+    	_ControlBar.add(dualRight, cn);	
     }
-private void eraseCommand()
-{
-	if (_GeometryDisplay.NyadPanes.getTabCount()>1)
+    
+    private String makeSnapshotContent()
 	{
-		int point = _GeometryDisplay.NyadPanes.getSelectedIndex();
-		_GeometryDisplay.removeNyadPanel(point);
-	}
-} 
-
-private String makeSnapshotContent()
-{
-	StringBuffer content=new StringBuffer();
-
-	content.append("<Application Name=\"clados Calculator\", ");
-	content.append("Rights=\"Copyright 2018 Alfred Differ\", ");
-	content.append("Licensee=\" ");
-	content.append(IniProps.getProperty("MonadViewer.User.Name"));
-	content.append("\" />");
+		StringBuffer content=new StringBuffer();
 	
-	content.append("\r\n");
+		content.append("<Application Name=\"clados Calculator\", ");
+		content.append("Rights=\"Copyright 2018 Alfred Differ\", ");
+		content.append("Licensee=\"");
+		content.append(IniProps.getProperty("MonadViewer.User.Name"));
+		content.append("\" />\r\n");
 
-	int listsize=_GeometryDisplay.getNyadListSize();
-	content.append("<NyadCount size=\"");
-	content.append(new StringBuffer().append(listsize).toString());
-	content.append("\" />");
-
-	content.append("\r\n");
-
-	for (int j=0; j<listsize; j++)
-	{
-		
-		NyadPanel tempNp=_GeometryDisplay.getNyadPanel(j);
-		    		
-		content.append("<Nyad");
-		
-		content.append(" Name=\"");
-		content.append(tempNp.getNyad().getName());
-		content.append("\", ");
-		
-		content.append(" Order=\"");
-		content.append(tempNp.getNyad().getNyadOrder());
-		content.append("\", ");
-		
-		content.append(" Foot=\"");
-		content.append(tempNp.getNyad().getFootPoint().getFootName());
-		
+		content.append("<NyadList size=\"");
+		content.append(_GeometryDisplay.getNyadListSize());
 		content.append("\">\r\n");
-		
-		
-		//Start another loop here when more than one monad is in a nyad
-		for (int m=0; m<tempNp.getNyad().getNyadOrder(); m++)
+
+		//for (int j=0; j<_GeometryDisplay.getNyadListSize(); j++)
+		for (NyadPanel tempNPN : _GeometryDisplay.getNyadPanels())
 		{
-			MonadPanel tempMp=tempNp.getMonadPanel(m);
+			NyadRealF tempNp=tempNPN.getNyad();
+			    		
+			content.append("<Nyad");
+			content.append(" Name=\"");
+			content.append(tempNp.getName());
+			content.append("\", ");
 			
-			content.append("<Monad");
-
-    		content.append(" name=\"");
-    		content.append(tempMp.name.getText());
-    		content.append("\", ");
-
-    		content.append("algebra=\"");
-    		content.append(tempMp.aname.getText());
-    		content.append("\", ");
-    		
-    		content.append("signature=\"");
-    		content.append(tempMp.sig.getText());
-    		content.append("\", ");
-
-    		content.append("frame=\"");
-    		content.append(tempMp.frame.getText());
-    		content.append("\", ");
-
-    		content.append("foot=\"");
-    		content.append(tempMp.foot.getText());
-    		content.append("\">");
-    		content.append("\r\n");
-
-    		
-    		MonadRealF temp=tempMp.getMonad();
-    		RealF[] tc=temp.getCoeff();
-    		content.append("\t<Coefficients>");
-    		content.append("\r\n");
-    		for (int k=0; k<temp.getAlgebra().getGProduct().getBladeCount(); k++)
-    		{
-    		    content.append("\t\t<Item>");
-    		    content.append(new StringBuffer().append(tc[k].getReal()).toString());
-    		    content.append("</Item>");
-    		    content.append("\r\n");
-    		}
-    		content.append("\t</Coefficients>");
-    		content.append("\r\n");
-    		content.append("</Monad>");
-    		content.append("\r\n");
+			content.append(" Order=\"");
+			content.append(tempNp.getNyadOrder());
+			content.append("\", ");
+			
+			content.append(" Foot=\"");
+			content.append(tempNp.getFootPoint().getFootName());
+			
+			content.append("\">\r\n");
+			
+			content.append("<MonadList>\r\n");
+			//Start another loop here when more than one monad is in a nyad
+			for (int m=0; m<tempNp.getNyadOrder(); m++)
+				content.append(MonadRealF.toXMLString(tempNp.getMonadList(m)));
+			content.append("</MonadList>\r\n");
+			content.append("</Nyad>\r\n");
 		}
-		content.append("</Nyad>");
-		content.append("\r\n");
+		content.append("</NyadList>\r\n");
+		String contentstring = new String(content);
+		return contentstring;
 	}
-
-	String contentstring = new String(content);
-	return contentstring;
-}
-
-private void scaleCommand()
-{
-	try
-	{
-		//Find the selected nyad and monad panels
-		
-		NyadPanel tNSpotPnl = _GeometryDisplay.getNyadPanel(_GeometryDisplay.getPaneFocus());
-		MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
-		
-		//Now point to the monad to be scaled
-		MonadRealF tMonad=tMSpotPnl.getMonad();
-		
-		//...and scale it
-		tMonad.scale(new RealF(	tMonad.getCoeff((short) 0).getFieldType(), 
-								new Float(_StatusBar.stRealIO.getText()).floatValue()));
-		
-		//redraw the UI's Monad Panel to show the rescaled Monad there
-		tMSpotPnl.setCoefficientDisplay();
-		_StatusBar.setStatusMsg(" monad has been rescaled by | ");
-		_StatusBar.setStatusMsg(_StatusBar.stRealIO.getText()+"\n");
-	}
-	catch (FieldBinaryException efb)
-	{
-		_StatusBar.setStatusMsg(" monad has NOT been rescaled due to field binary exception.\n");
-	}
-}
-
-    /**
+	
+	/**
 	 * This method does the initial file handling for the configuration file.
 	 * It doesn't do anything fancy... just get it and load it into IniProps.
 	 */
 	    protected void getConfigProps(String pConfName) throws CantGetIniException
 		{
-	    	File fIni=null;
-	    	boolean bIni = false;
-	    	try
+	    	if (pConfName == null)
+	    		throw new CantGetIniException("The configuration file is not provided.");
+	    		
+	    	File fIni=new File(pConfName);
+	    	if (!(fIni.exists() & fIni.isFile() & fIni.canWrite()))
+    	    	throw new CantGetIniException("The configuration file is not valid.");
+    		
+	    	try (	FileInputStream tempSpot=new FileInputStream(fIni);
+		    		BufferedInputStream tSpot = new BufferedInputStream(tempSpot))
 	    	{
-	    		fIni=new File(pConfName);
-	    		bIni=fIni.exists();
-	    		if (bIni) bIni=fIni.isFile();
-	    		if (bIni) bIni=fIni.canRead();
-	    		if (!bIni) 
-	    			throw new CantGetIniException("The configuration file is not present or ready.");
-	    		//Getting here implied the configuration file has been found and readable
-	    		//System.out.println("No issue getting config file");
-	
 	    		IniProps=new Properties(System.getProperties());
-	    		IniProps.load(new BufferedInputStream(new FileInputStream(fIni)));
+	    		IniProps.load(tSpot);
+	    		
+	    		tSpot.close();
+	    		tempSpot.close();
 	    	}
-	    	catch(Exception e)
+	    	catch(IOException e)
 	    	{
-	    		System.out.println("IO Problem:  Incomplete Access to Associated INI files.");
+	    		System.out.println("IO Problem:  Incomplete Access to associated INI files.");
 	    		throw new CantGetIniException("No Access to INI file.");
 	    	}
 		}
-    
+
     /**
 	 * This method does the initial file handling for the snapshot save file.
 	 * It doesn't do much right now except check to see if the file is there.
 	 */
-	    protected void getSaveFile(String pSaveName)
-	    throws 	IOException, 
-	    		CantGetSaveException
+	protected void getSaveFile(String pSaveName)
+	    throws 	IOException, CantGetSaveException
+	{
+	    String SaveName=null;
+	    if (pSaveName==null)
+	    	SaveName=IniProps.getProperty("MonadViewer.Desktop.Snapshot");
+	    else
 	    {
-	    	String SaveName=null;
-	    	if (pSaveName==null)
-	    		SaveName=IniProps.getProperty("MonadViewer.Desktop.Snapshot");
-	    	else
-	    		SaveName=pSaveName;
-	    	
-	    	File fSave=null;
-	    	boolean bSave=false;
-	    	
-	    	fSave=new File(SaveName);
-	    	bSave=fSave.exists();
-	    	if (bSave) bSave=fSave.isFile();
-	    	if (bSave) bSave=fSave.canWrite();
-	    	if (!bSave)
-	    		throw new CantGetSaveException("No access to snapshot save file.");
-	    	
-	    	//Getting here implies the Save file has been found and is writeable
-	    	to=new FileWriter(fSave);
-	    	if (to!=null) 
-	    		System.out.println("Write file is not null");
-	    	else 
-	    		System.out.println("Write file is null");
+	    	SaveName=pSaveName;
+	    	IniProps.setProperty("MonadViewer.Desktop.Snapshot", pSaveName);
 	    }
-
-    protected void terminateModel()
-    {
-		to=null;
-		System.exit(0);
-    }
+	
+	    File fSave=new File(SaveName);
+	    if (!(fSave.exists() & fSave.isFile() & fSave.canWrite()))
+	    {
+	    	System.out.println("MonadViewer.Desktop.Snapshot should be set to somewhere in the conf file.");
+	        throw new CantGetSaveException("No access to snapshot save file.");
+	    }
+	    // Getting here with no exceptions is the objective. 
+	    // Success implies we have a valid snapshot target
+	    // but there is no need to keep a FileWriter open to it.
+	}
 } 

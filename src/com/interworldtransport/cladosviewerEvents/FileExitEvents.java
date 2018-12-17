@@ -27,8 +27,6 @@ package com.interworldtransport.cladosviewerEvents;
 import java.awt.event.*;
 import javax.swing.*;
 
-import com.interworldtransport.cladosviewer.ViewerMenu;
-
 /** com.interworldtransport.cladosviewer.FileExitEvents
  *  This class manages all events relating to the exiting of the applicaiton.
  *
@@ -37,28 +35,25 @@ import com.interworldtransport.cladosviewer.ViewerMenu;
  */
 public class FileExitEvents implements ActionListener
  {
-    protected ViewerMenu		ParentGUIMenu;
-    protected JMenuItem 		ControlIt;
-    protected FileEvents 		Parent;
+    protected JMenuItem 		_control;
+    protected FileEvents 		_parent;
 
-	/** 
-	 * This is the default constructor.
-	 */
-    public FileExitEvents(	ViewerMenu pGUIMenu,
-    						JMenuItem pmniExit,
+/** 
+ * This is the default constructor.
+ */
+    public FileExitEvents(	JMenuItem pmniExit,
     						FileEvents pParent)
     {
-		ParentGUIMenu=pGUIMenu;
-		ControlIt=pmniExit;
-		ControlIt.addActionListener(this);
-		Parent=pParent;
+		_control=pmniExit;
+		_control.addActionListener(this);
+		_parent=pParent;
     }
 
-	/** 
-	 * This is the actual action to be performed by this member of the File menu.
-	 */
+/** 
+ * This is the actual action to be performed by this member of the File menu.
+ */
     public void actionPerformed(ActionEvent evt)
     {
-    	System.exit(0);
+    	_parent._GUI.terminateModel();
     }
  }

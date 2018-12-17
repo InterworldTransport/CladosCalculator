@@ -22,9 +22,9 @@
  * ---com.interworldtransport.cladosviewerEvents.BOpsEqualEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
-
 package com.interworldtransport.cladosviewerEvents;
 
+import com.interworldtransport.cladosG.MonadRealF;
 import com.interworldtransport.cladosG.NyadRealF;
 
 import java.awt.event.*;
@@ -58,23 +58,18 @@ public class BOpsEqualEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	NyadRealF tNyadFirst;
-    	NyadRealF tNyadSecond;
+    	
     	int tNyadFirstIndex=_parent._GUI._GeometryDisplay.getPaneFocus();
-
-    	if (_parent._GUI._GeometryDisplay.getNyadListSize()>(tNyadFirstIndex+1))
+    	if (tNyadFirstIndex<0) return;
+    	if (tNyadFirstIndex>=_parent._GUI._GeometryDisplay.getNyadListSize()-1)
     	{
-    		tNyadFirst=_parent._GUI._GeometryDisplay.getNyadPanel(tNyadFirstIndex).getNyad();
-    		tNyadSecond=_parent._GUI._GeometryDisplay.getNyadPanel(tNyadFirstIndex+1).getNyad();
-    		if(NyadRealF.isMEqual(tNyadFirst, tNyadSecond))
-    			_parent._GUI._StatusBar.setStatusMsg(" selected nyad is equal to the next nyad\n");
-    		else
-    			_parent._GUI._StatusBar.setStatusMsg(" selected nyad is NOT equal to the next nyad\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\t\tselected nyad is at the end of the stack so no comparison attempted\n");
+    		return;
     	}
-    	else 
-    		_parent._GUI._StatusBar.setStatusMsg(" selected nyad is at the end of the stack so no comparison attempted\n");
-    		
-    	tNyadFirst=null;
-    	tNyadSecond=null;
+    	if (NyadRealF.isMEqual(	_parent._GUI._GeometryDisplay.getNyadPanel(tNyadFirstIndex).getNyad(), 
+    							_parent._GUI._GeometryDisplay.getNyadPanel(tNyadFirstIndex+1).getNyad()))
+    		_parent._GUI._StatusBar.setStatusMsg("\tselected nyad is equal to the next nyad\n");
+    	else
+    		_parent._GUI._StatusBar.setStatusMsg("\tselected nyad is NOT equal to the next nyad\n");		
     }
  }
