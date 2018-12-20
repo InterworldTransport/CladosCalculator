@@ -1,0 +1,204 @@
+x<Application Name="clados Calculator", Rights="Copyright 2018 Alfred Differ", Licensee=" Alfred Differ" />
+<NyadCount size="1" />
+<Nyad Name="New",  Order="3",  Foot="strawberry">
+<Monad name="ComplexMagn" algebra="strawberryMagn" frame="flat" gradeKey="1" sparseFlag="true" >
+<Coefficients number="2" gradeKey="1">
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+</Coefficients>
+</Monad>
+<Monad name="P" algebra="strawberryMotion" frame="flatMotion" gradeKey="1" sparseFlag="true" >
+<Coefficients number="16" gradeKey="1">
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+</Coefficients>
+</Monad>
+<Monad name="Q" algebra="strawberryProperty" frame="flatProperty" gradeKey="1" sparseFlag="true" >
+<Coefficients number="16" gradeKey="1">
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+	<RealF type="strawberryMagn" value="0.0" />
+</Coefficients>
+</Monad>
+
+</Nyad>
+
+<Application Name="clados Calculator", Rights="Copyright 2018 Alfred Differ", Licensee="Alfred Differ" />
+<NyadCount size="2" />
+<Nyad Name="N0",  Order="1",  Foot="strawberry">
+<Monad name="M" algebra="forever" frame="strawberryFields" gradeKey="1" sparseFlag="true" >
+<Coefficients number="16" gradeKey="1">
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+</Coefficients>
+</Monad>
+</Nyad>
+<Nyad Name="N0_c",  Order="1",  Foot="strawberry">
+<Monad name="M" algebra="forever" frame="strawberryFields" gradeKey="1" sparseFlag="true" >
+<Coefficients number="16" gradeKey="1">
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+</Coefficients>
+</Monad>
+</Nyad>
+
+<Application Name="clados Calculator", Rights="Copyright 2018 Alfred Differ", Licensee="Alfred Differ" />
+<NyadList size="3" >
+<Nyad Name="N0",  Order="2",  Foot="strawberry">
+<MonadList><Monad name="M" algebra="forever" frame="strawberryFields" gradeKey="1" sparseFlag="true" >
+<Coefficients number="16" gradeKey="1">
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+</Coefficients>
+</Monad>
+<Monad name="3D" algebra="noTime" frame="Newton" gradeKey="1" sparseFlag="true" >
+<Coefficients number="8" gradeKey="1">
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+</Coefficients>
+</Monad>
+</MonadList></Nyad>
+<Nyad Name="N0_c",  Order="2",  Foot="strawberry">
+<MonadList><Monad name="M" algebra="forever" frame="strawberryFields" gradeKey="1" sparseFlag="true" >
+<Coefficients number="16" gradeKey="1">
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+</Coefficients>
+</Monad>
+<Monad name="3D" algebra="noTime" frame="Newton" gradeKey="1" sparseFlag="true" >
+<Coefficients number="8" gradeKey="1">
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+</Coefficients>
+</Monad>
+</MonadList></Nyad>
+<Nyad Name="N0_2",  Order="2",  Foot="strawberry">
+<MonadList><Monad name="M" algebra="forever" frame="strawberryFields" gradeKey="1" sparseFlag="true" >
+<Coefficients number="16" gradeKey="1">
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+</Coefficients>
+</Monad>
+<Monad name="3D" algebra="noTime" frame="Newton" gradeKey="1" sparseFlag="true" >
+<Coefficients number="8" gradeKey="1">
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+	<RealF type="justRealF" value="0.0" />
+</Coefficients>
+</Monad>
+</MonadList></Nyad>
+</NyadList>
