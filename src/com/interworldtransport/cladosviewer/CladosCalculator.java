@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2018 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.MonadViewer<br>
+ * ---com.interworldtransport.cladosviewer.CladosCalculator<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.MonadViewer<br>
+ * ---com.interworldtransport.cladosviewer.CladosCalculator<br>
  * ------------------------------------------------------------------------ <br>
  */
 package com.interworldtransport.cladosviewer;
@@ -277,7 +277,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 		//Looks like arrival strings for pType are 'As' or null
 		//That means the app uses this method with an assumed switch.
 		
-	    String SaveName=IniProps.getProperty("MonadViewer.Desktop.Snapshot");
+	    String SaveName=IniProps.getProperty("Desktop.Snapshot");
 	    if (pType==null) 	// switch setting for 'save' with current snapshot target if known
 	    {
 	    	if (saveItTo==null)	// but if it is not known, make one up from conf setting
@@ -322,7 +322,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 		    		
 		    		//Change the Snapshot property so it can be used for 'Save' next
 		    		//time.  No chooser dialog should be needed then.
-		    		IniProps.setProperty("MonadViewer.Desktop.Snapshot", SaveName);
+		    		IniProps.setProperty("Desktop.Snapshot", SaveName);
 	    		}
 	    		catch (IOException e)
 	    		{
@@ -352,7 +352,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 
     private void constructControls()
     {
-    	Dimension square = new Dimension(50,50);
+    	Dimension square = new Dimension(44,44);
     	GridBagConstraints cn = new GridBagConstraints();
 		cn.insets = new Insets(0, 0, 0, 0);
 		
@@ -365,7 +365,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 		cn.gridheight=2;
 		cn.gridwidth=3;
 		cn.fill=GridBagConstraints.BOTH;
-    	_ControlBar.add(new JLabel(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.HeaderImage2"))),cn);
+    	_ControlBar.add(new JLabel(new ImageIcon(IniProps.getProperty("Desktop.Image.Header2"))),cn);
 		cn.gridy++;
 		cn.gridy++;
 		cn.fill=GridBagConstraints.HORIZONTAL;
@@ -375,26 +375,29 @@ public class CladosCalculator extends JFrame implements ActionListener
 		cn.gridwidth=1;
 
     	// button triple
-    	isRefMatch = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.RefMatchImage")));
+    	isRefMatch = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.RefMatch")));
     	isRefMatch.setActionCommand("reference match");
-    	isRefMatch.setToolTipText("Refernce Match Nyad Test");
+    	isRefMatch.setToolTipText("refernce Match Nyad Test");
     	isRefMatch.setPreferredSize(square);
+    	isRefMatch.setBorder(BorderFactory.createEtchedBorder(0));
     	isRefMatch.addActionListener(this);
     	_ControlBar.add(isRefMatch, cn);
     	cn.gridx++;
     	
-    	isEqual = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.EqualImage")));
+    	isEqual = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Equal")));
     	isEqual.setActionCommand("equal");
-    	isEqual.setToolTipText("Strong Equality Nyad Test");
+    	isEqual.setToolTipText("strong Equality Nyad Test");
     	isEqual.setPreferredSize(square);
+    	isEqual.setBorder(BorderFactory.createEtchedBorder(0));
     	isEqual.addActionListener(this);
     	_ControlBar.add(isEqual, cn);
     	cn.gridx++;
 
-    	isZero = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.ZeroImage")));
+    	isZero = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Zero")));
     	isZero.setActionCommand("zero");
-    	isZero.setToolTipText("Additive Identity (Zero) Monad Test");
+    	isZero.setToolTipText("additive Identity (Zero) Monad Test");
     	isZero.setPreferredSize(square);
+    	isZero.setBorder(BorderFactory.createEtchedBorder(0));
     	isZero.addActionListener(this);
     	_ControlBar.add(isZero, cn);
     	
@@ -402,26 +405,29 @@ public class CladosCalculator extends JFrame implements ActionListener
     	cn.gridy++;
     	
     	// button triple
-    	isMIdempotent = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.MIdempotentImage")));
+    	isMIdempotent = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.MIdempotent")));
     	isMIdempotent.setActionCommand("scaled idempotent");
-    	isMIdempotent.setToolTipText("Multiple of Idempotent Monad Test");
+    	isMIdempotent.setToolTipText("multiple of Idempotent Monad Test");
     	isMIdempotent.setPreferredSize(square);
+    	isMIdempotent.setBorder(BorderFactory.createEtchedBorder(0));
     	isMIdempotent.addActionListener(this);
     	_ControlBar.add(isMIdempotent, cn);
     	cn.gridx++;
     	
-    	isIdempotent = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.IdempotentImage")));
+    	isIdempotent = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Idempotent")));
     	isIdempotent.setActionCommand("idempotent");
-    	isIdempotent.setToolTipText("Idempotent Monad Test");
+    	isIdempotent.setToolTipText("idempotent Monad Test");
     	isIdempotent.setPreferredSize(square);
+    	isIdempotent.setBorder(BorderFactory.createEtchedBorder(0));
     	isIdempotent.addActionListener(this);
     	_ControlBar.add(isIdempotent, cn);
     	cn.gridx++;
     	
-    	isNilpotent = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.NilpotentImage")));
+    	isNilpotent = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Nilpotent")));
     	isNilpotent.setActionCommand("nilpotent");
-    	isNilpotent.setToolTipText("Nilpotent Monad Test");
+    	isNilpotent.setToolTipText("nilpotent Monad Test");
     	isNilpotent.setPreferredSize(square);
+    	isNilpotent.setBorder(BorderFactory.createEtchedBorder(0));
     	isNilpotent.addActionListener(this);
     	_ControlBar.add(isNilpotent, cn);
     	
@@ -430,26 +436,29 @@ public class CladosCalculator extends JFrame implements ActionListener
     	//end button triple
     	
     	// button triple
-    	isGrade = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.GradeImage")));
+    	isGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Grade")));
     	isGrade.setActionCommand("is grade");
-    	isGrade.setToolTipText("Is Grade() Monad Test");
+    	isGrade.setToolTipText("is Grade() Monad Test");
     	isGrade.setPreferredSize(square);
+    	isGrade.setBorder(BorderFactory.createEtchedBorder(0));
     	isGrade.addActionListener(this);
     	_ControlBar.add(isGrade, cn);
     	cn.gridx++;
     	
-    	isMultiGrade = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.MultiGradeImage")));
+    	isMultiGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.MultiGrade")));
     	isMultiGrade.setActionCommand("is mgrade");
-    	isMultiGrade.setToolTipText("Is MultiGrade Monad Test");
+    	isMultiGrade.setToolTipText("is MultiGrade Monad Test");
     	isMultiGrade.setPreferredSize(square);
+    	isMultiGrade.setBorder(BorderFactory.createEtchedBorder(0));
     	isMultiGrade.addActionListener(this);
     	_ControlBar.add(isMultiGrade, cn);
     	cn.gridx++;
     	
-    	whatGrade = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.WhatGradeImage")));
+    	whatGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.WhatGrade")));
     	whatGrade.setActionCommand("is grade!");
-    	whatGrade.setToolTipText("What Unique Grade Monad Test");
+    	whatGrade.setToolTipText("what Unique Grade Monad Test");
     	whatGrade.setPreferredSize(square);
+    	whatGrade.setBorder(BorderFactory.createEtchedBorder(0));
     	whatGrade.addActionListener(this);
     	_ControlBar.add(whatGrade, cn);
     	
@@ -458,18 +467,20 @@ public class CladosCalculator extends JFrame implements ActionListener
     	//end button triple
     	
     	// button triple
-    	whatMagn = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.MagnitudeImage")));
+    	whatMagn = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Magnitude")));
     	whatMagn.setActionCommand("magnitude of");
-    	whatMagn.setToolTipText("Discover Monad Magnitude");
+    	whatMagn.setToolTipText("discover Monad Magnitude");
     	whatMagn.setPreferredSize(square);
+    	whatMagn.setBorder(BorderFactory.createEtchedBorder(0));
     	whatMagn.addActionListener(this);
     	_ControlBar.add(whatMagn, cn);
     	cn.gridx++;
     	
-    	whatSQMagn = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.SQMagnitudeImage")));
+    	whatSQMagn = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.SQMagnitude")));
     	whatSQMagn.setActionCommand("sqmagnitude of");
-    	whatSQMagn.setToolTipText("Discover Monad Magnitude^2");
+    	whatSQMagn.setToolTipText("discover Monad Magnitude^2");
     	whatSQMagn.setPreferredSize(square);
+    	whatSQMagn.setBorder(BorderFactory.createEtchedBorder(0));
     	whatSQMagn.addActionListener(this);
     	_ControlBar.add(whatSQMagn, cn);
     	//cn.gridx++;
@@ -479,69 +490,77 @@ public class CladosCalculator extends JFrame implements ActionListener
     	cn.gridy++;
     	//end button triple
     	
-    	invertMonad = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.InvertImage")));
+    	invertMonad = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Invert")));
     	invertMonad.setActionCommand("invert");
-    	invertMonad.setToolTipText("Invert [+/-] Monad generators");
+    	invertMonad.setToolTipText("invert [+/-] Monad generators");
     	invertMonad.setPreferredSize(square);
+    	invertMonad.setBorder(BorderFactory.createEtchedBorder(0));
     	invertMonad.addActionListener(this);
     	_ControlBar.add(invertMonad, cn);
     	cn.gridx++;
     	
-    	reverseMonad = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.ReverseImage")));
+    	reverseMonad = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Reverse")));
     	reverseMonad.setActionCommand("reverse");
-    	reverseMonad.setToolTipText("Reverse [ab->ba] Monad blades");
+    	reverseMonad.setToolTipText("reverse [ab->ba] Monad blades");
     	reverseMonad.setPreferredSize(square);
+    	reverseMonad.setBorder(BorderFactory.createEtchedBorder(0));
     	reverseMonad.addActionListener(this);
     	_ControlBar.add(reverseMonad, cn);
     	cn.gridx++;
     	
-    	gradePart = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.GradePartImage")));
+    	gradePart = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.GradePart")));
     	gradePart.setActionCommand("grade part");
-    	gradePart.setToolTipText("Zero OTHER grades()");
+    	gradePart.setToolTipText("crop around grade()");
     	gradePart.setPreferredSize(square);
+    	gradePart.setBorder(BorderFactory.createEtchedBorder(0));
     	gradePart.addActionListener(this);
     	_ControlBar.add(gradePart, cn);
     	
     	cn.gridx=0;
     	cn.gridy++;
     	
-    	scaleMonad = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.ScaleImage")));
+    	scaleMonad = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Scale")));
     	scaleMonad.setActionCommand("scale");
-    	scaleMonad.setToolTipText("Scale() THIS Monad");
+    	scaleMonad.setToolTipText("scale() THIS Monad");
     	scaleMonad.setPreferredSize(square);
+    	scaleMonad.setBorder(BorderFactory.createEtchedBorder(0));
     	scaleMonad.addActionListener(this);
     	_ControlBar.add(scaleMonad, cn);
     	cn.gridx++;
     	
-    	normalizeMonad = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.NormImage")));
+    	normalizeMonad = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Norm")));
     	normalizeMonad.setActionCommand("normalize");
-    	normalizeMonad.setToolTipText("Normalize THIS Monad");
+    	normalizeMonad.setToolTipText("normalize THIS Monad");
     	normalizeMonad.setPreferredSize(square);
+    	normalizeMonad.setBorder(BorderFactory.createEtchedBorder(0));
     	normalizeMonad.addActionListener(this);
     	_ControlBar.add(normalizeMonad, cn);
     	cn.gridx++;
     	
-    	gradeSuppress = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.GradeSuppressImage")));
+    	gradeSuppress = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.GradeSuppress")));
     	gradeSuppress.setActionCommand("grade suppress");
-    	gradeSuppress.setToolTipText("Zero THIS grade()");
+    	gradeSuppress.setToolTipText("cut this grade()");
     	gradeSuppress.setPreferredSize(square);
+    	gradeSuppress.setBorder(BorderFactory.createEtchedBorder(0));
     	gradeSuppress.addActionListener(this);
     	_ControlBar.add(gradeSuppress, cn);
     	cn.gridx=0;
     	cn.gridy++;
     	
-    	dualLeft = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.DualLeftImage")));
+    	dualLeft = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.DualLeft")));
     	dualLeft.setActionCommand("dual>");
-    	dualLeft.setToolTipText("Left Dual of THIS Monad using algebra's PS");
+    	dualLeft.setToolTipText("left Dual of THIS Monad using algebra's PS");
     	dualLeft.setPreferredSize(square);
+    	dualLeft.setBorder(BorderFactory.createEtchedBorder(0));
     	dualLeft.addActionListener(this);
     	_ControlBar.add(dualLeft, cn);
     	cn.gridx++;
     	
-    	dualRight = new JButton(new ImageIcon(IniProps.getProperty("MonadViewer.Desktop.DualRightImage")));
+    	dualRight = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.DualRight")));
     	dualRight.setActionCommand("<dual");
-    	dualRight.setToolTipText("Right Dual of THIS Monad using algebra's PS");
+    	dualRight.setToolTipText("right Dual of THIS Monad using algebra's PS");
     	dualRight.setPreferredSize(square);
+    	dualRight.setBorder(BorderFactory.createEtchedBorder(0));
     	dualRight.addActionListener(this);
     	_ControlBar.add(dualRight, cn);	
     }
@@ -553,7 +572,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 		content.append("<Application Name=\"clados Calculator\", ");
 		content.append("Rights=\"Copyright 2018 Alfred Differ\", ");
 		content.append("Licensee=\"");
-		content.append(IniProps.getProperty("MonadViewer.User.Name"));
+		content.append(IniProps.getProperty("User.Name"));
 		content.append("\" />\r\n");
 
 		content.append("<NyadList size=\"");
@@ -629,17 +648,17 @@ public class CladosCalculator extends JFrame implements ActionListener
 	{
 	    String SaveName=null;
 	    if (pSaveName==null)
-	    	SaveName=IniProps.getProperty("MonadViewer.Desktop.Snapshot");
+	    	SaveName=IniProps.getProperty("Desktop.Snapshot");
 	    else
 	    {
 	    	SaveName=pSaveName;
-	    	IniProps.setProperty("MonadViewer.Desktop.Snapshot", pSaveName);
+	    	IniProps.setProperty("Desktop.Snapshot", pSaveName);
 	    }
 	
 	    File fSave=new File(SaveName);
 	    if (!(fSave.exists() & fSave.isFile() & fSave.canWrite()))
 	    {
-	    	System.out.println("MonadViewer.Desktop.Snapshot should be set to somewhere in the conf file.");
+	    	System.out.println("Desktop.Snapshot should be set to somewhere in the conf file.");
 	        throw new CantGetSaveException("No access to snapshot save file.");
 	    }
 	    // Getting here with no exceptions is the objective. 

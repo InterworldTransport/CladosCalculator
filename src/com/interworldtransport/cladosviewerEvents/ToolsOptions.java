@@ -50,12 +50,6 @@ public class ToolsOptions implements ActionListener
 		_control=pOpt;
 		_parent=pParent;
 		_control.addActionListener(this);
-		
-		//TODO
-		//Construct the panels that show the configuration key pairs.
-		//There should be file readers and writers that enable a re-read 
-		//of was and a save of what is shown.
-		//Skip the part of the GUI's INIProps that contain the system props?
     }
 
 /** 
@@ -63,15 +57,6 @@ public class ToolsOptions implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-	//Show the Configuration file;
-
-	StringBuffer content = new StringBuffer();
-
-	content.append("Fill Here with Configuration File ");
-
-	String contentstring = new String(content);
-
-	//OptionsDialog opt1 = 
-			new OptionsDialog(_parent._GUI, contentstring);
+    	new OptionsDialog(_parent._GUI);
     }
 }

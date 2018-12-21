@@ -75,11 +75,12 @@ public class CreateDialog extends JDialog implements ActionListener
 	private	CladosCalculator	_GUI;
 	private	MonadPanel			mainPane;
 	private	JButton				closeButton;
-	private	JButton				saveNyadButton;
-	private	JButton				saveMonadButton;
+	private	JButton				saveButton;
 	private	JButton				getFootButton;
 	private	JButton				getAlgebraButton;
-	
+	private	final Dimension		square = new Dimension(30,30);
+	private	Color				_monadColor = new Color(212, 212, 192);
+	private	Color				_nyadColor = new Color(212, 200, 212);
 	private AlgebraRealF		copyAlgTarget;
 	private Foot				copyFootTarget;
 
@@ -90,11 +91,12 @@ public class CreateDialog extends JDialog implements ActionListener
 	throws 		UtilitiesException, BadSignatureException, CladosMonadException
 	{
 		
-		super(mainWindow, "Create Nyad/Monad Panel", false);
+		super(mainWindow, (makeNyad ? "Create Nyad Panel": "Create Monad Panel"), false);
 		_GUI=mainWindow;
 		
 		JPanel centerPanel=new JPanel(new BorderLayout());
-		centerPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		centerPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		centerPanel.setBackground(makeNyad ? _nyadColor : _monadColor);
 		
 		mainPane = new MonadPanel(_GUI);
 		
@@ -106,26 +108,22 @@ public class CreateDialog extends JDialog implements ActionListener
 		// Create Lower button panel
 		JPanel dialogControlPane = new JPanel(new FlowLayout());
 		dialogControlPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		dialogControlPane.setBackground(makeNyad ? _nyadColor : _monadColor);
 		
-		if (makeNyad)
-		{
-			saveNyadButton = new JButton(new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.SaveImage")));
-		 	saveNyadButton.setActionCommand("Save Nyad");
-		 	saveNyadButton.setToolTipText("Create new nyad. Algebra/Foot or just Foot can be referenced.");
-			saveNyadButton.addActionListener(this);
-			dialogControlPane.add(saveNyadButton);
-		}
+		saveButton = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Save")));
+		saveButton.setActionCommand(makeNyad ? "Save Nyad": "Save Monad");
+		saveButton.setToolTipText(makeNyad ? 	"Create new nyad. Algebra/Foot or just Foot can be referenced.": 
+												"Create new monad. Algebra/Foot can be referenced, but nyad Foot better match.");
+		saveButton.setPreferredSize(square);
+		saveButton.setBorder(BorderFactory.createEtchedBorder(0));
+		saveButton.addActionListener(this);
+		dialogControlPane.add(saveButton);
 		
-		if (!makeNyad)
-		{
-			saveMonadButton = new JButton(new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.SaveImage")));
-			saveMonadButton.setActionCommand("Save Monad");
-			saveMonadButton.setToolTipText("Create new monad. Algebra/Foot can be referenced, but nyad Foot better match.");
-			saveMonadButton.addActionListener(this);
-			dialogControlPane.add(saveMonadButton);
-		}
-		
-		closeButton = new JButton("Close");
+		closeButton = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Close")));
+		closeButton.setActionCommand("close");
+		closeButton.setToolTipText("Close the dialog. No further changes.");
+		closeButton.setPreferredSize(square);
+		closeButton.setBorder(BorderFactory.createEtchedBorder(0));
 		closeButton.addActionListener(this);
 		dialogControlPane.add(closeButton);
 		
@@ -134,16 +132,21 @@ public class CreateDialog extends JDialog implements ActionListener
 		// Create Upper button panel
 		JPanel dialogGetPane = new JPanel(new FlowLayout());
 		dialogGetPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		dialogGetPane.setBackground(makeNyad ? _nyadColor : _monadColor);
 		
-		getFootButton = new JButton("Get Foot");
-		getFootButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		getFootButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		getFootButton = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot")));
+		getFootButton.setActionCommand("Get Foot");
+		getFootButton.setToolTipText("Reference Foot in selected nyad.");
+		getFootButton.setPreferredSize(square);
+		getFootButton.setBorder(BorderFactory.createEtchedBorder(0));
 		getFootButton.addActionListener(this);
 		dialogGetPane.add(getFootButton);
 		
-		getAlgebraButton = new JButton("Get Algebra");
-		getAlgebraButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		getAlgebraButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		getAlgebraButton = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Alg")));
+		getAlgebraButton.setActionCommand("Get Algebra");
+		getAlgebraButton.setPreferredSize(square);
+		getAlgebraButton.setToolTipText("Reference Algebra in selected monad.");
+		getAlgebraButton.setBorder(BorderFactory.createEtchedBorder(0));
 		getAlgebraButton.addActionListener(this);
 		dialogGetPane.add(getAlgebraButton);
 		
@@ -165,7 +168,7 @@ public class CreateDialog extends JDialog implements ActionListener
     public void actionPerformed(ActionEvent event)
     {
     	String command = event.getActionCommand();
-    	if (command.equals("Close"))
+    	if (command.equals("close"))
     	{
     		dispose();
     	}

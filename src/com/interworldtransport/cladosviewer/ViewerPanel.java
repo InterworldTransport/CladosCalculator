@@ -64,6 +64,7 @@ import java.util.*;
     private		JButton					swapAbove;
     private		JButton					swapBelow;  
     private		Color					_backColor=new Color(255, 255, 220);
+    private final	Dimension 			square = new Dimension(25,25);
 
 /**
  * The ViewerPanel class is intended to be a tabbed pane that displays all
@@ -136,7 +137,6 @@ import java.util.*;
   	    _controlBar.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
   	    _controlBar.setBackground(_backColor);
   	    
-    	Dimension square = new Dimension(50,50);
     	GridBagConstraints cn = new GridBagConstraints();
 		cn.insets = new Insets(0, 0, 0, 0);
 		cn.anchor=GridBagConstraints.NORTH;
@@ -148,42 +148,47 @@ import java.util.*;
 		cn.weighty=0;
 		cn.gridheight=1;
 		cn.gridwidth=1;
-    	swapBelow=new JButton(new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.PushImage")));
+    	swapBelow=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Push")));
     	swapBelow.setActionCommand("push");
     	swapBelow.setToolTipText("push nyad down on stack");
     	swapBelow.setPreferredSize(square);
+    	swapBelow.setBorder(BorderFactory.createEtchedBorder(0));
     	swapBelow.addActionListener(this);
     	_controlBar.add(swapBelow, cn);
     	cn.gridy++;
     	
-    	swapAbove=new JButton(new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.PopImage")));
+    	swapAbove=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Pop")));
     	swapAbove.setActionCommand("pop");
     	swapAbove.setToolTipText("pop nyad up on stack");
     	swapAbove.setPreferredSize(square);
+    	swapAbove.setBorder(BorderFactory.createEtchedBorder(0));
     	swapAbove.addActionListener(this);
     	_controlBar.add(swapAbove, cn);
 		cn.gridy++;
     	
-    	copyNyad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.CopyImage")));
+    	copyNyad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Copy")));
     	copyNyad.setActionCommand("copy");
     	copyNyad.setToolTipText("copy nyad to end of stack");
     	copyNyad.setPreferredSize(square);
+    	copyNyad.setBorder(BorderFactory.createEtchedBorder(0));
     	copyNyad.addActionListener(this);
     	_controlBar.add(copyNyad, cn);
     	cn.gridy++;
     	
-    	removeNyad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.RemoveImage")));
+    	removeNyad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Remove")));
     	removeNyad.setActionCommand("erase");
     	removeNyad.setToolTipText("remove nyad from stack");
     	removeNyad.setPreferredSize(square);
+    	removeNyad.setBorder(BorderFactory.createEtchedBorder(0));
     	removeNyad.addActionListener(this);
     	_controlBar.add(removeNyad, cn);
     	cn.gridy++;
     	
-    	newNyad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.CreateImage")));
+    	newNyad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Create")));
     	newNyad.setActionCommand("create");
     	newNyad.setToolTipText("create new nyad");
     	newNyad.setPreferredSize(square);
+    	newNyad.setBorder(BorderFactory.createEtchedBorder(0));
     	newNyad.addActionListener(this);
     	_controlBar.add(newNyad, cn);
     	cn.gridy++;
@@ -250,7 +255,7 @@ import java.util.*;
     throws 		UtilitiesException, BadSignatureException
     {
     	//Get the nyad tab image for the nyad panes being constructed
-    	tabIcon = new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.TabNImage"));
+    	tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabN"));
     	
     	//The Viewer contains NyadPanels displayed as a JTabbedPanes containing 
     	//JScrollPanes containing a NyadPanel each. We initiate the JTabbedPanel here
@@ -269,12 +274,12 @@ import java.util.*;
         }							);
  
     	//Look in the conf file and determine how many nyads to initiate
-    	int intCount=Integer.parseInt(_GUI.IniProps.getProperty("MonadViewer.Desktop.Default.Count"));
+    	int intCount=Integer.parseInt(_GUI.IniProps.getProperty("Desktop.Default.Count"));
     	nyadPanelList=new ArrayList<NyadPanel>(intCount);
     	//Note that we initialize the NyadPanelList, but don't create a NyadPanel for it yet
     	
     	//Look in the conf file and determine how many monads in each nyad get initiated
-    	int intOrd=Integer.parseInt(_GUI.IniProps.getProperty("MonadViewer.Desktop.Default.Order"));
+    	int intOrd=Integer.parseInt(_GUI.IniProps.getProperty("Desktop.Default.Order"));
     	
     	
     	// the j counter covers the number of nyads to be initiated.
@@ -287,11 +292,11 @@ import java.util.*;
     		try
 	    	{
 	    		aMonad=new MonadRealF("M",
-	    				_GUI.IniProps.getProperty("MonadViewer.Desktop.Default.AlgebraName"),
-	    				_GUI.IniProps.getProperty("MonadViewer.Desktop.Default.FrameName"),
-	    				_GUI.IniProps.getProperty("MonadViewer.Desktop.Default.FootName"),
-	    				_GUI.IniProps.getProperty("MonadViewer.Desktop.Default.Sig"),
-	    				new RealF(new DivFieldType(_GUI.IniProps.getProperty("MonadViewer.Desktop.Default.FieldType")), 1.0f)
+	    				_GUI.IniProps.getProperty("Desktop.Default.AlgebraName"),
+	    				_GUI.IniProps.getProperty("Desktop.Default.FrameName"),
+	    				_GUI.IniProps.getProperty("Desktop.Default.FootName"),
+	    				_GUI.IniProps.getProperty("Desktop.Default.Sig"),
+	    				new RealF(new DivFieldType(_GUI.IniProps.getProperty("Desktop.Default.FieldType")), 1.0f)
 	    										);
 	    		String cnt =new StringBuffer("N").append(j).toString();
 	    		aNyad=new NyadRealF(cnt, aMonad);
@@ -318,7 +323,7 @@ import java.util.*;
     				aNyad.createMonad(	nextMonadName, 
     									nextAlgebraName, 
     									nextFrameName, 
-    									_GUI.IniProps.getProperty("MonadViewer.Desktop.Default.Sig")
+    									_GUI.IniProps.getProperty("Desktop.Default.Sig")
     								);
         		}
         		catch (CladosMonadException em)

@@ -1,25 +1,27 @@
-/*
-<h2>Copyright</h2>
-Copyright (c) 2005 Interworld Transport.  All rights reserved.<br>
----com.interworldtransport.cladosviewer.AboutDialog-------------------------------------------
-<p>
-Interworld Transport grants you ("Licensee") a license to this software
-under the terms of the GNU General Public License.<br>
-A full copy of the license can be found bundled with this package or code file.
-<p>
-If the license file has become separated from the package, code file, or binary
-executable, the Licensee is still expected to read about the license at the
-following URL before accepting this material.
-<blockquote><code>http://www.opensource.org/gpl-license.html</code></blockquote>
-<p>
-Use of this code or executable objects derived from it by the Licensee states their
-willingness to accept the terms of the license.
-<p>
-A prospective Licensee unable to find a copy of the license terms should contact
-Interworld Transport for a free copy.
-<p>
----com.interworldtransport.cladosviewer.AboutDialog-------------------------------------------
-*/
+/**
+ * <h2>Copyright</h2> © 2018 Alfred Differ.<br>
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.AboutDialog<br>
+ * -------------------------------------------------------------------- <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.<p>
+ * 
+ * Use of this code or executable objects derived from it by the Licensee 
+ * states their willingness to accept the terms of the license. <p> 
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * 
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.AboutDialog<br>
+ * ------------------------------------------------------------------------ <br>
+ */
 
 package com.interworldtransport.cladosviewer;
 
@@ -28,12 +30,12 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-/**  com.interworldtransport.cladosviewer.AboutDialog
+/**  
  * The AboutDialog is an information window that is called from the
  * "Help|About" menu on the main Atmosphere application window.
  * It provides information about the application, credit to contributors
  * and the GPL license.
- * @version 0.80, $Date: 2005/07/31 05:00:25 $
+ * @version 0.85
  * @author Dr Alfred W Differ
  */
 public final class AboutDialog extends JDialog implements ActionListener
@@ -56,7 +58,7 @@ public final class AboutDialog extends JDialog implements ActionListener
 		//Create Logo panel
 		
 		JPanel topspot=new JPanel();
-		String logoFile=TheGUI.IniProps.getProperty("MonadViewer.Desktop.HeaderImage");
+		String logoFile=TheGUI.IniProps.getProperty("Desktop.Image.Header");
 		ImageIcon temp = new ImageIcon(logoFile);
 		topspot.add(new JLabel(temp));
 		mainPane.add(topspot, "North");
@@ -100,9 +102,9 @@ public final class AboutDialog extends JDialog implements ActionListener
     
     private String constructContent()
     {
-    	String tempVersion = TheGUI.IniProps.getProperty("MonadViewer.Desktop.Version");
-    	String tempUserName = TheGUI.IniProps.getProperty("MonadViewer.User.Name");
-    	String tempInstitution = TheGUI.IniProps.getProperty("MonadViewer.User.Institution");
+    	String tempVersion = TheGUI.IniProps.getProperty("Desktop.Version");
+    	String tempUserName = TheGUI.IniProps.getProperty("User.Name");
+    	String tempInstitution = TheGUI.IniProps.getProperty("User.Institution");
 
     	StringBuffer content = new StringBuffer();
 

@@ -58,7 +58,7 @@ import java.util.*;
 	private		Color					_unlockColor = new Color(255, 192, 192);
 	private		JButton					copyButton;
 	private		JButton					editButton;
-	private	JButton					newMonad;
+	private		JButton					newMonad;
 	private		JButton					removeButton;
 	private		JButton					restoreButton;
 	private		JButton					saveButton;
@@ -69,6 +69,7 @@ import java.util.*;
 	protected	JLabel					nyadOrder=new JLabel();
 	protected	JButton					swapAbove;
     protected	JButton					swapBelow; 
+    private final	Dimension 			square = new Dimension(25,25);
  
 /**
  * This constructor is the copy one used when a Monad alread exists
@@ -88,7 +89,7 @@ import java.util.*;
 			 setBackground(_backColor);
 			 setLayout(new BorderLayout());
 
-			 tabIcon = new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.TabMImage"));
+			 tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabM"));
 			 
 			 createControlLayout();
 			 createControlLayout2();
@@ -265,7 +266,7 @@ import java.util.*;
     {
 	    int size=monadPanes.getTabCount();
 	    int where=monadPanes.getSelectedIndex();
-	    if (where<size)
+	    if (where<size-1)
 	    {
 		    String otherTitle=new String(monadPanes.getTitleAt(where+1));
 		    JScrollPane otherPane=new JScrollPane((JPanel)monadPanelList.get(where+1));
@@ -281,6 +282,8 @@ import java.util.*;
 
 		    MonadPanel tempPanel=(MonadPanel)monadPanelList.remove(where);
 		    monadPanelList.add(where+1, tempPanel);
+		    
+		    revalidate();
 	    }
     }
     
@@ -356,10 +359,9 @@ import java.util.*;
     
     private 	void		createControlLayout()
     {
-    	Dimension square = new Dimension(50,50);
     	_controlPanel=new JPanel();
     	_controlPanel.setBackground(_backColor);
-    	if ((_GUI.IniProps.getProperty("MonadViewer.Desktop.Default.Object")).equals("Monad")) return;
+    	//if ((_GUI.IniProps.getProperty("Desktop.Default.Object")).equals("Monad")) return;
     	
     	_controlPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
     	_controlPanel.setLayout(new GridBagLayout());
@@ -370,20 +372,23 @@ import java.util.*;
     	cn.anchor=GridBagConstraints.NORTH;
     	makeNotWritable();
     	
-   	 	saveButton=new JButton(new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.SaveImage")));
+   	 	saveButton=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Save")));
    	 	saveButton.setActionCommand("save");
    	 	saveButton.setToolTipText("save edits to nyad");
+   	 	saveButton.setBorder(BorderFactory.createEtchedBorder(0));
    	 	saveButton.setEnabled(false);
 	 	saveButton.setPreferredSize(square);
    	 	
-   	 	editButton=new JButton(new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.EditImage")));
+   	 	editButton=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Edit")));
     	editButton.setActionCommand("edit");
     	editButton.setToolTipText("start edits on nyad");
+    	editButton.setBorder(BorderFactory.createEtchedBorder(0));
 	 	editButton.setPreferredSize(square);
 	 	
-	 	restoreButton=new JButton(new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.RestoreImage")));
+	 	restoreButton=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Restore")));
     	restoreButton.setActionCommand("abort");
     	restoreButton.setToolTipText("abandon edits to nyad");
+    	restoreButton.setBorder(BorderFactory.createEtchedBorder(0));
     	restoreButton.setEnabled(false);
 	 	restoreButton.setPreferredSize(square);
     	
@@ -417,7 +422,6 @@ import java.util.*;
     	_controlPanel2.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
     	_controlPanel2.setBackground(_backColor);
   	    
-    	Dimension square = new Dimension(50,50);
     	GridBagConstraints cn = new GridBagConstraints();
 		cn.insets = new Insets(0, 0, 0, 0);
 		cn.anchor=GridBagConstraints.NORTH;
@@ -429,42 +433,47 @@ import java.util.*;
 		cn.weighty=0;
 		cn.gridheight=1;
 		cn.gridwidth=1;
-    	swapBelow=new JButton(new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.PushImage")));
+    	swapBelow=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Push")));
     	swapBelow.setActionCommand("push");
     	swapBelow.setToolTipText("push monad down on stack");
     	swapBelow.setPreferredSize(square);
+    	swapBelow.setBorder(BorderFactory.createEtchedBorder(0));
     	swapBelow.addActionListener(this);
     	_controlPanel2.add(swapBelow, cn);
     	cn.gridy++;
     	
-    	swapAbove=new JButton(new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.PopImage")));
+    	swapAbove=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Pop")));
     	swapAbove.setActionCommand("pop");
     	swapAbove.setToolTipText("pop monad up on stack");
     	swapAbove.setPreferredSize(square);
+    	swapAbove.setBorder(BorderFactory.createEtchedBorder(0));
     	swapAbove.addActionListener(this);
     	_controlPanel2.add(swapAbove, cn);
 		cn.gridy++;
     	
-		copyButton=new JButton(new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.CopyImage")));
+		copyButton=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Copy")));
    	 	copyButton.setActionCommand("copy");
    	 	copyButton.setToolTipText("copy monad to end of stack");
    	 	copyButton.setPreferredSize(square);
+   	 	copyButton.setBorder(BorderFactory.createEtchedBorder(0));
    	 	copyButton.addActionListener(this);
    	 	_controlPanel2.add(copyButton, cn);
     	cn.gridy++;
     	
-    	removeButton=new JButton(new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.RemoveImage")));
+    	removeButton=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Remove")));
    	 	removeButton.setActionCommand("erase");
    	 	removeButton.setToolTipText("remove monad from stack");
    	 	removeButton.setPreferredSize(square);
+   	 	removeButton.setBorder(BorderFactory.createEtchedBorder(0));
    	 	removeButton.addActionListener(this);
     	_controlPanel2.add(removeButton, cn);
     	cn.gridy++;
     	
-    	newMonad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("MonadViewer.Desktop.CreateImage")));
+    	newMonad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Create")));
     	newMonad.setActionCommand("create");
     	newMonad.setToolTipText("create new monad");
     	newMonad.setPreferredSize(square);
+    	newMonad.setBorder(BorderFactory.createEtchedBorder(0));
     	newMonad.addActionListener(this);
     	_controlPanel2.add(newMonad, cn);
     	cn.gridy++;
@@ -480,9 +489,7 @@ import java.util.*;
     	_refPanel=new JPanel();
     	_refPanel.setBackground(_backColor);
     	
-    	if ((_GUI.IniProps.getProperty("MonadViewer.Desktop.Default.Object")).equals("Monad")) return;
-    	
-    	_refPanel.setBorder(BorderFactory.createTitledBorder("nyad"));
+    	_refPanel.setBorder(BorderFactory.createTitledBorder("N"));
     	_refPanel.setLayout(new GridBagLayout());
     	
     	GridBagConstraints cn0 = new GridBagConstraints();
@@ -504,7 +511,7 @@ import java.util.*;
     	
     	cn0.weightx=0;
     	cn0.ipadx=20;
-    	_refPanel.add(new JLabel("Foot ", SwingConstants.RIGHT), cn0);
+    	_refPanel.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot"))), cn0);
     	cn0.gridx++;
     	nyadFoot.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
     	nyadFoot.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

@@ -91,7 +91,7 @@ public final class SupportDialog extends JDialog implements ActionListener
     
     private String constructContent()
     {
-    	String tempVersion = TheGUI.IniProps.getProperty("MonadViewer.Desktop.Version");
+    	String tempVersion = TheGUI.IniProps.getProperty("Desktop.Version");
     	
     	StringBuffer content = new StringBuffer();
 	
