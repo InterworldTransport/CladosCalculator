@@ -5,17 +5,17 @@
 	Ant build script for clados and cladosviewer
 	</description>
 
-	<property 	name="NoDyad" 	value="true" />
-	<property	name="appName" 	value="clados" />
-	<property 	name="coName" 	value="Interworld Transport" />
-	<property 	name="appHome" 	value="http://www.interworldtransport.com" />
-	<property 	name="buildDir"	value="build" />
-	<property 	name="libDir" 	value="lib" />
-	<property	name="srcDir"	value="src" />
-	<property	name="confDir"	value="conf" />
-	<property 	name="clados"	value="com/interworldtransport/clados/" />
-	<property 	name="viewer"	value="com/interworldtransport/cladosviewer/" />
-	<property 	name="copyleft"	value="&lt;p&gt;
+	<property	name="appName" 		value="Clados Calculator" />
+	<property 	name="coName" 		value="Interworld Transport" />
+	<property 	name="appHome" 		value="https://github.com/InterworldTransport/CladosCalculator" />
+	<property 	name="buildDir"		value="build" />
+	<property 	name="docAPIDir"	value="docs/api" />
+	<property 	name="libDir" 		value="lib" />
+	<property	name="srcDir"		value="src" />
+	<property	name="confDir"		value="conf" />
+	<property 	name="clados"		value="com/interworldtransport/clados/" />
+	<property 	name="viewer"		value="com/interworldtransport/cladosviewer/" />
+	<property 	name="copyleft"		value="&lt;p&gt;
 --------------------------------------------------------------------------------
 &lt;br&gt;
 CladosCalculator_API_Documentation&lt;br&gt;
@@ -40,44 +40,51 @@ along with this program.  If not, see https://www.gnu.org/licenses/."/>
 
 	<target name="clean"
 			description="Removes all Clados files down to a basic src package.">
-		<delete dir="build" /> <!-- made by compile target -->
+		<delete dir="${buildDir}" /> <!-- made by compile target -->
+		<delete dir="${docAPIDir}" /> <!-- made by javadoc target -->
 	</target>
 
 	<target name="prepare"
 		description="Creates output directories" >
-		<mkdir dir="./build" />
+		<mkdir dir="${buildDir}" />
 	</target>
+	
+	<target name="prepareDOC"
+			description="Creates output directories" >
+			<mkdir dir="${docAPIDir}" />
+		</target>
 	
 	<target name="compile"
 			depends="prepare"
 			description="Compiles all the Clados Calculator source files" >
 		<javac 	includeantruntime="false"
-				classpath="lib/clados.jar"
+				classpath="${libDir}/clados.jar"
 				debug="on"
 				destdir="${buildDir}"
-				nowarn="on"
+				nowarn="off"
 				srcdir="${srcDir}"
 				verbose="false" >
+			<!-- We need to get to where these can be excluded
 			<exclude name="com/interworldtransport/cladosG/*.java"/>
 			<exclude name="com/interworldtransport/cladosGExceptions/*.java"/>
 			<exclude name="com/interworldtransport/cladosF/*.java"/>
 			<exclude name="com/interworldtransport/cladosFExceptions/*.java"/>
+			-->
 		</javac>
 	</target>
-
-	
 	
 	<target name="javadoc"
-		description="Generates the API documentation for clados." >
-		<javadoc author="true"
+			depends="prepareDOC"
+			description="Generates the API documentation for clados." >
+		<javadoc 	author="true"
 					bottom="${copyleft}"
-					destdir="docs/api"
+					destdir="${docAPIDir}"
 					doctitle="Clados Calculator Documentation"
 					header="&lt;a target=_top href=${appHome}&gt;${coName}&lt;/a&gt;"
-					overview="com/interworldtransport/overview.html"
+					overview="/Users/alfredwdiffer/eclipse-workspace/CladosCalculator/src/overview.html"
 					packagenames="com.interworldtransport.*"
 					sourcepath="${srcDir}"
-					verbose="truee"
+					verbose="false"
 					windowtitle="Clados Calculator API Documentation">
 		</javadoc>
 	</target>
@@ -89,7 +96,6 @@ along with this program.  If not, see https://www.gnu.org/licenses/."/>
 		
 		<jar 	manifest="clados.manifest"
 				index="true"
-
 				jarfile="./cladosCalculator.jar">
 
 			<fileset dir="icons">
@@ -115,20 +121,10 @@ along with this program.  If not, see https://www.gnu.org/licenses/."/>
 	<target name="jar_API_docs"
 		depends="javadoc"
 		description="Package the source code and support docs for install." >
-		<jar
-			jarfile="./clados_API_Docs.jar"
-			>
+		<jar 	jarfile="lib/clados_API_Docs.jar" >
 			<fileset dir="docs">
 				<include name="api/**/*.*"/>
 			</fileset>
 		</jar>
-	</target>
-
-	<target name="install"
-			depends="jar, jar_API_docs"
-			description="This one is not ready yet.  It needs to know where to put libraries." >
-	</target>
-
-	<target name="uninstall" description="This one is not ready yet." >
 	</target>
 </project>

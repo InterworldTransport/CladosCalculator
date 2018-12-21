@@ -8,4 +8,12 @@ The clados.jar file is a library that may be placed where java libraries are
 stored on your system.  Be sure to include it in your classpath statement to
 ensure other applications know where to find it's contents.
 
+2018/12/01 Alfred Differ
+The 'install' target still doesn't do anything, so I removed it. 
+Just use the 'jar' target and then run the bat script. 
+It should be enough to see how things work.
 
+The clados.jar file is expected in the lib directory of the project. You can 
+see this by looking at the single shell command in the bat file. The actual
+calculator is within the jar file target and the manifest file takes care of 
+ensuring java -jar knows what to do.
