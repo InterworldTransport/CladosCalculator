@@ -6,18 +6,18 @@
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version. 
+ * License, or (at your option) any later version.
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.<p>
- * 
- * Use of this code or executable objects derived from it by the Licensee 
- * states their willingness to accept the terms of the license. <p> 
- * 
+ *
+ * Use of this code or executable objects derived from it by the Licensee
+ * states their willingness to accept the terms of the license. <p>
+ *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
- * 
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p>
+ *
  * ------------------------------------------------------------------------ <br>
  * ---com.interworldtransport.cladosG.MonadRealF<br>
  * ------------------------------------------------------------------------ <br>
@@ -55,7 +55,7 @@ import static com.interworldtransport.cladosF.RealF.*;
  * Monad objects must be declared with at least one generator of geometry.
  * Properties not requiring a generator of geometry may be adequately defined on
  * Fields and are not intended to be covered in the clados package.
- * 
+ *
  * @version 1.0
  * @author Dr Alfred W Differ
  */
@@ -63,23 +63,23 @@ public class MonadRealF extends MonadAbstract
 {
 	/**
 	 * Return true if more the monad is a ZERO scalar.
-	 * 
+	 *
 	 * @param pM
 	 * 			MonadRealF This is the monad to be tested.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public static boolean isGZero(MonadRealF pM)
 	{
 		if (pM.getGradeKey() == 1 & isZero(pM.getCoeff((short) 0)))
 			return true;
-		
+
 		return false;
 	}
 
 	/**
 	 * Return true if the Monad an idempotent
-	 * 
+	 *
 	 * @return boolean
 	 * @param pM
 	 *            MonadRealF
@@ -100,7 +100,7 @@ public class MonadRealF extends MonadAbstract
 
 	/**
 	 * Return true if the Monad is a multiple of an idempotent
-	 * 
+	 *
 	 * @return boolean
 	 * @param pM
 	 *            MonadRealF
@@ -124,15 +124,6 @@ public class MonadRealF extends MonadAbstract
 		MonadRealF check1 = new MonadRealF(pM);
 		check1.multiplyLeft(pM);
 
-		//TODO
-		//Lame. If pM is idempotent multiple, then pM*pM will be 
-		//non-zero/non-one scalar
-		//We've already checked for these two cases, so it is enough
-		//to see if the product isGrade(0)
-		
-		//re-write this part below
-		//re-think the checks for isIdempotent and isNilpotent in this method too
-		
 		short k = 0;
 		RealF fstnzeroC = newZERO("Place Holder");
 		while (isZero(fstnzeroC)
@@ -152,7 +143,7 @@ public class MonadRealF extends MonadAbstract
 
 	/**
 	 * Return true if the Monad is nilpotent
-	 * 
+	 *
 	 * @return boolean
 	 * @param pM
 	 *            MonadRealF
@@ -176,7 +167,7 @@ public class MonadRealF extends MonadAbstract
 	 * Monad. A check is made on frameName, FootName, Signature, and FrameFoot
 	 * for equality. No check is made for equality between Mnames and Coeffs and
 	 * the product Table
-	 * 
+	 *
 	 * @param pM
 	 *            MonadAbstract
 	 * @param pN
@@ -187,7 +178,7 @@ public class MonadRealF extends MonadAbstract
 	{
 		// The algebras must actually be the same object to match.
 		if (!pM.getAlgebra().equals(pN.getAlgebra())) return false;
-		
+
 		// The frame names must match too
 		if (!pM.getFrameName().equals(pN.getFrameName())) return false;
 
@@ -203,10 +194,10 @@ public class MonadRealF extends MonadAbstract
 
 	/**
 	 * Display XML string that represents the Monad
-	 * 
+	 *
 	 * @param pM
 	 * 			MonadRealF This is the monad to be converted to XML.
-	 * 
+	 *
 	 * @return String
 	 */
 	public static String toXMLString(MonadRealF pM)
@@ -229,13 +220,13 @@ public class MonadRealF extends MonadAbstract
 		rB.append("</Monad>\n");
 		return rB.toString();
 	}
-	
+
 	/**
 	 * Display XML string that represents the Monad
-	 * 
+	 *
 	 * @param pM
 	 * 			MonadRealF This is the monad to be converted to XML.
-	 * 
+	 *
 	 * @return String
 	 */
 	public static String toXMLFullString(MonadRealF pM)
@@ -274,7 +265,7 @@ public class MonadRealF extends MonadAbstract
 	 * Simple copy constructor of Monad. Passed Monad will be copied in all
 	 * details. This contructor is used most often to get around operations that
 	 * alter a Monad when the developer does not wish it to be altered.
-	 * 
+	 *
 	 * @param pM
 	 *            MonadRealF
 	 */
@@ -282,9 +273,9 @@ public class MonadRealF extends MonadAbstract
 	{
 		setName(pM.getName());
 		setAlgebra(pM.getAlgebra());
-		setFrameName(pM.getFrameName()); 
+		setFrameName(pM.getFrameName());
 
-		cM = new RealF[getAlgebra().getGProduct().getBladeCount()]; 
+		cM = new RealF[getAlgebra().getGProduct().getBladeCount()];
 		setCoeffInternal(pM.getCoeff());
 		setGradeKey();
 	}
@@ -293,7 +284,7 @@ public class MonadRealF extends MonadAbstract
 	 * Main copy constructor of Monad. Passed Monad will be copied in all
 	 * details except its name. This constructor is used most often as a
 	 * starting point to generate new Monads based on an old one.
-	 * 
+	 *
 	 * @param pName
 	 *            String
 	 * @param pM
@@ -304,7 +295,7 @@ public class MonadRealF extends MonadAbstract
 	 * 	This exception is thrown if there is an issue with the coefficients offered.
 	 * 	The issues could involve null coefficients or a coefficient array of the wrong size.
 	 */
-	public MonadRealF(	String pName, 
+	public MonadRealF(	String pName,
 						MonadRealF pM)
 				throws BadSignatureException, CladosMonadException
 	{
@@ -320,7 +311,7 @@ public class MonadRealF extends MonadAbstract
 	/**
 	 * Special constructor of Monad with most information passed in. This one
 	 * will create the default 'Zero' Monad.
-	 * 
+	 *
 	 * @param pMonadName
 	 *            String
 	 * @param pAlgebraName
@@ -339,15 +330,15 @@ public class MonadRealF extends MonadAbstract
 	 * 	This exception is thrown if there is an issue with the coefficients offered.
 	 * 	The issues could involve null coefficients or a coefficient array of the wrong size.
 	 */
-	public MonadRealF(	String pMonadName, 
+	public MonadRealF(	String pMonadName,
 						String pAlgebraName,
-						String pFrameName, 
-						String pFootName, 
-						String pSig, 
+						String pFrameName,
+						String pFootName,
+						String pSig,
 						RealF pF)
 				throws BadSignatureException, CladosMonadException
 	{
-		setAlgebra(new AlgebraRealF(pAlgebraName, 
+		setAlgebra(new AlgebraRealF(pAlgebraName,
 									new Foot(pFootName, pF.getFieldType()),
 									pSig));
 
@@ -365,7 +356,7 @@ public class MonadRealF extends MonadAbstract
 	/**
 	 * Special constructor of Monad with most information passed in. This one
 	 * will create a default 'Zero' Monad while re-using the Foot of another.
-	 * 
+	 *
 	 * @param pMonadName
 	 *            String
 	 * @param pAlgebraName
@@ -384,11 +375,11 @@ public class MonadRealF extends MonadAbstract
 	 * 	This exception is thrown if there is an issue with the coefficients offered.
 	 * 	The issues could involve null coefficients or a coefficient array of the wrong size.
 	 */
-	public MonadRealF(	String pMonadName, 
+	public MonadRealF(	String pMonadName,
 						String pAlgebraName,
-						String pFrameName, 
-						Foot pFoot, 
-						String pSig, 
+						String pFrameName,
+						Foot pFoot,
+						String pSig,
 						RealF pF)
 				throws BadSignatureException, CladosMonadException
 	{
@@ -404,13 +395,13 @@ public class MonadRealF extends MonadAbstract
 		// cM array now filled with zeros that all share the same DivFieldType
 		setGradeKey();
 	}
-	
+
 	/**
 	 * Special constructor of Monad with most information passed in. 'Special
 	 * Case' strings determine the coefficients automatically. 'Unit Scalar' and
 	 * 'Unit PScalar' are recognized special cases. All unrecognized strings
 	 * create a 'Zero' Monad by default.
-	 * 
+	 *
 	 * @param pMonadName
 	 *            String
 	 * @param pAlgebraName
@@ -430,29 +421,29 @@ public class MonadRealF extends MonadAbstract
 	 * @throws CladosMonadException
 	 * 	This exception is thrown if there is an issue with the coefficients offered the default constructor.
 	 * 	The issues could involve null coefficients or a coefficient array of the wrong size.
-	 * 
+	 *
 	 * return MonadRealF
 	 */
-	public MonadRealF(	String pMonadName, 
+	public MonadRealF(	String pMonadName,
 						String pAlgebraName,
-						String pFrameName, 
-						String pFootName, 
-						String pSig, 
+						String pFrameName,
+						String pFootName,
+						String pSig,
 						RealF pF,
-						String pSpecial) 
+						String pSpecial)
 				throws BadSignatureException, CladosMonadException
-	{
+`	{
 		this(pMonadName, pAlgebraName, pFrameName, pFootName, pSig, pF);
 		// Default ZERO Monad is constructed already.
 		// Now handle the special cases and make adjustments to the cM array.
-		String[] specialCases= {"Zero", 
-								"Unit Scalar", 
-								"Unit -Scalar", 
-								"Unit PScalar", 
+		String[] specialCases= {"Zero",
+								"Unit Scalar",
+								"Unit -Scalar",
+								"Unit PScalar",
 								"Unit -PScalar"};
 		int cursor=0;
 		short[] tSpot = new short[1];
-		
+
 		for (short m=0; m<specialCases.length; m++)
 		{
 			if (specialCases[m].contentEquals(pSpecial))
@@ -461,35 +452,35 @@ public class MonadRealF extends MonadAbstract
 				break;
 			}
 		}
-		
+
 		switch (cursor)
 		{
 		case 0:		// Zero case
 			break; 	// Already done by default
-		
+
 		case 1:		// Unit Scalar case
 			tSpot = getAlgebra().getGProduct().getGradeRange((short) 0);
 			cM[tSpot[0]] = copyONE(cM[tSpot[0]]);
 			break;
-		
+
 		case 2:		// Unit -Scalar case
 			tSpot = getAlgebra().getGProduct().getGradeRange((short) 0);
 			cM[tSpot[0]] = copyONE(cM[tSpot[0]]);
 			break;
-			
+
 		case 3:		// Unit PScalar case
 			tSpot = getAlgebra().getGProduct().getGradeRange(
 							(short) (getAlgebra().getGProduct().getGradeCount() - 1));
 			cM[tSpot[0]] = copyONE(cM[tSpot[0]]);
 			break;
-			
+
 		case 4:		// Unit -PScalar case
 			tSpot = getAlgebra().getGProduct().getGradeRange(
 							(short) (getAlgebra().getGProduct().getGradeCount() - 1));
 			cM[tSpot[0]] = copyONE(cM[tSpot[0]]);
 			cM[tSpot[0]].scale(-1.0f);
 			break;
-			
+
 		default:
 			break;
 		}
@@ -498,7 +489,7 @@ public class MonadRealF extends MonadAbstract
 
 	/**
 	 * Main constructor of Monad with all information passed in.
-	 * 
+	 *
 	 * @param pMonadName
 	 *            String
 	 * @param pAlgebraName
@@ -517,23 +508,23 @@ public class MonadRealF extends MonadAbstract
 	 * 	This exception is thrown if there is an issue with the coefficients offered.
 	 * 	The issues could involve null coefficients or a coefficient array of the wrong size.
 	 */
-	public MonadRealF(	String pMonadName, 
+	public MonadRealF(	String pMonadName,
 						String pAlgebraName,
-						String pFrameName, 
-						String pFootName, 
-						String pSig, 
+						String pFrameName,
+						String pFootName,
+						String pSig,
 						RealF[] pC)
 				throws BadSignatureException, CladosMonadException
 	{
 		if (pC[0] == null)
 			throw new CladosMonadException(this, "First coefficient is null.  There could be more nulls too.");
-		
+
 		setAlgebra(new AlgebraRealF(pAlgebraName, new Foot(pFootName, pC[0].getFieldType()), pSig));
-		
+
 		if (pC.length != getAlgebra().getGProduct().getBladeCount())
 			throw new CladosMonadException(this,
 					"Coefficient array size does not match bladecount for Signature.");
-		
+
 		setName(pMonadName);
 		setFrameName(pFrameName);
 
@@ -541,11 +532,11 @@ public class MonadRealF extends MonadAbstract
 		setCoeff(pC);
 		setGradeKey();
 	}
-	
+
 	/**
 	 * Main constructor of Monad with pre-constructed objects not already
 	 * part of another Monad.
-	 * 
+	 *
 	 * @param pMonadName
 	 *            String
 	 * @param pAlgebra
@@ -558,21 +549,21 @@ public class MonadRealF extends MonadAbstract
 	 * 	This exception is thrown if there is an issue with the coefficients offered.
 	 * 	The issues could involve null coefficients or a coefficient array of the wrong size.
 	 */
-	public MonadRealF(	String pMonadName, 
-						AlgebraRealF pAlgebra,	
-						String pFrameName, 
+	public MonadRealF(	String pMonadName,
+						AlgebraRealF pAlgebra,
+						String pFrameName,
 						RealF[] pC)
 				throws CladosMonadException
 	{
 		if (pC.length != pAlgebra.getGProduct().getBladeCount())
 			throw new CladosMonadException(this,
 					"Coefficient array size does not match bladecount from offered Algebra.");
-		
+
 		setAlgebra(pAlgebra);
 		setName(pMonadName);
 		setFrameName(pFrameName);
-		
-		cM = new RealF[getAlgebra().getGProduct().getBladeCount()]; 
+
+		cM = new RealF[getAlgebra().getGProduct().getBladeCount()];
 		setCoeff(pC);
 		setGradeKey();
 	}
@@ -580,24 +571,24 @@ public class MonadRealF extends MonadAbstract
 	/**
 	 * Monad Addition: (this + pM) This operation is allowed when the two monads
 	 * use the same field and satisfy the Reference Matching test.
-	 * 
+	 *
 	 * @param pM
 	 *            MonadRealF
 	 * @throws FieldBinaryException
 	 * 	This exception is thrown when the method can't add two fields used by the monad to be checked.
 	 * @throws CladosMonadBinaryException
 	 *  This exception is thrown when the monads fail a reference match.
-	 *  
+	 *
 	 * @return MonadRealF
 	 */
 	public MonadRealF add(MonadRealF pM) throws FieldBinaryException, CladosMonadBinaryException
 	{
 		if (!isReferenceMatch(this, pM))
 			throw new CladosMonadBinaryException(this, "Can't add when frames don't match.", pM);
-	
+
 		for (short i = 0; i < getAlgebra().getGProduct().getBladeCount(); i++)
 			cM[i].add(pM.getCoeff()[i]);
-		
+
 		setGradeKey();
 		return this;
 	}
@@ -625,9 +616,9 @@ public class MonadRealF extends MonadAbstract
 		short[] tSpot = getAlgebra().getGProduct()
 						.getGradeRange((short) (getAlgebra().getGProduct().getGradeCount() - 1));
 		//initialize a new coefficient array to hold the results
-		RealF[] tNewCoeff = new RealF[getAlgebra().getGProduct().getBladeCount()]; 
+		RealF[] tNewCoeff = new RealF[getAlgebra().getGProduct().getBladeCount()];
 
-		for (short j = 0; j < getAlgebra().getGProduct().getBladeCount(); j++) 
+		for (short j = 0; j < getAlgebra().getGProduct().getBladeCount(); j++)
 		{
 			// resulting blade of left-product because tSpot[0] points at PScalar
 			short prd = (short) (Math.abs(getAlgebra().getGProduct().getResult(tSpot[0], j)) - 1);
@@ -654,7 +645,7 @@ public class MonadRealF extends MonadAbstract
 		short[] tSpot = getAlgebra().getGProduct()
 						.getGradeRange((short) (getAlgebra().getGProduct().getGradeCount() - 1));
 		//initialize a new coefficient array to hold the results
-		RealF[] tNewCoeff = new RealF[getAlgebra().getGProduct().getBladeCount()]; 
+		RealF[] tNewCoeff = new RealF[getAlgebra().getGProduct().getBladeCount()];
 
 		for (short j = 0; j < getAlgebra().getGProduct().getBladeCount(); j++)
 		{
@@ -674,7 +665,7 @@ public class MonadRealF extends MonadAbstract
 
 	/**
 	 * This method returns the Algebra for this Monad.
-	 * 
+	 *
 	 * @return AlgebraRealF
 	 */
 	public AlgebraRealF getAlgebra()
@@ -685,7 +676,7 @@ public class MonadRealF extends MonadAbstract
 	/**
 	 * Return the field Coefficients for this Monad. These coefficients are the
 	 * multipliers making linear combinations of the basis elements.
-	 * 
+	 *
 	 * @return RealF[]
 	 */
 	public RealF[] getCoeff()
@@ -696,17 +687,17 @@ public class MonadRealF extends MonadAbstract
 	/**
 	 * Return a field Coefficient for this Monad. These coefficients are the
 	 * multipliers making linear combinations of the basis elements.
-	 * 
+	 *
 	 * @param pB
 	 * 			short This points at the coefficient at the equivalent tuple location.
-	 * 
+	 *
 	 * @return RealF
 	 */
 	public RealF getCoeff(short pB)
 	{
 		if (pB >= 0 & pB < getAlgebra().getGProduct().getBladeCount())
 			return cM[pB];
-		
+
 		return null;
 	}
 
@@ -714,10 +705,10 @@ public class MonadRealF extends MonadAbstract
 	 * This method suppresses all grades in the Monad not equal to the integer
 	 * passed. Example: The Scalar Part operation is performed by calling
 	 * GradePart(0)
-	 * 
+	 *
 	 * If the grade to be preserved is not within the gradeRange of this monad
 	 * this method silently fails. No suppression occurs.
-	 * 
+	 *
 	 * @param pGrade
 	 *            short
 	 */
@@ -726,11 +717,11 @@ public class MonadRealF extends MonadAbstract
 	{
 		if (pGrade < 0 | pGrade >= getAlgebra().getGProduct().getGradeCount())
 			return this;
-		
+
 		short j = 0;
 		while (j <= getAlgebra().getGProduct().getGradeCount() - 1)
 		{
-			if (j == pGrade) 
+			if (j == pGrade)
 			{
 				j++;
 				continue;
@@ -748,10 +739,10 @@ public class MonadRealF extends MonadAbstract
 	 * This method suppresses the grade in the Monad equal to the integer
 	 * passed. Example: Suppression of the bivector part of a Monad is performed
 	 * by calling gradeSupress(2)
-	 * 
+	 *
 	 * If the grade to be suppressed is not within the gradeRange of this monad
 	 * this method silently fails. No suppression occurs.
-	 * 
+	 *
 	 * @param pGrade
 	 *            short
 	 */
@@ -760,11 +751,11 @@ public class MonadRealF extends MonadAbstract
 	{
 		if (pGrade < 0 | pGrade >= getAlgebra().getGProduct().getGradeCount())
 			return this;
-		
+
 		short[] tSpot = getAlgebra().getGProduct().getGradeRange((short) pGrade);
 		for (short l = tSpot[0]; l <= tSpot[1]; l++)
 			cM[l].scale(0.0f);
-		
+
 		setGradeKey();
 		return this;
 	}
@@ -795,29 +786,29 @@ public class MonadRealF extends MonadAbstract
 	 * foot names, frame names and product definitions along with the
 	 * coefficients. Each object owned by the monad has its own isEqual() method
 	 * that gets called.
-	 * 
+	 *
 	 * @param pM
 	 *            MonadRealF
 	 * @return boolean
 	 */
 	public boolean isGEqual(MonadRealF pM)
 	{
-		if (!isReferenceMatch(this, pM)) 
+		if (!isReferenceMatch(this, pM))
 			return false;
 
 		for (short i = 0; i < getAlgebra().getGProduct().getBladeCount(); i++)
-			if (!RealF.isEqual(cM[i], pM.getCoeff(i))) 
+			if (!RealF.isEqual(cM[i], pM.getCoeff(i)))
 				return false;
-		
+
 		return true;
 	}
 
 	/**
 	 * Return the magnitude of the Monad
-	 * 
+	 *
 	 * @return RealF
 	 * @throws CladosMonadException
-	 * 	This exception is possible because magnitudes are build from sqMagnitudes. 
+	 * 	This exception is possible because magnitudes are build from sqMagnitudes.
 	 * 	That means there is an intermediate multiplication steps that could cause
 	 * 	a FieldBinaryException, but never should. If this exception gets thrown here
 	 * 	there is something seriously amiss with magnitude() and sqMagnitude().
@@ -840,7 +831,7 @@ public class MonadRealF extends MonadAbstract
 	 * Monad antisymmetric multiplication: 1/2(pM this - this pM) This operation
 	 * is allowed when the two monads use the same field and satisfy the
 	 * Reference Matching test.
-	 * 
+	 *
 	 * @param pM
 	 *            MonadRealF
 	 * @throws CladosMonadBinaryException
@@ -852,12 +843,12 @@ public class MonadRealF extends MonadAbstract
 	public MonadRealF multiplyAntisymm(MonadRealF pM)
 				throws FieldBinaryException, CladosMonadBinaryException
 	{
-		if (!isReferenceMatch(this, pM)) 
+		if (!isReferenceMatch(this, pM))
 			throw new CladosMonadBinaryException(this,"Asymm multiply fails reference match.", pM);
 		// Don't try if not a reference match
 		if (isGZero(this)) return this;//obviously
 		if (isGZero(pM)) return pM;//equally obvious
-			
+
 		MonadRealF halfTwo = new MonadRealF(this);
 		halfTwo.multiplyRight(pM);
 
@@ -866,14 +857,14 @@ public class MonadRealF extends MonadAbstract
 
 		scale(new RealF(cM[0], 0.5f));
 		setGradeKey();
-		return this;	
+		return this;
 	}
 
 	/**
-	 * Monad leftside multiplication: (pM this) 
-	 * This operation is allowed when the two monads use the same field and satisfy 
+	 * Monad leftside multiplication: (pM this)
+	 * This operation is allowed when the two monads use the same field and satisfy
 	 * the Reference Match test.
-	 * 
+	 *
 	 * @param pM	MonadRealF
 	 * @throws CladosMonadBinaryException
 	 * 	This exception is thrown when the reference match test fails with the two monads
@@ -881,39 +872,39 @@ public class MonadRealF extends MonadAbstract
 	 * 	This exception is thrown when the field match test fails with the two monads
 	 * @return MonadRealF
 	 */
-	public MonadRealF multiplyLeft(MonadRealF pM) 
+	public MonadRealF multiplyLeft(MonadRealF pM)
 				throws FieldBinaryException, CladosMonadBinaryException
 	{
-		if (!isReferenceMatch(this, pM)) 
+		if (!isReferenceMatch(this, pM))
 			throw new CladosMonadBinaryException(this,"Left multiply fails reference match.", pM);
 		// Don't try if not a reference match
 		if (isGZero(this)) return this;//obviously
 		if (isGZero(pM)) return pM;//equally obvious
-		
-		RealF[] tNewCoeff = new RealF[getAlgebra().getGProduct().getBladeCount()]; 
+
+		RealF[] tNewCoeff = new RealF[getAlgebra().getGProduct().getBladeCount()];
 		// new coeff array built to hold result
 		for (short k = 0; k < getAlgebra().getGProduct().getBladeCount(); k++)
 			tNewCoeff[k] = copyZERO(cM[0]);
 		// new coeff array populated with ZEROES from the field.
-			
+
 		if (sparseFlag)
-		{	
+		{
 		/* Use gradeKey to find the non-zero grades.
 		 * gradeKey is a long with a 1 in a digit if the ten's power
 		 * represented by that digit is represented as a grade in a monad.
-		 * 
+		 *
 		 * For example: gradeKey=101 means the monad is a sum of bivector and scalar
 		 * because 10^2+10^0 = 101.
-		 * 
+		 *
 		 * In a sparse monad, the gradeKey will have few 1's, so multiplication
 		 * can be simplified by not looping through each blade. Instead, we parse
 		 * the gradeKey and only loop through the blades for grades that could
 		 * be non-ZERO.
 		 */
-			long tempGradeKey=gradeKey;				
+			long tempGradeKey=gradeKey;
 			short logKey=(short) Math.log10(tempGradeKey);
 			short[] tSpot={0,0};
-				
+
 			//logKey is the highest grade with non-zero blades
 			//tSpot will point at the blades of that grade
 			while (logKey>=0)
@@ -924,36 +915,36 @@ public class MonadRealF extends MonadAbstract
 					// Looping through row blades in product array for grade logKey
 					if (isZero(pM.getCoeff(i))) continue;
 					// This is a weak form of the sparse flag kept here.
-					for (short j = 0; j < getAlgebra().getGProduct().getBladeCount(); j++) 
+					for (short j = 0; j < getAlgebra().getGProduct().getBladeCount(); j++)
 					// Looping through column blades in product array
 					{
 						if (isZero(cM[j])) continue;
 						// This is a weak form of the sparse flag repeated here.
 						// Don't bother summing on zeroes.
-						
+
 						// multiply the coefficients first
 						RealF tCtrbt = multiply(pM.getCoeff(i), cM[j]);
-						
+
 						// find the blade to which this partial product contributes
 						short prd = (short) (Math.abs(getAlgebra().getGProduct().getResult(i, j)) - 1);
-							
+
 						// Adjust sign of contribution for product sign of blades
 						tCtrbt.scale(getAlgebra().getGProduct().getSign(i, j));
-							
+
 						// Add the contribution to new coeff array
 						tNewCoeff[prd].add(tCtrbt);
-								
+
 					}// blade i in 'this' multiplied by pM is done.
 				}
 				//Subtract 10^logKey so we can mark that the grade is done.
 				tempGradeKey -= Math.pow(10, logKey);
-				
+
 				//if tempGradeKey is zero, we've processed all grades including scalar.
 				if (tempGradeKey==0) break;
-				
+
 				//logKey can be zero for scalar grade.
 				logKey=(short) Math.log10(tempGradeKey);
-					
+
 			}// tNewCoeff now has a copy of the coefficients needed for 'this'.
 		}
 		else //loop through the blades in 'this' individually.
@@ -964,36 +955,36 @@ public class MonadRealF extends MonadAbstract
 				if (isZero(pM.getCoeff(i))) continue;
 				// This is a weak form of the sparse flag that notes a zero coefficient
 				// in pM need not be processed because it won't contribute to any sums.
-				
-				for (short j = 0; j < getAlgebra().getGProduct().getBladeCount(); j++) 
+
+				for (short j = 0; j < getAlgebra().getGProduct().getBladeCount(); j++)
 				// Looping through column blades in product array
 				{
 					// multiply the coefficients first
 					RealF tCtrbt = multiply(pM.getCoeff(i), cM[j]);
-						
+
 					// find the blade to which this partial product contributes
 					short prd = (short) (Math.abs(getAlgebra().getGProduct().getResult(i, j)) - 1);
-						
+
 					// Adjust sign of contribution for product sign of blades
 					tCtrbt.scale(getAlgebra().getGProduct().getSign(i, j));
-						
+
 					// Add the contribution to new coeff array
 					tNewCoeff[prd].add(tCtrbt);
-						
+
 				}// blade i in 'this' multiplied by pM is done.
 			}// tNewCoeff now has a copy of the coefficients needed for 'this'.
 		}
 		// set the coeffs for this product result
-		setCoeffInternal(tNewCoeff); 
+		setCoeffInternal(tNewCoeff);
 		setGradeKey();
-		return this;	
+		return this;
 	}
 
 	/**
-	 * Monad rightside multiplication: (pM this) 
-	 * This operation is allowed when the two monads use the same field and satisfy 
+	 * Monad rightside multiplication: (pM this)
+	 * This operation is allowed when the two monads use the same field and satisfy
 	 * the Reference Match test.
-	 * 
+	 *
 	 * @param pM
 	 *            MonadRealF
 	 * @throws CladosMonadBinaryException
@@ -1002,38 +993,38 @@ public class MonadRealF extends MonadAbstract
 	 * 	This exception is thrown when the field match test fails with the two monads
 	 * @return MonadRealF
 	 */
-	public MonadRealF multiplyRight(MonadRealF pM) 
+	public MonadRealF multiplyRight(MonadRealF pM)
 				throws FieldBinaryException, CladosMonadBinaryException
 	{
 		if (!isReferenceMatch(this, pM)) // Don't try if not a reference match
 			throw new CladosMonadBinaryException(this,"Right multiply fails reference match.", pM);
 		if (isGZero(this)) return this;//obviously
 		if (isGZero(pM)) return pM;//equally obvious
-			
-		RealF[] tNewCoeff = new RealF[getAlgebra().getGProduct().getBladeCount()]; 
+
+		RealF[] tNewCoeff = new RealF[getAlgebra().getGProduct().getBladeCount()];
 		// new coeff array
 		for (short k = 0; k < getAlgebra().getGProduct().getBladeCount(); k++)
 			tNewCoeff[k] = copyZERO(cM[0]);
 		// new coeff array built to hold result
-			
+
 		if (sparseFlag)
 		{
 		/* Use gradeKey to find the non-zero grades.
 		 * gradeKey is is a long with a 1 in a digit if the ten's power
 		 * represented by that digit is represented as a grade in a monad.
-		 * 
+		 *
 		 * For example: gradeKey=1001 means the monad is a sum of trivector and scalar
 		 * because 10^3+10^0 = 1001.
-		 * 
+		 *
 		 * In a sparse monad, the gradeKey will have few 1's, so multiplication
 		 * can be simplified by not looping through each blade. Instead, we parse
 		 * the gradeKey and only loop through the blades for grades that could
 		 * be non-ZERO.
 		 */
-			long tempGradeKey=gradeKey;				
+			long tempGradeKey=gradeKey;
 			short logKey=(short) Math.log10(tempGradeKey);
 			short[] tSpot={0,0};
-				
+
 			//logKey is the highest grade with non-zero blades
 			//tSpot will point at the blades of that grade
 			while (logKey>=0.0D)
@@ -1044,75 +1035,75 @@ public class MonadRealF extends MonadAbstract
 					// Looping through row blades in product array for grade logKey
 					if (isZero(pM.getCoeff(i))) continue;
 					// This is a weak form of the sparse flag kept here.
-					for (short j = 0; j < getAlgebra().getGProduct().getBladeCount(); j++) 
+					for (short j = 0; j < getAlgebra().getGProduct().getBladeCount(); j++)
 					// Looping through column blades in product array
 					{
 						if (isZero(cM[j])) continue;
 						// This is a weak form of the sparse flag repeated here.
 						// Don't bother summing on zeroes.
-						
+
 						// multiply the coefficients first
 						RealF tCtrbt = multiply(cM[j], pM.getCoeff(i));
-								
+
 						// find the blade to which this partial product contributes
 						short prd = (short) (Math.abs(getAlgebra().getGProduct().getResult(j, i)) - 1);
-								
+
 						// Adjust sign of contribution for product sign of blades
 						tCtrbt.scale(getAlgebra().getGProduct().getSign(j, i));
-								
+
 						// Add the contribution to new coeff array
 						tNewCoeff[prd].add(tCtrbt);
-								
+
 					}// blade i in 'this' multiplied by pM is done.
 				}
 				//Subtract 10^logKey so we can mark that the grade is done.
 				tempGradeKey -= Math.pow(10, logKey);
-				
+
 				//if tempGradeKey is zero, we've processed all grades including scalar.
 				if (tempGradeKey==0) break;
-					
+
 				//logKey can be zero for scalar grade.
-				logKey=(short) Math.log10(tempGradeKey);	
-			}// tNewCoeff now has a copy of the coefficients needed for 'this'.	
+				logKey=(short) Math.log10(tempGradeKey);
+			}// tNewCoeff now has a copy of the coefficients needed for 'this'.
 		}
 		else //loop through the blades in 'this' individually.
 		{
-			for (short i = 0; i < getAlgebra().getGProduct().getBladeCount(); i++) 
+			for (short i = 0; i < getAlgebra().getGProduct().getBladeCount(); i++)
 			// Looping through row blades in product array
 			{
 				if (isZero(pM.getCoeff(i))) continue;
 				// This is a weak form of the sparse flag that notes a zero coefficient
 				// in pM need not be processed because it won't contribute to any sums.
-					
-				for (short j = 0; j < getAlgebra().getGProduct().getBladeCount(); j++) 
+
+				for (short j = 0; j < getAlgebra().getGProduct().getBladeCount(); j++)
 				// Looping through column blades in product array
 				{
 					// multiply the coefficients first
 					RealF tCtrbt = multiply(cM[j], pM.getCoeff(i));
-						
+
 					// find the blade to which this partial product contributes
 					short drp = (short) (Math.abs(getAlgebra().getGProduct().getResult(j, i)) - 1);
-						
+
 					// Adjust sign of contribution for product sign of blades
 					tCtrbt.scale(getAlgebra().getGProduct().getSign(j, i));
-						
+
 					// Add the contribution to new coeff array
 					tNewCoeff[drp].add(tCtrbt);
-						
+
 				}// pM multiplied by blade i in 'this' is done.
 			}// tNewCoeff now has a copy of the coefficients needed for 'this'.
 		}
 		// set the coeffs for this product result
-		setCoeffInternal(tNewCoeff); 
+		setCoeffInternal(tNewCoeff);
 		setGradeKey();
-		return this;	
+		return this;
 	}
 
 	/**
 	 * Monad symmetric multiplication: 1/2(pM this + this pM) This operation is
 	 * allowed when the two monads use the same field and satisfy the Reference
 	 * Matching test.
-	 * 
+	 *
 	 * @param pM
 	 *            MonadRealF
 	 * @throws CladosMonadBinaryException
@@ -1121,15 +1112,15 @@ public class MonadRealF extends MonadAbstract
 	 * 	This exception is thrown when the field match test fails with the two monads
 	 * @return MonadRealF
 	 */
-	public MonadRealF multiplySymm(MonadRealF pM) 
+	public MonadRealF multiplySymm(MonadRealF pM)
 				throws FieldBinaryException, CladosMonadBinaryException
 	{
-		if (!isReferenceMatch(this, pM)) 
+		if (!isReferenceMatch(this, pM))
 			throw new CladosMonadBinaryException(this,"Symm multiply fails reference match.", pM);
 		// Don't try if not a reference match
 		if (isGZero(this)) return this;//obviously
 		if (isGZero(pM)) return pM;//equally obvious
-			
+
 		MonadRealF halfTwo = new MonadRealF(this);
 		halfTwo.multiplyRight(pM);
 
@@ -1144,7 +1135,7 @@ public class MonadRealF extends MonadAbstract
 	/**
 	 * Normalize the monad. A <b>CladosMonadException</b> is thrown if the Monad
 	 * has a zero magnitude.
-	 * 
+	 *
 	 * @throws CladosMonadException
 	 * 	This exception is thrown when normalizing a zero or field conflicted monad is tried.
 	 */
@@ -1179,7 +1170,7 @@ public class MonadRealF extends MonadAbstract
 		gradePart(getAlgebra().getGProduct().getGradeCount());
 		return this;
 	}
-	
+
 	/**
 	 * This method is a concession to the old notation for the Pseudo Scalar
 	 * Part of a monad. It returns the pscalar part coefficient.
@@ -1216,7 +1207,7 @@ public class MonadRealF extends MonadAbstract
 	/**
 	 * Monad Scaling: (this * real number) Only the Monad coefficients are
 	 * scaled by the real number.
-	 * 
+	 *
 	 * @param pScale
 	 *            RealF
 	 * @throws FieldBinaryException
@@ -1227,7 +1218,7 @@ public class MonadRealF extends MonadAbstract
 	{
 		for (short j = 0; j < getAlgebra().getGProduct().getBladeCount(); j++)
 			cM[j].multiply(pScale);
-		
+
 		setGradeKey();
 		return this;
 	}
@@ -1246,7 +1237,7 @@ public class MonadRealF extends MonadAbstract
 	 * in that the old meaning of the object might linger in the various name
 	 * attributes. Caution is advised if this method is used while frequent
 	 * reuse should be considered bad form.
-	 * 
+	 *
 	 * @param ppC
 	 *            RealF[]
 	 * @throws CladosMonadException
@@ -1257,10 +1248,10 @@ public class MonadRealF extends MonadAbstract
 		if (ppC.length != getAlgebra().getGProduct().getBladeCount())
 			throw new CladosMonadException(this,
 					"Coefficient array passed in for coefficient copy is the wrong length");
-		
+
 		for (int k = 0; k < getAlgebra().getGProduct().getBladeCount(); k++)
-			cM[k] = new RealF(ppC[k]);	
-		
+			cM[k] = new RealF(ppC[k]);
+
 		setGradeKey();
 	}
 
@@ -1268,7 +1259,7 @@ public class MonadRealF extends MonadAbstract
 	 * Reset the Coefficient array used for this Monad. Don't bother checking
 	 * for array lengths because this method is only called from within the
 	 * Monad with coeff copies.
-	 * 
+	 *
 	 * @param ppC
 	 *            RealF[]
 	 */
@@ -1276,7 +1267,7 @@ public class MonadRealF extends MonadAbstract
 	{
 		for (int k = 0; k < ppC.length; k++)
 			cM[k] = new RealF(ppC[k]);
-		
+
 		setGradeKey();
 	}
 
@@ -1304,8 +1295,8 @@ public class MonadRealF extends MonadAbstract
 				if (!isZero(cM[k]))
 				{
 					gradeKey += Math.pow(10, j);
-					break; 
-					// Grade j found. Don't need to look at the other k's, 
+					break;
+					// Grade j found. Don't need to look at the other k's,
 					// so move to grade j+1
 				}
 			}
@@ -1328,7 +1319,7 @@ public class MonadRealF extends MonadAbstract
 	/**
 	 * This method is a concession to the old notation for the Scalar Part of a
 	 * monad. It returns the scalar part coefficient.
-	 * 
+	 *
 	 * @return RealF
 	 */
 	@Override
@@ -1339,7 +1330,7 @@ public class MonadRealF extends MonadAbstract
 
 	/**
 	 * Return the magnitude squared of the Monad
-	 * 
+	 *
 	 * @throws CladosMonadException
 	 *  This exception is thrown when the monad's coefficients aren't in the same field.
 	 * 	This should be caught during monad construction, but field coefficients are references
@@ -1364,26 +1355,26 @@ public class MonadRealF extends MonadAbstract
 	/**
 	 * Monad Subtraction: (this - pM) This operation is allowed when the two
 	 * monads use the same field and satisfy the Reference Matching test.
-	 * 
+	 *
 	 * @param pM
 	 *            MonadRealF
 	 * @throws FieldBinaryException
 	 * 	This exception is thrown when the method can't multiply two fields used by the monad to be checked.
 	 * @throws CladosMonadBinaryException
 	 *  This exception is thrown when the monads fail a reference match.
-	 * 
+	 *
 	 * @return MonadRealF
 	 */
-	public MonadRealF subtract(MonadRealF pM) 
+	public MonadRealF subtract(MonadRealF pM)
 				throws FieldBinaryException, CladosMonadBinaryException
 	{
 		if (!isReferenceMatch(this, pM))
 			throw new CladosMonadBinaryException(this,
 					"Can't subtract without a reference match.", pM);
-		
+
 		for (int i = 0; i < getAlgebra().getGProduct().getBladeCount(); i++)
 			cM[i].subtract(pM.getCoeff()[i]);
-		
+
 		setGradeKey();
 		return this;
 	}
