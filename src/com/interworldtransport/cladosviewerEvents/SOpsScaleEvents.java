@@ -79,12 +79,12 @@ public class SOpsScaleEvents implements ActionListener
         	 * at some point. I don't know if it resets based on a selected monad or nyad's proto number.
         	 */
     		tMonad.scale(new RealF(	tMonad.getCoeff((short) 0).getFieldType(), 
-    								Float.parseFloat(_parent._GUI._StatusBar.stRealIO.getText())));
+    								Float.parseFloat(_parent._GUI._FieldBar.getRealText())));
     		
     		//redraw the UI's Monad Panel to show the rescaled Monad there
     		tMSpotPnl.setCoefficientDisplay();
     		_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by | ");
-    		_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._StatusBar.stRealIO.getText()+"\n");
+    		_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+"\n");
     	}
     	catch (FieldBinaryException eb)
     	{

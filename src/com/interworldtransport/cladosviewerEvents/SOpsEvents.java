@@ -75,8 +75,8 @@ public class SOpsEvents implements ActionListener
 		invt = new SOpsInvertEvents(			_GUIMenu.mniInvert, this);
 		rev = new SOpsReverseEvents(			_GUIMenu.mniReverse, this);
 		scale = new SOpsScaleEvents(			_GUIMenu.mniScale, this);
-		gradep = new SOpsGradePartEvents(		_GUIMenu.mniGradePart, this);
-		grades = new SOpsGradeSupressEvents(	_GUIMenu.mniGradeSuppress, this);
+		gradep = new SOpsGradePartEvents(		_GUIMenu.mniGradeCrop, this);
+		grades = new SOpsGradeSupressEvents(	_GUIMenu.mniGradeCut, this);
     }
 
 /** 

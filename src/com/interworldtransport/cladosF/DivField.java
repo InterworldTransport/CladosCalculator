@@ -35,7 +35,7 @@ package com.interworldtransport.cladosF;
  * <p>
  * The number to be plugged in, though, doesn't appear until later in a child
  * of this class. This matters because the number of reals involved in the field
- * varies. Complex numbers require two. Quaternions would require four.
+ * varies. Complex numbers require two. Quaternions require four.
  * <p>
  * The only reason this class isn't an interface is the presence of the 
  * DivFieldType data member.

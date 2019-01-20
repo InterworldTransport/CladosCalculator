@@ -24,11 +24,10 @@
  */
 
 package com.interworldtransport.cladosviewer ;
-import com.interworldtransport.cladosF.*;
 import java.awt.*;
 import javax.swing.*;
 
-/** com.interworldtransport.cladosviewer.UtilityStatusBar
+/** 
  * The UtilityStatusBar class is intended to be the status bar of a Utility
  * application.
  * <p>
@@ -39,10 +38,6 @@ import javax.swing.*;
  public class UtilityStatusBar extends JPanel
  {
 	public		JTextArea		stmesgt;
-	public		DivFieldType	stFieldType;
-	public		JTextField 		stFieldTypeIO = new JTextField();
-    public		JTextField 		stRealIO = new JTextField();
-    public		JTextField 		stImgIO = new JTextField();
     private		Color			_backColor = new Color(255, 255, 222);
 	//private	Color			_unlockColor = new Color(255, 164, 164);
 
@@ -59,68 +54,12 @@ import javax.swing.*;
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEtchedBorder());
 		
-		stmesgt = new JTextArea("Initializing GUI...", 20, 40);
+		stmesgt = new JTextArea("Initializing GUI...", 8, 40);
 		stmesgt.setFont(new Font("Serif", Font.PLAIN, 8));
 		stmesgt.setLineWrap(true);
 		stmesgt.setWrapStyleWord(true);
 		add(new JScrollPane(stmesgt), "Center");
 		// Done with large text area intended for code responses to user
-		
-		
-		JPanel nPanel = new JPanel();
-		nPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		nPanel.setBackground(_backColor);
-		nPanel.setLayout(new GridBagLayout());
-		
-	 	GridBagConstraints cn = new GridBagConstraints();
-    	Insets tGeneric = new Insets(1,1,1,1);
-    	cn.insets = tGeneric;
-    	cn.fill=GridBagConstraints.HORIZONTAL;
-    	cn.anchor=GridBagConstraints.NORTH;
-    	
-    	cn.gridx = 0;
-    	cn.gridy = 0;
-    	cn.weightx=0;
-    	cn.weighty=0;
-    	
-    	nPanel.add(new JLabel("field"), cn);
-    	cn.gridy++;
-
-    	stFieldTypeIO.setColumns(8);
-    	stFieldTypeIO.setFont(new Font("Serif", Font.PLAIN, 12));
-		nPanel.add(stFieldTypeIO, cn);
-		cn.gridy++;
-		
-		nPanel.add(new JLabel("real"), cn);
-    	cn.gridy++;
-    	
-		stRealIO.setColumns(8);
-		stRealIO.setFont(new Font("Serif", Font.PLAIN, 12));
-		nPanel.add(stRealIO, cn);
-		cn.gridy++;
-		
-		nPanel.add(new JLabel("img"), cn);
-    	cn.gridy++;
-		
-		stImgIO.setColumns(8);
-		stImgIO.setFont(new Font("Serif", Font.PLAIN, 12));
-		nPanel.add(stImgIO, cn);
-		cn.gridy++;
-		
-		cn.weightx=1;
-    	cn.weighty=1;
-    	nPanel.add(new JLabel(), cn);
-		
-		add(nPanel, "East");
-    }
-    
-    public void setFieldType(DivFieldType pField)
-    {
-    	stFieldType=pField;
-    	if (pField!=null)
-    		stFieldTypeIO.setText(pField.getType());
-    	else
-    		stFieldTypeIO.setText("null");
     }
 
     public void setStatusMsg(String pMsg)
@@ -128,18 +67,4 @@ import javax.swing.*;
     	stmesgt.append(pMsg);
     }
 
-    public void setWhatInt(int pWhat)
-    {
-		stRealIO.setText((new StringBuffer(pWhat)).toString());
-    }
-    
-    public void setWhatFloat(float pWhat)
-    {
-		stRealIO.setText((new StringBuffer().append(pWhat)).toString());
-    }
-
-    public void setWhatDouble(double pWhat)
-    {
-		stRealIO.setText((new StringBuffer().append(pWhat)).toString());
-    }
 }

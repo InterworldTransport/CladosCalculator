@@ -24,6 +24,7 @@
  */
 package com.interworldtransport.cladosviewer;
 
+import com.interworldtransport.cladosF.DivFieldType;
 import com.interworldtransport.cladosG.MonadRealF;
 import com.interworldtransport.cladosG.NyadRealF;
 import com.interworldtransport.cladosGExceptions.BadSignatureException;
@@ -97,7 +98,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 	 * The global button display panel for the application.
 	 * Located at the top of the GUI and intended for nyad management.
 	 */
-    public		JPanel				_ControlBar;
+    private		JPanel				_ControlBar;
 	/**
 	 * The EventModel for the application.
 	 */
@@ -117,11 +118,13 @@ public class CladosCalculator extends JFrame implements ActionListener
 	 * Located at the bottom of the GUI and intended for status information.
 	 */
 	public		UtilityStatusBar	_StatusBar;
-    public		JButton			dualLeft;
-    public		JButton			dualRight;
-    public		JButton			gradePart;
-    public		JButton			gradeSuppress;
-    public		JButton			invertMonad; //This is NOT multiplicative inverse
+	/**
+	 * The Field Display Panel for the application.
+	 * Located at the top of the GUI and intended for numeric inputs.
+	 */
+	public		FieldPanel	_FieldBar;
+	
+
     public		JButton			isEqual;
     public		JButton			isGrade;
     public		JButton			isIdempotent;
@@ -133,18 +136,18 @@ public class CladosCalculator extends JFrame implements ActionListener
 	 */
     public		JButton			isRefMatch;
     public		JButton			isZero;
-    
-    public		JButton			normalizeMonad;
-    public		JButton			reverseMonad;
-    public		JButton			scaleMonad;
+
     public		JButton			whatGrade;
-    
     public		JButton			whatMagn;
     public		JButton			whatSQMagn;
     
-    //public	JButton			addNyads;
-    //public	JButton			lmultNyads;
-    //public	JButton			rmultNyads;
+    //public		DivFieldType	fieldType;
+	//public		JTextField 		fieldTypeIO = new JTextField();
+    //public		JTextField 		realIO = new JTextField();
+   // public		JTextField 		imgIO = new JTextField();
+    //public		JTextField 		img2IO = new JTextField();
+    //public		JTextField 		img3IO = new JTextField();
+    private		Color			_backColor = new Color(255, 255, 222);
     
     /*
 	 * 
@@ -192,13 +195,16 @@ public class CladosCalculator extends JFrame implements ActionListener
 	    _ControlBar=new JPanel();
 	    _ControlBar.setLayout(new GridBagLayout());
 	    _ControlBar.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-	    _ControlBar.setBackground(new Color(255, 255, 220));
-	    constructControls();
+	    _ControlBar.setBackground(_backColor);
+	    createTestControls();
 	    cp.add(_ControlBar,"West");
 	    	
 	    _GeometryDisplay=new ViewerPanel(this);
 	    _GeometryDisplay.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 	    cp.add(_GeometryDisplay, "Center");
+	    
+	    _FieldBar=new FieldPanel(this, _GeometryDisplay.getNyadPanel(_GeometryDisplay.getPaneFocus()).getNyad().protoOne);
+	    cp.add(_FieldBar, "North");
 	    	
 	    fc = new JFileChooser();
 	    fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -238,11 +244,11 @@ public class CladosCalculator extends JFrame implements ActionListener
     	if (command.equals("is grade!"))
     		_MenuBar.mniisSGrade.doClick();
     	
-    	if (command.equals("grade suppress"))
-    		_MenuBar.mniGradeSuppress.doClick();
+    	//if (command.equals("grade cut"))
+    	//	_MenuBar.mniGradeCut.doClick();
     	
-    	if (command.equals("grade part"))
-    		_MenuBar.mniGradePart.doClick();
+    	//if (command.equals("grade crop"))
+    	//	_MenuBar.mniGradeCrop.doClick();
     	
     	if (command.equals("magnitude of"))
     		_MenuBar.mniMagnitudeOf.doClick();
@@ -250,24 +256,24 @@ public class CladosCalculator extends JFrame implements ActionListener
     	if (command.equals("sqmagnitude of"))
     		_MenuBar.mniSQMagnitudeOf.doClick();
   
-    	if (command.equals("scale"))
-    		_MenuBar.mniScale.doClick();
+    	//if (command.equals("scale"))
+    	//	_MenuBar.mniScale.doClick();
     		//scaleCommand();
     	
-    	if (command.equals("normalize"))
-    		_MenuBar.mniNormalize.doClick();
+    	//if (command.equals("normalize"))
+    	//	_MenuBar.mniNormalize.doClick();
     	
-    	if (command.equals("invert"))
-    		_MenuBar.mniInvert.doClick();
+    	//if (command.equals("invert"))
+    	//	_MenuBar.mniInvert.doClick();
     	
-    	if (command.equals("reverse"))
-    		_MenuBar.mniReverse.doClick();
+    	//if (command.equals("reverse"))
+    	//	_MenuBar.mniReverse.doClick();
     	
-    	if (command.equals("dual>"))
-    		_MenuBar.mniDualLeft.doClick();
+    	//if (command.equals("dual>"))
+    	//	_MenuBar.mniDualLeft.doClick();
     	
-    	if (command.equals("<dual"))
-    		_MenuBar.mniDualRight.doClick();
+    	//if (command.equals("<dual"))
+    	//	_MenuBar.mniDualRight.doClick();
     }
     /**
 	 * This method saves snapshot data to the save file.
@@ -350,7 +356,9 @@ public class CladosCalculator extends JFrame implements ActionListener
 		}
     }
 
-    private void constructControls()
+    
+    
+    private void createTestControls()
     {
     	Dimension square = new Dimension(44,44);
     	GridBagConstraints cn = new GridBagConstraints();
@@ -360,14 +368,6 @@ public class CladosCalculator extends JFrame implements ActionListener
 		
 		cn.gridx = 0;
 		cn.gridy = 0;
-		cn.weightx=1;
-		cn.weighty=1;
-		cn.gridheight=2;
-		cn.gridwidth=3;
-		cn.fill=GridBagConstraints.BOTH;
-    	_ControlBar.add(new JLabel(new ImageIcon(IniProps.getProperty("Desktop.Image.Header2"))),cn);
-		cn.gridy++;
-		cn.gridy++;
 		cn.fill=GridBagConstraints.HORIZONTAL;
 		cn.weightx=0;
 		cn.weighty=0;
@@ -490,79 +490,12 @@ public class CladosCalculator extends JFrame implements ActionListener
     	cn.gridy++;
     	//end button triple
     	
-    	invertMonad = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Invert")));
-    	invertMonad.setActionCommand("invert");
-    	invertMonad.setToolTipText("invert [+/-] Monad generators");
-    	invertMonad.setPreferredSize(square);
-    	invertMonad.setBorder(BorderFactory.createEtchedBorder(0));
-    	invertMonad.addActionListener(this);
-    	_ControlBar.add(invertMonad, cn);
-    	cn.gridx++;
-    	
-    	reverseMonad = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Reverse")));
-    	reverseMonad.setActionCommand("reverse");
-    	reverseMonad.setToolTipText("reverse [ab->ba] Monad blades");
-    	reverseMonad.setPreferredSize(square);
-    	reverseMonad.setBorder(BorderFactory.createEtchedBorder(0));
-    	reverseMonad.addActionListener(this);
-    	_ControlBar.add(reverseMonad, cn);
-    	cn.gridx++;
-    	
-    	gradePart = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.GradePart")));
-    	gradePart.setActionCommand("grade part");
-    	gradePart.setToolTipText("crop around grade()");
-    	gradePart.setPreferredSize(square);
-    	gradePart.setBorder(BorderFactory.createEtchedBorder(0));
-    	gradePart.addActionListener(this);
-    	_ControlBar.add(gradePart, cn);
-    	
-    	cn.gridx=0;
-    	cn.gridy++;
-    	
-    	scaleMonad = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Scale")));
-    	scaleMonad.setActionCommand("scale");
-    	scaleMonad.setToolTipText("scale() THIS Monad");
-    	scaleMonad.setPreferredSize(square);
-    	scaleMonad.setBorder(BorderFactory.createEtchedBorder(0));
-    	scaleMonad.addActionListener(this);
-    	_ControlBar.add(scaleMonad, cn);
-    	cn.gridx++;
-    	
-    	normalizeMonad = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Norm")));
-    	normalizeMonad.setActionCommand("normalize");
-    	normalizeMonad.setToolTipText("normalize THIS Monad");
-    	normalizeMonad.setPreferredSize(square);
-    	normalizeMonad.setBorder(BorderFactory.createEtchedBorder(0));
-    	normalizeMonad.addActionListener(this);
-    	_ControlBar.add(normalizeMonad, cn);
-    	cn.gridx++;
-    	
-    	gradeSuppress = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.GradeSuppress")));
-    	gradeSuppress.setActionCommand("grade suppress");
-    	gradeSuppress.setToolTipText("cut this grade()");
-    	gradeSuppress.setPreferredSize(square);
-    	gradeSuppress.setBorder(BorderFactory.createEtchedBorder(0));
-    	gradeSuppress.addActionListener(this);
-    	_ControlBar.add(gradeSuppress, cn);
-    	cn.gridx=0;
-    	cn.gridy++;
-    	
-    	dualLeft = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.DualLeft")));
-    	dualLeft.setActionCommand("dual>");
-    	dualLeft.setToolTipText("left Dual of THIS Monad using algebra's PS");
-    	dualLeft.setPreferredSize(square);
-    	dualLeft.setBorder(BorderFactory.createEtchedBorder(0));
-    	dualLeft.addActionListener(this);
-    	_ControlBar.add(dualLeft, cn);
-    	cn.gridx++;
-    	
-    	dualRight = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.DualRight")));
-    	dualRight.setActionCommand("<dual");
-    	dualRight.setToolTipText("right Dual of THIS Monad using algebra's PS");
-    	dualRight.setPreferredSize(square);
-    	dualRight.setBorder(BorderFactory.createEtchedBorder(0));
-    	dualRight.addActionListener(this);
-    	_ControlBar.add(dualRight, cn);	
+    	cn.weightx=1;
+		cn.weighty=1;
+		cn.gridheight=2;
+		cn.gridwidth=3;
+		cn.fill=GridBagConstraints.BOTH;
+    	_ControlBar.add(new JLabel(new ImageIcon(IniProps.getProperty("Desktop.Image.Header2"))),cn);
     }
     
     private String makeSnapshotContent()
@@ -665,4 +598,6 @@ public class CladosCalculator extends JFrame implements ActionListener
 	    // Success implies we have a valid snapshot target
 	    // but there is no need to keep a FileWriter open to it.
 	}
+	
+	
 } 

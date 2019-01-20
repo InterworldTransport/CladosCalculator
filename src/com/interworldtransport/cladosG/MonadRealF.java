@@ -432,7 +432,7 @@ public class MonadRealF extends MonadAbstract
 						RealF pF,
 						String pSpecial)
 				throws BadSignatureException, CladosMonadException
-`	{
+	{
 		this(pMonadName, pAlgebraName, pFrameName, pFootName, pSig, pF);
 		// Default ZERO Monad is constructed already.
 		// Now handle the special cases and make adjustments to the cM array.
@@ -713,7 +713,7 @@ public class MonadRealF extends MonadAbstract
 	 *            short
 	 */
 	@Override
-	public MonadRealF gradePart(short pGrade)
+	public MonadRealF gradeCrop(short pGrade)
 	{
 		if (pGrade < 0 | pGrade >= getAlgebra().getGProduct().getGradeCount())
 			return this;
@@ -747,7 +747,7 @@ public class MonadRealF extends MonadAbstract
 	 *            short
 	 */
 	@Override
-	public MonadRealF gradeSuppress(short pGrade)
+	public MonadRealF gradeCut(short pGrade)
 	{
 		if (pGrade < 0 | pGrade >= getAlgebra().getGProduct().getGradeCount())
 			return this;
@@ -1167,7 +1167,7 @@ public class MonadRealF extends MonadAbstract
 	@Override
 	public MonadRealF PSP()
 	{
-		gradePart(getAlgebra().getGProduct().getGradeCount());
+		gradeCrop(getAlgebra().getGProduct().getGradeCount());
 		return this;
 	}
 
@@ -1312,7 +1312,7 @@ public class MonadRealF extends MonadAbstract
 	@Override
 	public MonadRealF SP()
 	{
-		gradePart((short) 0);
+		gradeCrop((short) 0);
 		return this;
 	}
 

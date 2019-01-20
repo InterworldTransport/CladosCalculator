@@ -64,8 +64,8 @@ public class BOpsGradeEvents implements ActionListener
     	
     	int grade2Test=0;
     	
-    	if (!_parent._GUI._StatusBar.stRealIO.getText().isEmpty())
-    		grade2Test = Integer.parseInt(_parent._GUI._StatusBar.stRealIO.getText());
+    	if (!_parent._GUI._FieldBar.getRealText().isEmpty())
+    		grade2Test = Integer.parseInt(_parent._GUI._FieldBar.getRealText());
     
     	if (MonadRealF.isGrade(monadSelected, grade2Test))
     		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is a pure ["+grade2Test+"] grade match\n");

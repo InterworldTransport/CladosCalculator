@@ -713,7 +713,7 @@ public class MonadRealD extends MonadAbstract
 	 *            short
 	 */
 	@Override
-	public MonadRealD gradePart(short pGrade)
+	public MonadRealD gradeCrop(short pGrade)
 	{
 		if (pGrade < 0 | pGrade >= getAlgebra().getGProduct().getGradeCount())
 			return this;
@@ -747,7 +747,7 @@ public class MonadRealD extends MonadAbstract
 	 *            short
 	 */
 	@Override
-	public MonadRealD gradeSuppress(short pGrade)
+	public MonadRealD gradeCut(short pGrade)
 	{
 		if (pGrade < 0 | pGrade >= getAlgebra().getGProduct().getGradeCount())
 			return this;
@@ -1166,7 +1166,7 @@ public class MonadRealD extends MonadAbstract
 	@Override
 	public MonadRealD PSP()
 	{
-		gradePart(getAlgebra().getGProduct().getGradeCount());
+		gradeCrop(getAlgebra().getGProduct().getGradeCount());
 		return this;
 	}
 
@@ -1308,7 +1308,7 @@ public class MonadRealD extends MonadAbstract
 	@Override
 	public MonadRealD SP()
 	{
-		gradePart((short) 0);
+		gradeCrop((short) 0);
 		return this;
 	}
 

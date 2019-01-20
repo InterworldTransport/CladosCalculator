@@ -89,8 +89,8 @@ public class ViewerMenu extends JMenuBar
     public	JMenuItem		mniInvert;
     public	JMenuItem		mniReverse;
     public	JMenuItem		mniScale;
-    public	JMenuItem		mniGradePart;
-    public	JMenuItem		mniGradeSuppress;
+    public	JMenuItem		mniGradeCrop;
+    public	JMenuItem		mniGradeCut;
 
 /**
  * The Complex Operations Parent Menu for the application.
@@ -185,10 +185,10 @@ public class ViewerMenu extends JMenuBar
     	mnuSOperations.add(mniReverse);
     	mniScale=new JMenuItem("scale");
     	mnuSOperations.add(mniScale);
-    	mniGradePart=new JMenuItem("grade part");
-    	mnuSOperations.add(mniGradePart);
-    	mniGradeSuppress=new JMenuItem("grade supress");
-    	mnuSOperations.add(mniGradeSuppress);
+    	mniGradeCrop=new JMenuItem("grade crop");
+    	mnuSOperations.add(mniGradeCrop);
+    	mniGradeCut=new JMenuItem("grade cut");
+    	mnuSOperations.add(mniGradeCut);
     	
     	mniAdd=new JMenuItem("Add");
     	mnuCOperations.add(mniAdd);

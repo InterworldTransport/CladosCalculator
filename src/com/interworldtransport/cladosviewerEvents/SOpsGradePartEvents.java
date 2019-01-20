@@ -64,11 +64,11 @@ public class SOpsGradePartEvents implements ActionListener
     	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
     	
     	//...and get the grade to be kept
-	   	short tGrade = Short.parseShort(_parent._GUI._StatusBar.stRealIO.getText());
+	   	short tGrade = Short.parseShort(_parent._GUI._FieldBar.getRealText());
     	
     	//Now squash all grades except the intended one and reset the viewer
 	
-    	tMSpotPnl.getMonad().gradePart(tGrade);
+    	tMSpotPnl.getMonad().gradeCrop(tGrade);
 		tMSpotPnl.setCoefficientDisplay();
 		
 		_parent._GUI._StatusBar.setStatusMsg("\tselected monad has all grades suppressed except {"+tGrade+"}\n");

@@ -59,20 +59,20 @@ import java.util.*;
 	private		JButton					copyButton;
 	private		JButton					editButton;
 	private		JButton					newMonad;
+	private		JLabel					nyadFoot=new JLabel();
+	private		JTextField				nyadName=new JTextField(40);
+	private		JLabel					nyadOrder=new JLabel();
 	private		JButton					removeButton;
 	private		JButton					restoreButton;
 	private		JButton					saveButton;
-	private		ImageIcon				tabIcon;
-	protected	ArrayList<MonadPanel>	monadPanelList;
-	protected	JLabel					nyadFoot=new JLabel();
-	protected	JTextField				nyadName=new JTextField(40);
-	protected	JLabel					nyadOrder=new JLabel();
-	protected	JButton					swapAbove;
-    protected	JButton					swapBelow; 
-    private final	Dimension 			square = new Dimension(25,25);
+	private final	Dimension 			square = new Dimension(25,25);
+	private		JButton					swapAbove;
+	private		JButton					swapBelow;
+	private		ImageIcon				tabIcon; 
+    protected	ArrayList<MonadPanel>	monadPanelList;
  
 /**
- * This constructor is the copy one used when a Monad alread exists
+ * This constructor is the copy one used when a Monad already exists
  */
 	 public NyadPanel(	CladosCalculator pGUI,
 			 			NyadRealF pN)
@@ -91,8 +91,8 @@ import java.util.*;
 
 			 tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabM"));
 			 
-			 createControlLayout();
-			 createControlLayout2();
+			 createEditLayout();
+			 createStackLayout();
 			 createReferenceLayout();
 			 
 			 monadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
@@ -105,10 +105,12 @@ import java.util.*;
 				 monadPanelList.add(j, new MonadPanel(_GUI, repNyad.getMonadList(j)));
 				 JScrollPane tempPane=new JScrollPane(monadPanelList.get(j));
 				 tempPane.setWheelScrollingEnabled(true);
-				 if (tabIcon != null)
-					 monadPanes.addTab(count, tabIcon, tempPane);
-				 else
-					 monadPanes.addTab(count, tempPane);
+				 
+				 monadPanes.addTab(	count, 
+							 		tabIcon, 
+							 		tempPane,
+							 		repNyad.getName()+" | "+monadPanelList.get(j).getMonad().getName()
+							 		);
 			 }
 			 
 			 add(monadPanes, "Center");
@@ -177,19 +179,17 @@ import java.util.*;
     {
 	    int next=monadPanes.getTabCount();
 	    monadPanelList.ensureCapacity(next+1);
-	    boolean test=monadPanelList.add(pMP);
-	    if (test)
-	    {
-	    	if (tabIcon != null)
-	    		monadPanes.addTab((new StringBuffer()).append(next).toString(), tabIcon, new JScrollPane(pMP));
-	    	else
-	    		monadPanes.addTab((new StringBuffer()).append(next).toString(), new JScrollPane(pMP));
-	    	
-	    	nyadOrder.setText((new StringBuffer()).append(next+1).toString());
-	    }
+	    monadPanelList.add(pMP);
+	   
+	    monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
+	    					tabIcon, 
+	    					new JScrollPane(pMP),
+	    					repNyad.getName()+" | "+pMP.getMonad().getName()
+	    					);
+	    nyadOrder.setText((new StringBuffer()).append(next+1).toString());
     }
     
-    public	void		addMonadTab(MonadRealF pM) throws UtilitiesException
+    public	void		addMonad(MonadRealF pM) throws UtilitiesException
     {
     	MonadPanel pMP=new MonadPanel(_GUI, pM);
     	addMonadPanel(pMP); 
@@ -240,53 +240,6 @@ import java.util.*;
     	nyadName.setEditable(true);
     }
     
-    private	void		pop()
-    {
-	    int where=monadPanes.getSelectedIndex();
-	    if (where>0)
-	    {
-		    String otherTitle=new String(monadPanes.getTitleAt(where-1));
-		    JScrollPane otherPane=new JScrollPane((JPanel)monadPanelList.get(where-1));
-
-		    String thisTitle=new String(monadPanes.getTitleAt(where));
-		    JScrollPane thisPane=new JScrollPane((JPanel)monadPanelList.get(where));
-
-		    monadPanes.setTitleAt(where, otherTitle);
-		    monadPanes.setComponentAt(where, otherPane);
-
-		    monadPanes.setTitleAt(where-1, thisTitle);
-		    monadPanes.setComponentAt(where-1, thisPane);
-
-		    MonadPanel tempPanel=(MonadPanel)monadPanelList.remove(where-1);
-		    monadPanelList.add(where, tempPanel);
-	    }
-    }
-
-    private	void		push()
-    {
-	    int size=monadPanes.getTabCount();
-	    int where=monadPanes.getSelectedIndex();
-	    if (where<size-1)
-	    {
-		    String otherTitle=new String(monadPanes.getTitleAt(where+1));
-		    JScrollPane otherPane=new JScrollPane((JPanel)monadPanelList.get(where+1));
-
-		    String thisTitle=new String(monadPanes.getTitleAt(where));
-		    JScrollPane thisPane=new JScrollPane((JPanel)monadPanelList.get(where));
-
-		    monadPanes.setTitleAt(where, otherTitle);
-		    monadPanes.setComponentAt(where, otherPane);
-
-		    monadPanes.setTitleAt(where+1, thisTitle);
-		    monadPanes.setComponentAt(where+1, thisPane);
-
-		    MonadPanel tempPanel=(MonadPanel)monadPanelList.remove(where);
-		    monadPanelList.add(where+1, tempPanel);
-		    
-		    revalidate();
-	    }
-    }
-    
     public	void		removeMonadTab(int pInd)
     {
     	int newOrder=monadPanes.getTabCount()-1;
@@ -294,13 +247,14 @@ import java.util.*;
 	    monadPanelList.remove(pInd);
 	    nyadOrder.setText(new StringBuffer().append(newOrder).toString());
     }
-    
+
     private void		copyMonadCommand()
     {
     	if (getMonadListSize()>0)
 		{
 			try
 			{
+				//_GUI._StatusBar.setStatusMsg("\tmonad pane in focus is {"+getPaneFocus()+"}");
 				MonadRealF focusMonad=getMonadPanel(getPaneFocus()).getMonad();
 				String buildName=new StringBuffer(focusMonad.getName()).append("_c").toString();
 				String buildAlgName =new StringBuffer(focusMonad.getAlgebra().getAlgebraName()).append("_c").toString();
@@ -314,7 +268,7 @@ import java.util.*;
 														buildFrameName,
 														focusMonad.getCoeff());
 				repNyad.appendMonad(newMonadCopy);
-				addMonadTab(newMonadCopy);
+				addMonad(newMonadCopy);
 			}
 			catch (UtilitiesException e)
 			{
@@ -357,7 +311,7 @@ import java.util.*;
 		}
     }
     
-    private 	void		createControlLayout()
+    private 	void		createEditLayout()
     {
     	_controlPanel=new JPanel();
     	_controlPanel.setBackground(_backColor);
@@ -415,7 +369,50 @@ import java.util.*;
     	add(_controlPanel, "West");
     }
     
-    private void createControlLayout2()
+    private 	void		createReferenceLayout()
+    {
+    	_refPanel=new JPanel();
+    	_refPanel.setBackground(_backColor);
+    	
+    	_refPanel.setBorder(BorderFactory.createTitledBorder("N"));
+    	_refPanel.setLayout(new GridBagLayout());
+    	
+    	GridBagConstraints cn0 = new GridBagConstraints();
+    	//cn0.insets = new Insets(5, 5, 5, 5);
+    	//cn0.fill=GridBagConstraints.HORIZONTAL;
+    	cn0.anchor=GridBagConstraints.WEST;
+
+    	cn0.gridx = 0;
+    	cn0.gridy = 0;
+    	cn0.weightx=0;
+    	cn0.weighty=0;
+    	
+    	_refPanel.add(new JLabel("Name ", SwingConstants.RIGHT), cn0);
+    	cn0.gridx++;
+    	nyadName.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	cn0.weightx=1;
+    	_refPanel.add(nyadName, cn0);	
+    	cn0.gridx++;
+    	
+    	cn0.weightx=0;
+    	cn0.ipadx=20;
+    	_refPanel.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot"))), cn0);
+    	cn0.gridx++;
+    	nyadFoot.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	nyadFoot.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    	_refPanel.add(nyadFoot, cn0);
+    	cn0.gridx++;
+    	
+    	_refPanel.add(new JLabel("Order ", SwingConstants.RIGHT), cn0);
+    	cn0.gridx++;
+    	//_order.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	nyadOrder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    	_refPanel.add(nyadOrder, cn0);
+    	
+    	add(_refPanel, "South");
+    }
+    
+    private void createStackLayout()
     {
     	_controlPanel2=new JPanel();
     	_controlPanel2.setLayout(new GridBagLayout());
@@ -484,47 +481,51 @@ import java.util.*;
     	add(_controlPanel2,"East");
     }
     
-    private 	void		createReferenceLayout()
+    private	void		pop()
     {
-    	_refPanel=new JPanel();
-    	_refPanel.setBackground(_backColor);
-    	
-    	_refPanel.setBorder(BorderFactory.createTitledBorder("N"));
-    	_refPanel.setLayout(new GridBagLayout());
-    	
-    	GridBagConstraints cn0 = new GridBagConstraints();
-    	//cn0.insets = new Insets(5, 5, 5, 5);
-    	//cn0.fill=GridBagConstraints.HORIZONTAL;
-    	cn0.anchor=GridBagConstraints.WEST;
+	    int where=monadPanes.getSelectedIndex();
+	    if (where>0)
+	    {
+		    String otherTitle=new String(monadPanes.getTitleAt(where-1));
+		    JScrollPane otherPane=new JScrollPane((JPanel)monadPanelList.get(where-1));
 
-    	cn0.gridx = 0;
-    	cn0.gridy = 0;
-    	cn0.weightx=0;
-    	cn0.weighty=0;
-    	
-    	_refPanel.add(new JLabel("Name ", SwingConstants.RIGHT), cn0);
-    	cn0.gridx++;
-    	nyadName.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-    	cn0.weightx=1;
-    	_refPanel.add(nyadName, cn0);	
-    	cn0.gridx++;
-    	
-    	cn0.weightx=0;
-    	cn0.ipadx=20;
-    	_refPanel.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot"))), cn0);
-    	cn0.gridx++;
-    	nyadFoot.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-    	nyadFoot.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    	_refPanel.add(nyadFoot, cn0);
-    	cn0.gridx++;
-    	
-    	_refPanel.add(new JLabel("Order ", SwingConstants.RIGHT), cn0);
-    	cn0.gridx++;
-    	//_order.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-    	nyadOrder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    	_refPanel.add(nyadOrder, cn0);
-    	
-    	add(_refPanel, "South");
+		    String thisTitle=new String(monadPanes.getTitleAt(where));
+		    JScrollPane thisPane=new JScrollPane((JPanel)monadPanelList.get(where));
+
+		    monadPanes.setTitleAt(where, otherTitle);
+		    monadPanes.setComponentAt(where, otherPane);
+
+		    monadPanes.setTitleAt(where-1, thisTitle);
+		    monadPanes.setComponentAt(where-1, thisPane);
+
+		    MonadPanel tempPanel=(MonadPanel)monadPanelList.remove(where-1);
+		    monadPanelList.add(where, tempPanel);
+	    }
+    }
+    
+    private	void		push()
+    {
+	    int size=monadPanes.getTabCount();
+	    int where=monadPanes.getSelectedIndex();
+	    if (where<size-1)
+	    {
+		    String otherTitle=new String(monadPanes.getTitleAt(where+1));
+		    JScrollPane otherPane=new JScrollPane((JPanel)monadPanelList.get(where+1));
+
+		    String thisTitle=new String(monadPanes.getTitleAt(where));
+		    JScrollPane thisPane=new JScrollPane((JPanel)monadPanelList.get(where));
+
+		    monadPanes.setTitleAt(where, otherTitle);
+		    monadPanes.setComponentAt(where, otherPane);
+
+		    monadPanes.setTitleAt(where+1, thisTitle);
+		    monadPanes.setComponentAt(where+1, thisPane);
+
+		    MonadPanel tempPanel=(MonadPanel)monadPanelList.remove(where);
+		    monadPanelList.add(where+1, tempPanel);
+		    
+		    revalidate();
+	    }
     }
     
     private void		removeMonadCommand()
@@ -536,7 +537,7 @@ import java.util.*;
 				int point = monadPanes.getSelectedIndex();
 				repNyad.removeMonad(point);
 				removeMonadTab(point);
-				_GUI._StatusBar.setStatusMsg("\tselected monad removed from list.\n");
+				//_GUI._StatusBar.setStatusMsg("\tselected monad at {"+point+"} removed from list.\n");
 			} 
 			catch (CladosNyadException e) 
 			{

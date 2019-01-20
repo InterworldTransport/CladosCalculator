@@ -713,7 +713,7 @@ public class MonadComplexD extends MonadAbstract
 	 *            short
 	 */
 	@Override
-	public MonadComplexD gradePart(short pGrade)
+	public MonadComplexD gradeCrop(short pGrade)
 	{
 		if (pGrade < 0 | pGrade >= getAlgebra().getGProduct().getGradeCount())
 			return this;
@@ -747,7 +747,7 @@ public class MonadComplexD extends MonadAbstract
 	 *            short
 	 */
 	@Override
-	public MonadComplexD gradeSuppress(short pGrade)
+	public MonadComplexD gradeCut(short pGrade)
 	{
 		if (pGrade < 0 | pGrade >= getAlgebra().getGProduct().getGradeCount())
 			return this;
@@ -1166,7 +1166,7 @@ public class MonadComplexD extends MonadAbstract
 	@Override
 	public MonadComplexD PSP()
 	{
-		gradePart(getAlgebra().getGProduct().getGradeCount());
+		gradeCrop(getAlgebra().getGProduct().getGradeCount());
 		return this;
 	}
 
@@ -1308,7 +1308,7 @@ public class MonadComplexD extends MonadAbstract
 	@Override
 	public MonadComplexD SP()
 	{
-		gradePart((short) 0);
+		gradeCrop((short) 0);
 		return this;
 	}
 

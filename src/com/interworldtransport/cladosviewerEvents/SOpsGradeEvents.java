@@ -68,7 +68,7 @@ public class SOpsGradeEvents implements ActionListener
     	else
     	{
     		_parent._GUI._StatusBar.setStatusMsg("\tselected monad IS single grade.\n");
-    		_parent._GUI._StatusBar.setWhatDouble(logGradeKey);
+    		_parent._GUI._FieldBar.setWhatDouble(logGradeKey);
     	}
     }
  }

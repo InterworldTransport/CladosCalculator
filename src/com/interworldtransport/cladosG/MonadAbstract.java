@@ -205,10 +205,10 @@ public abstract class MonadAbstract
 		return sparseFlag;
 	}
 
-	public abstract MonadAbstract gradePart(short pGrade)
+	public abstract MonadAbstract gradeCrop(short pGrade)
 					throws CladosMonadException;
 
-	public abstract MonadAbstract gradeSuppress(short pGrade)
+	public abstract MonadAbstract gradeCut(short pGrade)
 					throws CladosMonadException;
 
 	public abstract MonadAbstract invert();

@@ -55,16 +55,16 @@ import java.util.*;
 {
 	public		CladosCalculator		_GUI;
     public		JTabbedPane				nyadPanes;
-    private		ImageIcon				tabIcon;
+    private		Color					_backColor=new Color(255, 255, 220);
     private		JPanel					_controlBar;
     private		JButton					copyNyad;
     private		JButton					newNyad;
+    private final	Dimension 			square = new Dimension(25,25);
+    private		JButton					swapAbove;
+    private		JButton					swapBelow;
+    private		ImageIcon				tabIcon;  
     protected	ArrayList<NyadPanel>	nyadPanelList;
     protected	JButton					removeNyad;
-    private		JButton					swapAbove;
-    private		JButton					swapBelow;  
-    private		Color					_backColor=new Color(255, 255, 220);
-    private final	Dimension 			square = new Dimension(25,25);
 
 /**
  * The ViewerPanel class is intended to be a tabbed pane that displays all
@@ -82,8 +82,8 @@ import java.util.*;
     	setBackground(_backColor);
     	setLayout(new BorderLayout());
     	
-  	    createControlLayout();
-  	    createLayout();
+  	    createStackLayout();
+  	    createObjectsLayout();
     }
 
     @Override
@@ -130,7 +130,150 @@ import java.util.*;
 	    return nyadPanes.getSelectedIndex();
     }
 
-    private void createControlLayout()
+    private void copyNyadCommand()
+    {
+    	if (getNyadListSize()>0)
+		{
+			try
+			{
+				//_GUI._StatusBar.setStatusMsg("\tnyad pane in focus is {"+getPaneFocus()+"}");
+				NyadRealF focusNyad=getNyadPanel(getPaneFocus()).getNyad();
+				String buildName=new StringBuffer(focusNyad.getName()).append("_c").toString();
+				NyadRealF newNyadCopy=new NyadRealF(buildName, focusNyad);
+				addNyad(newNyadCopy);
+			}
+			catch (UtilitiesException e)
+			{
+				_GUI._StatusBar.setStatusMsg("\t\tcould not create copy from toolbar.\n");
+			}
+			catch (BadSignatureException es)
+			{
+				_GUI._StatusBar.setStatusMsg("\t\tcould not create copy from toolbar due to signature issue.\n");
+			} 
+			catch (CladosNyadException e) 
+			{
+				_GUI._StatusBar.setStatusMsg("\t\tcould not create copy from toolbar because nyad was malformed.\n");
+			}
+		}
+    }
+    
+    private void createCommand()
+    {
+    	try
+		{
+			CreateDialog.createNyad(_GUI);	
+		}
+		catch (UtilitiesException e)
+		{
+			//Do nothing.  Exception implies user doesn't get to create
+			//a new Monad, so nothing is the correct action.
+			System.out.println("\t\tCouldn't construct create dialog.");
+		}
+		catch (BadSignatureException es)
+		{
+			//Do nothing.  Exception implies user doesn't get to create
+			//a new Monad, so nothing is the correct action.
+			System.out.println("\\t\\tCouldn't construct create dialog.");
+		}
+		catch (CladosMonadException em)
+		{
+			//Do nothing.  Exception implies user doesn't get to create
+			//a new Monad, so nothing is the correct action.
+			System.out.println("\\t\\tCouldn't construct create dialog.");
+		}
+    }
+    
+    private 	void 		createObjectsLayout()
+    throws 		UtilitiesException, BadSignatureException
+    {
+    	//Get the nyad tab image for the nyad panes being constructed
+    	tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabN"));
+    	
+    	//The Viewer contains NyadPanels displayed as a JTabbedPanes containing 
+    	//JScrollPanes containing a NyadPanel each. We initiate the JTabbedPanel here
+    	nyadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
+    	nyadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+ 
+    	//Look in the conf file and determine how many nyads to initiate
+    	int intCount=Integer.parseInt(_GUI.IniProps.getProperty("Desktop.Default.Count"));
+    	nyadPanelList=new ArrayList<NyadPanel>(intCount);
+    	//Note that we initialize the NyadPanelList, but don't create a NyadPanel for it yet
+    	
+    	//Look in the conf file and determine how many monads in each nyad get initiated
+    	int intOrd=Integer.parseInt(_GUI.IniProps.getProperty("Desktop.Default.Order"));
+    	
+    	
+    	// the j counter covers the number of nyads to be initiated.
+    	// the m counter covers the number of monads in each nyad are to be initiated.
+    	short j=0;
+    	while (j < intCount)
+    	{
+    		NyadRealF aNyad=null;
+    		MonadRealF aMonad=null;
+    		try
+	    	{
+	    		aMonad=new MonadRealF("M",
+	    				_GUI.IniProps.getProperty("Desktop.Default.AlgebraName"),
+	    				_GUI.IniProps.getProperty("Desktop.Default.FrameName"),
+	    				_GUI.IniProps.getProperty("Desktop.Default.FootName"),
+	    				_GUI.IniProps.getProperty("Desktop.Default.Sig"),
+	    				RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.FieldType"))
+	    										);
+	    		String cnt =new StringBuffer("N").append(j).toString();
+	    		aNyad=new NyadRealF(cnt, aMonad);
+    		}
+    		catch (CladosMonadException em)
+    		{
+    			System.out.println("CladosMonad Exception found when constructing first part of the Viewer Panel");
+    			System.out.println(em.getSourceMessage());
+    			System.exit(-1);
+    		} 
+    		
+    		
+    		short m=1;
+    		while (m<intOrd)
+    		{
+    			try
+        		{
+    				String nextMonadName = (new StringBuffer(aMonad.getName()).append(m)).toString();
+    				String nextAlgebraName=(new StringBuffer(aMonad.getAlgebra().getAlgebraName()).append(m)).toString();
+    				String nextFrameName=(new StringBuffer(aMonad.getFrameName()).append(m)).toString();
+    				
+    				aNyad.createMonad(	nextMonadName, 
+    									nextAlgebraName, 
+    									nextFrameName, 
+    									_GUI.IniProps.getProperty("Desktop.Default.Sig")
+    								);
+        		}
+        		catch (CladosMonadException em)
+        		{
+        			System.out.println("CladosMonad Exception found when constructing the Viewer Panel");
+        			System.out.println(em.getSourceMessage());
+        		}
+        		catch (CladosNyadException en)
+        		{
+        			System.out.println("CladosNyad Exception found when adding >1 Nyad to the Viewer Panel");
+        			System.out.println(en.getSourceMessage());
+        		}
+    			m++;
+    		}
+    		String cnt =new StringBuffer().append(j).toString();
+    		
+    		//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
+    		nyadPanelList.add(j, new NyadPanel(_GUI, aNyad));
+    		
+    		nyadPanes.addTab(	cnt, 
+    							tabIcon, 
+    							new JScrollPane(nyadPanelList.get(j)),
+    							aNyad.getName()
+    							);
+    		j++;
+    	}
+    	//and now we finally add the JTabbedPane in the center of the Viewer
+    	add(nyadPanes, "Center");
+    }
+    
+    private void createStackLayout()
     {
     	_controlBar=new JPanel();
   	    _controlBar.setLayout(new GridBagLayout());
@@ -198,162 +341,6 @@ import java.util.*;
     	
     	add(_controlBar,"East");
     }
-    
-    private void copyNyadCommand()
-    {
-    	if (getNyadListSize()>0)
-		{
-			try
-			{
-				NyadRealF focusNyad=getNyadPanel(getPaneFocus()).getNyad();
-				String buildName=new StringBuffer(focusNyad.getName()).append("_c").toString();
-				NyadRealF newNyadCopy=new NyadRealF(buildName, focusNyad);
-				addNyadTab(newNyadCopy);
-			}
-			catch (UtilitiesException e)
-			{
-				_GUI._StatusBar.setStatusMsg("\t\tcould not create copy from toolbar.\n");
-			}
-			catch (BadSignatureException es)
-			{
-				_GUI._StatusBar.setStatusMsg("\t\tcould not create copy from toolbar due to signature issue.\n");
-			} 
-			catch (CladosNyadException e) 
-			{
-				_GUI._StatusBar.setStatusMsg("\t\tcould not create copy from toolbar because nyad was malformed.\n");
-			}
-		}
-    }
-    
-    private void createCommand()
-    {
-    	try
-		{
-			CreateDialog.createNyad(_GUI);	
-		}
-		catch (UtilitiesException e)
-		{
-			//Do nothing.  Exception implies user doesn't get to create
-			//a new Monad, so nothing is the correct action.
-			System.out.println("\t\tCouldn't construct create dialog.");
-		}
-		catch (BadSignatureException es)
-		{
-			//Do nothing.  Exception implies user doesn't get to create
-			//a new Monad, so nothing is the correct action.
-			System.out.println("\\t\\tCouldn't construct create dialog.");
-		}
-		catch (CladosMonadException em)
-		{
-			//Do nothing.  Exception implies user doesn't get to create
-			//a new Monad, so nothing is the correct action.
-			System.out.println("\\t\\tCouldn't construct create dialog.");
-		}
-    }
-    
-    private 	void 		createLayout()
-    throws 		UtilitiesException, BadSignatureException
-    {
-    	//Get the nyad tab image for the nyad panes being constructed
-    	tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabN"));
-    	
-    	//The Viewer contains NyadPanels displayed as a JTabbedPanes containing 
-    	//JScrollPanes containing a NyadPanel each. We initiate the JTabbedPanel here
-    	nyadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
-    	nyadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-    	nyadPanes.addChangeListener(new ChangeListener() 
-    	{
-    		@Override
-            public void stateChanged(ChangeEvent e) 
-            {
-    			if (nyadPanes.getTabCount()>0)
-    				_GUI._StatusBar.setFieldType(nyadPanelList.get(nyadPanes.getSelectedIndex()).getNyad().protoOne.getFieldType());
-    			else
-    				_GUI._StatusBar.setFieldType(null);
-            }
-        }							);
- 
-    	//Look in the conf file and determine how many nyads to initiate
-    	int intCount=Integer.parseInt(_GUI.IniProps.getProperty("Desktop.Default.Count"));
-    	nyadPanelList=new ArrayList<NyadPanel>(intCount);
-    	//Note that we initialize the NyadPanelList, but don't create a NyadPanel for it yet
-    	
-    	//Look in the conf file and determine how many monads in each nyad get initiated
-    	int intOrd=Integer.parseInt(_GUI.IniProps.getProperty("Desktop.Default.Order"));
-    	
-    	
-    	// the j counter covers the number of nyads to be initiated.
-    	// the m counter covers the number of monads in each nyad are to be initiated.
-    	short j=0;
-    	while (j < intCount)
-    	{
-    		NyadRealF aNyad=null;
-    		MonadRealF aMonad=null;
-    		try
-	    	{
-	    		aMonad=new MonadRealF("M",
-	    				_GUI.IniProps.getProperty("Desktop.Default.AlgebraName"),
-	    				_GUI.IniProps.getProperty("Desktop.Default.FrameName"),
-	    				_GUI.IniProps.getProperty("Desktop.Default.FootName"),
-	    				_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-	    				new RealF(new DivFieldType(_GUI.IniProps.getProperty("Desktop.Default.FieldType")), 1.0f)
-	    										);
-	    		String cnt =new StringBuffer("N").append(j).toString();
-	    		aNyad=new NyadRealF(cnt, aMonad);
-    		}
-    		catch (CladosMonadException em)
-    		{
-    			System.out.println("CladosMonad Exception found when constructing first part of the Viewer Panel");
-    			System.out.println(em.getSourceMessage());
-    			System.exit(-1);
-    		} 
-    		
-    		
-    		short m=1;
-    		while (m<intOrd)
-    		{
-    			try
-        		{
-    				//Maybe this section should make use of Nyad's .createMonad method to ensure Foot re-use the easy way
-    				
-    				String nextMonadName = (new StringBuffer(aMonad.getName()).append(m)).toString();
-    				String nextAlgebraName=(new StringBuffer(aMonad.getAlgebra().getAlgebraName()).append(m)).toString();
-    				String nextFrameName=(new StringBuffer(aMonad.getFrameName()).append(m)).toString();
-    				
-    				aNyad.createMonad(	nextMonadName, 
-    									nextAlgebraName, 
-    									nextFrameName, 
-    									_GUI.IniProps.getProperty("Desktop.Default.Sig")
-    								);
-        		}
-        		catch (CladosMonadException em)
-        		{
-        			System.out.println("CladosMonad Exception found when constructing the Viewer Panel");
-        			System.out.println(em.getSourceMessage());
-        		}
-        		catch (CladosNyadException en)
-        		{
-        			System.out.println("CladosNyad Exception found when adding >1 Nyad to the Viewer Panel");
-        			System.out.println(en.getSourceMessage());
-        		}
-    			m++;
-    		}
-    		String cnt =new StringBuffer().append(j).toString();
-    		
-    		//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
-    		nyadPanelList.add(j, new NyadPanel(_GUI, aNyad));
-    		//JScrollPane tempPane=new JScrollPane(NyadPanelList.get(j));
-    		
-    		if (tabIcon != null)
-    			nyadPanes.addTab(cnt, tabIcon, new JScrollPane(nyadPanelList.get(j)));
-    		else
-    			nyadPanes.addTab(cnt, new JScrollPane(nyadPanelList.get(j)));
-
-    		j++;
-    	}
-    	//and now we finally add the JTabbedPane in the center of the Viewer
-    	add(nyadPanes, "Center");
-    }
 
     private void eraseNyadCommand()
 	{
@@ -361,6 +348,7 @@ import java.util.*;
 		{
 			int point = nyadPanes.getSelectedIndex();
 			removeNyadPanel(point);
+			_GUI._StatusBar.setStatusMsg("\tselected nyad at {"+point+"} removed from list.\n");
 		}
 	}
 
@@ -422,21 +410,36 @@ import java.util.*;
     	int next=nyadPanes.getTabCount();
 	    String cnt=new StringBuffer().append(next).toString();
 	    nyadPanelList.ensureCapacity(next+1);
-	    boolean test=nyadPanelList.add(newP);
-	    if (test)
-	    	if (tabIcon != null)
-	    		nyadPanes.addTab(cnt, tabIcon, new JScrollPane(newP));
-	    	else
-	    		nyadPanes.addTab(cnt, new JScrollPane(newP));
+	    nyadPanelList.add(newP);
 	    
+	    nyadPanes.addTab(	cnt, 
+	    					tabIcon, 
+	    					new JScrollPane(newP),
+	    					newP.getNyad().getName()
+	    					);
 	    _GUI.pack();
     }
     
-    protected	void		addNyadTab(NyadRealF pN)
+    protected	void		addNyad(NyadRealF pN)
     	throws BadSignatureException, UtilitiesException
     {
     	NyadPanel newP=new NyadPanel(_GUI, pN);
     	addNyadPanel(newP);
+    }
+    
+    protected 	void		registerFieldPanel(FieldPanel pFieldPanel)
+    {
+    	nyadPanes.addChangeListener(new ChangeListener() 
+    	{
+    		@Override
+            public void stateChanged(ChangeEvent e) 
+            {
+    			if (nyadPanes.getTabCount()>0)
+    				pFieldPanel.setField(nyadPanelList.get(nyadPanes.getSelectedIndex()).getNyad().protoOne);
+    			else
+    				pFieldPanel.setFieldType(null);
+            }
+        }							);
     }
     
 	protected void removeNyadPanel(int pInd)

@@ -23,33 +23,38 @@ CladosCalculator_API_Documentation&lt;br&gt;
 &lt;br&gt;
 Copyright © 2018 Alfred Differ.  All rights reserved.
 &lt;p&gt;
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as
-published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version. 
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+&lt;p&gt;	
+Use of this code or executable objects derived from it by the Licensee 
+states their willingness to accept the terms of the license.
 &lt;p&gt;
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
-&lt;p&gt;
-Use of this code or executable objects derived from it by the Licensee states their willingness to accept the terms of the license.
-&lt;p&gt;
-You should have received a copy of the GNU Affero General Public License along with this program.
-If not, see https://www.gnu.org/licenses/."/>
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see https://www.gnu.org/licenses/."/>
 
 	<target name="clean"
 			description="Removes all Clados files down to a basic src package.">
 		<delete dir="${buildDir}" /> <!-- made by compile target -->
 		<delete dir="${docAPIDir}" /> <!-- made by javadoc target -->
+		<delete file="./cladosCalculator.jar" /> <!-- made by jar target -->
 	</target>
 
 	<target name="prepare"
 		description="Creates output directories" >
 		<mkdir dir="${buildDir}" />
 	</target>
-
+	
 	<target name="prepareDOC"
 			description="Creates output directories" >
 			<mkdir dir="${docAPIDir}" />
 		</target>
-
+	
 	<target name="compile"
 			depends="prepare"
 			description="Compiles all the Clados Calculator source files" >
@@ -68,7 +73,7 @@ If not, see https://www.gnu.org/licenses/."/>
 			-->
 		</javac>
 	</target>
-
+	
 	<target name="javadoc"
 			depends="prepareDOC"
 			description="Generates the API documentation for clados." >
@@ -89,7 +94,7 @@ If not, see https://www.gnu.org/licenses/."/>
 			depends="compile"
 			description="Package the clados calculator code"
 			>
-
+		
 		<jar 	manifest="clados.manifest"
 				index="true"
 				jarfile="./cladosCalculator.jar">
@@ -99,7 +104,7 @@ If not, see https://www.gnu.org/licenses/."/>
 				<include name="*.png" />
 			</fileset>
 			<fileset dir=".">
-				<include name="clados.manifest"/>
+				<include name="clados.manifest"/>	
 			</fileset>
 			<fileset dir="${buildDir}">
 				<include name="**/*.class"/>
@@ -110,7 +115,7 @@ If not, see https://www.gnu.org/licenses/."/>
 			<fileset dir="${confDir}">
 				<include name="MonadViewer.conf" />
 			</fileset>
-
+			
 		</jar>
 	</target>
 

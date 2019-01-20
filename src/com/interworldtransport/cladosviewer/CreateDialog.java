@@ -226,7 +226,7 @@ public class CreateDialog extends JDialog implements ActionListener
     												mainPane.frame.getText(),
     												tC);
     				NyadRealF rep2=new NyadRealF("New", rep);
-		    		_GUI._GeometryDisplay.addNyadTab(rep2);
+		    		_GUI._GeometryDisplay.addNyad(rep2);
 		    		_GUI._StatusBar.setStatusMsg("\tnew nyad added to stack...");
     			}
 	    		else if (copyFootTarget != null && copyAlgTarget == null)
@@ -238,7 +238,7 @@ public class CreateDialog extends JDialog implements ActionListener
 													mainPane.sig.getText(),
 													new RealF(copyFootTarget.getNumberType()));
 	    			NyadRealF rep2=new NyadRealF("New", rep);
-		    		_GUI._GeometryDisplay.addNyadTab(rep2);
+		    		_GUI._GeometryDisplay.addNyad(rep2);
 		    		_GUI._StatusBar.setStatusMsg("\tnew nyad added to stack...");
 	    		}
 	    		else if (copyFootTarget == null && copyAlgTarget == null)
@@ -250,7 +250,7 @@ public class CreateDialog extends JDialog implements ActionListener
 		    										mainPane.sig.getText(),
 		    										RealF.newZERO(mainPane.aname.getText()));
 		    		NyadRealF rep2=new NyadRealF("New", rep);
-		    		_GUI._GeometryDisplay.addNyadTab(rep2);
+		    		_GUI._GeometryDisplay.addNyad(rep2);
 		    		_GUI._StatusBar.setStatusMsg("\tnew nyad added to stack...");
 	    		}
 	    		
@@ -306,7 +306,7 @@ public class CreateDialog extends JDialog implements ActionListener
     										mainPane.frame.getText(),
     										tC);
     				tNSpotF.appendMonad(rep);	//This won't fail because alg uniqueness was checked
-    				tNSpotP.addMonadTab(rep);
+    				tNSpotP.addMonad(rep);
         			_GUI._StatusBar.setStatusMsg("\tnew monad added to selected nyad...");
     			}
     			else if (copyAlgTarget == null) //Choosing foot doesn't matter. Nyad already has one.
@@ -316,7 +316,7 @@ public class CreateDialog extends JDialog implements ActionListener
 	    									mainPane.frame.getText(), 
 	    									mainPane.sig.getText());
 	    			rep = tNSpotF.getMonadList(tNSpotF.getNyadOrder()-1);
-	    			tNSpotP.addMonadTab(rep);
+	    			tNSpotP.addMonad(rep);
 	    			_GUI._StatusBar.setStatusMsg("\tnew monad added to selected nyad...");
     			}	
     		}

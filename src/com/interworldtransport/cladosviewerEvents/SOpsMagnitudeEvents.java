@@ -69,7 +69,7 @@ public class SOpsMagnitudeEvents implements ActionListener
     	{
     		RealF scale = tMSpotPnl.getMonad().magnitude();
     		_parent._GUI._StatusBar.setStatusMsg("\tselected monad magnitude has been computed.\n");
-    		_parent._GUI._StatusBar.setWhatFloat(scale.getModulus());
+    		_parent._GUI._FieldBar.setWhatFloat(scale.getModulus());
     	} 
     	catch (CladosMonadException e) 
     	{
