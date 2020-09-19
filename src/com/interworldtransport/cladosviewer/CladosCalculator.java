@@ -196,8 +196,11 @@ public class CladosCalculator extends JFrame implements ActionListener
 	    	
 	    fc = new JFileChooser();
 	    fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+	    
+	    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+	    setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 	    	
-	    setLocation(100, 100);
+	    //setLocation(100, 100);
 	    //_StatusBar.setStatusMsg(" ...complete\n");
 	}
     
