@@ -21,7 +21,7 @@
 CladosCalculator_API_Documentation&lt;br&gt;
 --------------------------------------------------------------------------------
 &lt;br&gt;
-Copyright © 2018 Alfred Differ.  All rights reserved.
+Copyright © 2020 Alfred Differ.  All rights reserved.
 &lt;p&gt;
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -42,7 +42,7 @@ along with this program.  If not, see https://www.gnu.org/licenses/."/>
 			description="Removes all Clados files down to a basic src package.">
 		<delete dir="${buildDir}" /> <!-- made by compile target -->
 		<delete dir="${docAPIDir}" /> <!-- made by javadoc target -->
-		<delete file="./cladosCalculator.jar" /> <!-- made by jar target -->
+		<delete file="./CladosCalculator.jar" /> <!-- made by jar target -->
 	</target>
 
 	<target name="prepare"
@@ -64,13 +64,7 @@ along with this program.  If not, see https://www.gnu.org/licenses/."/>
 				destdir="${buildDir}"
 				nowarn="off"
 				srcdir="${srcDir}"
-				verbose="false" >
-			<!-- We need to get to where these can be excluded
-			<exclude name="com/interworldtransport/cladosG/*.java"/>
-			<exclude name="com/interworldtransport/cladosGExceptions/*.java"/>
-			<exclude name="com/interworldtransport/cladosF/*.java"/>
-			<exclude name="com/interworldtransport/cladosFExceptions/*.java"/>
-			-->
+				verbose="false" >			
 		</javac>
 	</target>
 	
@@ -85,6 +79,7 @@ along with this program.  If not, see https://www.gnu.org/licenses/."/>
 					overview="/Users/alfredwdiffer/eclipse-workspace/CladosCalculator/src/overview.html"
 					packagenames="com.interworldtransport.*"
 					sourcepath="${srcDir}"
+					classpath="${libDir}/clados.jar"
 					verbose="false"
 					windowtitle="Clados Calculator API Documentation">
 		</javadoc>
@@ -92,37 +87,26 @@ along with this program.  If not, see https://www.gnu.org/licenses/."/>
 
 	<target name="jar"
 			depends="compile"
-			description="Package the clados calculator code"
-			>
-		
+			description="Package the clados calculator code" >
 		<jar 	manifest="clados.manifest"
 				index="true"
-				jarfile="./cladosCalculator.jar">
-
-			<fileset dir="icons">
-				<include name="*.gif" />
-				<include name="*.png" />
-			</fileset>
+				jarfile="CladosCalculator.jar">
+			<fileset dir="${buildDir}" />
+			<zipfileset includes="**/*.class" src="lib/clados.jar"/>
+			<fileset dir="icons" />
 			<fileset dir=".">
 				<include name="clados.manifest"/>	
-			</fileset>
-			<fileset dir="${buildDir}">
-				<include name="**/*.class"/>
-			</fileset>
-			<fileset dir="${libDir}">
-				<include name="clados.jar"/>
 			</fileset>
 			<fileset dir="${confDir}">
 				<include name="MonadViewer.conf" />
 			</fileset>
-			
 		</jar>
 	</target>
 
 	<target name="jar_API_docs"
 		depends="javadoc"
 		description="Package the source code and support docs for install." >
-		<jar 	jarfile="lib/clados_API_Docs.jar" >
+		<jar 	jarfile="lib/CladosCalculator_API_Docs.jar" >
 			<fileset dir="docs">
 				<include name="api/**/*.*"/>
 			</fileset>

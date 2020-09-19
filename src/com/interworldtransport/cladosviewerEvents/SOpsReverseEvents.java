@@ -1,67 +1,76 @@
-/*
-<h2>Copyright</h2>
-Copyright (c) 2005 Interworld Transport.  All rights reserved.<br>
----com.interworldtransport.cladosviewer.SOpsReverseEvents------------------------------------------
-<p>
-Interworld Transport grants you ("Licensee") a license to this software
-under the terms of the GNU General Public License.<br>
-A full copy of the license can be found bundled with this package or code file.
-<p>
-If the license file has become separated from the package, code file, or binary
-executable, the Licensee is still expected to read about the license at the
-following URL before accepting this material.
-<blockquote><code>http://www.opensource.org/gpl-license.html</code></blockquote>
-<p>
-Use of this code or executable objects derived from it by the Licensee states their
-willingness to accept the terms of the license.
-<p>
-A prospective Licensee unable to find a copy of the license terms should contact
-Interworld Transport for a free copy.
-<p>
----com.interworldtransport.cladosviewer.SOpsReverseEvents------------------------------------------
-*/
+/**
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.SOpsReverseEvents<br>
+ * -------------------------------------------------------------------- <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.<p>
+ * 
+ * Use of this code or executable objects derived from it by the Licensee 
+ * states their willingness to accept the terms of the license. <p> 
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * 
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.SOpsReverseEvents<br>
+ * ------------------------------------------------------------------------ <br>
+ */
 
-package com.interworldtransport.cladosviewer;
-import com.interworldtransport.clados.*;
+package com.interworldtransport.cladosviewerEvents;
+
+import com.interworldtransport.cladosviewer.MonadPanel;
+import com.interworldtransport.cladosviewer.NyadPanel;
+
 import java.awt.event.*;
 import javax.swing.*;
 
-/** com.interworldtransport.cladosviewer.SOpsReverseEvents
+/** 
  *  This class manages events relating to a simple operation...
  *  Reverse this Monad.
  *
- * @version 0.80, $Date: 2005/07/25 01:44:25 $
+ * @version 0.85
  * @author Dr Alfred W Differ
  */
 public class SOpsReverseEvents implements ActionListener
  {
-    protected ViewerMenu		ParentGUIMenu;
-    protected JMenuItem 		ControlIt;
-    protected SOpsEvents 		Parent;
+    protected JMenuItem 		_control;
+    protected SOpsEvents 		_parent;
 
-/** This is the default constructor.
+/** 
+ * This is the default constructor.
+ * @param pmniControlled
+ *  JMenuItem
+ * This is a reference to the Menu Item for which this event acts.
+ * @param pParent
+ * 	BOpsEvents
+ * This is a reference to the BOpsEvents parent event handler
  */
-    public SOpsReverseEvents(	ViewerMenu pGUIMenu,
-    				JMenuItem pmniControlled,
-				SOpsEvents pParent)
+    public SOpsReverseEvents(	JMenuItem pmniControlled,
+								SOpsEvents pParent)
     {
-	this.ParentGUIMenu=pGUIMenu;
-	this.ControlIt=pmniControlled;
-	this.ControlIt.addActionListener(this);
-	this.Parent=pParent;
+		_control=pmniControlled;
+		_control.addActionListener(this);
+		_parent=pParent;
+    }
 
-    }//end of SOpsReverseEvents constructor
-
-/** This is the actual action to be performed by this member of the menu.
+/** 
+ * This is the actual action to be performed by this member of the menu.
  */
     public void actionPerformed(ActionEvent evt)
     {
-	MonadPanel MP0=ParentGUIMenu.ParentGUI.CenterAll.getNyadPanel(0).getMonadPanel(0);
-	Monad Monad0=MP0.getMonad();
-	Monad0.Reverse();
-	MP0.setBottomFields();
-	ParentGUIMenu.ParentGUI.StatusLine.setStatusMsg("First Monad has been reversed.\n");
-
-    }//end of action performed method.
-
- }//end of SOpsReverseEvents class
+    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
+    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
+    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+    	
+		tMSpotPnl.getMonad().reverse();
+		tMSpotPnl.setCoefficientDisplay();
+		_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been reversed.\n");
+    }
+ }

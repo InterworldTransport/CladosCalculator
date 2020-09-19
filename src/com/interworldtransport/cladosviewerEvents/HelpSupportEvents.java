@@ -1,79 +1,67 @@
-/*
-<h2>Copyright</h2>
-Copyright (c) 2005 Interworld Transport.  All rights reserved.<br>
----com.interworldtransport.cladosviewer.HelpSupportEvents-------------------------------------
-<p>
-Interworld Transport grants you ("Licensee") a license to this software
-under the terms of the GNU General Public License.<br>
-A full copy of the license can be found bundled with this package or code file.
-<p>
-If the license file has become separated from the package, code file, or binary
-executable, the Licensee is still expected to read about the license at the
-following URL before accepting this material.
-<blockquote><code>http://www.opensource.org/gpl-license.html</code></blockquote>
-<p>
-Use of this code or executable objects derived from it by the Licensee states their
-willingness to accept the terms of the license.
-<p>
-A prospective Licensee unable to find a copy of the license terms should contact
-Interworld Transport for a free copy.
-<p>
----com.interworldtransport.cladosviewer.HelpSupportEvents-------------------------------------
-*/
-package com.interworldtransport.cladosviewer;
+/**
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.HelpSupportEvents<br>
+ * -------------------------------------------------------------------- <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.<p>
+ * 
+ * Use of this code or executable objects derived from it by the Licensee 
+ * states their willingness to accept the terms of the license. <p> 
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * 
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.HelpSupportEvents<br>
+ * ------------------------------------------------------------------------ <br>
+ */
+package com.interworldtransport.cladosviewerEvents;
 import javax.swing.*;
+
+import com.interworldtransport.cladosviewer.SupportDialog;
+
 import java.awt.event.*;
 
 /** com.interworldtransport.cladosviewer.HelpSupportEvents
  * This class shows the support dialog box and its related information.
  *
- * @version 0.80, $Date: 2005/07/25 01:44:25 $
+ * @version 0.85
  * @author Dr Alfred W Differ
  */
 public class HelpSupportEvents implements ActionListener
 {
 
-    protected JMenuItem			ControlIt;
-    protected ViewerMenu		ParentGUIMenu;
-    protected HelpEvents		Parent;
+    protected JMenuItem			_control;
+    protected HelpEvents		_parent;
 
-/** This is the default constructor.
+/** 
+ * This is the default constructor.
+ * @param pHelp
+ *  JMenuItem
+ * This is a reference to the 'Help' Menu parent
+ * @param pParent
+ * 	HelpEvents
+ * This is a reference to the HelpEvent parent event handler
  */
-    public HelpSupportEvents(ViewerMenu pGUIMenu, JMenuItem pHelp, HelpEvents pParent)
+    public HelpSupportEvents(JMenuItem pHelp, HelpEvents pParent)
     {
-	this.ParentGUIMenu=pGUIMenu;
-	this.Parent=pParent;
-	this.ControlIt=pHelp;
-	this.ControlIt.addActionListener(this);
-
-    }//end of HelpSupportEvents Menu constructor
+		_parent=pParent;
+		_control=pHelp;
+		_control.addActionListener(this);
+    }
 
 /** This is the default action to be performed by all members of the Help menu.
  *  It will be overridden by specific members of the menu.
  */
     public void actionPerformed(ActionEvent evt)
     {
-	//Show the support custom dialog box
-	String tempVersion = ParentGUIMenu.ParentGUI.IniProps.getProperty("MonadViewer.Desktop.Version");
-
-	StringBuffer content = new StringBuffer();
-
-	content.append("Monad Viewer ");
-	content.append(tempVersion);
-	content.append("\n\n");
-	content.append("Web Site: http://clados.sf.net\n\n");
-
-	content.append("For support issues that would help us make a better viewer please visit ");
-	content.append("the project home page.  From this page you should be able to find the Viewer's ");
-	content.append("project site with its associated mailing lists and bulletin boards.  ");
-	content.append("Please list your support issues on the appropriate bulletin board and sign up for ");
-	content.append("any mailing lists that interest you.\n\n");
-	content.append("For complex support or licensing issues, please contact Dr Alfred Differ at adiffer@gmail.com");
-
-	String contentstring = new String(content);
-
-	SupportDialog spt = new SupportDialog(this.ParentGUIMenu.ParentGUI, contentstring);
-    }//end of action performed method.
-
-
-}//end of HelpSupportEvents class
+		new SupportDialog(_parent._GUI);
+    }
+}

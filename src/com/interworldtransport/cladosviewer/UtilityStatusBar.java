@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2018 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
  * ---com.interworldtransport.cladosviewer.UtilityStatusBar<br>
  * -------------------------------------------------------------------- <p>
@@ -54,14 +54,21 @@ import javax.swing.*;
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEtchedBorder());
 		
-		stmesgt = new JTextArea("Initializing GUI...", 8, 40);
+		stmesgt = new JTextArea("init'd\n", 8, 40);
 		stmesgt.setFont(new Font("Serif", Font.PLAIN, 8));
 		stmesgt.setLineWrap(true);
 		stmesgt.setWrapStyleWord(true);
 		add(new JScrollPane(stmesgt), "Center");
 		// Done with large text area intended for code responses to user
     }
-
+    /**
+     * This is the message setting method that practically all other display panels
+     * use when trying to report issues and results to the GUI.
+     * @param pMsg
+     *  String
+     * Typical use of this is to construct a string with the message by appending
+     * other strings in a string buffer... and then converting it at the end to String.
+     */
     public void setStatusMsg(String pMsg)
     {
     	stmesgt.append(pMsg);

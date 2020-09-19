@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2018 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
  * ---com.interworldtransport.cladosviewer.OptionsDialog<br>
  * -------------------------------------------------------------------- <p>
@@ -45,6 +45,10 @@ public class OptionsDialog extends JDialog implements ActionListener
 
 /**
  * The constructor sets up the options dialog box and displays it.
+ * @param mainWindow
+ *  CladosCalculator
+ * This is just a reference to the owning application so error messages can be 
+ * reported out to the GUI.
  */
     public OptionsDialog(CladosCalculator mainWindow)
     {

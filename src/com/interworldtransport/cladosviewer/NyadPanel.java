@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2018 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
  * ---com.interworldtransport.cladosviewer.NyadPanel<br>
  * -------------------------------------------------------------------- <p>
@@ -71,9 +71,23 @@ import java.util.*;
 	private		ImageIcon				tabIcon; 
     protected	ArrayList<MonadPanel>	monadPanelList;
  
-/**
- * This constructor is the copy one used when a Monad already exists
- */
+  /**
+  * The NyadPanel class is intended to be contain a cladosG Nyad in order to offer its parts
+  * for display and manipulation by the calculator
+  * 
+  * @param pGUI			
+  * 	CladosCalculator
+  * This is just a reference to the owner application so error messages can be presented.
+  * @param pN
+  * 	NyadRealF
+  * This is a reference to the nyad to be displayed and manipulated.
+  * @throws UtilitiesException
+  * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
+  * @throws BadSignatureException
+  * This exception is thrown when one of the monad panels can't accept the string signature offered.
+  * That happens when something other than '+' or '-' is used... or maybe when signature is too long.
+  * Remember that blade count is currently tracked with a short integer. {--****
+  */
 	 public NyadPanel(	CladosCalculator pGUI,
 			 			NyadRealF pN)
 	 throws 	UtilitiesException, BadSignatureException
@@ -174,7 +188,15 @@ import java.util.*;
     		_GUI._StatusBar.setStatusMsg(" ... and now locked\n");
     	}
     }
-
+    /**
+     * This method supports adding a monad panel to the nyad's list of monads.
+     * Be aware that no tests are performed to prevent the panel being added.
+     * That means the nyad might change from strong to weak without notice by this panel.
+     * @param pMP
+     * 	MonadPanel
+     * This is the MonadPanel to be appended to this NyadPanel. It is assumed that 
+     * the monad panel is constructed elsewhere.
+     */
     public	void		addMonadPanel(MonadPanel pMP)
     {
 	    int next=monadPanes.getTabCount();
@@ -188,8 +210,21 @@ import java.util.*;
 	    					);
 	    nyadOrder.setText((new StringBuffer()).append(next+1).toString());
     }
-    
-    public	void		addMonad(MonadRealF pM) throws UtilitiesException
+    /**
+     * This method supports adding a monad panel to the nyad's list of monads.
+     * Be aware that no tests are performed to prevent the panel being added.
+     * That means the nyad might change from strong to weak without notice by this panel.
+     * <p>
+     * The difference between this one and the other by a similar name is this one receives
+     * a monad and constructs the appropriate panel.
+     * <p>
+     * @param pM
+     * 	MonadRealF
+     * This is the MonadRealF to use to construct a MonadPanel to be appended to this NyadPanel.
+     * @throws UtilitiesException
+     * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
+     */
+    public	void		addMonadPanel(MonadRealF pM) throws UtilitiesException
     {
     	MonadPanel pMP=new MonadPanel(_GUI, pM);
     	addMonadPanel(pMP); 
@@ -215,7 +250,7 @@ import java.util.*;
     {
 	    return repNyad;
     }
-    public int 		getOrder()
+    public int 			getOrder()
     {
     	return monadPanelList.size();
     }
@@ -232,16 +267,28 @@ import java.util.*;
     	//_order.setEditable(false);
     	//_foot.setEditable(false);
     }
-    
+    /**
+     * This method adjusts the JTextArea elements contained on the panel to allow for edits.
+     */
     public 	void 		makeWritable()
     {
     	if (_refPanel!=null)
     		_refPanel.setBackground(_unlockColor);
     	nyadName.setEditable(true);
     }
-    
+    /**
+     * This method removes the Monad Panel at the integer index indicated.
+     * @param pInd
+     *  int
+     * This the index of the monad panel to remove.
+     * No checks are made right now for out-of-bounds conditions.
+     * This should be fixed.
+     */
     public	void		removeMonadTab(int pInd)
     {
+    	// TODO Write the out-of-bounds check so one doesn't reduce the order of a nyad when 
+    	// the monad cannnot be removed. This might also prevent an out-of-bounds exception
+    	// from being thrown since we don't catch one here.
     	int newOrder=monadPanes.getTabCount()-1;
 	    monadPanes.remove(pInd);
 	    monadPanelList.remove(pInd);
@@ -268,7 +315,7 @@ import java.util.*;
 														buildFrameName,
 														focusMonad.getCoeff());
 				repNyad.appendMonad(newMonadCopy);
-				addMonad(newMonadCopy);
+				addMonadPanel(newMonadCopy);
 			}
 			catch (UtilitiesException e)
 			{
@@ -287,28 +334,7 @@ import java.util.*;
     
     private void createCommand()
     {
-    	try
-		{
-			CreateDialog.createMonad(_GUI);	
-		}
-		catch (UtilitiesException e)
-		{
-			//Do nothing.  Exception implies user doesn't get to create
-			//a new Monad, so nothing is the correct action.
-			System.out.println("\t\tCouldn't construct create dialog.");
-		}
-		catch (BadSignatureException es)
-		{
-			//Do nothing.  Exception implies user doesn't get to create
-			//a new Monad, so nothing is the correct action.
-			System.out.println("\\t\\tCouldn't construct create dialog.");
-		}
-		catch (CladosMonadException em)
-		{
-			//Do nothing.  Exception implies user doesn't get to create
-			//a new Monad, so nothing is the correct action.
-			System.out.println("\\t\\tCouldn't construct create dialog.");
-		}
+		CreateDialog.createMonad(_GUI);	
     }
     
     private 	void		createEditLayout()

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 x<Application Name="clados Calculator", Rights="Copyright 2018 Alfred Differ", Licensee=" Alfred Differ" />
 <NyadCount size="1" />
 <Nyad Name="New",  Order="3",  Foot="strawberry">
@@ -203,6 +202,31 @@ x<Application Name="clados Calculator", Rights="Copyright 2018 Alfred Differ", L
 </Monad>
 </MonadList></Nyad>
 </NyadList>
-=======
-x
->>>>>>> 59d0d998ca7f6aa42603ccf96a8be5d0fb0731c7
+<Application Name="clados Calculator", Rights="Copyright 2018 Alfred Differ", Licensee="Alfred Differ" />
+<NyadList size="1">
+<Nyad Name="N0",  Order="1",  Foot="appleJack">
+<MonadList>
+<Monad name="M" algebra="ever" frame="appleHill" gradeKey="1" sparseFlag="true" >
+<Coefficients number="16" gradeKey="1">
+	<RealF type="justRF" value="0.0" />
+	<RealF type="justRF" value="0.0" />
+	<RealF type="justRF" value="0.0" />
+	<RealF type="justRF" value="0.0" />
+	<RealF type="justRF" value="0.0" />
+	<RealF type="justRF" value="0.0" />
+	<RealF type="justRF" value="0.0" />
+	<RealF type="justRF" value="0.0" />
+	<RealF type="justRF" value="0.0" />
+	<RealF type="justRF" value="0.0" />
+	<RealF type="justRF" value="0.0" />
+	<RealF type="justRF" value="0.0" />
+	<RealF type="justRF" value="0.0" />
+	<RealF type="justRF" value="0.0" />
+	<RealF type="justRF" value="0.0" />
+	<RealF type="justRF" value="0.0" />
+</Coefficients>
+</Monad>
+</MonadList>
+</Nyad>
+</NyadList>
+

@@ -1,29 +1,32 @@
-/*
-<h2>Copyright</h2>
-Copyright (c) 2005 Interworld Transport.  All rights reserved.<br>
----com.interworldtransport.cladosviewer.COpsEvents-----------------------------------------
-<p>
-Interworld Transport grants you ("Licensee") a license to this software
-under the terms of the GNU General Public License.<br>
-A full copy of the license can be found bundled with this package or code file.
-<p>
-If the license file has become separated from the package, code file, or binary
-executable, the Licensee is still expected to read about the license at the
-following URL before accepting this material.
-<blockquote><code>http://www.opensource.org/gpl-license.html</code></blockquote>
-<p>
-Use of this code or executable objects derived from it by the Licensee states
-their willingness to accept the terms of the license.
-<p>
-A prospective Licensee unable to find a copy of the license terms should contact
-Interworld Transport for a free copy.
-<p>
----com.interworldtransport.cladosviewer.COpsEvents-----------------------------------------
-*/
+/**
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.COpsEvents<br>
+ * -------------------------------------------------------------------- <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.<p>
+ * 
+ * Use of this code or executable objects derived from it by the Licensee 
+ * states their willingness to accept the terms of the license. <p> 
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * 
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.COpsEvents<br>
+ * ------------------------------------------------------------------------ <br>
+ */
 
 package com.interworldtransport.cladosviewerEvents;
 import java.awt.event.*;
 
+import com.interworldtransport.cladosviewer.CladosCalculator;
 import com.interworldtransport.cladosviewer.ViewerMenu;
 
 /** com.interworldtransport.cladosviewer.COpsEvents
@@ -34,7 +37,7 @@ import com.interworldtransport.cladosviewer.ViewerMenu;
  * parent.  It could also register with all the components to which its
  * listeners register..maybe.
  *
- * @version 0.80, $Date: 2005/07/25 01:44:25 $
+ * @version 0.85
  * @author Dr Alfred W Differ
  */
 public class COpsEvents implements ActionListener
@@ -48,40 +51,27 @@ public class COpsEvents implements ActionListener
     //protected COpsRotateEvents	rot;
     //protected COpsTranslateEvents	trans;
 
-    protected ViewerMenu 		ParentGUIMenu;
+    protected ViewerMenu 		_GUIMenu;
+    protected CladosCalculator		_GUI;
 
 /** This is the default constructor.  The event structure of the
  *  menu starts here and finishes with the child menu items.
+ *  @param pTheGUIMenu
+ *  ViewerMenu
+ * This is a reference to the owner menu containing this one.
  */
     public COpsEvents(ViewerMenu pTheGUIMenu)
     {
-		ParentGUIMenu=pTheGUIMenu;
+		_GUIMenu=pTheGUIMenu;
+		_GUI=_GUIMenu._parentGUI;
 
-		add = new COpsAddEvents(		ParentGUIMenu,
-						ParentGUIMenu.mniAdd,
-						this);
-		sub = new COpsSubtractEvents(	ParentGUIMenu,
-						ParentGUIMenu.mniSubtract,
-						this);
-		lmult = new COpsLMultEvents(	ParentGUIMenu,
-						ParentGUIMenu.mniLeftMultiply,
-						this);
-		rmult = new COpsRMultEvents(	ParentGUIMenu,
-						ParentGUIMenu.mniRightMultiply,
-						this);
-		symm = new COpsDotEvents(		ParentGUIMenu,
-						ParentGUIMenu.mniSymm,
-						this);
-		asymm = new COpsWedgeEvents(	ParentGUIMenu,
-						ParentGUIMenu.mniASymm,
-						this);
-	//this.rot = new COpsRotateEvents(	ParentGUIMenu,
-	//					ParentGUIMenu.mniRotate,
-	//					this);
-	//this.trans = new COpsTranslateEvents(	ParentGUIMenu,
-	//					ParentGUIMenu.mniTranslate,
-	//					this);
-    }//end of COpsEvents Menu constructor
+		add = new COpsAddEvents(		_GUIMenu.mniAdd, this);
+		sub = new COpsSubtractEvents(	_GUIMenu.mniSubtract, this);
+		lmult = new COpsLMultEvents(	_GUIMenu.mniLeftMultiply, this);
+		rmult = new COpsRMultEvents(	_GUIMenu.mniRightMultiply, this);
+		symm = new COpsDotEvents(		_GUIMenu.mniSymm, this);
+		asymm = new COpsWedgeEvents(	_GUIMenu.mniASymm, this);
+    }
 
 /** This is the default action to be performed by all members of the menu.
  *  It will be overridden by specific members of the menu.

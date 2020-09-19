@@ -1,28 +1,35 @@
-/*
-<h2>Copyright</h2>
-Copyright (c) 2005 Interworld Transport.  All rights reserved.<br>
----com.interworldtransport.cladosviewer.SOpsScaleEvents------------------------------------------
-<p>
-Interworld Transport grants you ("Licensee") a license to this software
-under the terms of the GNU General Public License.<br>
-A full copy of the license can be found bundled with this package or code file.
-<p>
-If the license file has become separated from the package, code file, or binary
-executable, the Licensee is still expected to read about the license at the
-following URL before accepting this material.
-<blockquote><code>http://www.opensource.org/gpl-license.html</code></blockquote>
-<p>
-Use of this code or executable objects derived from it by the Licensee states their
-willingness to accept the terms of the license.
-<p>
-A prospective Licensee unable to find a copy of the license terms should contact
-Interworld Transport for a free copy.
-<p>
----com.interworldtransport.cladosviewer.SOpsScaleEvents------------------------------------------
-*/
+/**
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.SOpsScaleEvents<br>
+ * -------------------------------------------------------------------- <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.<p>
+ * 
+ * Use of this code or executable objects derived from it by the Licensee 
+ * states their willingness to accept the terms of the license. <p> 
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * 
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.SOpsScaleEvents<br>
+ * ------------------------------------------------------------------------ <br>
+ */
 
-package com.interworldtransport.cladosviewer;
-import com.interworldtransport.clados.*;
+package com.interworldtransport.cladosviewerEvents;
+import com.interworldtransport.cladosF.RealF;
+import com.interworldtransport.cladosFExceptions.FieldBinaryException;
+import com.interworldtransport.cladosG.MonadRealF;
+import com.interworldtransport.cladosviewer.MonadPanel;
+import com.interworldtransport.cladosviewer.NyadPanel;
+
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -30,50 +37,64 @@ import javax.swing.*;
  *  This class manages events relating to a simple operation...
  *  Rescale this Monad.
  *
- * @version 0.80, $Date: 2005/07/25 01:44:25 $
+ * @version 0.85
  * @author Dr Alfred W Differ
  */
 public class SOpsScaleEvents implements ActionListener
  {
-    protected ViewerMenu		ParentGUIMenu;
-    protected JMenuItem 		ControlIt;
-    protected SOpsEvents 		Parent;
+    protected JMenuItem 		_control;
+    protected SOpsEvents 		_parent;
 
-/** This is the default constructor.
+/** 
+ * This is the default constructor.
+ * @param pmniControlled
+ *  JMenuItem
+ * This is a reference to the Menu Item for which this event acts.
+ * @param pParent
+ * 	BOpsEvents
+ * This is a reference to the BOpsEvents parent event handler
  */
-    public SOpsScaleEvents(	ViewerMenu pGUIMenu,
-    				JMenuItem pmniControlled,
-				SOpsEvents pParent)
+    public SOpsScaleEvents(	JMenuItem pmniControlled,
+    						SOpsEvents pParent)
     {
-	this.ParentGUIMenu=pGUIMenu;
-	this.ControlIt=pmniControlled;
-	this.ControlIt.addActionListener(this);
-	this.Parent=pParent;
+		_control=pmniControlled;
+		_control.addActionListener(this);
+		_parent=pParent;
+    }
 
-    }//end of SOpsScaleEvents constructor
-
-/** This is the actual action to be performed by this member of the menu.
+/** 
+ * This is the actual action to be performed by this member of the menu.
  */
     public void actionPerformed(ActionEvent evt)
     {
-	MonadPanel MP0=ParentGUIMenu.ParentGUI.CenterAll.getNyadPanel(0).getMonadPanel(0);
-	Monad Monad0=MP0.getMonad();
-	
-	try 
-	{
-		Monad0.Scale(new Double(ParentGUIMenu.ParentGUI.StatusLine.stview.getText()).doubleValue());
-		MP0.setBottomFields();
-		ParentGUIMenu.ParentGUI.StatusLine.setStatusMsg("First Monad has been rescaled by a factor of: {"+
-				ParentGUIMenu.ParentGUI.StatusLine.stview.getText()+"}\n");
-	}
-	catch (NumberFormatException ef)
-	{
-		ParentGUIMenu.ParentGUI.StatusLine.setStatusMsg("First Monad has NOT been rescaled by a factor of: {"+
-				ParentGUIMenu.ParentGUI.StatusLine.stview.getText()+"}\n");
-	}
-	
-	
+    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
 
-    }//end of action performed method.
-
- }//end of SOpsScaleEvents class
+    	//Find the selected nyad and monad panels
+		NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
+    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+    	
+    	//Now point to the monad to be scaled
+    	MonadRealF tMonad=tMSpotPnl.getMonad();
+    	
+    	if ((tNSpotPnl.getNyad()).protoOne instanceof RealF)
+    	{
+	    	try 
+	    	{	//...and scale it
+	        	tMonad.scale(new RealF(	(tNSpotPnl.getNyad()).protoOne.getFieldType(), 
+						Float.parseFloat(_parent._GUI._FieldBar.getRealText())));
+	        	
+	    		//tMonad.scale(new RealF(	tMonad.getCoeff((short) 0).getFieldType(), 
+	    		//						Float.parseFloat(_parent._GUI._FieldBar.getRealText())));
+	    		
+	    		//redraw the UI's Monad Panel to show the rescaled Monad there
+	    		tMSpotPnl.setCoefficientDisplay();
+	    		_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by | ");
+	    		_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+"\n");
+	    	}
+	    	catch (FieldBinaryException eb)
+	    	{
+	    		_parent._GUI._StatusBar.setStatusMsg("\t\tmonad has NOT been rescaled due to field binary exception.\n");
+	    	}
+    	}
+    }
+ }

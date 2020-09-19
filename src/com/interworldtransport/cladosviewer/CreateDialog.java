@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2018 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
  * ---com.interworldtransport.cladosviewer.CreateDialog<br>
  * -------------------------------------------------------------------- <p>
@@ -44,33 +44,84 @@ import javax.swing.border.*;
 public class CreateDialog extends JDialog implements ActionListener
 {
 	/**
-	 * This is a factory method for creating a new nyad to add to the stack
-	 * 
-	 * @param pGUI
-	 * @return
-	 * @throws UtilitiesException
-	 * @throws BadSignatureException
-	 * @throws CladosMonadException
-	 */
+	* This is a factory method for creating a new nyad to add to the stack
+	* 
+	* @param pGUI
+	*	CladosCalculator
+	* This parameter references the owning application. Nothing spectacular.
+	* @return 
+	*  CreateDialog 
+	*  This method returns a CreateDialog instance
+	*  The point of this being static is to enable making the regular constructor private later.
+	*/
 	public static final CreateDialog createNyad(CladosCalculator pGUI) 
-			throws UtilitiesException, BadSignatureException, CladosMonadException
 	{
-		return new CreateDialog(pGUI, true);
+		CreateDialog tCD = null;
+		try
+    	{
+    		tCD= new CreateDialog(pGUI, true);
+    	}
+    	catch (UtilitiesException e)
+    	{
+    		//Do nothing.  Exception implies user doesn't get to create
+    		//anything, so nothing is the correct action.
+    		System.out.println("Couldn't construct create dialog.");
+    	}
+    	catch (BadSignatureException es)
+    	{
+    		//Do nothing.  Exception implies user doesn't get to create
+    		//anything, so nothing is the correct action.
+    		System.out.println("Couldn't construct create dialog.");
+    	}
+    	catch (CladosMonadException em)
+    	{
+    		//Do nothing.  Exception implies user doesn't get to create
+    		//anything, so nothing is the correct action.
+    		System.out.println("Couldn't construct create dialog.");
+    	}
+		return tCD;
 	}
 	/**
-	 * This is a factory method for creating a new monad to add to the selected nyad's stack
-	 * 
-	 * @param pGUI
-	 * @return
-	 * @throws UtilitiesException
-	 * @throws BadSignatureException
-	 * @throws CladosMonadException
-	 */
+	* This is a factory method for creating a new monad to add to the selected nyad's stack
+	* 
+	* @param pGUI
+	*	CladosCalculator
+	* This parameter references the owning application. Nothing spectacular.
+	* @return 
+	*  CreateDialog 
+	*  This method returns a CreateDialog instance
+	*  The point of this being static is to enable making the regular constructor private later.
+	*/
 	public static final CreateDialog createMonad(CladosCalculator pGUI) 
-			throws UtilitiesException, BadSignatureException, CladosMonadException
 	{
-		return new CreateDialog(pGUI, false);
+		CreateDialog tCD = null;
+		try
+    	{
+    		tCD= new CreateDialog(pGUI, false);
+    	}
+    	catch (UtilitiesException e)
+    	{
+    		//Do nothing.  Exception implies user doesn't get to create
+    		//anything, so nothing is the correct action.
+    		System.out.println("Couldn't construct create dialog.");
+    	}
+    	catch (BadSignatureException es)
+    	{
+    		//Do nothing.  Exception implies user doesn't get to create
+    		//anything, so nothing is the correct action.
+    		System.out.println("Couldn't construct create dialog.");
+    	}
+    	catch (CladosMonadException em)
+    	{
+    		//Do nothing.  Exception implies user doesn't get to create
+    		//anything, so nothing is the correct action.
+    		System.out.println("Couldn't construct create dialog.");
+    	}
+		
+		return tCD;
 	}
+	
+	
 	
 	private	CladosCalculator	_GUI;
 	private	MonadPanel			mainPane;
@@ -84,9 +135,28 @@ public class CreateDialog extends JDialog implements ActionListener
 	private AlgebraRealF		copyAlgTarget;
 	private Foot				copyFootTarget;
 
-/**
- * The constructor sets up the options dialog box and displays it.
- */
+	/**
+ 	* The constructor sets up the options dialog box and displays it.
+ 	* It will be made into a private constructor at some point.
+ 	* @param mainWindow
+	*  CladosCalculator
+ 	* This parameter references the calling/owning application
+ 	* @param makeNyad
+ 	*  boolean
+ 	* The same dialog is reused to create monads and nyads.
+ 	* We get away with this because at the top/reference level, both classes are similar.
+ 	* This 'create' feature essentially creates a place holder for a zero monad if a monad is created
+ 	* or an order-0 nyad with no monad in it to start.
+ 	* @throws UtilitiesException
+ 	* This is the general exception. Could be any miscellaneous issue. Ready the message to see.
+ 	* @throws BadSignatureException
+ 	* This exception is thrown when one of the monad panels can't accept the string signature offered.
+ 	* That happens when something other than '+' or '-' is used... or maybe when signature is too long.
+ 	* Remember that blade count is currently tracked with a short integer. {--****
+ 	* @throws CladosMonadException
+ 	* This exception gets thrown when there is a general issue constructing a monad besides the exceptions
+ 	* for which specific ones have been written. Read the contained message.
+ 	*/
 	public CreateDialog(CladosCalculator mainWindow, boolean makeNyad)
 	throws 		UtilitiesException, BadSignatureException, CladosMonadException
 	{
@@ -306,7 +376,7 @@ public class CreateDialog extends JDialog implements ActionListener
     										mainPane.frame.getText(),
     										tC);
     				tNSpotF.appendMonad(rep);	//This won't fail because alg uniqueness was checked
-    				tNSpotP.addMonad(rep);
+    				tNSpotP.addMonadPanel(rep);
         			_GUI._StatusBar.setStatusMsg("\tnew monad added to selected nyad...");
     			}
     			else if (copyAlgTarget == null) //Choosing foot doesn't matter. Nyad already has one.
@@ -316,7 +386,7 @@ public class CreateDialog extends JDialog implements ActionListener
 	    									mainPane.frame.getText(), 
 	    									mainPane.sig.getText());
 	    			rep = tNSpotF.getMonadList(tNSpotF.getNyadOrder()-1);
-	    			tNSpotP.addMonad(rep);
+	    			tNSpotP.addMonadPanel(rep);
 	    			_GUI._StatusBar.setStatusMsg("\tnew monad added to selected nyad...");
     			}	
     		}

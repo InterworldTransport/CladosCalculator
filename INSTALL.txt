@@ -17,3 +17,13 @@ The clados.jar file is expected in the lib directory of the project. You can
 see this by looking at the single shell command in the bat file. The actual
 calculator is within the jar file target and the manifest file takes care of 
 ensuring java -jar knows what to do.
+
+2020/09/16
+I changed what gets included in the clados calculator jar to include the
+contents of the clados jar for now. That means the calculator can be run as
+a self-contained jar app. I see no reason to change this in the near future
+since the primary purpose of this calculator is to debug the clados library.
+
+Making this work yourself is just a matter of including clados.jar in the 
+lib directory of the project. The jar target will pull its parts into the 
+calculator jar.

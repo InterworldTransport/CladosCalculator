@@ -1,14 +1,6 @@
 JarIndex-Version: 1.0
 
 cladosCalculator.jar
-<<<<<<< HEAD
-M.png
-MonadViewer.conf
-N.png
-clados.gif
-clados.manifest
-
-=======
 clados.manifest
 conf/CladosCalculator.conf
 icons/M.png
@@ -52,4 +44,3 @@ icons/sqmagn.png
 icons/vert.png
 icons/whatgrade.png
 icons/zero.png
->>>>>>> 59d0d998ca7f6aa42603ccf96a8be5d0fb0731c7

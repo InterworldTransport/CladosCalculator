@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2018 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
  * ---com.interworldtransport.cladosviewer.SupportDialog<br>
  * -------------------------------------------------------------------- <p>
@@ -41,9 +41,13 @@ public final class SupportDialog extends JDialog implements ActionListener
 	private 	CladosCalculator	TheGUI;
 	private 	JButton 			closeButton;  // The close button
 
-/**
- * The constructor sets up the about dialog box and displays it.
- */
+	/**
+	 * The constructor sets up the support/about dialog box and displays it.
+	 * @param mainWindow
+	 *  CladosCalculator
+	 * This is just a reference to the owning application so error messages can be 
+	 * reported out to the GUI.
+	 */
     public SupportDialog(CladosCalculator mainWindow)
     {
 		super(mainWindow, "Support for Clados Calculator Utility", true); //Use parent's constructor

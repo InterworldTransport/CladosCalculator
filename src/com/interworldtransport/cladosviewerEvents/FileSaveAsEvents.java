@@ -1,74 +1,75 @@
-/*
-<h2>Copyright</h2>
-Copyright (c) 2005 Interworld Transport.  All rights reserved.<br>
----com.interworldtransport.cladosviewer.FileSaveAsEvents------------------------------------------
-<p>
-Interworld Transport grants you ("Licensee") a license to this software
-under the terms of the GNU General Public License.<br>
-A full copy of the license can be found bundled with this package or code file.
-<p>
-If the license file has become separated from the package, code file, or binary
-executable, the Licensee is still expected to read about the license at the
-following URL before accepting this material.
-<blockquote><code>http://www.opensource.org/gpl-license.html</code></blockquote>
-<p>
-Use of this code or executable objects derived from it by the Licensee states their
-willingness to accept the terms of the license.
-<p>
-A prospective Licensee unable to find a copy of the license terms should contact
-Interworld Transport for a free copy.
-<p>
----com.interworldtransport.cladosviewer.FileAsSaveEvents------------------------------------------
-*/
-
-package com.interworldtransport.cladosviewer;
+/**
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.FileSaveAsEvents<br>
+ * -------------------------------------------------------------------- <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.<p>
+ * 
+ * Use of this code or executable objects derived from it by the Licensee 
+ * states their willingness to accept the terms of the license. <p> 
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * 
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.FileSaveAsEvents<br>
+ * ------------------------------------------------------------------------ <br>
+ */
+package com.interworldtransport.cladosviewerEvents;
 import java.awt.event.*;
 import javax.swing.*;
-import java.io.*;
 
-/** com.interworldtransport.cladosviewer.FileSaveAsEvents
+import com.interworldtransport.cladosviewerExceptions.CantGetSaveException;
+
+/** 
  *  This class manages events relating to the saving of the current state
- *  of the applicaiton.
+ *  of the application.
  *
- * @version 0.80, $Date: 2005/07/31 05:00:25 $
+ * @version 0.85
  * @author Dr Alfred W Differ
  */
 public class FileSaveAsEvents implements ActionListener
  {
-    protected ViewerMenu		ParentGUIMenu;
-    protected JMenuItem 		ControlIt;
-    protected FileEvents 		Parent;
+    protected JMenuItem 		_control;
+    protected FileEvents 		_parent;
 
-/** This is the default constructor.
+/** 
+ * This is the default constructor.
+ * @param pExit
+ *  JMenuItem
+ * This is a reference to the 'File' Menu parent
+ * @param pParent
+ * 	HelpEvents
+ * This is a reference to the FileEvents parent event handler
  */
-    public FileSaveAsEvents(	ViewerMenu pGUIMenu,
-    							JMenuItem pmniExit,
+    public FileSaveAsEvents(	JMenuItem pExit,
     							FileEvents pParent)
     {
-	this.ParentGUIMenu=pGUIMenu;
-	this.ControlIt=pmniExit;
-	this.ControlIt.addActionListener(this);
-	this.Parent=pParent;
+		_control=pExit;
+		_control.addActionListener(this);
+		_parent=pParent;
+    }
 
-    }//end of FileExitEvents constructor
-
-/** This is the actual action to be performed by this member of the File menu.
+/** 
+ * This is the actual action to be performed by this member of the File menu.
  */
     public void actionPerformed(ActionEvent evt)
 
     {
 	    try
 	    {
-		    ParentGUIMenu.ParentGUI.saveSnapshot("As");
-	    }
-	    catch (IOException e)
-	    {
-		    ParentGUIMenu.ParentGUI.StatusLine.setStatusMsg("IO Exception prevented snapshot save.\n");
+		    _parent._GUI.saveSnapshot("As");
 	    }
 	    catch (CantGetSaveException es)
 	    {
-		    ParentGUIMenu.ParentGUI.StatusLine.setStatusMsg("No Save file Exception prevented snapshot save.\n");
+		    _parent._GUI._StatusBar.setStatusMsg("No Save file Exception prevented snapshot save.\n");
 	    }
     }
-
  }
