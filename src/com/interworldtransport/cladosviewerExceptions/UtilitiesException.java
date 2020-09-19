@@ -21,7 +21,7 @@ Interworld Transport for a free copy.
 ---com.interworldtransport.cladosviewer.UtilitiesException---------------------------------------
  */
 
-package com.interworldtransport.cladosviewer;
+package com.interworldtransport.cladosviewerExceptions;
 
 /**
  * This class is the Parent of all Exceptions originating from the viewer package.

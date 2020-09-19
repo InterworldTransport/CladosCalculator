@@ -1,48 +1,51 @@
 <html>
 <head>
-<title>Package Comments</title>
+<title>Overview Comments</title>
 </head>
 <body>
-Clifford Algebra Multivector Viewer:  Utility for viewing and working with clados.
-<h2>Copyright</h2>
-Copyright (c) 2005 Interworld Transport.  All rights reserved.
----com.interworldtransport.cladosviewer-------------------------------------------
-<p>
-Interworld Transport grants you ("Licensee") a license to this software
-under the terms of the GNU General Public License.<br>
-A full copy of the license can be found bundled with this package or code file.
-<p>
-If the license file has become separated from the package, code file, or binary
-executable, the Licensee is still expected to read about the license at the
-following URL before accepting this material.
-<blockquote><code>http://www.opensource.org/gpl-license.html</code></blockquote>
-<p>
-Use of this code or executable objects derived from it by the Licensee states their
-willingness to accept the terms of the license.
-<p>
-A prospective Licensee unable to find a copy of the license terms should contact
-Interworld Transport for a free copy.
-<p>
----com.interworldtransport.cladosviewer-------------------------------------------
-<h2>Package Contents</h2>
-<table border=0 width=90%>
+<h1>Clifford Algebra Multivector Viewer</h1>
+<h2>Utility for viewing and calculating with clados</h2>
+
+<table>
+<caption>Class Overview</caption>
 <tr>
-	<th align=left>
-		Classes
+	<th>
+		Viewer Classes
 	</th>
-	<th align=left>
-		Interfaces
+	<th>
+		Event Handling Classes
 	</th>
-	<th align=left>
+	<th>
 		Exceptions
 	</th>
 </tr>
 <tr>
-	<td valign=top align=left>
+	<td>
 		<ul>
+		<li>CladosCalculator
+		<li>ViewerEventModel
+		<li>ViewerMenu
+		<li>UtilityStatusBar
+		<li>----
+		<li>ViewerPanel
+		<li>NyadPanel
+		<li>MonadPanel
+		<li>----
+		<li>CreateDialog
+		<li>OptionsDialog
+		<li>SupportDialog
 		<li>AboutDialog
-		<li>BOpsEqualEvents
+		</ul>
+	</td>
+	<td>
+		<ul>
+		<li>FileEvents
+		<li>FileExitEvents
+		<li>FileSaveEvents
+		<li>FileSaveAsEvents
+		<li>----
 		<li>BOpsEvents
+		<li>BOpsEqualEvents
 		<li>BOpsGradeEvents
 		<li>BOpsIdempotentEvents
 		<li>BOpsMGradeEvents
@@ -50,30 +53,11 @@ Interworld Transport for a free copy.
 		<li>BOpsNilpotentEvents
 		<li>BOpsRMatchEvents
 		<li>BOpsZeroEvents
-		<li>COpsAddEvents
-		<li>COpsDotEvents
-		<li>COpsEvents
-		<li>COpsLMultEvents
-		<li>COpsRMultEvents
-		<li>COpsRotateEvents
-		<li>COpsSubtractEvents
-		<li>COpsTranslateEvents
-		<li>COpsWedgeEvents
-		<li>CreateDialog
-		<li>FileEvents
-		<li>FileExitEvents
-		<li>HelpAboutEvents
-		<li>HelpEvents
-		<li>HelpSupportEvents
-		<li>MonadPanel
-		<li>MonadViewer
-		<li>NyadPanel
-		<li>OptionsDialog
+		<li>----
 		<li>SOpsEvents
 		<li>SOpsGradeEvents
 		<li>SOpsGradePartEvents
 		<li>SOpsGradeSupressEvents
-		<li>SOpsInverseEvents
 		<li>SOpsInvertEvents
 		<li>SOpsLocalDualEvents
 		<li>SOpsMagnitudeEvents
@@ -81,28 +65,30 @@ Interworld Transport for a free copy.
 		<li>SOpsReverseEvents
 		<li>SOpsScaleEvents
 		<li>SOpsSQMagnitudeEvents
-		<li>SplashWindow
-		<li>SupportDialog
-		<li>ToolsCreate
+		<li>----
+		<li>COpsEvents
+		<li>COpsAddEvents
+		<li>COpsDotEvents
+		<li>COpsLMultEvents
+		<li>COpsRMultEvents
+		<li>COpsSubtractEvents
+		<li>COpsWedgeEvents
+		<li>----
 		<li>ToolsEvents
 		<li>ToolsOptions
-		<li>UtilityStatusBar
-		<li>ViewerEventModel
-		<li>ViewerMenu
-		<li>ViewerPanel
+		<li>----
+		<li>HelpEvents
+		<li>HelpAboutEvents
+		<li>HelpSupportEvents
 		</ul>
-
 	</td>
-	<td valign=top align=left>
-		None As Of Yet
-	</td>
-	<td valign=top align=left>
+	<td>
 		<ul>
 		<li>CantGetIniException
+		<li>CantGetSaveException
 		<li>UtilitiesException
 		</ul>
 	</td>
-
 </tr>
 </table>
 <h2>Background</h2>
@@ -138,24 +124,24 @@ with a package that works.
 Those interested in the academic studies invloving Clifford Algebras are encouraged to visit
 the Clados <a href="http://clados.sourceforge.net">project site for pointers to other references.</a>.
 <h2>Other Resources</h2>
-<h5>Books</h5>
+<h3>Books</h3>
 <ul>
 <li><a href="http://www.clifford.org/books/">Clifford.org book list</a>
 </ul>
-<h5>Dissertations</h5>
+<h3>Dissertations</h3>
 <ul>
 <li>Ross, M.F. 1980 <i>Geometric Algebra in Classical and Quantum Physics</i>, University of California at Davis, Davis CA USA
 <li>Morris, F.G. 1983 <i>Classical Fields Derived from Quantum Sources</i>,University of California at Davis, Davis CA USA
 <li>Pezzaglia, W.M. 1984 <i>A Clifford Algebra Multivector Reformulation of Field Theory</i>, University of California at Davis, Davis CA USA
 <li>Weideman, T.E. 1990 <i>A New Linearization of Einstein's General Relativity</i>, University of California at Davis, Davis CA USA
 <li>Differ, A.W. 1991 <i>The Gyric Theory, A Classical Field Theory for Spin</i>, University of California at Davis, Davis CA USA
-<li>Newman, F.   1991 <i> </i>, University of California at Davis, Davis CA USA
+<li>Newman, F.   1991 <i>Testing a Multivector form of QED</i>, University of California at Davis, Davis CA USA
 </ul>
-<h5>Journals</h5>
+<h3>Journals</h3>
 <ul>
 <li><a href="http://www.clifford.org/journals/jadvclfa.html">Advances in Applied Clifford Algebra</a>
 </ul>
-<h5>Web Resources</h5>
+<h3>Web Resources</h3>
 <a href="http://www.clifford.org">Clifford.org</a><br>
 <a href="http://clados.sourceforge.net">Clados Project site</a>
 </body>

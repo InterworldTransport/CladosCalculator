@@ -21,7 +21,7 @@ Interworld Transport for a free copy.
 ---com.interworldtransport.cladosviewer.CantGetSaveException-------------------------------
 */
 
-package com.interworldtransport.cladosviewer;
+package com.interworldtransport.cladosviewerExceptions;
 
 /** com.interworldtransport.cladosviewer.CantGetSaveException
  *  This exception is thrown when the interface is unable to save snapshot data.

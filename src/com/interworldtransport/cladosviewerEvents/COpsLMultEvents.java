@@ -21,8 +21,12 @@ Interworld Transport for a free copy.
 ---com.interworldtransport.cladosviewer.COpsLMultEvents------------------------------------------
 */
 
-package com.interworldtransport.cladosviewer;
-import com.interworldtransport.clados.*;
+package com.interworldtransport.cladosviewerEvents;
+import com.interworldtransport.cladosG.*;
+import com.interworldtransport.cladosGExceptions.*;
+import com.interworldtransport.cladosviewer.MonadPanel;
+import com.interworldtransport.cladosviewer.ViewerMenu;
+import com.interworldtransport.cladosFExceptions.*;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -42,52 +46,49 @@ public class COpsLMultEvents implements ActionListener
 /** This is the default constructor.
  */
     public COpsLMultEvents(	ViewerMenu pGUIMenu,
-    				JMenuItem pmniControlled,
-				COpsEvents pParent)
+    						JMenuItem pmniControlled,
+    						COpsEvents pParent)
     {
-	this.ParentGUIMenu=pGUIMenu;
-	this.ControlIt=pmniControlled;
-	this.ControlIt.addActionListener(this);
-	this.Parent=pParent;
-
-    }//end of COpsLMultEvents constructor
+		ParentGUIMenu=pGUIMenu;
+		ControlIt=pmniControlled;
+		ControlIt.addActionListener(this);
+		Parent=pParent;
+    }
 
 /** This is the actual action to be performed by this member of the menu.
  */
     public void actionPerformed(ActionEvent evt)
     {
-	MonadPanel temp0=ParentGUIMenu.ParentGUI.CenterAll.getNyadPanel(0).getMonadPanel(0);
-	MonadPanel temp1=ParentGUIMenu.ParentGUI.CenterAll.getNyadPanel(1).getMonadPanel(0);
-	Monad Monad0=null;
-	Monad Monad1=null;
-
-	if (temp0!=null)
-	{
-		Monad0=temp0.getMonad();
-	}
-	if (temp1!=null)
-	{
-		Monad1=temp1.getMonad();
-	}
-
-	if (Monad0!=null || Monad1!=null)
-	{
-		try
+		MonadPanel temp0=ParentGUIMenu._parentGUI._GeometryDisplay.getNyadPanel(0).getMonadPanel(0);
+		MonadPanel temp1=ParentGUIMenu._parentGUI._GeometryDisplay.getNyadPanel(1).getMonadPanel(0);
+		MonadRealF Monad0=null;
+		MonadRealF Monad1=null;
+	
+		if (temp0!=null)
+			Monad0=temp0.getMonad();
+		if (temp1!=null)
+			Monad1=temp1.getMonad();
+	
+		if (Monad0!=null || Monad1!=null)
 		{
-			Monad0.LeftMultiply(Monad1);
-			temp0.setBottomFields();
-			ParentGUIMenu.ParentGUI.StatusLine.setStatusMsg("Second Monad muliplied against the first from the left.\n");
+			try
+			{
+				Monad0.multiplyLeft(Monad1);
+				temp0.setCoefficientDisplay();
+				ParentGUIMenu._parentGUI._StatusBar.setStatusMsg("Second Monad muliplied against the first from the left.\n");
+			}
+			catch (CladosMonadException e)
+			{
+				ParentGUIMenu._parentGUI._StatusBar.setStatusMsg("General monad error between second and first monads.\n");
+				ParentGUIMenu._parentGUI._StatusBar.setStatusMsg("Second Monad not muliplied against the first from the left.\n");
+			}
+			catch (FieldBinaryException eb)
+			{
+				ParentGUIMenu._parentGUI._StatusBar.setStatusMsg("FieldBinary error between second and first monads.\n");
+				ParentGUIMenu._parentGUI._StatusBar.setStatusMsg("Second Monad not muliplied against the first from the left.\n");
+			}
 		}
-		catch (NoReferenceMatchException e)
-		{
-			ParentGUIMenu.ParentGUI.StatusLine.setStatusMsg("Reference Match error between second and first monads.\n");
-			ParentGUIMenu.ParentGUI.StatusLine.setStatusMsg("Second Monad not muliplied against the first from the left.\n");
-		}
-	}
-	else
-	{
-		ParentGUIMenu.ParentGUI.StatusLine.setStatusMsg("Second Monad not muliplied against the first from the left.\n");
-	}
-    }//end of action performed method.
-
- }//end of COpsLMultEvents class
+		else
+			ParentGUIMenu._parentGUI._StatusBar.setStatusMsg("Multiplication is a binary operation. One was missing.\n");
+    }
+ }

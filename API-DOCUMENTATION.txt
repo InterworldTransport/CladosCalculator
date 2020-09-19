@@ -19,4 +19,4 @@ trees.
 
 The first Ant target will create all the html files from javadoc.
 The second Ant target will run the first one and then jar all the 
-html generated..
+html generated.

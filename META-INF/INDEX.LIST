@@ -1,9 +1,55 @@
 JarIndex-Version: 1.0
 
 cladosCalculator.jar
+<<<<<<< HEAD
 M.png
 MonadViewer.conf
 N.png
 clados.gif
 clados.manifest
 
+=======
+clados.manifest
+conf/CladosCalculator.conf
+icons/M.png
+icons/N.png
+icons/clados.png
+icons/clados_56.png
+icons/alg.png
+icons/close.png
+icons/copy.png
+icons/create.png
+icons/dualleft.png
+icons/dualright.png
+icons/edit.png
+icons/equal.png
+icons/foot.png
+icons/frame.png
+icons/grade.png
+icons/gradepart.png
+icons/gradepart2.png
+icons/gradesuppress.png
+icons/horiz.png
+icons/idmp.png
+icons/invert.png
+icons/key.png
+icons/magn.png
+icons/match.png
+icons/mgrade.png
+icons/midmp.png
+icons/nilp.png
+icons/norm.png
+icons/pop.png
+icons/pop2.png
+icons/push.png
+icons/remove.png
+icons/restore.png
+icons/reverse.png
+icons/save.png
+icons/scale.png
+icons/sig.png
+icons/sqmagn.png
+icons/vert.png
+icons/whatgrade.png
+icons/zero.png
+>>>>>>> 59d0d998ca7f6aa42603ccf96a8be5d0fb0731c7

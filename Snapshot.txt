@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 x<Application Name="clados Calculator", Rights="Copyright 2018 Alfred Differ", Licensee=" Alfred Differ" />
 <NyadCount size="1" />
 <Nyad Name="New",  Order="3",  Foot="strawberry">
@@ -202,3 +203,6 @@ x<Application Name="clados Calculator", Rights="Copyright 2018 Alfred Differ", L
 </Monad>
 </MonadList></Nyad>
 </NyadList>
+=======
+x
+>>>>>>> 59d0d998ca7f6aa42603ccf96a8be5d0fb0731c7

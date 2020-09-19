@@ -1,1 +1,1 @@
-REM %JAVA_HOME%\bin\jdb -cp "%CLADOS_HOME%\class" com.interworldtransport.cladosviewer.MonadViewer -t "Interworld Transport - clados Viewer" -c "./conf/MonadViewer.conf"%JAVA_HOME%\bin\java -cp "C:\Documents and Settings\Alfred Differ\My Documents\My Software\Clados\class" com.interworldtransport.cladosviewer.MonadViewer -t "Interworld Transport - clados Object Viewer" -c "./conf/MonadViewer.conf"
+jdb -cp "lib/clados.jar" com.interworldtransport.cladosviewer.CladosCalculator -t "Interworld Transport - Clados Calculator - Debug Mode" -c "conf/CladosCalculator.conf"

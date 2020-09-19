@@ -21,18 +21,31 @@ Interworld Transport for a free copy.
 ---com.interworldtransport.cladosviewer.HelpAboutEvents---------------------------------------
 */
 
+<<<<<<< HEAD
 package com.interworldtransport.cladosviewer;
 import javax.swing.*;
+=======
+package com.interworldtransport.cladosviewerEvents;
+import javax.swing.*;
+
+import com.interworldtransport.cladosviewer.AboutDialog;
+
+>>>>>>> 59d0d998ca7f6aa42603ccf96a8be5d0fb0731c7
 import java.awt.event.*;
 
 /** com.interworldtransport.cladosviewer.HelpAboutEvents
  * This class shows the About dialog box and its related information.
  *
+<<<<<<< HEAD
  * @version 0.80, $Date: 2005/07/25 01:44:25 $
+=======
+ * @version 0.85
+>>>>>>> 59d0d998ca7f6aa42603ccf96a8be5d0fb0731c7
  * @author Dr Alfred W Differ
  */
 public class HelpAboutEvents implements ActionListener
 {
+<<<<<<< HEAD
 
     protected HelpEvents		Parent;
     protected ViewerMenu		ParentGUIMenu;
@@ -48,11 +61,26 @@ public class HelpAboutEvents implements ActionListener
 	this.ControlIt.addActionListener(this);
 
     }//end of HelpAboutEvents Menu constructor
+=======
+   
+    protected JMenuItem			_control;
+    protected HelpEvents		_parent;
+
+/** This is the default constructor.
+ */
+    public HelpAboutEvents(JMenuItem pHelp, HelpEvents pParent)
+    {
+		_control=pHelp;
+		_parent=pParent;
+		_control.addActionListener(this);
+    }
+>>>>>>> 59d0d998ca7f6aa42603ccf96a8be5d0fb0731c7
 
 /** This is the actual action to be performed by this menu item.
  */
     public void actionPerformed(ActionEvent evt)
     {
+<<<<<<< HEAD
 	//Show the about feature;
 	String tempVersion = ParentGUIMenu.ParentGUI.IniProps.getProperty("MonadViewer.Desktop.Version");
 	String tempUserName = ParentGUIMenu.ParentGUI.IniProps.getProperty("MonadViewer.User.Name");
@@ -90,3 +118,8 @@ public class HelpAboutEvents implements ActionListener
     }//end of action performed method.
 
 }//end of HelpAboutEvents class
+=======
+    	new AboutDialog(_parent._GUI);
+    }
+}
+>>>>>>> 59d0d998ca7f6aa42603ccf96a8be5d0fb0731c7

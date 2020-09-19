@@ -21,7 +21,7 @@ Interworld Transport for a free copy.
 ---com.interworldtransport.cladosviewer.CantGetIniException-----------------------------------
  */
 
-package com.interworldtransport.cladosviewer;
+package com.interworldtransport.cladosviewerExceptions;
 
 /**
  * This class is thrown when the user interface expects a configuration file and

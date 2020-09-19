@@ -21,8 +21,10 @@ Interworld Transport for a free copy.
 ---com.interworldtransport.cladosviewer.COpsEvents-----------------------------------------
 */
 
-package com.interworldtransport.cladosviewer;
+package com.interworldtransport.cladosviewerEvents;
 import java.awt.event.*;
+
+import com.interworldtransport.cladosviewer.ViewerMenu;
 
 /** com.interworldtransport.cladosviewer.COpsEvents
  * This class groups the event listeners associated with the Boolean Operations
@@ -37,14 +39,14 @@ import java.awt.event.*;
  */
 public class COpsEvents implements ActionListener
 {
-    protected COpsAddEvents		add;
+    protected COpsAddEvents			add;
     protected COpsSubtractEvents	sub;
     protected COpsLMultEvents		lmult;
     protected COpsRMultEvents		rmult;
-    protected COpsDotEvents		dot;
-    protected COpsWedgeEvents		wedge;
-    protected COpsRotateEvents		rot;
-    protected COpsTranslateEvents	trans;
+    protected COpsDotEvents			symm;
+    protected COpsWedgeEvents		asymm;
+    //protected COpsRotateEvents	rot;
+    //protected COpsTranslateEvents	trans;
 
     protected ViewerMenu 		ParentGUIMenu;
 
@@ -53,32 +55,32 @@ public class COpsEvents implements ActionListener
  */
     public COpsEvents(ViewerMenu pTheGUIMenu)
     {
-	this.ParentGUIMenu=pTheGUIMenu;
+		ParentGUIMenu=pTheGUIMenu;
 
-	this.add = new COpsAddEvents(		ParentGUIMenu,
+		add = new COpsAddEvents(		ParentGUIMenu,
 						ParentGUIMenu.mniAdd,
 						this);
-	this.sub = new COpsSubtractEvents(	ParentGUIMenu,
+		sub = new COpsSubtractEvents(	ParentGUIMenu,
 						ParentGUIMenu.mniSubtract,
 						this);
-	this.lmult = new COpsLMultEvents(	ParentGUIMenu,
+		lmult = new COpsLMultEvents(	ParentGUIMenu,
 						ParentGUIMenu.mniLeftMultiply,
 						this);
-	this.rmult = new COpsRMultEvents(	ParentGUIMenu,
+		rmult = new COpsRMultEvents(	ParentGUIMenu,
 						ParentGUIMenu.mniRightMultiply,
 						this);
-	this.dot = new COpsDotEvents(		ParentGUIMenu,
-						ParentGUIMenu.mniDot,
+		symm = new COpsDotEvents(		ParentGUIMenu,
+						ParentGUIMenu.mniSymm,
 						this);
-	this.wedge = new COpsWedgeEvents(	ParentGUIMenu,
-						ParentGUIMenu.mniWedge,
+		asymm = new COpsWedgeEvents(	ParentGUIMenu,
+						ParentGUIMenu.mniASymm,
 						this);
-	this.rot = new COpsRotateEvents(	ParentGUIMenu,
-						ParentGUIMenu.mniRotate,
-						this);
-	this.trans = new COpsTranslateEvents(	ParentGUIMenu,
-						ParentGUIMenu.mniTranslate,
-						this);
+	//this.rot = new COpsRotateEvents(	ParentGUIMenu,
+	//					ParentGUIMenu.mniRotate,
+	//					this);
+	//this.trans = new COpsTranslateEvents(	ParentGUIMenu,
+	//					ParentGUIMenu.mniTranslate,
+	//					this);
     }//end of COpsEvents Menu constructor
 
 /** This is the default action to be performed by all members of the menu.

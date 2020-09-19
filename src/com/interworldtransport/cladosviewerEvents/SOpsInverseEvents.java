@@ -21,10 +21,13 @@ Interworld Transport for a free copy.
 ---com.interworldtransport.cladosviewer.SOpsInverseEvents------------------------------------------
 */
 
-package com.interworldtransport.cladosviewer;
-import com.interworldtransport.clados.*;
+package com.interworldtransport.cladosviewerEvents;
+//import com.interworldtransport.cladosG.*;
+//import com.interworldtransport.cladosGExceptions.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import com.interworldtransport.cladosviewer.ViewerMenu;
 
 /** com.interworldtransport.cladosviewer.SOpsInverseEvents
  *  This class manages events relating to a simple operation...
@@ -56,6 +59,8 @@ public class SOpsInverseEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
+    //Nothing to do here for now
+    /*	
 	MonadPanel MP0=ParentGUIMenu.ParentGUI.CenterAll.getNyadPanel(0).getMonadPanel(0);
 	Monad Monad0=MP0.getMonad();
 	try
@@ -76,7 +81,9 @@ public class SOpsInverseEvents implements ActionListener
 	}
 	MP0.setBottomFields();
 	ParentGUIMenu.ParentGUI.StatusLine.setStatusMsg("First Monad has been changed to its inverse if possible.\n");
-
+	*/
+    	
+    	
     }//end of action performed method.
 
  }//end of SOpsInverseEvents class
