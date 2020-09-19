@@ -1,80 +1,94 @@
-/*
-<h2>Copyright</h2>
-Copyright (c) 2005 Interworld Transport.  All rights reserved.<br>
----com.interworldtransport.cladosviewer.BOpsNilpotentEvents------------------------------------------
-<p>
-Interworld Transport grants you ("Licensee") a license to this software
-under the terms of the GNU General Public License.<br>
-A full copy of the license can be found bundled with this package or code file.
-<p>
-If the license file has become separated from the package, code file, or binary
-executable, the Licensee is still expected to read about the license at the
-following URL before accepting this material.
-<blockquote><code>http://www.opensource.org/gpl-license.html</code></blockquote>
-<p>
-Use of this code or executable objects derived from it by the Licensee states their
-willingness to accept the terms of the license.
-<p>
-A prospective Licensee unable to find a copy of the license terms should contact
-Interworld Transport for a free copy.
-<p>
----com.interworldtransport.cladosviewer.BOpsNilpotentEvents------------------------------------------
-*/
+/**
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.BOpsNilpotentEvents<br>
+ * -------------------------------------------------------------------- <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.<p>
+ * 
+ * Use of this code or executable objects derived from it by the Licensee 
+ * states their willingness to accept the terms of the license. <p> 
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * 
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.BOpsNilpotentEvents<br>
+ * ------------------------------------------------------------------------ <br>
+ */
 
-package com.interworldtransport.cladosviewer;
-import com.interworldtransport.clados.*;
+package com.interworldtransport.cladosviewerEvents;
+import com.interworldtransport.cladosFExceptions.*;
+import com.interworldtransport.cladosG.MonadRealF;
+import com.interworldtransport.cladosGExceptions.*;
+import com.interworldtransport.cladosviewer.NyadPanel;
+
 import java.awt.event.*;
 import javax.swing.*;
 
-/** com.interworldtransport.cladosviewer.BOpsNilpotentEvents
+/** 
  *  This class manages events relating to the answering of a boolean question.
- *  Is the Monad nilpotent?
+ *  Is the selected monad nilpotent?
  *
- * @version 0.80, $Date: 2005/07/25 01:44:25 $
+ * @version 0.85
  * @author Dr Alfred W Differ
  */
 public class BOpsNilpotentEvents implements ActionListener
  {
-    protected ViewerMenu		ParentGUIMenu;
-    protected JMenuItem 		ControlIt;
-    protected BOpsEvents 		Parent;
+    protected JMenuItem 		_control;
+    protected BOpsEvents 		_parent;
 
-/** This is the default constructor.
+/** 
+ * This is the default constructor.
+ * @param pmniControlled
+ *  JMenuItem
+ * This is a reference to the Menu Item for which this event acts.
+ * @param pParent
+ * 	BOpsEvents
+ * This is a reference to the BOpsEvents parent event handler
  */
-    public BOpsNilpotentEvents(	ViewerMenu pGUIMenu,
-    				JMenuItem pmniControlled,
-				BOpsEvents pParent)
+    public BOpsNilpotentEvents(	JMenuItem pmniControlled,
+								BOpsEvents pParent)
     {
-	this.ParentGUIMenu=pGUIMenu;
-	this.ControlIt=pmniControlled;
-	this.ControlIt.addActionListener(this);
-	this.Parent=pParent;
+		_control=pmniControlled;
+		_control.addActionListener(this);
+		_parent=pParent;
+    }
 
-    }//end of BOpsNilpotentEvents constructor
-
-/** This is the actual action to be performed by this member of the menu.
+/** 
+ * This is the actual action to be performed by this member of the menu.
  */
     public void actionPerformed(ActionEvent evt)
     {
-	Monad Monad0=ParentGUIMenu.ParentGUI.CenterAll.getNyadPanel(0).getMonadPanel(0).getMonad();
-	boolean test=false;
-	try
-	{
-		test=Monad0.isNilpotent();
-	}
-	catch (CladosException e)
-	{
-		;
-	}
-
-	if (test)
-	{
-		ParentGUIMenu.ParentGUI.StatusLine.setStatusMsg("First Monad is judged as nilpotent.\n");
-	}
-	else
-	{
-		ParentGUIMenu.ParentGUI.StatusLine.setStatusMsg("First Monad is judged as not nilpotent.\n");
-	}
-    }//end of action performed method.
-
- }//end of BOpsNilpotentEvents class
+    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
+    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
+    	MonadRealF monadSelected = panelNyadSelected.getMonadPanel(panelNyadSelected.getPaneFocus()).getMonad();
+    	
+		boolean test=false;
+		try
+		{
+			test=MonadRealF.isNilpotent(monadSelected);
+		}
+		catch (CladosMonadException e)
+		{
+			_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad created a CladosMonadException.\n");
+			e.printStackTrace();
+		}
+		catch (FieldBinaryException eb)
+		{
+			_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad created a FieldBinaryException.\n");
+			eb.printStackTrace();
+		}
+	
+		if (test)
+			_parent._GUI._StatusBar.setStatusMsg("\tselected monad is nilpotent.\n");
+		else
+			_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT nilpotent.\n");	
+    }
+ }

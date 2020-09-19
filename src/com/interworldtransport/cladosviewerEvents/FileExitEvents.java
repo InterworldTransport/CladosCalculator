@@ -1,60 +1,65 @@
-/*
-<h2>Copyright</h2>
-Copyright (c) 2005 Interworld Transport.  All rights reserved.<br>
----com.interworldtransport.cladosviewer.FileExitEvents------------------------------------------
-<p>
-Interworld Transport grants you ("Licensee") a license to this software
-under the terms of the GNU General Public License.<br>
-A full copy of the license can be found bundled with this package or code file.
-<p>
-If the license file has become separated from the package, code file, or binary
-executable, the Licensee is still expected to read about the license at the
-following URL before accepting this material.
-<blockquote><code>http://www.opensource.org/gpl-license.html</code></blockquote>
-<p>
-Use of this code or executable objects derived from it by the Licensee states their
-willingness to accept the terms of the license.
-<p>
-A prospective Licensee unable to find a copy of the license terms should contact
-Interworld Transport for a free copy.
-<p>
----com.interworldtransport.cladosviewer.FileExitEvents------------------------------------------
-*/
+/**
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.FileExitEvents<br>
+ * -------------------------------------------------------------------- <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version. 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.<p>
+ * 
+ * Use of this code or executable objects derived from it by the Licensee 
+ * states their willingness to accept the terms of the license. <p> 
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * 
+ * ------------------------------------------------------------------------ <br>
+ * ---com.interworldtransport.cladosviewer.FileExitEvents<br>
+ * ------------------------------------------------------------------------ <br>
+ */
 
-package com.interworldtransport.cladosviewer;
+package com.interworldtransport.cladosviewerEvents;
 import java.awt.event.*;
 import javax.swing.*;
 
 /** com.interworldtransport.cladosviewer.FileExitEvents
  *  This class manages all events relating to the exiting of the applicaiton.
  *
- * @version 0.80, $Date: 2005/07/25 01:44:25 $
+ * @version 0.85
  * @author Dr Alfred W Differ
  */
 public class FileExitEvents implements ActionListener
  {
-    protected ViewerMenu		ParentGUIMenu;
-    protected JMenuItem 		ControlIt;
-    protected FileEvents 		Parent;
+    protected JMenuItem 		_control;
+    protected FileEvents 		_parent;
 
-/** This is the default constructor.
+/** 
+ * This is the default constructor.
+ * @param pExit
+ *  JMenuItem
+ * This is a reference to the 'File' Menu parent
+ * @param pParent
+ * 	HelpEvents
+ * This is a reference to the FileEvents parent event handler
  */
-    public FileExitEvents(	ViewerMenu pGUIMenu,
-    				JMenuItem pmniExit,
-				FileEvents pParent)
+    public FileExitEvents(	JMenuItem pExit,
+    						FileEvents pParent)
     {
-	this.ParentGUIMenu=pGUIMenu;
-	this.ControlIt=pmniExit;
-	this.ControlIt.addActionListener(this);
-	this.Parent=pParent;
+		_control=pExit;
+		_control.addActionListener(this);
+		_parent=pParent;
+    }
 
-    }//end of FileExitEvents constructor
-
-/** This is the actual action to be performed by this member of the File menu.
+/** 
+ * This is the actual action to be performed by this member of the File menu.
  */
     public void actionPerformed(ActionEvent evt)
     {
-	System.exit(0);
-    }//end of action performed method.
-
- }//end of FileExitEvents class
+    	_parent._GUI.terminateModel();
+    }
+ }

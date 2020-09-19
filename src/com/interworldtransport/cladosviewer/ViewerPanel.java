@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2018 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
  * ---com.interworldtransport.cladosviewer.ViewerPanel<br>
  * -------------------------------------------------------------------- <p>
@@ -26,7 +26,6 @@
 package com.interworldtransport.cladosviewer ;
 
 import com.interworldtransport.cladosF.RealF;
-import com.interworldtransport.cladosF.DivFieldType;
 import com.interworldtransport.cladosG.NyadRealF;
 import com.interworldtransport.cladosG.MonadRealF;
 import com.interworldtransport.cladosGExceptions.*;
@@ -66,14 +65,17 @@ import java.util.*;
     protected	ArrayList<NyadPanel>	nyadPanelList;
     protected	JButton					removeNyad;
 
-/**
- * The ViewerPanel class is intended to be a tabbed pane that displays all
- * the Monad Panels.  ViewerPanel must be smart enough to
- * know what it holds and adjust the tabs when push and pop operations are
- * performed.
- */
+    /**
+    * The ViewerPanel class is intended to be a tabbed pane that displays all
+    * the Nyad Panels.  ViewerPanel must be smart enough to
+    * know what it holds and adjust the tabs when push and pop operations are
+    * performed.
+    * @param pGUI
+    *		CladosCalculator
+    * 	This parameter references the owning application. Nothing spectacular.
+
+    */
     public 	ViewerPanel(CladosCalculator pGUI) 
-    	throws 		UtilitiesException, BadSignatureException
     {
     	super();
     	
@@ -159,32 +161,10 @@ import java.util.*;
     
     private void createCommand()
     {
-    	try
-		{
 			CreateDialog.createNyad(_GUI);	
-		}
-		catch (UtilitiesException e)
-		{
-			//Do nothing.  Exception implies user doesn't get to create
-			//a new Monad, so nothing is the correct action.
-			System.out.println("\t\tCouldn't construct create dialog.");
-		}
-		catch (BadSignatureException es)
-		{
-			//Do nothing.  Exception implies user doesn't get to create
-			//a new Monad, so nothing is the correct action.
-			System.out.println("\\t\\tCouldn't construct create dialog.");
-		}
-		catch (CladosMonadException em)
-		{
-			//Do nothing.  Exception implies user doesn't get to create
-			//a new Monad, so nothing is the correct action.
-			System.out.println("\\t\\tCouldn't construct create dialog.");
-		}
     }
     
     private 	void 		createObjectsLayout()
-    throws 		UtilitiesException, BadSignatureException
     {
     	//Get the nyad tab image for the nyad panes being constructed
     	tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabN"));
@@ -222,11 +202,13 @@ import java.util.*;
 	    		String cnt =new StringBuffer("N").append(j).toString();
 	    		aNyad=new NyadRealF(cnt, aMonad);
     		}
+    		catch (BadSignatureException es)
+    		{
+    			_GUI._StatusBar.setStatusMsg(new StringBuffer("... cannot construct monad {M"+j+"} due to bad signature.").toString());
+    		}
     		catch (CladosMonadException em)
     		{
-    			System.out.println("CladosMonad Exception found when constructing first part of the Viewer Panel");
-    			System.out.println(em.getSourceMessage());
-    			System.exit(-1);
+    			_GUI._StatusBar.setStatusMsg("CladosMonad Exception found when constructing first part of the Viewer Panel");
     		} 
     		
     		
@@ -245,28 +227,42 @@ import java.util.*;
     									_GUI.IniProps.getProperty("Desktop.Default.Sig")
     								);
         		}
+        		catch (BadSignatureException es)
+        		{
+        			String nextMonadName = (new StringBuffer(aMonad.getName()).append(m)).toString();
+        			_GUI._StatusBar.setStatusMsg(new StringBuffer("... cannot construct monad {"+nextMonadName+"} due to bad signature.").toString());
+        		}
         		catch (CladosMonadException em)
         		{
-        			System.out.println("CladosMonad Exception found when constructing the Viewer Panel");
-        			System.out.println(em.getSourceMessage());
+        			_GUI._StatusBar.setStatusMsg("CladosMonad Exception found when constructing the Viewer Panel");
         		}
         		catch (CladosNyadException en)
         		{
-        			System.out.println("CladosNyad Exception found when adding >1 Nyad to the Viewer Panel");
-        			System.out.println(en.getSourceMessage());
+        			_GUI._StatusBar.setStatusMsg("CladosNyad Exception found when adding >1 Nyad to the Viewer Panel");
         		}
     			m++;
     		}
     		String cnt =new StringBuffer().append(j).toString();
     		
     		//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
-    		nyadPanelList.add(j, new NyadPanel(_GUI, aNyad));
-    		
-    		nyadPanes.addTab(	cnt, 
-    							tabIcon, 
-    							new JScrollPane(nyadPanelList.get(j)),
-    							aNyad.getName()
-    							);
+    		try
+    		{
+    			nyadPanelList.add(j, new NyadPanel(_GUI, aNyad));
+    			nyadPanes.addTab(	cnt, 
+						tabIcon, 
+						new JScrollPane(nyadPanelList.get(j)),
+						aNyad.getName()
+						);
+    		}
+    		catch (BadSignatureException es)
+    		{
+    			_GUI._StatusBar.setStatusMsg("... cannot append the new NyadPanel");
+    		}
+    		catch (UtilitiesException eutil)
+    		{
+    			_GUI._StatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
+    			_GUI._StatusBar.setStatusMsg(eutil.getStackTrace().toString());
+    		}
     		j++;
     	}
     	//and now we finally add the JTabbedPane in the center of the Viewer

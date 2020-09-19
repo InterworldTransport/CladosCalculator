@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2018 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
  * ---com.interworldtransport.cladosviewer.AboutDialog<br>
  * -------------------------------------------------------------------- <p>
@@ -45,6 +45,10 @@ public final class AboutDialog extends JDialog implements ActionListener
 
 /**
  * The constructor sets up the about dialog box and displays it.
+ * 
+ * @param mainWindow
+ *		CladosCalculator
+ * 	This parameter references the owning application. Nothing spectacular.
  */
     public AboutDialog(CladosCalculator mainWindow)
     {
@@ -112,7 +116,7 @@ public final class AboutDialog extends JDialog implements ActionListener
     	content.append(tempVersion);
     	content.append("\n\n");
 
-    	content.append("Copyright 2018 Alfred Differ");
+    	content.append("Copyright 2020 Alfred Differ");
     	content.append("\n\n");
 
     	content.append("Web Site: https://github.com/InterworldTransport/CladosViewer\n\n");

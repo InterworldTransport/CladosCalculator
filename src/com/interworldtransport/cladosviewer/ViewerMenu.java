@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2018 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
  * ---com.interworldtransport.cladosviewer.ViewerMenu<br>
  * -------------------------------------------------------------------- <p>
@@ -121,6 +121,9 @@ public class ViewerMenu extends JMenuBar
  * The ViewerMenu class is intended to be the class that encapsulates the menu
  * used in the MonadViewer Utility.  For the sake of maintenance
  * this definition is in a separate class and file.
+ * @param pParentGUI
+ *		CladosCalculator
+ * 	This parameter references the owning application. Nothing spectacular.
  */
     public	ViewerMenu(CladosCalculator pParentGUI)
     {

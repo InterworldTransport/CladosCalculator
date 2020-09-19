@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2018 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
  * ---com.interworldtransport.cladosviewer.MonadPanel<br>
  * -------------------------------------------------------------------- <p>
@@ -25,7 +25,6 @@
 
 package com.interworldtransport.cladosviewer ;
 
-import com.interworldtransport.cladosF.DivFieldType;
 import com.interworldtransport.cladosF.RealF;
 import com.interworldtransport.cladosFExceptions.FieldBinaryException;
 import com.interworldtransport.cladosG.AlgebraRealF;
@@ -56,7 +55,7 @@ import java.util.*;
 {
 	public		CladosCalculator				_GUI;
 	private		Color							_backColor = new Color(212, 212, 192);
-	private		ArrayList<FieldArea>			_jCoeffs;
+	private		ArrayList<FieldAreaRealF>		_jCoeffs;
 	private		JPanel 							_monadCoeffPanel;
 	private		JPanel 							_monadReferences;
 	private		MonadRealF						_repMonad;
@@ -66,7 +65,7 @@ import java.util.*;
 	private		JPanel 							monadEditControls;
 	private		String							orient;
 	private		Dimension						squareLittle=new Dimension(25,25);
-	private		Dimension						squareMedium=new Dimension(35,35);
+	private		Dimension						squareMedium=new Dimension(28,28);
 	/*
 	 * This boolean is for knowing whether to render the coefficients or not
 	 * This panel doubles up as a create dialog when no coefficients array exists.
@@ -95,11 +94,14 @@ import java.util.*;
 	protected	JTextField						sig=new JTextField(10);
 	
 
-/**
- * 
- * @param pGUI				CladosCalculator
- * @throws UtilitiesException 
- */
+  /**
+  * The MonadPanel class is intended to be contain a cladosG Monad in order to offer its parts
+  * for display and manipulation by the calculator
+  * 
+  * @param pGUI				CladosCalculator
+  * @throws UtilitiesException
+  * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
+  */
    public MonadPanel(CladosCalculator pGUI) throws UtilitiesException
     {
 	   super();
@@ -122,31 +124,37 @@ import java.util.*;
 	   createMinReferenceLayout();
     }
 
-/**
- * The MonadPanel class is intended to hold a single Monad and act as its GUI.
- * This constructor is the base one.
- * @param pGUI				MonadViewer
- * @param pM				MonadRealF	The Monad to be handled in this panel
- */
+  /**
+  * The MonadPanel class is intended to hold a single Monad and act as its GUI.
+  * This constructor is the base one.
+  * @param pGUI			
+  * 	CladosCalculator
+  * This is just a reference to the owner application so error messages can be presented.
+  * @param pM
+  * 	MonadRealF
+  * This is a reference to the monad to be displayed and manipulated.
+  * @throws UtilitiesException
+  * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
+  */
     public MonadPanel(	CladosCalculator pGUI,
     					MonadRealF pM)
     		throws 		UtilitiesException			
     {
     	super();
     	useFullPanel=true;
+    	
     	if (pGUI==null)
     		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
     	_GUI=pGUI;
     	
     	if (pM==null)
     		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
-
+    	_repMonad=pM;
+    	
     	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
     	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
     	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
-    	
-    	_repMonad=pM;
-        _repMonadCoeffs=_repMonad.getCoeff();
+   
         setReferences();
         		
         setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -169,6 +177,15 @@ import java.util.*;
  * @param pFrame 			String	Frame name to be associated with the Monad
  * @param pFoot 			String	Foot name to be used by the Algebra
  * @param pSig	 			String	Signature to be used by the GProduct of the Algebra
+ * @throws BadSignatureException
+ * This exception is thrown when one of the monad panels can't accept the string signature offered.
+ * That happens when something other than '+' or '-' is used... or maybe when signature is too long.
+ * Remember that blade count is currently tracked with a short integer. {--****
+ * @throws CladosMonadException
+ * This exception gets thrown when there is a general issue constructing a monad besides the exceptions
+ * for which specific ones have been written. Read the contained message.
+ * @throws UtilitiesException
+ * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
  */
     public MonadPanel(	CladosCalculator pGUI,
     					String pName,
@@ -190,7 +207,7 @@ import java.util.*;
     
     	RealF tZero=RealF.newZERO(pAName);
     	_repMonad=new MonadRealF(pName, pAName, pFrame, pFoot, pSig, tZero );
-    	_repMonadCoeffs=_repMonad.getCoeff();
+    	//_repMonadCoeffs=_repMonad.getCoeff();
     	setReferences();
     	
     	setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -248,36 +265,38 @@ import java.util.*;
     	
     	if (command == "save")
     	{
+    		//	Reset internal details of the represented Monad to reflect what shows in the MonadPanel
+    		//	This includes all possible changes, but a check is made for everything except the coefficients
+    		//	in case changes were NOT made. [It is assumed most changes will be Coefficients.]
+  
+    		if (name.getText() != _repMonad.getName())
+    			_repMonad.setName(name.getText());
+    			
+    		if (frame.getText() != _repMonad.getFrameName())
+    			_repMonad.setFrameName(frame.getText());
+    			
     		try
     		{
-    			if (name.getText() != _repMonad.getName())
-    				_repMonad.setName(name.getText());
+        		_repMonadCoeffs = new RealF[_repMonad.getAlgebra().getGProduct().getBladeCount()];
     			
-    			if (frame.getText() != _repMonad.getFrameName())
-    				_repMonad.setFrameName(frame.getText());
-    			
-    			DivFieldType tFieldType = _repMonadCoeffs[0].getFieldType();
-    			RealF[] tempCoeffs = new RealF[_repMonad.getAlgebra().getGProduct().getBladeCount()];
-    			
-    			for (short j=0; j<_repMonad.getAlgebra().getGProduct().getBladeCount(); j++)
-    			{
-    				//_jCoeffs.get(j).commitEdit();
-    				tempCoeffs[j]=new RealF(tFieldType, Float.parseFloat(_jCoeffs.get(j).getText()));
-    			}
-    			_repMonad.setCoeff(tempCoeffs);
-    			gradeKey.setText(new StringBuffer().append(_repMonad.getGradeKey()).toString());
-
-    			_GUI._StatusBar.setStatusMsg(" changes saved...");
+        		for (short j=0; j<_repMonad.getAlgebra().getGProduct().getBladeCount(); j++)
+        		{
+        			_jCoeffs.get(j).saveContents();
+        			_repMonadCoeffs[j]=RealF.copyOf(_jCoeffs.get(j).displayField);
+        		}
+        		
+    			_repMonad.setCoeff(_repMonadCoeffs);
     		}
-    		//catch (ParseException e) 
-    		//{
-    		//	_GUI._StatusBar.setStatusMsg("Could not parse at least one of the edited coefficients.\n");
-			//} 
-    		catch (CladosMonadException e) 
-    		{
-				_GUI._StatusBar.setStatusMsg(e.getSourceMessage()+"\n");
-				_GUI._StatusBar.setStatusMsg("Could not set at least one of the edited coefficients.\n");
-			} 
+        	catch (CladosMonadException e) 
+        	{
+    			_GUI._StatusBar.setStatusMsg(e.getSourceMessage()+"\n");
+    			_GUI._StatusBar.setStatusMsg("Could not set at least one of the edited coefficients.\n");
+    		} 
+    			
+    		gradeKey.setText(new StringBuffer().append(_repMonad.getGradeKey()).toString());
+
+    		_GUI._StatusBar.setStatusMsg(" changes saved...");
+
     		command=".edit.";
     	}
     	
@@ -309,30 +328,41 @@ import java.util.*;
     		_GUI._StatusBar.setStatusMsg("Monad references unlocked...");
     	}
     	
+    	// The rest of these are alternations to the monad represented by the panel that do NOT
+    	// pass through the Event Model. That means I'm maintaining two sets of events that do essentially
+    	// the same operations listed below.
+    	// TODO
+    	// Fix this so there is only one event model.
+    	// To see WHY just look at how the FieldBar is being read here.
+    	// It's being read over in the event model too and potentially in a different way.
+    	// So... the event here should get passed along some how to the event model.
+    	// Find it at _GUI._EventModel.SOpsParts.scale for example with the scale command
+    	// It is quite possible this panel can't see far enough down that chain, though.
+    	
     	if (command == "grade crop")
     	{
-    		short tGrade = Short.parseShort(_GUI._FieldBar.getRealText());
-    		_repMonad.gradeCrop(tGrade);
+    		short tGrade = (short) Float.parseFloat(_GUI._FieldBar.getRealText());
+    		_repMonad.gradePart(tGrade);
     		setCoefficientDisplay();
     		_GUI._StatusBar.setStatusMsg("\tselected monad has grades cropped around {"+tGrade+"}\n");
     	}
     	
     	if (command == "grade cut")
     	{
-    		short tGrade = Short.parseShort(_GUI._FieldBar.getRealText());
-    		_repMonad.gradeCut(tGrade);
+    		short tGrade = (short) Float.parseFloat(_GUI._FieldBar.getRealText());
+    		_repMonad.gradeSuppress(tGrade);
     		setCoefficientDisplay();
     		_GUI._StatusBar.setStatusMsg("\tselected monad grade suppressed at {"+tGrade+"}\n");
     	}
     	
     	if (command == "scale")
     	{
-    		short tScale = Short.parseShort(_GUI._FieldBar.getRealText());
+    		float tScale = Float.parseFloat(_GUI._FieldBar.getRealText());
     		try 
     		{
-				_repMonad.scale(AlgebraRealF.generateNumber(_repMonad.getAlgebra(), tScale));
+				_repMonad.scale(AlgebraRealF.generateNumber(_repMonad.getAlgebra(), tScale));				
 				setCoefficientDisplay();
-	    		_GUI._StatusBar.setStatusMsg("\tselected monad scaled.\n");
+				_GUI._StatusBar.setStatusMsg("\tselected monad scaled.\n");
 			} 
     		catch (FieldBinaryException e) 
     		{
@@ -346,7 +376,7 @@ import java.util.*;
     		{
 				_repMonad.normalize();
 				setCoefficientDisplay();
-	    		_GUI._StatusBar.setStatusMsg("\tselected monad inverted.\n");
+	    		_GUI._StatusBar.setStatusMsg("\tselected monad normalized.\n");
 			} 
     		catch (CladosMonadException e) 
     		{
@@ -393,7 +423,7 @@ import java.util.*;
     {
     	JTextArea tSpot = (JTextArea) e.getComponent();
     	//_GUI._FieldBar.setField  	Can't be done because JTextArea is just display element
-    	_GUI._FieldBar.setWhatFloat(Float.valueOf(tSpot.getText()));
+    	_GUI._FieldBar.setWhatFloatR(Float.valueOf(tSpot.getText()));
         //_GUI._StatusBar.setStatusMsg("Focus gained @"+tSpot.getText());
     }
     
@@ -402,23 +432,49 @@ import java.util.*;
     {
     	;
 	}
-
-    public ArrayList<FieldArea> getJCoeffs()
+    /**
+     * This method provides to the caller an array list of the JTextArea descendents that hold 
+     * coefficients for a monad. In this case they are RealF coefficients. It's just a typical
+     * get method, though. Nothing special.
+     * @return ArrayList
+     * An array list of JTextArea descedents is returned that holds the coefficients of a monad.
+     */
+    public ArrayList<FieldAreaRealF> getJCoeffs()
     {
 	    return _jCoeffs;
     }
-    
+    /**
+     * This method provides to the caller a MonadRealF held in this panel. It's just a typical
+     * get method, though. Nothing special.
+     * @return MonadRealF
+     */
     public MonadRealF 	getMonad()
     {
 	    return _repMonad;
     }
-
+/**
+ * In this method we assume the underlying Monad has changed and the displayField in the panel
+ * has to be updated. This means working through the Coeff's for the Monad and updating the
+ * displayField in the related JTextArea.
+ * 
+ * It is safe enough to call this from anywhere and at any time. The worst that can happen is
+ * the user looses some of their changes on the UI.
+ */
     public void 	setCoefficientDisplay()
     {
-	    for (short j=0; j<_repMonad.getAlgebra().getGProduct().getBladeCount(); j++)	
-	    	//_jCoeffs.get(j).setText(new StringBuffer().append(_repMonad.getCoeff(j).getReal()).toString());
-	    	_jCoeffs.get(j).displayContents();
-	    
+    	try 
+    	{
+    		for (short j=0; j<_repMonad.getAlgebra().getGProduct().getBladeCount(); j++)
+    		{
+				_jCoeffs.get(j).updateField(_repMonad.getCoeff(j));		//	fodder for the update
+				_jCoeffs.get(j).displayContents();
+    		}
+    	}
+	    catch (UtilitiesException e) 
+	    {
+    		_GUI._StatusBar.setStatusMsg(e.getSourceMessage()+"\n");
+    		_GUI._StatusBar.setStatusMsg("Could not update at least one of the possibly new coefficients.\n");
+		}
 	    gradeKey.setText(new StringBuffer().append(_repMonad.getGradeKey()).toString());
     }
 
@@ -426,16 +482,14 @@ import java.util.*;
     {		
     	if (_jCoeffs == null)
     	{
-	    	_jCoeffs=new ArrayList<FieldArea>(_repMonad.getAlgebra().getGProduct().getBladeCount());
-	    	//NumberFormat amountFormat = NumberFormat.getNumberInstance();
-	    	for (int j=0; j<_repMonad.getAlgebra().getGProduct().getBladeCount(); j++)
+	    	_jCoeffs=new ArrayList<FieldAreaRealF>(_repMonad.getAlgebra().getGProduct().getBladeCount());
+	    	
+	    	for (short j=0; j<_repMonad.getAlgebra().getGProduct().getBladeCount(); j++)
 	    	{
-	    		//JTextArea tSpot = new JTextArea(1, 8);
-	    		FieldArea tSpot = new FieldArea(_repMonadCoeffs[j]);
-	    		//tSpot.setColumns(8);
-	    		//tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-	    		//tSpot.setText(new StringBuffer().append(_repMonadCoeffs[j].getReal()).toString());
+	    		FieldAreaRealF tSpot = new FieldAreaRealF(RealF.copyOf(_repMonad.getCoeff(j)));
+	    		
 	    		tSpot.addFocusListener(this);
+	    		
 	    		_jCoeffs.add(j, tSpot);
 	    	}
     	}
@@ -592,7 +646,7 @@ import java.util.*;
     	
     	scaleMonad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Scale")));
     	scaleMonad.setActionCommand("scale");
-    	scaleMonad.setToolTipText("scale() THIS Monad");
+    	scaleMonad.setToolTipText("scale() the monad");
     	scaleMonad.setPreferredSize(squareMedium);
     	scaleMonad.setBorder(BorderFactory.createEtchedBorder(0));
     	scaleMonad.addActionListener(this);
@@ -610,7 +664,7 @@ import java.util.*;
     	
     	invertMonad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Invert")));
     	invertMonad.setActionCommand("invert");
-    	invertMonad.setToolTipText("invert [+/-] Monad generators");
+    	invertMonad.setToolTipText("invert [+/-] generators");
     	invertMonad.setPreferredSize(squareMedium);
     	invertMonad.setBorder(BorderFactory.createEtchedBorder(0));
     	invertMonad.addActionListener(this);
@@ -619,7 +673,7 @@ import java.util.*;
     	
     	reverseMonad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Reverse")));
     	reverseMonad.setActionCommand("reverse");
-    	reverseMonad.setToolTipText("reverse [ab->ba] Monad blades");
+    	reverseMonad.setToolTipText("reverse [ab->ba] blades");
     	reverseMonad.setPreferredSize(squareMedium);
     	reverseMonad.setBorder(BorderFactory.createEtchedBorder(0));
     	reverseMonad.addActionListener(this);
@@ -628,7 +682,7 @@ import java.util.*;
     	
     	dualLeft = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.DualLeft")));
     	dualLeft.setActionCommand("dual>");
-    	dualLeft.setToolTipText("left Dual of THIS Monad using algebra's PS");
+    	dualLeft.setToolTipText("left Dual of the monad using algebra's PS");
     	dualLeft.setPreferredSize(squareMedium);
     	dualLeft.setBorder(BorderFactory.createEtchedBorder(0));
     	dualLeft.addActionListener(this);
@@ -637,7 +691,7 @@ import java.util.*;
     	
     	dualRight = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.DualRight")));
     	dualRight.setActionCommand("<dual");
-    	dualRight.setToolTipText("right Dual of THIS Monad using algebra's PS");
+    	dualRight.setToolTipText("right Dual of the monad using algebra's PS");
     	dualRight.setPreferredSize(squareMedium);
     	dualRight.setBorder(BorderFactory.createEtchedBorder(0));
     	dualRight.addActionListener(this);
@@ -793,7 +847,7 @@ import java.util.*;
 	    gradeKey.setEditable(false);
 	    
 	    if (useFullPanel)
-	    	for (FieldArea point : _jCoeffs)
+	    	for (FieldAreaRealF point : _jCoeffs)
 	    		point.setEditable(false);
     }
     
@@ -806,7 +860,11 @@ import java.util.*;
     	foot.setText(_repMonad.getAlgebra().getFoot().getFootName());
     	gradeKey.setText(new StringBuffer().append(_repMonad.getGradeKey()).toString());
     }
-
+    /**
+     * This method adjusts the JTextArea elements contained on the panel to allow for edits.
+     * It has two modes since this panel does too. In one mode the coefficients are visible 
+     * and made editable too. In the other, they aren't visible, so this method skips them.
+     */
     protected void 	makeWritable()
     {
     	if (_monadReferences!=null)
@@ -823,7 +881,7 @@ import java.util.*;
 	    {
 	    	sig.setEditable(false);
 	    	foot.setEditable(false);
-		    for (FieldArea point : _jCoeffs)
+		    for (FieldAreaRealF point : _jCoeffs)
 		    	point.setEditable(true);
 	    }
 	    else
@@ -832,7 +890,11 @@ import java.util.*;
 	    	foot.setEditable(true);
 	    }    
     }
-    
+    /**
+     * This method registers a Focus Listener for a JTextField (likely a descedent of one) 
+     * so the Monad Panel can respond to events.
+     * @param pTextField	JTextField
+     */
     protected 	void		registerTextChange(JTextField pTextField)
     {
     	pTextField.addFocusListener(null);						
