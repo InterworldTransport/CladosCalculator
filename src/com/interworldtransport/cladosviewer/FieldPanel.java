@@ -51,15 +51,13 @@ import javax.swing.border.BevelBorder;
  * @author Dr Alfred W Differ
  */
 
- public class FieldPanel extends JPanel implements ActionListener, FocusListener
+ public class FieldPanel extends JPanel implements ActionListener
  {
 	public				CladosCalculator				_GUI;
 	private		final	Color							_backColor = new Color(230, 255, 255);
 	private		final	Color							_nullColor = new Color(255, 230, 255);
 	private		final	String[]						_valLabels= {"real", "img"};
 	private				Dimension						squareMedium=new Dimension(25,25);
-	protected	final	String[]						_fields= {	"RealF", "RealD", 
-																	"ComplexF", "ComplexD"};
 	
 	protected			double[]						_valsD;
 	protected			float[]							_valsF;
@@ -175,22 +173,6 @@ import javax.swing.border.BevelBorder;
     	
     	// the idea here is to manage the displays with action buttons to be added here soon.
     }
-    @Override
-    public void focusGained(FocusEvent e) 
-    {
-    	// This could potentially be something to check the related field type isn't null
-    	// or to enable some kind of edit feature so the field bar type matches something else
-    	
-    	//JTextArea tSpot = (JTextArea) e.getComponent();
-    	//_GUI._FieldBar.setWhatFloat0(Float.valueOf(tSpot.getText()));
-    }
-    
-    @Override
-	public void focusLost(FocusEvent e) 
-    {
-    	// this could potentially be something that checks the related field type for something?
-    	;
-	}
   
     public String	getImgText()
     {

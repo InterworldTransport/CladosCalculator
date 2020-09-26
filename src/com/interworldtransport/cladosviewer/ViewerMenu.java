@@ -53,15 +53,7 @@ public class ViewerMenu extends JMenuBar
     //public	JMenuItem	mniOpen;
     public	JMenuItem		mniSave;
     public	JMenuItem		mniSaveAs;
-    //public	JMenuItem	mniPrint;
     public	JMenuItem		mniExit;
-
-/**
- * The Edit Parent Menu for the application.
- */
-    //public	JMenu			mnuEdit;
-    //public	JMenuItem		mniCopy;
-    //public	JMenuItem		mniPaste;
 
 /**
  * The Boolean Operations Parent Menu for the application.
@@ -132,11 +124,11 @@ public class ViewerMenu extends JMenuBar
     	
     	mnuFile=new JMenu("File");
     	add(mnuFile);
-    	mnuBOperations=new JMenu("Booleans");
+    	mnuBOperations=new JMenu("booleans");
     	add(mnuBOperations);
-    	mnuSOperations=new JMenu("Unary");
+    	mnuSOperations=new JMenu("unary");
     	add(mnuSOperations);
-    	mnuCOperations=new JMenu("Binary");
+    	mnuCOperations=new JMenu("binary");
     	add(mnuCOperations);
     	mnuTools=new JMenu("Tools");
     	add(mnuTools);
@@ -205,13 +197,6 @@ public class ViewerMenu extends JMenuBar
     	mnuCOperations.add(mniSymm);
     	mniASymm=new JMenuItem("ASymm Multiply");
     	mnuCOperations.add(mniASymm);
-    	//mniRotate=new JMenuItem("Rotate");
-    	//mnuCOperations.add(mniRotate);
-    	//mniRotate.setEnabled(false);
-    	//mniTranslate=new JMenuItem("Translate");
-    	//mnuCOperations.add(mniTranslate);
-    	//mniTranslate.setEnabled(false);
-    	//Operations Menus items added
     	
     	mniCreate=new JMenuItem("create");
     	mnuTools.add(mniCreate);

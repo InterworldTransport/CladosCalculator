@@ -24,8 +24,14 @@
  */
 package com.interworldtransport.cladosviewer;
 
+import com.interworldtransport.cladosF.DivField;
+import com.interworldtransport.cladosF.RealF;
 import com.interworldtransport.cladosG.MonadRealF;
+
 import com.interworldtransport.cladosG.NyadRealF;
+import com.interworldtransport.cladosG.NyadRealD;
+import com.interworldtransport.cladosG.NyadComplexF;
+import com.interworldtransport.cladosG.NyadComplexD;
 import com.interworldtransport.cladosviewerExceptions.CantGetIniException;
 import com.interworldtransport.cladosviewerExceptions.CantGetSaveException;
 
@@ -191,16 +197,42 @@ public class CladosCalculator extends JFrame implements ActionListener
 	    _GeometryDisplay.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 	    cp.add(_GeometryDisplay, "Center");
 	    
-	    _FieldBar=new FieldPanel(this, _GeometryDisplay.getNyadPanel(_GeometryDisplay.getPaneFocus()).getNyad().protoOne);
-	    cp.add(_FieldBar, "North");
+
+	    int indxNPanelSelected = _GeometryDisplay.getPaneFocus();
+    	if (indxNPanelSelected>=0) 
+    	{
+    		NyadPanel tSpot = _GeometryDisplay.getNyadPanel(indxNPanelSelected);
+    		switch (_GeometryDisplay.getNyadPanel(indxNPanelSelected).getRepMode())
+    		{
+    			case DivField.REALF:	_FieldBar=new FieldPanel(this, tSpot.getNyadRF().getProto());
+    									cp.add(_FieldBar, "North");
+    									break;
+    			case DivField.REALD:	_FieldBar=new FieldPanel(this, tSpot.getNyadRD().getProto());
+										cp.add(_FieldBar, "North");
+										break;
+    			case DivField.COMPLEXF:	_FieldBar=new FieldPanel(this, tSpot.getNyadCF().getProto());
+										cp.add(_FieldBar, "North");
+										break;
+				case DivField.COMPLEXD:	_FieldBar=new FieldPanel(this, tSpot.getNyadCD().getProto());
+										cp.add(_FieldBar, "North");
+										break;
+    		}
+    		tSpot = null;
+    	}
+    	else	// This catches the possibility that no NyadPanel was created upon initialization
+    	{
+    		_FieldBar=new FieldPanel(this, RealF.newZERO("Place Holder"));
+			cp.add(_FieldBar, "North");
+    	}
+	    
 	    	
 	    fc = new JFileChooser();
 	    fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 	    
-	    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-	    setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+	    //Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+	    //setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 	    	
-	    //setLocation(100, 100);
+	    setLocation(50, 50);
 	    //_StatusBar.setStatusMsg(" ...complete\n");
 	}
     
@@ -511,7 +543,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 		//for (int j=0; j<_GeometryDisplay.getNyadListSize(); j++)
 		for (NyadPanel tempNPN : _GeometryDisplay.getNyadPanels())
 		{
-			NyadRealF tempNp=tempNPN.getNyad();
+			NyadRealF tempNp=tempNPN.getNyadRF();
 			    		
 			content.append("<Nyad");
 			content.append(" Name=\"");

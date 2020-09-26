@@ -24,9 +24,11 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
+import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosFExceptions.FieldBinaryException;
 import com.interworldtransport.cladosG.*;
 import com.interworldtransport.cladosGExceptions.*;
+import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
 import java.awt.event.*;
@@ -61,33 +63,59 @@ public class BOpsIdempotentEvents implements ActionListener
 		_parent=pParent;
     }
 
-/** This is the actual action to be performed by this member of the menu.
+/** 
+ * This is the actual action to be performed by this member of the menu.
+ * The Monad with focus is tested to see if it is idempotent.
+ * If it is (or isn't) the test is reported to the StatusBar.
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
-    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
-    	MonadRealF monadSelected = panelNyadSelected.getMonadPanel(panelNyadSelected.getPaneFocus()).getMonad();
+    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (indexNyadPanelSelected<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		return;	
+    	}
+    	    	
+    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
+    	if (indxMndPnlSlctd<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nIdempotent Test needs one monad in focus. Nothing done.\n");
+    		return;
+    	}
     	
-		boolean test=false;
-		try
-		{
-			test=MonadRealF.isIdempotent(monadSelected);
-		}
+    	MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+    	boolean test = false;
+    	try
+    	{
+	    	switch (tSpot.getRepMode())
+	    	{
+		    	case DivField.REALF: 	test = MonadRealF.isIdempotent(tSpot.getMonadRF());
+								    	break;
+		    	case DivField.REALD: 	test = MonadRealD.isIdempotent(tSpot.getMonadRD());
+								    	break;
+		    	case DivField.COMPLEXF:	test = MonadComplexF.isIdempotent(tSpot.getMonadCF());
+								    	break;
+		    	case DivField.COMPLEXD:	test = MonadComplexD.isIdempotent(tSpot.getMonadCD());
+								    	break;
+	    	}
+	    	if (test)
+				_parent._GUI._StatusBar.setStatusMsg("\tselected monad is idempotent.\n");
+	    	else
+	    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT idempotent.\n");
+    	}
 		catch (CladosMonadException e)
 		{
 			_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad created a CladosMonadException.\n");
-			e.printStackTrace();
+			_parent._GUI._StatusBar.setStatusMsg(e.getSourceMessage());
+			_parent._GUI._StatusBar.setStatusMsg("\n\n");
 		}
 		catch (FieldBinaryException eb)
 		{
 			_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad created a FieldBinaryException.\n");
-			eb.printStackTrace();
+			_parent._GUI._StatusBar.setStatusMsg(eb.getSourceMessage());
+			_parent._GUI._StatusBar.setStatusMsg("\n\n");
 		}
-	
-		if (test)
-			_parent._GUI._StatusBar.setStatusMsg("\tselected monad is idempotent.\n");
-		else
-			_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT idempotent.\n");	
     }
  }

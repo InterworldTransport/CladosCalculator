@@ -24,6 +24,7 @@
  */
 
 package com.interworldtransport.cladosviewer;
+import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosF.RealF;
 import com.interworldtransport.cladosG.*;
 import com.interworldtransport.cladosGExceptions.*;
@@ -132,7 +133,10 @@ public class CreateDialog extends JDialog implements ActionListener
 	private	final Dimension		square = new Dimension(30,30);
 	private	Color				_monadColor = new Color(212, 212, 192);
 	private	Color				_nyadColor = new Color(212, 200, 212);
-	private AlgebraRealF		copyAlgTarget;
+	private AlgebraComplexD		copyAlgTargetCD;
+	private AlgebraComplexF		copyAlgTargetCF;
+	private AlgebraRealD		copyAlgTargetRD;
+	private AlgebraRealF		copyAlgTargetRF;
 	private Foot				copyFootTarget;
 
 	/**
@@ -244,62 +248,81 @@ public class CreateDialog extends JDialog implements ActionListener
     	}
     	
     	if (command.equals("Get Foot"))
-    	{
-    		if(copyFootTarget == null)
-    		{
-	    		int tSpot=_GUI._GeometryDisplay.getPaneFocus();
-	    		if (tSpot<0) return; //No nyad chosen to get Foot
-	    		
-	    		copyFootTarget=_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyad().getFootPoint();
-	    		mainPane.foot.setText(copyFootTarget.getFootName());
-    		}
-    		else
-    		{
-    			copyFootTarget = null;
-    			mainPane.foot.setText("cleared");
-    		}
+    	{    		
+	    	int tSpot=_GUI._GeometryDisplay.getPaneFocus();
+	    	if (tSpot<0) return; //No nyad chosen to get Foot
+	    	
+	    	//NyadPanel tSpotNPanel = _GUI._GeometryDisplay.getNyadPanel(tSpot);
+	    	switch ((_GUI._GeometryDisplay.getNyadPanel(tSpot)).getRepMode())
+	    	{
+	    		case DivField.REALF:	copyFootTarget=_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadRF().getFootPoint();
+	    								break;
+	    		case DivField.REALD:	copyFootTarget=_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadRD().getFootPoint();
+										break;
+	    		case DivField.COMPLEXF:	copyFootTarget=_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadCF().getFootPoint();
+										break;
+	    		case DivField.COMPLEXD:	copyFootTarget=_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadCD().getFootPoint();
+										break;
+	    	}
+	    	mainPane.foot.setText(copyFootTarget.getFootName());
     	}
     	if (command.equals("Get Algebra"))
     	{
-    		if(copyAlgTarget == null)
-    		{
-	    		int tSpot=_GUI._GeometryDisplay.getPaneFocus();
-	    		if (tSpot<0) return; //No nyad chosen to get Foot
-	    		NyadPanel tSpotNPanel = _GUI._GeometryDisplay.getNyadPanel(tSpot);
+	    	int tSpot=_GUI._GeometryDisplay.getPaneFocus();
+	    	if (tSpot<0) return; //No nyad chosen to get Foot
 	    		
-	    		copyAlgTarget=tSpotNPanel.getMonadPanel(tSpotNPanel.getPaneFocus()).getMonad().getAlgebra();
-	    		mainPane.aname.setText(copyAlgTarget.getAlgebraName());
-	    		mainPane.foot.setText(copyAlgTarget.getFoot().getFootName());
-	    		mainPane.sig.setText(copyAlgTarget.getGProduct().getSignature());
-    		}
-    		else
-    		{
-    			copyAlgTarget = null;
-    			mainPane.aname.setText("cleared");
-    		}
+	    	NyadPanel tSpotNPanel = _GUI._GeometryDisplay.getNyadPanel(tSpot);
+	    	int tSpotMonadIndex = tSpotNPanel.getPaneFocus();
+	    	if (tSpotMonadIndex<0) return; //No monad in the focus to get its algebra
+	    	
+	    	switch (tSpotNPanel.getRepMode())
+	    	{
+	    		case DivField.REALF:	copyAlgTargetRF=(tSpotNPanel.getMonadPanel(tSpotMonadIndex)).getMonadRF().getAlgebra();
+						    			mainPane.aname.setText(copyAlgTargetRF.getAlgebraName());
+							    		mainPane.foot.setText(copyAlgTargetRF.getFoot().getFootName());
+							    		mainPane.sig.setText(copyAlgTargetRF.getGProduct().getSignature());
+	    								break;
+	    		case DivField.REALD:	copyAlgTargetRD=(tSpotNPanel.getMonadPanel(tSpotMonadIndex)).getMonadRD().getAlgebra();
+						    			mainPane.aname.setText(copyAlgTargetRD.getAlgebraName());
+							    		mainPane.foot.setText(copyAlgTargetRD.getFoot().getFootName());
+							    		mainPane.sig.setText(copyAlgTargetRD.getGProduct().getSignature());
+										break;
+	    		case DivField.COMPLEXF:	copyAlgTargetCF=(tSpotNPanel.getMonadPanel(tSpotMonadIndex)).getMonadCF().getAlgebra();
+						    			mainPane.aname.setText(copyAlgTargetCF.getAlgebraName());
+							    		mainPane.foot.setText(copyAlgTargetCF.getFoot().getFootName());
+							    		mainPane.sig.setText(copyAlgTargetCF.getGProduct().getSignature());
+										break;
+	    		case DivField.COMPLEXD:	copyAlgTargetCD=(tSpotNPanel.getMonadPanel(tSpotMonadIndex)).getMonadCD().getAlgebra();
+						    			mainPane.aname.setText(copyAlgTargetCD.getAlgebraName());
+							    		mainPane.foot.setText(copyAlgTargetCD.getFoot().getFootName());
+							    		mainPane.sig.setText(copyAlgTargetCD.getGProduct().getSignature());
+										break;
+	    	}
     	}
     	
     	if (command.equals("Save Nyad"))
     	{	
+    		// TODO Fix for other DivFields
+    		// this should probably be slipped out to a private method
 	    	try
 	    	{
-	    		if (copyAlgTarget != null) // Algebra's foot dominates separately chosen Foot
+	    		if (copyAlgTargetRF != null) // Algebra's foot dominates separately chosen Foot
     			{
-    				RealF tZero=new RealF(copyAlgTarget.getFoot().getNumberType(), 0.0f);
-    				RealF[] tC = new RealF[copyAlgTarget.getGProduct().getBladeCount()];
+    				RealF tZero=new RealF(copyAlgTargetRF.getFoot().getNumberType(), 0.0f);
+    				RealF[] tC = new RealF[copyAlgTargetRF.getGProduct().getBladeCount()];
     				
     				for (short m=0; m<tC.length; m++)
     					tC[m]=RealF.copyZERO(tZero);
     				
     				MonadRealF rep=new MonadRealF(	mainPane.name.getText(),
-    												copyAlgTarget,
+    												copyAlgTargetRF,
     												mainPane.frame.getText(),
     												tC);
     				NyadRealF rep2=new NyadRealF("New", rep);
 		    		_GUI._GeometryDisplay.addNyad(rep2);
 		    		_GUI._StatusBar.setStatusMsg("\tnew nyad added to stack...");
     			}
-	    		else if (copyFootTarget != null && copyAlgTarget == null)
+	    		else if (copyFootTarget != null && copyAlgTargetRF == null)
 	    		{	
 	    			MonadRealF rep=new MonadRealF(	mainPane.name.getText(),
 													mainPane.aname.getText(),
@@ -311,7 +334,7 @@ public class CreateDialog extends JDialog implements ActionListener
 		    		_GUI._GeometryDisplay.addNyad(rep2);
 		    		_GUI._StatusBar.setStatusMsg("\tnew nyad added to stack...");
 	    		}
-	    		else if (copyFootTarget == null && copyAlgTarget == null)
+	    		else if (copyFootTarget == null && copyAlgTargetRF == null)
 	    		{
 		    		MonadRealF rep=new MonadRealF(	mainPane.name.getText(),
 		    										mainPane.aname.getText(),
@@ -341,45 +364,50 @@ public class CreateDialog extends JDialog implements ActionListener
     	
     	if (command.equals("Save Monad"))
     	{	//get the existing nyad to be used to create this next monad
-    		//nyad.createMonad(String pName, String pAlgebra, String pFrame,String pSig) 
     		
-    		if (_GUI._GeometryDisplay.getPaneFocus()<0) return; //No nyad present for appending this
+    		// TODO Fix for other DivFields
+    		// this should probably be slipped out to a private method
+    		int tSpot=_GUI._GeometryDisplay.getPaneFocus();
+    		if (tSpot<0) return; //No nyad present for appending this
     		
-    		NyadPanel tNSpotP = _GUI._GeometryDisplay.getNyadPanel(_GUI._GeometryDisplay.getPaneFocus());
-    		NyadRealF tNSpotF = tNSpotP.getNyad();
+    		NyadPanel tNSpotP = _GUI._GeometryDisplay.getNyadPanel(tSpot);
+    		
+    		NyadRealF tNSpotF = tNSpotP.getNyadRF();
     		
     		try
     		{
     			MonadRealF rep = null;
-    			if (copyAlgTarget != null)
+    			if (copyAlgTargetRF != null)
     			{
     				// Check for algebra uniqueness within nyad. If non-unique, fail this gracefully
-    				if(NyadRealF.hasAlgebra(tNSpotF, copyAlgTarget))
+    				if(NyadRealF.hasAlgebra(tNSpotF, copyAlgTargetRF))
     				{
     					_GUI._StatusBar.stmesgt.append("\t\tchosen algebra already present in nyad. No monad added.");
     					return;
     				}
     				
-    				if (copyAlgTarget.getFoot() != tNSpotF.getFootPoint())
+    				if (copyAlgTargetRF.getFoot() != tNSpotF.getFootPoint())
     				{
     					_GUI._StatusBar.stmesgt.append("\t\tchosen algebra had different foot from nyad. No monad added.");
     					return;
     				}
     				//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
     				
-    				RealF[] tC = new RealF[copyAlgTarget.getGProduct().getBladeCount()];
+    				RealF[] tC = new RealF[copyAlgTargetRF.getGProduct().getBladeCount()];
     				for (short m=0; m<tC.length; m++)
-    					tC[m]=RealF.copyZERO(tNSpotF.protoOne); //could use copyAlgTarget.protoOne with no difference.
+    					tC[m]=RealF.copyZERO(tNSpotF.getProto()); //could use copyAlgTargetRF.protoOne with no difference.
+    				
+    				// TODO Fix for other DivFields since it is assuming RealF
     				
     				rep=new MonadRealF(		mainPane.name.getText(),
-    										copyAlgTarget,
+    										copyAlgTargetRF,
     										mainPane.frame.getText(),
     										tC);
     				tNSpotF.appendMonad(rep);	//This won't fail because alg uniqueness was checked
     				tNSpotP.addMonadPanel(rep);
         			_GUI._StatusBar.setStatusMsg("\tnew monad added to selected nyad...");
     			}
-    			else if (copyAlgTarget == null) //Choosing foot doesn't matter. Nyad already has one.
+    			else if (copyAlgTargetRF == null) //Choosing foot doesn't matter. Nyad already has one.
     			{
 	    			tNSpotF.createMonad(	mainPane.name.getText(), 
 	    									mainPane.aname.getText(), 

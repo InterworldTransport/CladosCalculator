@@ -27,6 +27,8 @@ package com.interworldtransport.cladosviewerEvents;
 import com.interworldtransport.cladosG.*;
 import com.interworldtransport.cladosGExceptions.*;
 import com.interworldtransport.cladosviewer.MonadPanel;
+import com.interworldtransport.cladosviewer.NyadPanel;
+import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosFExceptions.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -64,36 +66,47 @@ public class COpsLMultEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-		MonadPanel temp0=_parent._GUI._GeometryDisplay.getNyadPanel(0).getMonadPanel(0);
-		MonadPanel temp1=_parent._GUI._GeometryDisplay.getNyadPanel(1).getMonadPanel(0);
-		MonadRealF Monad0=null;
-		MonadRealF Monad1=null;
-	
-		if (temp0!=null)
-			Monad0=temp0.getMonad();
-		if (temp1!=null)
-			Monad1=temp1.getMonad();
-	
-		if (Monad0!=null || Monad1!=null)
+    	int indxNydPnlSlctd = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (indxNydPnlSlctd<0 | indxNydPnlSlctd == _parent._GUI._GeometryDisplay.getNyadListSize()) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus... or the last one is.\n");
+    		return;	
+    	}
+    	
+    	NyadPanel tSpot = _parent._GUI._GeometryDisplay.getNyadPanel(indxNydPnlSlctd);
+    	NyadPanel tSpotPlus = _parent._GUI._GeometryDisplay.getNyadPanel(indxNydPnlSlctd+1);
+    	
+    	int indxMndPnlSlctd = tSpot.getPaneFocus();
+    	if (indxMndPnlSlctd<0 | indxNydPnlSlctd > tSpotPlus.getMonadListSize()) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nMultiplication needs two monads at the same index in a nyad. Nothing done.\n");
+    		return;
+    	}
+    	
+    	MonadPanel temp0=tSpot.getMonadPanel(indxMndPnlSlctd);
+    	MonadPanel temp1=tSpotPlus.getMonadPanel(indxMndPnlSlctd);
+    		
+    	try
+    	{
+    		switch (temp0.getRepMode())
+    		{
+    			case DivField.REALF:	(temp0.getMonadRF()).multiplyLeft(temp1.getMonadRF());
+    									break;
+    			case DivField.REALD:	(temp0.getMonadRD()).multiplyLeft(temp1.getMonadRD());
+    									break;
+    			case DivField.COMPLEXF:	(temp0.getMonadCF()).multiplyLeft(temp1.getMonadCF());
+										break;
+    			case DivField.COMPLEXD:	(temp0.getMonadCD()).multiplyLeft(temp1.getMonadCD());
+    									break;
+    		}
+    	}
+    	catch (FieldBinaryException eb)
 		{
-			try
-			{
-				Monad0.multiplyLeft(Monad1);
-				temp0.setCoefficientDisplay();
-				_parent._GUI._StatusBar.setStatusMsg("Second Monad muliplied against the first from the left.\n");
-			}
-			catch (CladosMonadException e)
-			{
-				_parent._GUI._StatusBar.setStatusMsg("General monad error between second and first monads.\n");
-				_parent._GUI._StatusBar.setStatusMsg("Second Monad not muliplied against the first from the left.\n");
-			}
-			catch (FieldBinaryException eb)
-			{
-				_parent._GUI._StatusBar.setStatusMsg("FieldBinary error between second and first monads.\n");
-				_parent._GUI._StatusBar.setStatusMsg("Second Monad not muliplied against the first from the left.\n");
-			}
+			_parent._GUI._StatusBar.setStatusMsg("\nField Binary error between second and first monads. Nothing done.\n");
 		}
-		else
-			_parent._GUI._StatusBar.setStatusMsg("Multiplication is a binary operation. One was missing.\n");
+		catch (CladosMonadException e)
+		{
+			_parent._GUI._StatusBar.setStatusMsg("\nReference Match error between second and first monads. Nothing done.\n");
+		}
     }
  }

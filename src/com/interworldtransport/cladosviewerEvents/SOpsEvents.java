@@ -41,20 +41,20 @@ import com.interworldtransport.cladosviewer.ViewerMenu;
  */
 public class SOpsEvents implements ActionListener
 {
-    protected SOpsGradeEvents			grade;
-    protected SOpsMagnitudeEvents		mag;
-    protected SOpsSQMagnitudeEvents		sqmag;
-    protected SOpsNormalizeEvents		norm;
-    protected SOpsLocalDualEvents		dualLeft;
-    protected SOpsLocalDualEvents		dualRight;
-    protected SOpsInvertEvents			invt;
-    protected SOpsReverseEvents			rev;
-    protected SOpsScaleEvents			scale;
-    protected SOpsGradePartEvents		gradep;
-    protected SOpsGradeSupressEvents	grades;
+    protected 	SOpsGradeEvents			grade;
+    protected 	SOpsMagnitudeEvents		mag;
+    protected 	SOpsSQMagnitudeEvents	sqmag;
+    public	 	SOpsNormalizeEvents		norm;
+    public	 	SOpsLocalDualEvents		dualLeft;
+    public	 	SOpsLocalDualEvents		dualRight;
+    public	 	SOpsInvertEvents		invt;
+    public	 	SOpsReverseEvents		rev;
+    public		SOpsScaleEvents			scale;
+    public	 	SOpsGradePartEvents		gradep;
+    public	 	SOpsGradeSupressEvents	grades;
 
-    protected ViewerMenu 				_GUIMenu;
-    protected CladosCalculator			_GUI;
+    protected 	ViewerMenu 				_GUIMenu;
+    protected 	CladosCalculator		_GUI;
 
 /** 
  * This is the default constructor.  The event structure of the

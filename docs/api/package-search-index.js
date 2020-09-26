@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.interworldtransport.cladosviewer"},{"l":"com.interworldtransport.cladosviewerEvents"},{"l":"com.interworldtransport.cladosviewerExceptions"}]

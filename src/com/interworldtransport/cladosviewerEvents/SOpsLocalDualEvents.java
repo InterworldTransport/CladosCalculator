@@ -25,6 +25,7 @@
 
 package com.interworldtransport.cladosviewerEvents;
 
+import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -62,26 +63,62 @@ public class SOpsLocalDualEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
+ * The monad with focus has is multiplied by the PS on the right or left. 
+ * 
+ * A future version of the method must use the PS represented in the
+ * reference frame instead. Fourier decomposition is done against that frame 
+ * and not the canonical one most of the time.
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
-    	String command = evt.getActionCommand();
-  
-    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
+    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (indexNyadPanelSelected<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		return;	
+    	}
+    	
+    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
+    	if (indxMndPnlSlctd<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nDual Operation must have a monad in focus. Nothing done.\n");
+    		return;
+    	}
+    	
     	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
     	
+    	String command = evt.getActionCommand();
     	if (command.equals("dual left"))
     	{
-    		tMSpotPnl.getMonad().dualLeft();
+        	switch (tMSpotPnl.getRepMode())
+        	{
+    	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().dualLeft();
+    							    	break;
+    	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().dualLeft();
+    							    	break;
+    	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().dualLeft();
+    							    	break;
+    	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().dualLeft();
+    							    	break;
+        	}
     		_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been 'dualed' from the left.\n");
     	}
     	if (command.equals("dual right"))
     	{
-    		tMSpotPnl.getMonad().dualRight();
+    		switch (tMSpotPnl.getRepMode())
+        	{
+    	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().dualRight();
+    							    	break;
+    	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().dualRight();
+    							    	break;
+    	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().dualRight();
+    							    	break;
+    	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().dualRight();
+    							    	break;
+        	}
     		_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been 'dualed' from the right.\n");
     	}
     	tMSpotPnl.setCoefficientDisplay();
-    	
     }
  }

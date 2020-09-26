@@ -25,6 +25,11 @@
 
 package com.interworldtransport.cladosviewerEvents;
 
+import com.interworldtransport.cladosF.DivField;
+import com.interworldtransport.cladosG.MonadComplexD;
+import com.interworldtransport.cladosG.MonadComplexF;
+import com.interworldtransport.cladosG.MonadRealD;
+import com.interworldtransport.cladosG.MonadRealF;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -62,15 +67,44 @@ public class SOpsInvertEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
+ * The monad with focus has its generators inverted. 
+ * Blade a^b^c^d becomes (-a)^(-b)^(-c)^(-d) on the default (canonical) basis.
+ * 
+ * A future version of the invert method must invert the 1-blades represented in 
+ * the reference frame instead. Fourier decomposition is done against that frame 
+ * and not the canonical one most of the time.
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
-    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
+    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (indexNyadPanelSelected<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		return;	
+    	}
+    	
+    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
+    	if (indxMndPnlSlctd<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nInvert Operation must have a monad in focus. Nothing done.\n");
+    		return;
+    	}
+    	
     	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
     	
-		tMSpotPnl.getMonad().invert();
-		tMSpotPnl.setCoefficientDisplay();
-		_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been inverted.\n");
+    	switch (tMSpotPnl.getRepMode())
+    	{
+	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().invert();
+							    	break;
+	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().invert();
+							    	break;
+	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().invert();
+							    	break;
+	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().invert();
+							    	break;
+    	}
+    	tMSpotPnl.setCoefficientDisplay();
+    	_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been inverted.\n");
     }
  }

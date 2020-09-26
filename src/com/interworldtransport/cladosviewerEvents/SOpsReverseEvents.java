@@ -25,6 +25,7 @@
 
 package com.interworldtransport.cladosviewerEvents;
 
+import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -62,15 +63,44 @@ public class SOpsReverseEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
+ * The monad with focus has its blades multiplication order reversed. 
+ * Blade a^b^c^d becomes d^c^b^a on the default (canonical) basis.
+ * 
+ * A future version of the reverse method must reverse the 1-blades represented in 
+ * the reference frame instead. Fourier decomposition is done against that frame 
+ * and not the canonical one most of the time.
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
-    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
+    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (indexNyadPanelSelected<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		return;	
+    	}
+    	
+    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
+    	if (indxMndPnlSlctd<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nReverse Operation must have a monad in focus. Nothing done.\n");
+    		return;
+    	}
+    	
     	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
     	
-		tMSpotPnl.getMonad().reverse();
-		tMSpotPnl.setCoefficientDisplay();
-		_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been reversed.\n");
+    	switch (tMSpotPnl.getRepMode())
+    	{
+	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().reverse();
+							    	break;
+	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().reverse();
+							    	break;
+	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().reverse();
+							    	break;
+	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().reverse();
+							    	break;
+    	}
+    	tMSpotPnl.setCoefficientDisplay();
+    	_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been reversed.\n");
     }
  }

@@ -42,17 +42,15 @@ import com.interworldtransport.cladosviewer.ViewerMenu;
  */
 public class COpsEvents implements ActionListener
 {
-    protected COpsAddEvents			add;
-    protected COpsSubtractEvents	sub;
-    protected COpsLMultEvents		lmult;
-    protected COpsRMultEvents		rmult;
-    protected COpsDotEvents			symm;
-    protected COpsWedgeEvents		asymm;
-    //protected COpsRotateEvents	rot;
-    //protected COpsTranslateEvents	trans;
+    protected COpsAddEvents				add;
+    protected COpsSubtractEvents		sub;
+    protected COpsLMultEvents			lmult;
+    protected COpsRMultEvents			rmult;
+    protected COpSymmMultEvents			symm;
+    protected COpsAntiSymmMultEvents	asymm;
 
-    protected ViewerMenu 		_GUIMenu;
-    protected CladosCalculator		_GUI;
+    protected ViewerMenu 				_GUIMenu;
+    protected CladosCalculator			_GUI;
 
 /** This is the default constructor.  The event structure of the
  *  menu starts here and finishes with the child menu items.
@@ -65,12 +63,12 @@ public class COpsEvents implements ActionListener
 		_GUIMenu=pTheGUIMenu;
 		_GUI=_GUIMenu._parentGUI;
 
-		add = new COpsAddEvents(		_GUIMenu.mniAdd, this);
-		sub = new COpsSubtractEvents(	_GUIMenu.mniSubtract, this);
-		lmult = new COpsLMultEvents(	_GUIMenu.mniLeftMultiply, this);
-		rmult = new COpsRMultEvents(	_GUIMenu.mniRightMultiply, this);
-		symm = new COpsDotEvents(		_GUIMenu.mniSymm, this);
-		asymm = new COpsWedgeEvents(	_GUIMenu.mniASymm, this);
+		add = new COpsAddEvents(			_GUIMenu.mniAdd, this);
+		sub = new COpsSubtractEvents(		_GUIMenu.mniSubtract, this);
+		lmult = new COpsLMultEvents(		_GUIMenu.mniLeftMultiply, this);
+		rmult = new COpsRMultEvents(		_GUIMenu.mniRightMultiply, this);
+		symm = new COpSymmMultEvents(		_GUIMenu.mniSymm, this);
+		asymm = new COpsAntiSymmMultEvents(	_GUIMenu.mniASymm, this);
     }
 
 /** This is the default action to be performed by all members of the menu.

@@ -25,7 +25,15 @@
 
 package com.interworldtransport.cladosviewerEvents;
 
+import com.interworldtransport.cladosF.ComplexD;
+import com.interworldtransport.cladosF.ComplexF;
+import com.interworldtransport.cladosF.DivField;
+import com.interworldtransport.cladosF.RealD;
 import com.interworldtransport.cladosF.RealF;
+import com.interworldtransport.cladosG.MonadComplexD;
+import com.interworldtransport.cladosG.MonadComplexF;
+import com.interworldtransport.cladosG.MonadRealD;
+import com.interworldtransport.cladosG.MonadRealF;
 import com.interworldtransport.cladosGExceptions.CladosMonadException;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
@@ -67,19 +75,48 @@ public class SOpsMagnitudeEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
-    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
-    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
-
-    	try 
+    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (indexNyadPanelSelected<0) 
     	{
-    		RealF scale = tMSpotPnl.getMonad().magnitude();
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		return;	
+    	}
+    	
+    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	
+    	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
+    	if (indxMndPnlSlctd<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nMagnitude Discovery needs one monad in focus. Nothing done.\n");
+    		return;
+    	}
+    	
+    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(indxMndPnlSlctd);
+    	try 
+    	{    		
+    		switch (tMSpotPnl.getRepMode())
+        	{
+		    	case DivField.REALF: 	RealF scaleRF = tMSpotPnl.getMonadRF().magnitude();
+							    		_parent._GUI._FieldBar.setWhatFloatR(scaleRF.getModulus());
+								    	break;
+		    	case DivField.REALD: 	RealD scaleRD = tMSpotPnl.getMonadRD().magnitude();
+							    		_parent._GUI._FieldBar.setWhatDoubleR(scaleRD.getModulus());
+								    	break;
+		    	case DivField.COMPLEXF:	ComplexF scaleCF = tMSpotPnl.getMonadCF().magnitude();
+							    		_parent._GUI._FieldBar.setWhatFloatR(scaleCF.getModulus());
+							    		_parent._GUI._FieldBar.setWhatFloatI(0.0F);
+								    	break;
+		    	case DivField.COMPLEXD:	ComplexD scaleCD = tMSpotPnl.getMonadCD().magnitude();
+							    		_parent._GUI._FieldBar.setWhatDoubleR(scaleCD.getModulus());
+							    		_parent._GUI._FieldBar.setWhatDoubleI(0.0D);
+								    	break;
+        	}
     		_parent._GUI._StatusBar.setStatusMsg("\tselected monad magnitude has been computed.\n");
-    		_parent._GUI._FieldBar.setWhatFloatR(scale.getModulus());
     	} 
     	catch (CladosMonadException e) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad magnitude has NOT been computed.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad magnitude has NOT been computed due to a Clados Monad Exception.\n");
+    		_parent._GUI._StatusBar.setStatusMsg(e.getSourceMessage());
     	}
     }
  }

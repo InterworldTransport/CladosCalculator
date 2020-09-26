@@ -24,8 +24,13 @@
  */
 package com.interworldtransport.cladosviewerEvents;
 
-import com.interworldtransport.cladosG.MonadRealF;
+import com.interworldtransport.cladosF.DivField;
+//import com.interworldtransport.cladosG.MonadRealF;
 import com.interworldtransport.cladosG.NyadRealF;
+import com.interworldtransport.cladosG.NyadRealD;
+import com.interworldtransport.cladosG.NyadComplexF;
+import com.interworldtransport.cladosG.NyadComplexD;
+import com.interworldtransport.cladosviewer.NyadPanel;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -61,21 +66,39 @@ public class BOpsEqualEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
+ * Nyad equality is checked between focus nyad and the next one in the stack.
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	
-    	int tNyadFirstIndex=_parent._GUI._GeometryDisplay.getPaneFocus();
-    	if (tNyadFirstIndex<0) return;
-    	if (tNyadFirstIndex>=_parent._GUI._GeometryDisplay.getNyadListSize()-1)
+    	int tNyadIndex=_parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (tNyadIndex<0 | tNyadIndex>=_parent._GUI._GeometryDisplay.getNyadListSize()-1) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\t\tselected nyad is at the end of the stack so no comparison attempted\n");
-    		return;
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus... or the last one is.\n");
+    		return;	
     	}
-    	if (NyadRealF.isMEqual(	_parent._GUI._GeometryDisplay.getNyadPanel(tNyadFirstIndex).getNyad(), 
-    							_parent._GUI._GeometryDisplay.getNyadPanel(tNyadFirstIndex+1).getNyad()))
-    		_parent._GUI._StatusBar.setStatusMsg("\tselected nyad is equal to the next nyad\n");
-    	else
-    		_parent._GUI._StatusBar.setStatusMsg("\tselected nyad is NOT equal to the next nyad\n");		
+    	
+    	NyadPanel panelNyadSelected = _parent._GUI._GeometryDisplay.getNyadPanel(tNyadIndex);
+    	NyadPanel panelNyadNext = _parent._GUI._GeometryDisplay.getNyadPanel(tNyadIndex+1);
+    	if (panelNyadSelected.getRepMode() != panelNyadNext.getRepMode())
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nNyads using different DivFields.\n");
+    		return;	
+    	}
+    	boolean test = false;
+    	switch (panelNyadSelected.getRepMode())
+    	{
+    		case DivField.REALF: 	test = NyadRealF.isMEqual(panelNyadSelected.getNyadRF(), panelNyadNext.getNyadRF());
+    								break;
+    		case DivField.REALD: 	test = NyadRealD.isMEqual(panelNyadSelected.getNyadRD(), panelNyadNext.getNyadRD());
+									break;
+    		case DivField.COMPLEXF: test = NyadComplexF.isMEqual(panelNyadSelected.getNyadCF(), panelNyadNext.getNyadCF());
+									break;
+    		case DivField.COMPLEXD: test = NyadComplexD.isMEqual(panelNyadSelected.getNyadCD(), panelNyadNext.getNyadCD());
+									break;
+    	}
+    	if (test)
+			_parent._GUI._StatusBar.setStatusMsg("\tselected nyad and the next are EQUAL\n");
+		else
+			_parent._GUI._StatusBar.setStatusMsg("\tselected nyad and the next are NOT EQUAL\n");
     }
  }

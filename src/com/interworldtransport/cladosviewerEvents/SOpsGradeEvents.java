@@ -24,6 +24,8 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
+import com.interworldtransport.cladosF.DivField;
+import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
 import java.awt.event.*;
@@ -62,12 +64,49 @@ public class SOpsGradeEvents implements ActionListener
  * This is the actual action to be performed by this member of the menu.
  * Find the log of the gradeKey of the selected Monad and see if it is an integer.
  * If so, monad is of a single grade... so show the log of the gradeKey = monad grade
+ * 
+ * A future version of the  method must use the grade represented in 
+ * the reference frame instead. Fourier decomposition is done against that frame 
+ * and not the canonical one most of the time. That means the getGradeKey() method
+ * will channel through the ReferenceFrame of the monad.
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
-    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
-    	double logGradeKey=Math.log10(panelNyadSelected.getMonadPanel(panelNyadSelected.getPaneFocus()).getMonad().getGradeKey());
+    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (indexNyadPanelSelected<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		return;	
+    	}
+    	
+    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
+    	if (indxMndPnlSlctd<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nGrade Test needs one monad in focus. Nothing done.\n");
+    		return;
+    	}
+    	
+    	MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+    	double logGradeKey = -1.0D;
+    	
+    	switch(tSpot.getRepMode())
+    	{
+    		case DivField.REALF:	logGradeKey=Math.log10(tSpot.getMonadRF().getGradeKey());
+    								break;
+    		case DivField.REALD:	logGradeKey=Math.log10(tSpot.getMonadRD().getGradeKey());
+									break;
+    		case DivField.COMPLEXF:	logGradeKey=Math.log10(tSpot.getMonadCF().getGradeKey());
+									break;
+    		case DivField.COMPLEXD:	logGradeKey=Math.log10(tSpot.getMonadCD().getGradeKey());
+									break;
+    	}
+    	
+    	if (logGradeKey < 0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nDivField not recognized by action handler.\n");
+    		return;
+    	}
     	
     	if (logGradeKey != Math.floor(logGradeKey))
     		_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad IS NOT a single grade.\n");

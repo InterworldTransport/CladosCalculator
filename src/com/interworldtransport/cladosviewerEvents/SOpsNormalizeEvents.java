@@ -24,6 +24,7 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
+import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosGExceptions.CladosMonadException;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
@@ -62,20 +63,48 @@ public class SOpsNormalizeEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
+ * The monad with focus is normalized if possible.
+ * Watch out for idempotents and nilpotents.
+ * 
+ * The normalize() method on a monad needs some work. In the future, it must
+ * channel through the reference frame instead of the canonical basis. Also,
+ * attention might be needed on exactly how it is calculated.
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
-    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
-    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (indexNyadPanelSelected<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		return;	
+    	}
     	
-		try
-		{
-			tMSpotPnl.getMonad().normalize();
-			tMSpotPnl.setCoefficientDisplay();
-			_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been normalized.\n");
-		}
-		catch (CladosMonadException e)
+    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
+    	if (indxMndPnlSlctd<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nNormalize Operation must have a monad in focus. Nothing done.\n");
+    		return;
+    	}
+    	
+    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+    	try
+    	{
+	    	switch (tMSpotPnl.getRepMode())
+	    	{
+		    	case DivField.REALF: 	tMSpotPnl.getMonadRF().normalize();
+								    	break;
+		    	case DivField.REALD: 	tMSpotPnl.getMonadRD().normalize();
+								    	break;
+		    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().normalize();
+								    	break;
+		    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().normalize();
+								    	break;
+	    	}
+	    	tMSpotPnl.setCoefficientDisplay();
+	    	_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been normalized.\n");
+    	}
+    	catch (CladosMonadException e)	// Normalization can fail if the monad does not have an inverse.
 		{
 			_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad has NOT been normalized.\n");
 		}

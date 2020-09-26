@@ -24,7 +24,12 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
+import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosG.MonadRealF;
+import com.interworldtransport.cladosG.MonadRealD;
+import com.interworldtransport.cladosG.MonadComplexF;
+import com.interworldtransport.cladosG.MonadComplexD;
+import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
 import java.awt.event.*;
@@ -61,21 +66,58 @@ public class BOpsGradeEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
+ * The Monad with focus is tested to see if it is k-grade with k coming from the real part of FieldBar.
+ * If it is (or isn't) the test is reported to the StatusBar.
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
-    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
-    	MonadRealF monadSelected = panelNyadSelected.getMonadPanel(panelNyadSelected.getPaneFocus()).getMonad();
+    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (indexNyadPanelSelected<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		return;	
+    	}
     	
-    	int grade2Test=0;
+    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
+    	if (indxMndPnlSlctd<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nGrade Test needs one monad in focus. Nothing done.\n");
+    		return;
+    	}
     	
-    	if (!_parent._GUI._FieldBar.getRealText().isEmpty())
-    		grade2Test = (int) Float.parseFloat(_parent._GUI._FieldBar.getRealText());
-    
-    	if (MonadRealF.isGrade(monadSelected, grade2Test))
-    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is a pure ["+grade2Test+"] grade match\n");
-    	else
-    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT a pure ["+grade2Test+"] grade match\n");
+    	try
+    	{
+    		// Production of the grade to be tested could fail hard at parseFloat(...getRealText())
+    		// Hence the need for a try/catch phrase around all this
+    		int grade2Test = (int) Float.parseFloat(_parent._GUI._FieldBar.getRealText());
+	    	MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+	    	boolean test = false;
+        	switch (tSpot.getRepMode())
+        	{
+		    	case DivField.REALF: 	test = MonadRealF.isGrade(tSpot.getMonadRF(), grade2Test);
+								    	break;
+		    	case DivField.REALD: 	test = MonadRealD.isGrade(tSpot.getMonadRD(), grade2Test);
+								    	break;
+		    	case DivField.COMPLEXF:	test = MonadComplexF.isGrade(tSpot.getMonadCF(), grade2Test);
+								    	break;
+		    	case DivField.COMPLEXD:	test = MonadComplexD.isGrade(tSpot.getMonadCD(), grade2Test);
+								    	break;
+        	}
+        	if (test)
+	    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is a pure "+grade2Test+"-grade.\n");
+	    	else
+	    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT a pure "+grade2Test+"-grade.\n");
+    	}
+    	catch (NullPointerException eNull)	// Catch the empty text 'real number' text field on the FieldBar.
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nGrade Test must have a real # in the FieldBar. Nothing done.\n");
+    		return;
+    	}
+    	catch (NumberFormatException eFormat)	// Catch the non-parse-able text 'real number' text field on the FieldBar.
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nGrade Test must have a parse-able real # in the FieldBar. Nothing done.\n");
+    		return;
+    	}
     }
  }

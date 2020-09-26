@@ -24,9 +24,16 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
+import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosF.RealF;
+import com.interworldtransport.cladosF.RealD;
+import com.interworldtransport.cladosF.ComplexF;
+import com.interworldtransport.cladosF.ComplexD;
 import com.interworldtransport.cladosFExceptions.FieldBinaryException;
 import com.interworldtransport.cladosG.MonadRealF;
+import com.interworldtransport.cladosG.MonadRealD;
+import com.interworldtransport.cladosG.MonadComplexF;
+import com.interworldtransport.cladosG.MonadComplexD;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -64,37 +71,75 @@ public class SOpsScaleEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
+ * It 'scales' the focus monad in the sense of scalar multiplication with the field
+ * suggested in the field bar. 
+ * However, it only uses the values in the field bar. No DivFieldType matching occurs.
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
-
-    	//Find the selected nyad and monad panels
-		NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
-    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
-    	
-    	//Now point to the monad to be scaled
-    	MonadRealF tMonad=tMSpotPnl.getMonad();
-    	
-    	if ((tNSpotPnl.getNyad()).protoOne instanceof RealF)
+    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (indexNyadPanelSelected<0) 
     	{
-	    	try 
-	    	{	//...and scale it
-	        	tMonad.scale(new RealF(	(tNSpotPnl.getNyad()).protoOne.getFieldType(), 
-						Float.parseFloat(_parent._GUI._FieldBar.getRealText())));
-	        	
-	    		//tMonad.scale(new RealF(	tMonad.getCoeff((short) 0).getFieldType(), 
-	    		//						Float.parseFloat(_parent._GUI._FieldBar.getRealText())));
-	    		
-	    		//redraw the UI's Monad Panel to show the rescaled Monad there
-	    		tMSpotPnl.setCoefficientDisplay();
-	    		_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by | ");
-	    		_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+"\n");
-	    	}
-	    	catch (FieldBinaryException eb)
-	    	{
-	    		_parent._GUI._StatusBar.setStatusMsg("\t\tmonad has NOT been rescaled due to field binary exception.\n");
-	    	}
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		return;	
     	}
+
+		NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+		int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
+    	if (indxMndPnlSlctd<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nScale function must have a monad in focus. Nothing done.\n");
+    		return;
+    	}
+    	
+	    MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+	    
+	    try
+	    {
+		    switch(tMSpotPnl.getRepMode())
+	    	{
+	    		case DivField.REALF:	MonadRealF tMonadRF = tMSpotPnl.getMonadRF();
+	    								RealF tFieldRF = new RealF(			(tNSpotPnl.getNyadRF()).getProto().getFieldType(), 
+	    																	Float.parseFloat(_parent._GUI._FieldBar.getRealText()));
+							    		tMonadRF.scale(tFieldRF);
+							    		tMSpotPnl.setCoefficientDisplay();
+							 		    _parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by ");
+							 		    _parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+"\n");
+	    								break;
+	    		case DivField.REALD:	MonadRealD tMonadRD = tMSpotPnl.getMonadRD();
+										RealD tFieldRD = new RealD(			(tNSpotPnl.getNyadRD()).getProto().getFieldType(), 
+																			Double.parseDouble(_parent._GUI._FieldBar.getRealText()));
+										tMonadRD.scale(tFieldRD);
+										tMSpotPnl.setCoefficientDisplay();
+										_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by ");
+										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+"\n");
+										break;
+	    		case DivField.COMPLEXF:	MonadComplexF tMonadCF = tMSpotPnl.getMonadCF();
+										ComplexF tFieldCF = new ComplexF(	(tNSpotPnl.getNyadCF()).getProto().getFieldType(), 
+																			Float.parseFloat(_parent._GUI._FieldBar.getRealText()),
+																			Float.parseFloat(_parent._GUI._FieldBar.getImgText()));
+										tMonadCF.scale(tFieldCF);
+										tMSpotPnl.setCoefficientDisplay();
+										_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by (");
+										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+", ");
+										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getImgText()+")\n");
+										break;
+	    		case DivField.COMPLEXD:	MonadComplexD tMonadCD = tMSpotPnl.getMonadCD();
+										ComplexD tFieldCD = new ComplexD(	(tNSpotPnl.getNyadCF()).getProto().getFieldType(), 
+																			Double.parseDouble(_parent._GUI._FieldBar.getRealText()),
+																			Double.parseDouble(_parent._GUI._FieldBar.getImgText()));
+										tMonadCD.scale(tFieldCD);
+										tMSpotPnl.setCoefficientDisplay();
+										_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by (");
+										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+", ");
+										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getImgText()+")\n");
+										break;
+	    	}
+	    }
+		catch (FieldBinaryException eb)
+		{
+		    _parent._GUI._StatusBar.setStatusMsg("\t\tmonad has NOT been rescaled due to field binary exception.\n");
+		}
+	    
     }
  }

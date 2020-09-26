@@ -23,10 +23,13 @@
  * ------------------------------------------------------------------------ <br>
  */
 package com.interworldtransport.cladosviewerEvents;
+import com.interworldtransport.cladosF.DivField;
+import com.interworldtransport.cladosG.MonadComplexD;
+import com.interworldtransport.cladosG.MonadComplexF;
+import com.interworldtransport.cladosG.MonadRealD;
 import com.interworldtransport.cladosG.MonadRealF;
+import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
-
-//import com.interworldtransport.cladosviewer.ViewerMenu;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -65,18 +68,38 @@ public class BOpsZeroEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	int indexNyadPanelSelected=_parent._GUI._GeometryDisplay.getPaneFocus();
-    	if (indexNyadPanelSelected<0) return;
+    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (indexNyadPanelSelected<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		return;	
+    	}
     	
     	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
-    	MonadRealF monadSelected = panelNyadSelected.getMonadPanel(panelNyadSelected.getPaneFocus()).getMonad();
-
-    	if (MonadRealF.isGZero(monadSelected))
-    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is + ZERO.\n");
-    	else
-    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT + zero.\n");
+    	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
+    	if (indxMndPnlSlctd<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nZero Test needs one monad in focus. Nothing done.\n");
+    		return;
+    	}
     	
-    	panelNyadSelected=null;
-    	monadSelected=null;
+    	MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+    	boolean test = false;
+    	switch (tSpot.getRepMode())
+    	{
+	    	case DivField.REALF: 	test = MonadRealF.isGZero(tSpot.getMonadRF());
+							    	break;
+	    	case DivField.REALD: 	test = MonadRealD.isGZero(tSpot.getMonadRD());
+							    	break;
+	    	case DivField.COMPLEXF:	test = MonadComplexF.isGZero(tSpot.getMonadCF());
+							    	break;
+	    	case DivField.COMPLEXD:	test = MonadComplexD.isGZero(tSpot.getMonadCD());
+							    	break;
+    	}
+	
+		if (test)
+			_parent._GUI._StatusBar.setStatusMsg("\tselected monad is ZERO.\n");
+		else
+			_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT zero.\n");
     }
  }

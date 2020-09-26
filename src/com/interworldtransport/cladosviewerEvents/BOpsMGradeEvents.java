@@ -24,7 +24,9 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
+import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosG.*;
+import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
 import java.awt.event.*;
@@ -64,11 +66,36 @@ public class BOpsMGradeEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
-    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
-    	MonadRealF monadSelected = panelNyadSelected.getMonadPanel(panelNyadSelected.getPaneFocus()).getMonad();
+    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (indexNyadPanelSelected<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		return;	
+    	}
+    	
+    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
+    	if (indxMndPnlSlctd<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nMulti-Grade Test needs one monad in focus. Nothing done.\n");
+    		return;
+    	}
+    	
+    	MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+    	boolean test = false;
+    	switch (tSpot.getRepMode())
+    	{
+	    	case DivField.REALF: 	test = MonadRealF.isMultiGrade(tSpot.getMonadRF());
+							    	break;
+	    	case DivField.REALD: 	test = MonadRealD.isMultiGrade(tSpot.getMonadRD());
+							    	break;
+	    	case DivField.COMPLEXF:	test = MonadComplexF.isMultiGrade(tSpot.getMonadCF());
+							    	break;
+	    	case DivField.COMPLEXD:	test = MonadComplexD.isMultiGrade(tSpot.getMonadCD());
+							    	break;
+    	}
 	
-		if (MonadRealF.isMultiGrade(monadSelected))
+		if (test)
 			_parent._GUI._StatusBar.setStatusMsg("\tselected monad is a multigrade.\n");
 		else
 			_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT multigrade.\n");

@@ -23,6 +23,7 @@
  * ------------------------------------------------------------------------ <br>
  */
 package com.interworldtransport.cladosviewerEvents;
+import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -60,22 +61,59 @@ public class SOpsGradePartEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
+ * This is the classic GradePart method. It is typically used to get scalar parts.
+ * Basically, the monad in focus is cropped around the grade that should be kept as is.
+ * 
+ * A future version of the  method must use the grade represented in 
+ * the reference frame instead. Fourier decomposition is done against that frame 
+ * and not the canonical one most of the time. That means the getPart(short) method
+ * will channel through the ReferenceFrame of the monad.
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	//Find the selected nyad and monad panels
-    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
-		NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
+    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (indexNyadPanelSelected<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		return;	
+    	}
+    	
+    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
+    	if (indxMndPnlSlctd<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nGradePart Operation must have a monad in focus. Nothing done.\n");
+    		return;
+    	}
+    	
     	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
     	
-    	//...and get the grade to be kept
-	   	short tGrade = Short.parseShort(_parent._GUI._FieldBar.getRealText());
-    	
-    	//Now squash all grades except the intended one and reset the viewer
-	
-    	tMSpotPnl.getMonad().gradePart(tGrade);
-		tMSpotPnl.setCoefficientDisplay();
-		
-		_parent._GUI._StatusBar.setStatusMsg("\tselected monad has all grades suppressed except {"+tGrade+"}\n");
+    	try
+    	{
+    		short tGrade = (short) Float.parseFloat(_parent._GUI._FieldBar.getRealText());
+        	switch (tMSpotPnl.getRepMode())
+        	{
+    	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().gradePart(tGrade);
+    							    	break;
+    	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().gradePart(tGrade);
+    							    	break;
+    	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().gradePart(tGrade);
+    							    	break;
+    	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().gradePart(tGrade);
+    							    	break;  	
+        	}
+        	tMSpotPnl.setCoefficientDisplay();
+	    	_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been cropped around "+tGrade+"-grade.\n");
+    	}
+    	catch (NullPointerException eNull)
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nGradePart Operation must have a real # in the FieldBar. Nothing done.\n");
+    		return;
+    	}
+    	catch (NumberFormatException eFormat)
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nGradePart Operation must have a parse-able real # in the FieldBar. Nothing done.\n");
+    		return;
+    	}
     }
  }

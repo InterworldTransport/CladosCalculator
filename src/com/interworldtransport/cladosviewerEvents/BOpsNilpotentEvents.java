@@ -24,9 +24,14 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
+import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosFExceptions.*;
+import com.interworldtransport.cladosG.MonadComplexD;
+import com.interworldtransport.cladosG.MonadComplexF;
+import com.interworldtransport.cladosG.MonadRealD;
 import com.interworldtransport.cladosG.MonadRealF;
 import com.interworldtransport.cladosGExceptions.*;
+import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
 import java.awt.event.*;
@@ -63,32 +68,56 @@ public class BOpsNilpotentEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
+ * The monad with focus is tested to see if it is nilpotent.
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	if (_parent._GUI._GeometryDisplay.getPaneFocus()<0) return;
-    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus());
-    	MonadRealF monadSelected = panelNyadSelected.getMonadPanel(panelNyadSelected.getPaneFocus()).getMonad();
+    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	if (indexNyadPanelSelected<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		return;	
+    	}
+    	    	
+    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
+    	if (indxMndPnlSlctd<0) 
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nNilpotent Test needs one monad in focus. Nothing done.\n");
+    		return;
+    	}
     	
-		boolean test=false;
-		try
-		{
-			test=MonadRealF.isNilpotent(monadSelected);
-		}
+    	MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+    	boolean test = false;
+    	try
+    	{
+	    	switch (tSpot.getRepMode())
+	    	{
+		    	case DivField.REALF: 	test = MonadRealF.isNilpotent(tSpot.getMonadRF());
+								    	break;
+		    	case DivField.REALD: 	test = MonadRealD.isNilpotent(tSpot.getMonadRD());
+								    	break;
+		    	case DivField.COMPLEXF:	test = MonadComplexF.isNilpotent(tSpot.getMonadCF());
+								    	break;
+		    	case DivField.COMPLEXD:	test = MonadComplexD.isNilpotent(tSpot.getMonadCD());
+								    	break;
+	    	}
+	    	if (test)
+				_parent._GUI._StatusBar.setStatusMsg("\tselected monad is nilpotent.\n");
+	    	else
+	    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT nilpotent.\n");
+    	}
 		catch (CladosMonadException e)
 		{
 			_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad created a CladosMonadException.\n");
-			e.printStackTrace();
+			_parent._GUI._StatusBar.setStatusMsg(e.getSourceMessage());
+			_parent._GUI._StatusBar.setStatusMsg("\n\n");
 		}
 		catch (FieldBinaryException eb)
 		{
 			_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad created a FieldBinaryException.\n");
-			eb.printStackTrace();
+			_parent._GUI._StatusBar.setStatusMsg(eb.getSourceMessage());
+			_parent._GUI._StatusBar.setStatusMsg("\n\n");
 		}
-	
-		if (test)
-			_parent._GUI._StatusBar.setStatusMsg("\tselected monad is nilpotent.\n");
-		else
-			_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT nilpotent.\n");	
     }
  }
