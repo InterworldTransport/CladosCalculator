@@ -182,7 +182,7 @@ public class FieldDisplayArea extends JTextArea
 		{
 			StringBuilder strB = new StringBuilder(getText());
 			int tBufferLength = strB.length();
-			if (tBufferLength ==0 ) return; // Nothing to save, so surrender.
+			if (tBufferLength == 0 ) return; // Nothing to save, so surrender.
 			int indexOfR = strB.indexOf("[R]")+3;
 			int indexOfI = strB.indexOf("[I]")+3;
 			
@@ -194,11 +194,11 @@ public class FieldDisplayArea extends JTextArea
 				case DivField.REALD:	double tSpotRD = Double.parseDouble(strB.substring(indexOfR, tBufferLength));
 										displayFieldRD=new RealD(displayFieldRD.getFieldType(), tSpotRD);
 										break;
-				case DivField.COMPLEXF:	float tSpotCF1 = Float.parseFloat(strB.substring(indexOfR, tBufferLength-indexOfI-3));
+				case DivField.COMPLEXF:	float tSpotCF1 = Float.parseFloat(strB.substring(indexOfR, indexOfI-4));
 										float tSpotCF2 = Float.parseFloat(strB.substring(indexOfI, tBufferLength));
 										displayFieldCF=new ComplexF(displayFieldCF.getFieldType(), tSpotCF1, tSpotCF2);
 										break;
-				case DivField.COMPLEXD:	double tSpotCD1 = Double.parseDouble(strB.substring(indexOfR, tBufferLength-indexOfI-3));
+				case DivField.COMPLEXD:	double tSpotCD1 = Double.parseDouble(strB.substring(indexOfR, indexOfI-4));
 										double tSpotCD2 = Double.parseDouble(strB.substring(indexOfI, tBufferLength));
 										displayFieldCD=new ComplexD(displayFieldCD.getFieldType(), tSpotCD1, tSpotCD2);
 			}
@@ -221,6 +221,8 @@ public class FieldDisplayArea extends JTextArea
 	 * @throws UtilitiesException 
 	 * Most likely means no cladosF field is passed to the constructor
 	 * @throws BadLocationException 
+	 * This exception will get thrown when there is difficulty parsing the text on display
+	 * in this field. The format expected is [R]Float
 	 */
 	public void updateField(RealF pField) throws UtilitiesException, BadLocationException
 	{
@@ -238,6 +240,8 @@ public class FieldDisplayArea extends JTextArea
 	 * @throws UtilitiesException 
 	 * Most likely means no cladosF field is passed to the constructor
 	 * @throws BadLocationException 
+	 * This exception will get thrown when there is difficulty parsing the text on display
+	 * in this field. The format expected is [R]Double
 	 */
 	public void updateField(RealD pField) throws UtilitiesException, BadLocationException
 	{
@@ -255,6 +259,8 @@ public class FieldDisplayArea extends JTextArea
 	 * @throws UtilitiesException 
 	 * Most likely means no cladosF field is passed to the constructor
 	 * @throws BadLocationException 
+	 * This exception will get thrown when there is difficulty parsing the text on display
+	 * in this field. The format expected is [R]Float\n[I]Float
 	 */
 	public void updateField(ComplexF pField) throws UtilitiesException, BadLocationException
 	{
@@ -272,6 +278,8 @@ public class FieldDisplayArea extends JTextArea
 	 * @throws UtilitiesException 
 	 * Most likely means no cladosF field is passed to the constructor
 	 * @throws BadLocationException 
+	 * This exception will get thrown when there is difficulty parsing the text on display
+	 * in this field. The format expected is [R]Double\n[I]Double
 	 */
 	public void updateField(ComplexD pField) throws UtilitiesException, BadLocationException
 	{

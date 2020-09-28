@@ -24,7 +24,13 @@
  */
 
 package com.interworldtransport.cladosviewer ;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
 /** 
@@ -35,30 +41,44 @@ import javax.swing.*;
  * @author Dr Alfred W Differ
  */
 
- public class UtilityStatusBar extends JPanel
+ public class UtilityStatusBar extends JPanel implements ActionListener
  {
-	public		JTextArea		stmesgt;
-    private		Color			_backColor = new Color(255, 255, 222);
-	//private	Color			_unlockColor = new Color(255, 164, 164);
+	private				CladosCalculator	_GUI;
+	private				JTextArea			stmesgt;
+	private				JButton				clearIt;
+    private		final	Color				_backColor = new Color(255, 255, 222);
+    private 	final	Dimension 			square = new Dimension(25,25);
 
 /**
  * The UtilityStatusBar class is intended to be the status bar of the SailAway
  * application.  There is nothing really special about this class.  It can and
  * used to be defined and built within the SailAway application.  For the sake
  * of maintenance, it has been moved to its own class and file.
+ * @param pParent	CladosCalculator
+ * This reference points back at the parent of the UtilityBar so it may reference
+ * properties known by the parent.
  */
-    public UtilityStatusBar()
+    public UtilityStatusBar(CladosCalculator pParent)
     {
     	super();
+    	_GUI = pParent;
     	setBackground(_backColor);
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEtchedBorder());
 		
-		stmesgt = new JTextArea("init'd\n", 8, 40);
-		stmesgt.setFont(new Font("Serif", Font.PLAIN, 8));
+		clearIt=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Remove")));
+		clearIt.setActionCommand("push");
+		clearIt.setToolTipText("push nyad down on stack");
+		clearIt.setPreferredSize(square);
+		clearIt.setBorder(BorderFactory.createEtchedBorder(0));
+		clearIt.addActionListener(this);
+    	add(clearIt, BorderLayout.LINE_START);
+		
+		stmesgt = new JTextArea(10, 40);
+		stmesgt.setFont(new Font("Serif", Font.PLAIN, 10));
 		stmesgt.setLineWrap(true);
 		stmesgt.setWrapStyleWord(true);
-		add(new JScrollPane(stmesgt), "Center");
+		add(new JScrollPane(stmesgt), BorderLayout.CENTER);
 		// Done with large text area intended for code responses to user
     }
     /**
@@ -73,5 +93,9 @@ import javax.swing.*;
     {
     	stmesgt.append(pMsg);
     }
-
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		stmesgt.setText("");
+	}
 }

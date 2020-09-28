@@ -99,7 +99,6 @@ public class SOpsNormalizeEvents implements ActionListener
 		    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().normalize();
 								    	break;
 		    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().normalize();
-								    	break;
 	    	}
 	    	tMSpotPnl.setCoefficientDisplay();
 	    	_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been normalized.\n");

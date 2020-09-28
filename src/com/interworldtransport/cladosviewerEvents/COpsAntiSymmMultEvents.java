@@ -98,7 +98,6 @@ public class COpsAntiSymmMultEvents implements ActionListener
     			case DivField.COMPLEXF:	(temp0.getMonadCF()).multiplyAntisymm(temp1.getMonadCF());
 										break;
     			case DivField.COMPLEXD:	(temp0.getMonadCD()).multiplyAntisymm(temp1.getMonadCD());
-    									break;
     		}
     	}
     	catch (FieldBinaryException eb)

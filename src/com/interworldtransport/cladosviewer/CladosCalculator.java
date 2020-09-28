@@ -121,13 +121,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     public		JButton			whatGrade;
     public		JButton			whatMagn;
     public		JButton			whatSQMagn;
-    
-    //public		DivFieldType	fieldType;
-	//public		JTextField 		fieldTypeIO = new JTextField();
-    //public		JTextField 		realIO = new JTextField();
-   // public		JTextField 		imgIO = new JTextField();
-    //public		JTextField 		img2IO = new JTextField();
-    //public		JTextField 		img3IO = new JTextField();
+
     private		Color			_backColor = new Color(255, 255, 222);
     
     /*
@@ -183,7 +177,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 	    setJMenuBar(_MenuBar);	//The Menu Bar is an element of the parent class JFrame
 	    _EventModel=new ViewerEventModel(_MenuBar);
 	    	
-	    _StatusBar=new UtilityStatusBar();
+	    _StatusBar=new UtilityStatusBar(this);
 	    cp.add(_StatusBar, "South");
 	    	
 	    _ControlBar=new JPanel();
@@ -215,7 +209,6 @@ public class CladosCalculator extends JFrame implements ActionListener
 										break;
 				case DivField.COMPLEXD:	_FieldBar=new FieldPanel(this, tSpot.getNyadCD().getProto());
 										cp.add(_FieldBar, "North");
-										break;
     		}
     		tSpot = null;
     	}
@@ -229,11 +222,10 @@ public class CladosCalculator extends JFrame implements ActionListener
 	    fc = new JFileChooser();
 	    fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 	    
-	    //Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-	    //setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+	    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+	    setLocation(dim.width/4-this.getSize().width/4, dim.height/4-this.getSize().height/4);
 	    	
-	    setLocation(50, 50);
-	    //_StatusBar.setStatusMsg(" ...complete\n");
+	    //setLocation(50, 50);
 	}
     
     public void actionPerformed(ActionEvent event)
@@ -267,36 +259,12 @@ public class CladosCalculator extends JFrame implements ActionListener
     	if (command.equals("is grade!"))
     		_MenuBar.mniisSGrade.doClick();
     	
-    	//if (command.equals("grade cut"))
-    	//	_MenuBar.mniGradeCut.doClick();
-    	
-    	//if (command.equals("grade crop"))
-    	//	_MenuBar.mniGradeCrop.doClick();
-    	
     	if (command.equals("magnitude of"))
     		_MenuBar.mniMagnitudeOf.doClick();
     	
     	if (command.equals("sqmagnitude of"))
     		_MenuBar.mniSQMagnitudeOf.doClick();
   
-    	//if (command.equals("scale"))
-    	//	_MenuBar.mniScale.doClick();
-    		//scaleCommand();
-    	
-    	//if (command.equals("normalize"))
-    	//	_MenuBar.mniNormalize.doClick();
-    	
-    	//if (command.equals("invert"))
-    	//	_MenuBar.mniInvert.doClick();
-    	
-    	//if (command.equals("reverse"))
-    	//	_MenuBar.mniReverse.doClick();
-    	
-    	//if (command.equals("dual>"))
-    	//	_MenuBar.mniDualLeft.doClick();
-    	
-    	//if (command.equals("<dual"))
-    	//	_MenuBar.mniDualRight.doClick();
     }
     /**
 	 * This method saves snapshot data to the save file.
@@ -531,7 +499,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 		StringBuffer content=new StringBuffer();
 	
 		content.append("<Application Name=\"clados Calculator\", ");
-		content.append("Rights=\"Copyright 2018 Alfred Differ\", ");
+		content.append("Rights=\"Copyright 2020 Alfred Differ\", ");
 		content.append("Licensee=\"");
 		content.append(IniProps.getProperty("User.Name"));
 		content.append("\" />\r\n");

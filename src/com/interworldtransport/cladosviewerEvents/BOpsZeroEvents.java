@@ -94,7 +94,6 @@ public class BOpsZeroEvents implements ActionListener
 	    	case DivField.COMPLEXF:	test = MonadComplexF.isGZero(tSpot.getMonadCF());
 							    	break;
 	    	case DivField.COMPLEXD:	test = MonadComplexD.isGZero(tSpot.getMonadCD());
-							    	break;
     	}
 	
 		if (test)

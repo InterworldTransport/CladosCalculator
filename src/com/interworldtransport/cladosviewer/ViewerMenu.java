@@ -124,11 +124,11 @@ public class ViewerMenu extends JMenuBar
     	
     	mnuFile=new JMenu("File");
     	add(mnuFile);
-    	mnuBOperations=new JMenu("booleans");
+    	mnuBOperations=new JMenu("Boolean Ops");
     	add(mnuBOperations);
-    	mnuSOperations=new JMenu("unary");
+    	mnuSOperations=new JMenu("Unary Ops");
     	add(mnuSOperations);
-    	mnuCOperations=new JMenu("binary");
+    	mnuCOperations=new JMenu("Binary Ops");
     	add(mnuCOperations);
     	mnuTools=new JMenu("Tools");
     	add(mnuTools);

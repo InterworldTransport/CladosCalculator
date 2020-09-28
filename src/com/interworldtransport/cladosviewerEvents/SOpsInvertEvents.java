@@ -102,7 +102,6 @@ public class SOpsInvertEvents implements ActionListener
 	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().invert();
 							    	break;
 	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().invert();
-							    	break;
     	}
     	tMSpotPnl.setCoefficientDisplay();
     	_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been inverted.\n");

@@ -28,13 +28,12 @@ import com.interworldtransport.cladosF.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
 
 /** 
  * The FieldPanel class is intended to be the the numeric input panel for the calculator.
@@ -57,11 +56,15 @@ import javax.swing.border.BevelBorder;
 	private		final	Color							_backColor = new Color(230, 255, 255);
 	private		final	Color							_nullColor = new Color(255, 230, 255);
 	private		final	String[]						_valLabels= {"real", "img"};
-	private				Dimension						squareMedium=new Dimension(25,25);
+	private				String							_repMode;
+	private				Dimension						squareMedium=new Dimension(21,21);
+	private				Dimension						squareLarge=new Dimension(42,42);
 	
-	protected			double[]						_valsD;
-	protected			float[]							_valsF;
+	protected			double[]						_valsD = new double[2];
+	protected			float[]							_valsF = new float[2];
 	
+	private				JPanel							buttons;
+	private				JPanel							displays;
 	protected			JButton							clear;
 	protected			JTextField 						fieldDisplay = new JTextField();
 	protected			DivFieldType					fieldType;
@@ -92,8 +95,9 @@ import javax.swing.border.BevelBorder;
     	_GUI=pGUI;
     	valDisplays= new ArrayList<JFormattedTextField>(2);
     	_valsD = new double[2];
+    	_repMode = DivField.COMPLEXD;
     	setCoefficientDisplay(pIn);
-    	createLayout(pIn);
+    	createLayout();
     	registerWithViewer();
     }
     /**
@@ -115,8 +119,9 @@ import javax.swing.border.BevelBorder;
     	_GUI=pGUI;
     	valDisplays= new ArrayList<JFormattedTextField>(2);
     	_valsF = new float[2];
+    	_repMode = DivField.COMPLEXF;
     	setCoefficientDisplay(pIn);
-    	createLayout(pIn);
+    	createLayout();
     	registerWithViewer();
     }
     /**
@@ -138,8 +143,9 @@ import javax.swing.border.BevelBorder;
     	_GUI=pGUI;
     	valDisplays= new ArrayList<JFormattedTextField>(1);
     	_valsD = new double[1];
+    	_repMode = DivField.REALD;
     	setCoefficientDisplay(pIn);
-    	createLayout(pIn);
+    	createLayout();
     	registerWithViewer();
     }
     /**
@@ -161,19 +167,107 @@ import javax.swing.border.BevelBorder;
     	_GUI=pGUI;
     	valDisplays= new ArrayList<JFormattedTextField>(1);
     	_valsF = new float[1];
+    	_repMode = DivField.REALF;
     	setCoefficientDisplay(pIn);
-    	createLayout(pIn);
+    	createLayout();
     	registerWithViewer();
     }
     @Override
     public void 	actionPerformed(ActionEvent event)
     {
     	String command = event.getActionCommand();
-    	System.out.println("FieldPanel says "+command);
-    	
-    	// the idea here is to manage the displays with action buttons to be added here soon.
+    	if (command == "clearIt")
+    	{
+    		int i = valDisplays.size();
+    		for (int m=i; m<=0; m--)
+    			valDisplays.get(m).setText("");	
+    	}
+    	else if (_GUI._GeometryDisplay.getNyadListSize() == 0)
+    	{
+	    	valDisplays.clear();
+	    	remove(displays);
+	    	switch (command)
+	    	{
+	    		case "makeFloat":	if (_repMode == DivField.REALD)	
+	    							{
+	    								_repMode = DivField.REALF;
+	    								_valsF = new float[1];
+	    								_valsD = null;
+	    								valDisplays = new ArrayList<JFormattedTextField>(1);
+	    							}
+						    		if (_repMode == DivField.COMPLEXD)	
+						    		{
+						    			_repMode = DivField.COMPLEXF;
+						    			_valsF = new float[2];
+						    			_valsD = null;
+						    			valDisplays = new ArrayList<JFormattedTextField>(2);
+						    		}
+						    		makeDouble.setEnabled(true);
+						    		makeFloat.setEnabled(false);
+	    							break;
+	    		case "makeDouble":	if (_repMode == DivField.REALF)		
+					    			{
+					    				_repMode = DivField.REALD;
+					    				_valsF = null;
+					    				_valsD = new double[1];
+					    				valDisplays = new ArrayList<JFormattedTextField>(1);
+					    			}
+						    		if (_repMode == DivField.COMPLEXF)	
+						    		{
+						    			_repMode = DivField.COMPLEXD;
+						    			_valsF = null;
+						    			_valsD = new double[2];
+						    			valDisplays = new ArrayList<JFormattedTextField>(2);
+						    		}
+						    		makeFloat.setEnabled(true);
+					    			makeDouble.setEnabled(false);
+									break;
+	    		case "makeReal":	if (_repMode == DivField.COMPLEXF)	
+					    			{
+					    				_repMode = DivField.REALF;
+					    				_valsF = new float[1];
+					    				_valsD = null;
+					    			}
+						    		if (_repMode == DivField.COMPLEXD)	
+						    		{
+						    			_repMode = DivField.REALD;
+						    			_valsF = null;
+						    			_valsD = new double[1];
+						    		}
+						    		valDisplays = new ArrayList<JFormattedTextField>(1);
+						    		makeComplex.setEnabled(true);
+					    			makeReal.setEnabled(false);
+									break;
+	    		case "makeComplex":	if (_repMode == DivField.REALF)	
+					    			{
+					    				_repMode = DivField.COMPLEXF;
+					    				_valsD = null;
+					    				_valsF = new float[2];
+					    			}
+						    		if (_repMode == DivField.REALD)	
+						    		{
+						    			_repMode = DivField.COMPLEXD;
+						    			_valsF = null;
+						    			_valsD = new double[2];
+						    		}
+						    		valDisplays = new ArrayList<JFormattedTextField>(2);
+						    		makeReal.setEnabled(true);
+					    			makeComplex.setEnabled(false);
+	    	}
+	    	createDisplaysLayout();
+	    	add(displays, BorderLayout.CENTER);
+	    	add(clear, BorderLayout.LINE_END);
+	    	revalidate();
+	    	//repaint();
+	    	_GUI.pack();
+    	}
+    	else _GUI._StatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");	
     }
   
+    public String	getRepMode()
+    {
+    	return _repMode;
+    }
     public String	getImgText()
     {
     	return valDisplays.get(1).getText();
@@ -330,31 +424,148 @@ import javax.swing.border.BevelBorder;
 	{
 		valDisplays.get(0).setText((new StringBuffer(pWhat)).toString());
 	}
-    private void createLayout(DivField pIn)
-    {
-    	setBackground(_backColor);
-		setLayout(new GridBagLayout());
-		setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+	private void createDisplaysLayout()
+	{
+		displays = new JPanel();
+		displays.setBackground(_backColor);
+		displays.setLayout(new GridBagLayout());
+		//displays.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 	
-	 	GridBagConstraints cn = new GridBagConstraints();
-    	Insets tGeneric = new Insets(0, 0, 0, 0);
-    	cn.insets = tGeneric;
-    	cn.fill=GridBagConstraints.BOTH;
-    	cn.anchor=GridBagConstraints.EAST;
+	 	GridBagConstraints c2 = new GridBagConstraints();
+    	c2.insets = new Insets(0, 0, 0, 0);
+    	c2.fill=GridBagConstraints.BOTH;
+    	c2.anchor=GridBagConstraints.EAST;
     	
-    	cn.gridx = 0;
-    	cn.gridy = 0;
-    	cn.weightx=0;
-    	cn.weighty=0;
+    	c2.gridx = 0;
+    	c2.gridy = 0;
+    	c2.weightx=1;
+    	c2.weighty=1;
     	
-    	syncWithNyad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabN")));
-    	syncWithNyad.setActionCommand("sync");
-    	syncWithNyad.setToolTipText("sync Field with Nyad");
-    	syncWithNyad.setPreferredSize(squareMedium);
-    	syncWithNyad.setBorder(BorderFactory.createEtchedBorder(0));
-    	syncWithNyad.addActionListener(this);
-    	add(syncWithNyad, cn);
-    	cn.gridx++;
+    	
+    	displays.add(new JLabel("name", SwingConstants.CENTER), c2);
+    	c2.gridx++;
+    	//c2.weightx=0;
+    	//c2.weighty=0;
+    	
+    	switch (_repMode)
+    	{
+    		case DivField.REALF:	for (short m=0; m<_valsF.length; m++)
+									{
+							    		displays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
+							    		c2.gridx++;
+									}
+    								makeComplex.setEnabled(true);
+    								makeReal.setEnabled(false);
+    								break;
+    		case DivField.REALD:	for (short m=0; m<_valsD.length; m++)
+									{
+    									displays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
+							    		c2.gridx++;
+									}
+									makeComplex.setEnabled(true);
+									makeReal.setEnabled(false);
+									break;
+    		case DivField.COMPLEXF:	for (short m=0; m<_valsF.length; m++)
+									{
+    									displays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
+							    		c2.gridx++;
+									}
+									makeComplex.setEnabled(false);
+									makeReal.setEnabled(true);
+									break;
+    		case DivField.COMPLEXD:	for (short m=0; m<_valsD.length; m++)
+									{
+    									displays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
+							    		c2.gridx++;
+									}
+									makeComplex.setEnabled(false);
+									makeReal.setEnabled(true);
+    	}
+
+    	c2.gridx=0;
+    	c2.gridy++;
+    	
+    	fieldDisplay.setColumns(20);
+    	fieldDisplay.setFont(new Font("Serif", Font.PLAIN, 14));
+    	fieldDisplay.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+    	displays.add(fieldDisplay, c2);
+		c2.gridx++;
+		
+		NumberFormat amountFormat = NumberFormat.getNumberInstance();
+		short m;
+		JFormattedTextField tSpot;
+		switch (_repMode)
+		{
+			case DivField.REALF: 	for (m=0; m<_valsF.length; m++)
+									{
+										tSpot = new JFormattedTextField(amountFormat);
+										tSpot.setColumns(11);
+							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
+							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+							    		valDisplays.add(m, tSpot);
+							    		displays.add(tSpot, c2);
+							    		c2.gridx++;
+									}
+									makeFloat.setEnabled(false);
+									makeDouble.setEnabled(true);
+									break;
+			case DivField.REALD: 	for (m=0; m<_valsD.length; m++)
+									{
+										tSpot = new JFormattedTextField(amountFormat);
+										tSpot.setColumns(14);
+							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
+							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+							    		valDisplays.add(m, tSpot);
+							    		displays.add(tSpot, c2);
+							    		c2.gridx++;
+									}
+									makeFloat.setEnabled(true);
+									makeDouble.setEnabled(false);
+									break;
+			case DivField.COMPLEXF:	for (m=0; m<_valsF.length; m++)
+									{
+										tSpot = new JFormattedTextField(amountFormat);
+										tSpot.setColumns(11);
+							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
+							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+							    		valDisplays.add(m, tSpot);
+							    		displays.add(tSpot, c2);
+							    		c2.gridx++;
+									}
+									makeFloat.setEnabled(false);
+									makeDouble.setEnabled(true);
+									break;
+			case DivField.COMPLEXD:	for (m=0; m<_valsD.length; m++)
+									{
+										tSpot = new JFormattedTextField(amountFormat);
+										tSpot.setColumns(14);
+							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
+							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+							    		valDisplays.add(m, tSpot);
+							    		displays.add(tSpot, c2);
+							    		c2.gridx++;
+									}
+									makeFloat.setEnabled(true);
+									makeDouble.setEnabled(false);
+		}
+		
+	}
+	private void createControlLayout()
+	{
+		buttons = new JPanel();
+		buttons.setBackground(_backColor);
+		buttons.setLayout(new GridBagLayout());
+		buttons.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+	
+	 	GridBagConstraints c1 = new GridBagConstraints();
+    	c1.insets = new Insets(0, 0, 0, 0);
+    	c1.fill=GridBagConstraints.BOTH;
+    	c1.anchor=GridBagConstraints.WEST;
+    	
+    	c1.gridx = 0;
+    	c1.gridy = 0;
+    	c1.weightx=0;
+    	c1.weighty=0;
     	
     	makeReal = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Real")));
     	makeReal.setActionCommand("makeReal");
@@ -362,8 +573,8 @@ import javax.swing.border.BevelBorder;
     	makeReal.setPreferredSize(squareMedium);
     	makeReal.setBorder(BorderFactory.createEtchedBorder(0));
     	makeReal.addActionListener(this);
-    	add(makeReal, cn);
-    	cn.gridx++;
+    	buttons.add(makeReal, c1);
+    	c1.gridx++;
     	
     	makeComplex = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Complex")));
     	makeComplex.setActionCommand("makeComplex");
@@ -371,58 +582,18 @@ import javax.swing.border.BevelBorder;
     	makeComplex.setPreferredSize(squareMedium);
     	makeComplex.setBorder(BorderFactory.createEtchedBorder(0));
     	makeComplex.addActionListener(this);
-    	add(makeComplex, cn);
-    	cn.gridx++;
-    	
-    	cn.weightx=1;
-    	cn.weighty=1;
-    	add(new JLabel(), cn);
-    	
-    	cn.gridx++;
-    	cn.weightx=0;
-    	cn.weighty=0;
-    	
-    	add(new JLabel("name", SwingConstants.CENTER), cn);
-    	cn.gridx++;
-    	
-    	if (pIn instanceof RealF | pIn instanceof ComplexF)
-    	{
-    		for (short m=0; m<_valsF.length; m++)
-			{
-	    		add(new JLabel(_valLabels[m], SwingConstants.CENTER), cn);
-	        	cn.gridx++;
-			}
-    	}
-    	if (pIn instanceof RealD | pIn instanceof ComplexD)
-    	{
-    		for (short m=0; m<_valsD.length; m++)
-			{
-	    		add(new JLabel(_valLabels[m], SwingConstants.CENTER), cn);
-	        	cn.gridx++;
-			}
-    	}
-    	cn.gridx=0;
-    	cn.gridy++;
-    	cn.weightx=0;
-    	cn.weighty=0;
-    	
-    	clear = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Remove")));
-    	clear.setActionCommand("clear");
-    	clear.setToolTipText("set vals = 0");
-    	clear.setPreferredSize(squareMedium);
-    	clear.setBorder(BorderFactory.createEtchedBorder(0));
-    	clear.addActionListener(this);
-    	add(clear, cn);
-    	cn.gridx++;
-    	
+    	buttons.add(makeComplex, c1);
+    	c1.gridx = 0;
+    	c1.gridy++;
+
     	makeFloat = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Float")));
     	makeFloat.setActionCommand("makeFloat");
     	makeFloat.setToolTipText("use floating precision");
     	makeFloat.setPreferredSize(squareMedium);
     	makeFloat.setBorder(BorderFactory.createEtchedBorder(0));
     	makeFloat.addActionListener(this);
-    	add(makeFloat, cn);
-    	cn.gridx++;
+    	buttons.add(makeFloat, c1);
+    	c1.gridx++;
     	
     	makeDouble = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Double")));
     	makeDouble.setActionCommand("makeDouble");
@@ -430,52 +601,29 @@ import javax.swing.border.BevelBorder;
     	makeDouble.setPreferredSize(squareMedium);
     	makeDouble.setBorder(BorderFactory.createEtchedBorder(0));
     	makeDouble.addActionListener(this);
-    	add(makeDouble, cn);
-    	cn.gridx++;
+    	buttons.add(makeDouble, c1);
+	}
+	
+    private void createLayout()
+    {
+    	setBackground(_backColor);
+		//setLayout(new GridBagLayout());
+		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+	
+    	createControlLayout();
+    	add(buttons, BorderLayout.LINE_START);
     	
+    	createDisplaysLayout();
+    	add(displays, BorderLayout.CENTER);
     	
-    	cn.weightx=1;
-    	cn.weighty=1;
-    	add(new JLabel(), cn);
-    	cn.weightx=0;
-    	cn.weighty=0;
-    	cn.gridx++;
-    	
-    	fieldDisplay.setColumns(20);
-    	fieldDisplay.setFont(new Font("Serif", Font.PLAIN, 12));
-    	fieldDisplay.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		add(fieldDisplay, cn);
-		cn.gridx++;
-		
-		NumberFormat amountFormat = NumberFormat.getNumberInstance();
-		
-    	if (pIn instanceof RealF | pIn instanceof ComplexF)
-    	{
-			for (short m=0; m<_valsF.length; m++)
-			{
-				JFormattedTextField tSpot = new JFormattedTextField(amountFormat);
-				tSpot.setColumns(8);
-	    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
-	    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-	    		valDisplays.add(m, tSpot);
-				add(tSpot, cn);
-				cn.gridx++;
-			}
-    	}
-    	if (pIn instanceof RealD | pIn instanceof ComplexD)
-    	{
-			for (short m=0; m<_valsD.length; m++)
-			{
-				JFormattedTextField tSpot = new JFormattedTextField(amountFormat);
-				tSpot.setColumns(8);
-	    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
-	    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-	    		valDisplays.add(m, tSpot);
-				add(tSpot, cn);
-				cn.gridx++;
-			}
-    	}
+    	clear = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Remove")));
+    	clear.setActionCommand("clearIt");
+    	clear.setPreferredSize(squareLarge);
+    	clear.setBorder(BorderFactory.createEtchedBorder(0));
+    	clear.addActionListener(this);
+    	add(clear, BorderLayout.LINE_END);
     }
+    
     protected void registerWithViewer()
 	{
 		_GUI._GeometryDisplay.registerFieldPanel(this);

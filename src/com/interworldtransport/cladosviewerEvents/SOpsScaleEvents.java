@@ -133,7 +133,6 @@ public class SOpsScaleEvents implements ActionListener
 										_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by (");
 										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+", ");
 										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getImgText()+")\n");
-										break;
 	    	}
 	    }
 		catch (FieldBinaryException eb)

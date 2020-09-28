@@ -25,6 +25,7 @@
 
 package com.interworldtransport.cladosviewerEvents;
 
+import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosviewer.CreateDialog;
 
 import javax.swing.*;
@@ -63,14 +64,25 @@ public class ToolsCreate implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	CreateDialog.createNyad(_parent._GUI);
+    	String tSpot;
+    	if (_parent._GUI._GeometryDisplay.getNyadListSize()>0)
+    			tSpot = _parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus()).getRepMode();
+    	else 	tSpot = _parent._GUI._FieldBar.getRepMode();
+    	
+    	CreateDialog.createNyad(_parent._GUI, tSpot);
+    	
     	// If no CreateDialog is instantiated, nothing will appear to happen.
     	// If one is, then there will be a link to the parent GUI to report errors.
     	// Thus there is no way to report a failure to the GUI because I'm 
     	// using a static method here.
     	
-    	// If there is ever a need to revert to creating orphaned monads, 
+    	// NOTE that .createMonad isn't an action. That's because a NyadPanel takes
+    	// responsibility for it. That means that particular event never reaches
+    	// the event model. If there is ever a need to revert to creating orphaned monads, 
     	// this action would be changed to check for which kind of command arrived.
-    	// if (command.equals("blah-blah"))
+    	// if (evt.getActionCommand().command.equals("blah-blah"))
+    	
+    	// I don't intend to write a calculator that can stack orphaned monads at the 
+    	// same level as nyads. Just use an order=1 nyad.
     }
 }

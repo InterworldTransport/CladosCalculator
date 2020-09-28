@@ -69,7 +69,7 @@ public class FileSaveAsEvents implements ActionListener
 	    }
 	    catch (CantGetSaveException es)
 	    {
-		    _parent._GUI._StatusBar.setStatusMsg("No Save file Exception prevented snapshot save.\n");
+		    _parent._GUI._StatusBar.setStatusMsg("No Save As file Exception prevented snapshot save.\n");
 	    }
     }
  }

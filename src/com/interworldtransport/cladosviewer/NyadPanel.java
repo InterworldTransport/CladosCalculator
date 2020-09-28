@@ -59,11 +59,11 @@ import java.util.*;
 	public					NyadComplexF			repNyadCF;
 	public					NyadComplexD			repNyadCD;
 	protected				String					_repMode;
-	private					Color					_backColor = new Color(212, 200, 212);
+	private			final	Color					_backColor = new Color(212, 200, 212);
 	private					JPanel 					_controlPanel;
 	private					JPanel 					_controlPanel2;
 	private					JPanel 					_refPanel;
-	private					Color					_unlockColor = new Color(255, 192, 192);
+	private			final	Color					_unlockColor = new Color(255, 192, 192);
 	private					JButton					copyButton;
 	private					JButton					editButton;
 	private					JButton					newMonad;
@@ -124,7 +124,7 @@ import java.util.*;
    			 
    		monadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
    		monadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-   		monadPanelList=new ArrayList<MonadPanel>(repNyadD.getMonadList().size());
+   		monadPanelList=new ArrayList<MonadPanel>(repNyadCD.getMonadList().size());
    			 
    		for (short j=0; j<repNyadCD.getMonadList().size(); j++)
    		{
@@ -188,7 +188,7 @@ import java.util.*;
    			 
    		monadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
    		monadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-   		monadPanelList=new ArrayList<MonadPanel>(repNyadF.getMonadList().size());
+   		monadPanelList=new ArrayList<MonadPanel>(repNyadCF.getMonadList().size());
    			 
    		for (short j=0; j<repNyadCF.getMonadList().size(); j++)
    		{
@@ -252,7 +252,7 @@ import java.util.*;
    			 
    		monadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
    		monadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-   		monadPanelList=new ArrayList<MonadPanel>(repNyadF.getMonadList().size());
+   		monadPanelList=new ArrayList<MonadPanel>(repNyadD.getMonadList().size());
    			 
    		for (short j=0; j<repNyadD.getMonadList().size(); j++)
    		{
@@ -347,23 +347,25 @@ import java.util.*;
     	
     	if (command=="save")
     	{
-    		if (nyadName.getText() != repNyadF.getName())
-				repNyadF.setName(nyadName.getText());
-    		
-    		_GUI._StatusBar.setStatusMsg(" changes saved...");
+    		switch (_repMode)
+    		{
+	    		case DivField.REALF:	if (nyadName.getText() != repNyadF.getName()) repNyadF.setName(nyadName.getText());
+	    								break;
+	    		case DivField.REALD:	if (nyadName.getText() != repNyadD.getName()) repNyadD.setName(nyadName.getText());
+										break;
+	    		case DivField.COMPLEXF:	if (nyadName.getText() != repNyadCF.getName()) repNyadCF.setName(nyadName.getText());
+										break;
+	    		case DivField.COMPLEXD:	if (nyadName.getText() != repNyadCD.getName()) repNyadCD.setName(nyadName.getText());
+    		}
     		command=".edit.";
     	}
     	if (command=="abort")
     	{
     		setReferences();
-    		_GUI._StatusBar.setStatusMsg("Nyad reset to stored values.\n");
     		command=".edit.";
     	}
     	
     	if (command=="copy")
-    		// There has to be more than one version of this since there are 
-    		// four different monad types.
-    		// ... or the copyMonadCommand method has to handle _repMode.
     		copyMonadCommand();
 
     	if (command=="erase")
@@ -379,7 +381,6 @@ import java.util.*;
     		saveButton.setEnabled(true);
         	restoreButton.setEnabled(true);
     		makeWritable();
-    		_GUI._StatusBar.setStatusMsg("Nyad references unlocked... ");
     	}
     	
     	if (command==".edit.")
@@ -389,7 +390,6 @@ import java.util.*;
     		saveButton.setEnabled(false);
         	restoreButton.setEnabled(false);
     		makeNotWritable();
-    		_GUI._StatusBar.setStatusMsg(" ... and now locked\n");
     	}
     }
     /**
@@ -427,8 +427,7 @@ import java.util.*;
 	    	case DivField.COMPLEXD:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
 														tabIcon, 
 														new JScrollPane(pMP),
-														repNyadCD.getName()+" | "+pMP.getMonadCD().getName());
-									break;				
+														repNyadCD.getName()+" | "+pMP.getMonadCD().getName());			
 	    }
 	    nyadOrder.setText((new StringBuffer()).append(next+1).toString());
     }
@@ -676,7 +675,7 @@ import java.util.*;
     
     private void createCommand()
     {
-		CreateDialog.createMonad(_GUI);	
+		CreateDialog.createMonad(_GUI, _repMode);	
     }
     
     private 	void		createEditLayout()
@@ -903,9 +902,17 @@ import java.util.*;
 			try 
 			{
 				int point = monadPanes.getSelectedIndex();
-				repNyadF.removeMonad(point);
+				switch (_repMode)
+				{
+					case DivField.REALF: 	repNyadF.removeMonad(point);
+											break;
+					case DivField.REALD: 	repNyadD.removeMonad(point);
+											break;
+					case DivField.COMPLEXF:	repNyadCF.removeMonad(point);
+											break;
+					case DivField.COMPLEXD:	repNyadCD.removeMonad(point);
+				}
 				removeMonadTab(point);
-				//_GUI._StatusBar.setStatusMsg("\tselected monad at {"+point+"} removed from list.\n");
 			} 
 			catch (CladosNyadException e) 
 			{
@@ -915,7 +922,6 @@ import java.util.*;
 		else
 		{
 			_GUI._GeometryDisplay.removeNyad.doClick();
-			_GUI._StatusBar.setStatusMsg("\tselected monad was last in the stack, so nyad removed.\n");
 		}
     }
     
@@ -949,16 +955,20 @@ import java.util.*;
 	@Override
 	public void focusGained(FocusEvent e) 
 	{
-		switch (((NyadPanel) e.getComponent())._repMode)
+		if (e.getComponent() instanceof NyadPanel)
 		{
-			case DivField.REALF:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadRF().getProto()).getFieldType());;
-									break;
-			case DivField.REALD:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadRD().getProto()).getFieldType());;
-									break;
-			case DivField.COMPLEXF:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadCF().getProto()).getFieldType());;
-									break;
-			case DivField.COMPLEXD:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadCD().getProto()).getFieldType());;
+			switch (((NyadPanel)e.getComponent()).getRepMode())
+			{
+				case DivField.REALF:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadRF().getProto()).getFieldType());;
+										break;
+				case DivField.REALD:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadRD().getProto()).getFieldType());;
+										break;
+				case DivField.COMPLEXF:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadCF().getProto()).getFieldType());;
+										break;
+				case DivField.COMPLEXD:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadCD().getProto()).getFieldType());;
+			}
 		}
+		else _GUI._StatusBar.setStatusMsg("\n\nNot sure what got focus on the Nyad Panel, but it did.");
 	}
 
 	@Override

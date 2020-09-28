@@ -99,7 +99,6 @@ public class SOpsGradeEvents implements ActionListener
     		case DivField.COMPLEXF:	logGradeKey=Math.log10(tSpot.getMonadCF().getGradeKey());
 									break;
     		case DivField.COMPLEXD:	logGradeKey=Math.log10(tSpot.getMonadCD().getGradeKey());
-									break;
     	}
     	
     	if (logGradeKey < 0) 

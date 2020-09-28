@@ -99,8 +99,7 @@ public class SOpsGradePartEvents implements ActionListener
     							    	break;
     	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().gradePart(tGrade);
     							    	break;
-    	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().gradePart(tGrade);
-    							    	break;  	
+    	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().gradePart(tGrade);	
         	}
         	tMSpotPnl.setCoefficientDisplay();
 	    	_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been cropped around "+tGrade+"-grade.\n");

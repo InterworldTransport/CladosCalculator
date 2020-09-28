@@ -100,7 +100,6 @@ public class BOpsNilpotentEvents implements ActionListener
 		    	case DivField.COMPLEXF:	test = MonadComplexF.isNilpotent(tSpot.getMonadCF());
 								    	break;
 		    	case DivField.COMPLEXD:	test = MonadComplexD.isNilpotent(tSpot.getMonadCD());
-								    	break;
 	    	}
 	    	if (test)
 				_parent._GUI._StatusBar.setStatusMsg("\tselected monad is nilpotent.\n");

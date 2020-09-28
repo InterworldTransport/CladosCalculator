@@ -94,7 +94,6 @@ public class BOpsEqualEvents implements ActionListener
     		case DivField.COMPLEXF: test = NyadComplexF.isMEqual(panelNyadSelected.getNyadCF(), panelNyadNext.getNyadCF());
 									break;
     		case DivField.COMPLEXD: test = NyadComplexD.isMEqual(panelNyadSelected.getNyadCD(), panelNyadNext.getNyadCD());
-									break;
     	}
     	if (test)
 			_parent._GUI._StatusBar.setStatusMsg("\tselected nyad and the next are EQUAL\n");

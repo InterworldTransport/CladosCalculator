@@ -109,7 +109,6 @@ public class SOpsMagnitudeEvents implements ActionListener
 		    	case DivField.COMPLEXD:	ComplexD scaleCD = tMSpotPnl.getMonadCD().magnitude();
 							    		_parent._GUI._FieldBar.setWhatDoubleR(scaleCD.getModulus());
 							    		_parent._GUI._FieldBar.setWhatDoubleI(0.0D);
-								    	break;
         	}
     		_parent._GUI._StatusBar.setStatusMsg("\tselected monad magnitude has been computed.\n");
     	} 

@@ -98,7 +98,6 @@ public class COpsAddEvents implements ActionListener
     			case DivField.COMPLEXF:	(temp0.getMonadCF()).add(temp1.getMonadCF());
 										break;
     			case DivField.COMPLEXD:	(temp0.getMonadCD()).add(temp1.getMonadCD());
-    									break;
     		}
     	}
     	catch (FieldBinaryException eb)

@@ -66,18 +66,18 @@ import java.util.*;
 
  public class ViewerPanel extends JPanel implements ActionListener
 {
-	public		CladosCalculator		_GUI;
-    public		JTabbedPane				nyadPanes;
+	public			CladosCalculator		_GUI;
+    public			JTabbedPane				nyadPanes;
     private	final	Color					_backColor=new Color(255, 255, 220);
-    private		JPanel					_controlBar;
-    private		JButton					copyNyad;
-    private		JButton					newNyad;
-    private final	Dimension 			square = new Dimension(25,25);
-    private		JButton					swapAbove;
-    private		JButton					swapBelow;
-    private		ImageIcon				tabIcon;  
-    protected	ArrayList<NyadPanel>	nyadPanelList;
-    protected	JButton					removeNyad;
+    private			JPanel					_controlBar;
+    private			JButton					copyNyad;
+    private			JButton					newNyad;
+    private final	Dimension 				square = new Dimension(25,25);
+    private			JButton					swapAbove;
+    private			JButton					swapBelow;
+    private			ImageIcon				tabIcon;  
+    protected		ArrayList<NyadPanel>	nyadPanelList;
+    protected		JButton					removeNyad;
 
     /**
     * The ViewerPanel class is intended to be a tabbed pane that displays all
@@ -120,7 +120,7 @@ import java.util.*;
     		eraseNyadCommand();			//Remove the selected nyad from the stack
     	
     	if (command.equals("create"))
-    		createCommand();			//Create a new monad for the selected nyad OR a whole new nyad
+    		_GUI._EventModel.ToolParts.cr.actionPerformed(event);			//Create a new monad for the selected nyad OR a whole new nyad
 	}
     
     public	int			getNyadListSize()
@@ -189,11 +189,6 @@ import java.util.*;
 			_GUI._StatusBar.setStatusMsg("\t\tcould not create copy from toolbar because nyad was malformed.\n");
 		}
 		
-    }
-    
-    private void createCommand()
-    {
-			CreateDialog.createNyad(_GUI);	
     }
     
     private NyadRealF buildANyadRF(short pWhich, short monadCount)
@@ -439,14 +434,10 @@ import java.util.*;
     		String sType = _GUI.IniProps.getProperty("Desktop.Default.DivField");
     		switch (sType)
     		{
-    			case "RealF": 		sType=DivField.REALF;
-    								break;
-    			case "RealD": 		sType=DivField.REALD;
-									break; 
-    			case "ComplexF": 	sType=DivField.COMPLEXF;
-    								break;
-    			case "ComplexD": 	sType=DivField.COMPLEXD;
-									break;
+    			case "RealF": 		return DivField.REALF;
+    			case "RealD": 		return DivField.REALD;
+    			case "ComplexF": 	return DivField.COMPLEXF;			
+    			case "ComplexD": 	return DivField.COMPLEXD;
     		}
 
     	}
@@ -598,7 +589,6 @@ import java.util.*;
     						    			_GUI._StatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
     						    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
 										}
-										break;	
     		}
     		j++;
     	} 	
@@ -681,7 +671,6 @@ import java.util.*;
 		{
 			int point = nyadPanes.getSelectedIndex();
 			removeNyadPanel(point);
-			_GUI._StatusBar.setStatusMsg("\tselected nyad at {"+point+"} removed from list.\n");
 		}
 	}
 
@@ -745,11 +734,32 @@ import java.util.*;
 	    nyadPanelList.ensureCapacity(next+1);
 	    nyadPanelList.add(newP);
 	    
-	    nyadPanes.addTab(	cnt, 
-	    					tabIcon, 
-	    					new JScrollPane(newP),
-	    					newP.getNyadRF().getName()
-	    					);
+	    switch (newP.getRepMode())
+	    {
+	    	case DivField.REALF: 	nyadPanes.addTab(	cnt, 
+														tabIcon, 
+														new JScrollPane(newP),
+														newP.getNyadRF().getName()
+														);
+	    							break;
+	    	case DivField.REALD: 	nyadPanes.addTab(	cnt, 
+														tabIcon, 
+														new JScrollPane(newP),
+														newP.getNyadRD().getName()
+														);
+									break;
+	    	case DivField.COMPLEXF: nyadPanes.addTab(	cnt, 
+														tabIcon, 
+														new JScrollPane(newP),
+														newP.getNyadCF().getName()
+														);
+									break;
+	      	case DivField.COMPLEXD: nyadPanes.addTab(	cnt, 
+														tabIcon, 
+														new JScrollPane(newP),
+														newP.getNyadCD().getName()
+														);
+	    }
 	    _GUI.pack();
     }
     
@@ -809,7 +819,6 @@ import java.util.*;
 			    					case DivField.COMPLEXF:	pFieldPanel.setField(nyadPanelList.get(j).getNyadCF().getProto());
 															break;
 			    					case DivField.COMPLEXD:	pFieldPanel.setField(nyadPanelList.get(j).getNyadCD().getProto());
-															break;
 			    				}
 			    			}
 			    			else

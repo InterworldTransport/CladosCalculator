@@ -23,7 +23,6 @@
  * ------------------------------------------------------------------------ <br>
  */
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosG.*;
 import com.interworldtransport.cladosGExceptions.*;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
@@ -53,7 +52,7 @@ public class COpSymmMultEvents implements ActionListener
  * This is a reference to the BOpsEvents parent event handler
  */
     public COpSymmMultEvents(	JMenuItem pmniControlled,
-    						COpsEvents pParent)
+    							COpsEvents pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);
@@ -96,7 +95,6 @@ public class COpSymmMultEvents implements ActionListener
     			case DivField.COMPLEXF:	(temp0.getMonadCF()).multiplySymm(temp1.getMonadCF());
 										break;
     			case DivField.COMPLEXD:	(temp0.getMonadCD()).multiplySymm(temp1.getMonadCD());
-    									break;
     		}
     	}
     	catch (FieldBinaryException eb)

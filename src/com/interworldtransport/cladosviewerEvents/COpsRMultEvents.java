@@ -98,7 +98,6 @@ public class COpsRMultEvents implements ActionListener
     			case DivField.COMPLEXF:	(temp0.getMonadCF()).multiplyRight(temp1.getMonadCF());
 										break;
     			case DivField.COMPLEXD:	(temp0.getMonadCD()).multiplyRight(temp1.getMonadCD());
-    									break;
     		}
     	}
     	catch (FieldBinaryException eb)

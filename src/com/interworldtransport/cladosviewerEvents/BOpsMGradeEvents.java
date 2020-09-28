@@ -92,7 +92,6 @@ public class BOpsMGradeEvents implements ActionListener
 	    	case DivField.COMPLEXF:	test = MonadComplexF.isMultiGrade(tSpot.getMonadCF());
 							    	break;
 	    	case DivField.COMPLEXD:	test = MonadComplexD.isMultiGrade(tSpot.getMonadCD());
-							    	break;
     	}
 	
 		if (test)

@@ -42,10 +42,10 @@ import java.awt.event.*;
  */
 public class ToolsEvents implements ActionListener
 {
-    protected ToolsCreate			cr;
-    protected ToolsOptions			op;
-    protected ViewerMenu 			_GUIMenu;
-    protected CladosCalculator		_GUI;
+    public		ToolsCreate			cr;
+    protected 	ToolsOptions		op;
+    protected 	ViewerMenu 			_GUIMenu;
+    protected 	CladosCalculator	_GUI;
 
 /** 
  * This is the default constructor.  The event structure of the Tools

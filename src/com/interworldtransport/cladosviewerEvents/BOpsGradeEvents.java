@@ -102,7 +102,6 @@ public class BOpsGradeEvents implements ActionListener
 		    	case DivField.COMPLEXF:	test = MonadComplexF.isGrade(tSpot.getMonadCF(), grade2Test);
 								    	break;
 		    	case DivField.COMPLEXD:	test = MonadComplexD.isGrade(tSpot.getMonadCD(), grade2Test);
-								    	break;
         	}
         	if (test)
 	    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is a pure "+grade2Test+"-grade.\n");

@@ -99,7 +99,6 @@ public class COpsSubtractEvents implements ActionListener
     			case DivField.COMPLEXF:	(temp0.getMonadCF()).subtract(temp1.getMonadCF());
 										break;
     			case DivField.COMPLEXD:	(temp0.getMonadCD()).subtract(temp1.getMonadCD());
-    									break;
     		}
     	}
     	catch (FieldBinaryException eb)

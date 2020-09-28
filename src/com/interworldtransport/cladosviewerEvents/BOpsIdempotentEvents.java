@@ -98,7 +98,6 @@ public class BOpsIdempotentEvents implements ActionListener
 		    	case DivField.COMPLEXF:	test = MonadComplexF.isIdempotent(tSpot.getMonadCF());
 								    	break;
 		    	case DivField.COMPLEXD:	test = MonadComplexD.isIdempotent(tSpot.getMonadCD());
-								    	break;
 	    	}
 	    	if (test)
 				_parent._GUI._StatusBar.setStatusMsg("\tselected monad is idempotent.\n");

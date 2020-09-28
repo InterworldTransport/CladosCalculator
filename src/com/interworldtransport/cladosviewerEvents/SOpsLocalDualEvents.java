@@ -100,7 +100,6 @@ public class SOpsLocalDualEvents implements ActionListener
     	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().dualLeft();
     							    	break;
     	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().dualLeft();
-    							    	break;
         	}
     		_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been 'dualed' from the left.\n");
     	}

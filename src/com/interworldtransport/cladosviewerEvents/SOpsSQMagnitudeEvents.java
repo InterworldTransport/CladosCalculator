@@ -105,7 +105,6 @@ public class SOpsSQMagnitudeEvents implements ActionListener
 		    	case DivField.COMPLEXD:	ComplexD scaleCD = tMSpotPnl.getMonadCD().sqMagnitude();
 							    		_parent._GUI._FieldBar.setWhatDoubleR(scaleCD.getModulus());
 							    		_parent._GUI._FieldBar.setWhatDoubleI(0.0D);
-								    	break;
         	}
     		_parent._GUI._StatusBar.setStatusMsg("\tselected monad SQmagnitude has been computed.\n");
     	} 
