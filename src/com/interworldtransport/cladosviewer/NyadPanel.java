@@ -54,11 +54,10 @@ import java.util.*;
 {
 	public					CladosCalculator		_GUI;
 	public					JTabbedPane				monadPanes;
-	public					NyadRealF				repNyadF;
-	public					NyadRealD				repNyadD;
-	public					NyadComplexF			repNyadCF;
 	public					NyadComplexD			repNyadCD;
-	protected				String					_repMode;
+	public					NyadComplexF			repNyadCF;
+	public					NyadRealD				repNyadD;
+	public					NyadRealF				repNyadF;
 	private			final	Color					_backColor = new Color(212, 200, 212);
 	private					JPanel 					_controlPanel;
 	private					JPanel 					_controlPanel2;
@@ -68,15 +67,17 @@ import java.util.*;
 	private					JButton					editButton;
 	private					JButton					newMonad;
 	private					JLabel					nyadFoot=new JLabel();
-	private					JTextField				nyadName=new JTextField(40);
+	private					JTextField				nyadName=new JTextField(20);
 	private					JLabel					nyadOrder=new JLabel();
+	private					JTextField				protoXML=new JTextField(40);
 	private					JButton					removeButton;
 	private					JButton					restoreButton;
 	private					JButton					saveButton;
 	private 		final	Dimension 				square = new Dimension(25,25);
 	private					JButton					swapAbove;
 	private					JButton					swapBelow;
-	private					ImageIcon				tabIcon; 
+	private					ImageIcon				tabIcon;
+	protected				String					_repMode; 
     protected				ArrayList<MonadPanel>	monadPanelList;
     
     /**
@@ -372,7 +373,7 @@ import java.util.*;
     		removeMonadCommand();
     	
     	if (command.equals("create"))
-    		createCommand();			//Create a new monad for the selected nyad OR a whole new nyad
+    		CreateDialog.createMonad(_GUI, _repMode);			//Create a new monad for the selected nyad OR a whole new nyad
     	
     	if (command=="edit")
     	{
@@ -391,6 +392,44 @@ import java.util.*;
         	restoreButton.setEnabled(false);
     		makeNotWritable();
     	}
+    }
+    /**
+     * This method supports adding a monad panel to the nyad's list of monads.
+     * Be aware that no tests are performed to prevent the panel being added.
+     * That means the nyad might change from strong to weak without notice by this panel.
+     * <p>
+     * The difference between this one and the other by a similar name is this one receives
+     * a monad and constructs the appropriate panel.
+     * <p>
+     * @param pM
+     * 	MonadComplexD
+     * This is the MonadRealF to use to construct a MonadPanel to be appended to this NyadPanel.
+     * @throws UtilitiesException
+     * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
+     */
+    public	void		addMonadPanel(MonadComplexD pM) throws UtilitiesException
+    {
+    	MonadPanel pMP=new MonadPanel(_GUI, pM);
+    	addMonadPanel(pMP); 
+    }
+    /**
+     * This method supports adding a monad panel to the nyad's list of monads.
+     * Be aware that no tests are performed to prevent the panel being added.
+     * That means the nyad might change from strong to weak without notice by this panel.
+     * <p>
+     * The difference between this one and the other by a similar name is this one receives
+     * a monad and constructs the appropriate panel.
+     * <p>
+     * @param pM
+     * 	MonadComplexF
+     * This is the MonadRealF to use to construct a MonadPanel to be appended to this NyadPanel.
+     * @throws UtilitiesException
+     * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
+     */
+    public	void		addMonadPanel(MonadComplexF pM) throws UtilitiesException
+    {
+    	MonadPanel pMP=new MonadPanel(_GUI, pM);
+    	addMonadPanel(pMP); 
     }
     /**
      * This method supports adding a monad panel to the nyad's list of monads.
@@ -440,44 +479,6 @@ import java.util.*;
      * a monad and constructs the appropriate panel.
      * <p>
      * @param pM
-     * 	MonadComplexD
-     * This is the MonadRealF to use to construct a MonadPanel to be appended to this NyadPanel.
-     * @throws UtilitiesException
-     * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
-     */
-    public	void		addMonadPanel(MonadComplexD pM) throws UtilitiesException
-    {
-    	MonadPanel pMP=new MonadPanel(_GUI, pM);
-    	addMonadPanel(pMP); 
-    }
-    /**
-     * This method supports adding a monad panel to the nyad's list of monads.
-     * Be aware that no tests are performed to prevent the panel being added.
-     * That means the nyad might change from strong to weak without notice by this panel.
-     * <p>
-     * The difference between this one and the other by a similar name is this one receives
-     * a monad and constructs the appropriate panel.
-     * <p>
-     * @param pM
-     * 	MonadComplexF
-     * This is the MonadRealF to use to construct a MonadPanel to be appended to this NyadPanel.
-     * @throws UtilitiesException
-     * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
-     */
-    public	void		addMonadPanel(MonadComplexF pM) throws UtilitiesException
-    {
-    	MonadPanel pMP=new MonadPanel(_GUI, pM);
-    	addMonadPanel(pMP); 
-    }
-    /**
-     * This method supports adding a monad panel to the nyad's list of monads.
-     * Be aware that no tests are performed to prevent the panel being added.
-     * That means the nyad might change from strong to weak without notice by this panel.
-     * <p>
-     * The difference between this one and the other by a similar name is this one receives
-     * a monad and constructs the appropriate panel.
-     * <p>
-     * @param pM
      * 	MonadRealD
      * This is the MonadRealD to use to construct a MonadPanel to be appended to this NyadPanel.
      * @throws UtilitiesException
@@ -507,11 +508,40 @@ import java.util.*;
     	MonadPanel pMP=new MonadPanel(_GUI, pM);
     	addMonadPanel(pMP); 
     }
+    /**
+     * This method is overridden to allow the NyadPanel with the focus to update the FieldBar with 
+     * the DivFieldType of the protonumber within the represented nyad.
+     * This is similar to what a monad panel does when it receives focus and updates the values 
+     * in the FieldBar.
+     */
+	@Override
+	public void focusGained(FocusEvent e) 
+	{
+		if (e.getComponent() instanceof NyadPanel)
+		{
+			switch (((NyadPanel)e.getComponent()).getRepMode())
+			{
+				case DivField.REALF:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadRF().getProto()).getFieldType());;
+										break;
+				case DivField.REALD:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadRD().getProto()).getFieldType());;
+										break;
+				case DivField.COMPLEXF:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadCF().getProto()).getFieldType());;
+										break;
+				case DivField.COMPLEXD:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadCD().getProto()).getFieldType());;
+			}
+		}
+		else _GUI._StatusBar.setStatusMsg("\n\nNot sure what got focus on the Nyad Panel, but it did.");
+	}
+
+    @Override
+	public void focusLost(FocusEvent e) 
+	{
+		;
+	}
     public	int			getMonadListSize()
     {
 	    return monadPanelList.size();
     }
-
     public	MonadPanel	getMonadPanel(int pInd)
     {
 	    int limit=monadPanelList.size();
@@ -542,6 +572,7 @@ import java.util.*;
     {
     	return monadPanelList.size();
     }
+    
     public	int			getPaneFocus()
     {
 	    return monadPanes.getSelectedIndex();
@@ -550,7 +581,6 @@ import java.util.*;
     {
     	return _repMode;
     }
-    
     public 	void 		makeNotWritable()
     {
     	if (_refPanel!=null)
@@ -559,6 +589,7 @@ import java.util.*;
     	//_order.setEditable(false);
     	//_foot.setEditable(false);
     }
+
     /**
      * This method adjusts the JTextArea elements contained on the panel to allow for edits.
      */
@@ -568,6 +599,7 @@ import java.util.*;
     		_refPanel.setBackground(_unlockColor);
     	nyadName.setEditable(true);
     }
+    
     /**
      * This method removes the Monad Panel at the integer index indicated.
      * @param pInd
@@ -586,7 +618,7 @@ import java.util.*;
 	    monadPanelList.remove(pInd);
 	    nyadOrder.setText(new StringBuffer().append(newOrder).toString());
     }
-
+    
     private void		copyMonadCommand()
     {
     	if (getMonadListSize()<=0) return;	// Nothing to do here. No monad to be copied.
@@ -673,11 +705,6 @@ import java.util.*;
 		
     }
     
-    private void createCommand()
-    {
-		CreateDialog.createMonad(_GUI, _repMode);	
-    }
-    
     private 	void		createEditLayout()
     {
     	_controlPanel=new JPanel();
@@ -745,8 +772,6 @@ import java.util.*;
     	_refPanel.setLayout(new GridBagLayout());
     	
     	GridBagConstraints cn0 = new GridBagConstraints();
-    	//cn0.insets = new Insets(5, 5, 5, 5);
-    	//cn0.fill=GridBagConstraints.HORIZONTAL;
     	cn0.anchor=GridBagConstraints.WEST;
 
     	cn0.gridx = 0;
@@ -756,9 +781,14 @@ import java.util.*;
     	
     	_refPanel.add(new JLabel("Name ", SwingConstants.RIGHT), cn0);
     	cn0.gridx++;
-    	nyadName.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	nyadName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
     	cn0.weightx=1;
     	_refPanel.add(nyadName, cn0);	
+    	cn0.gridx++;
+    	
+    	protoXML.setFont(new Font(Font.SERIF, Font.PLAIN, 8));
+    	protoXML.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    	_refPanel.add(protoXML, cn0);
     	cn0.gridx++;
     	
     	cn0.weightx=0;
@@ -894,7 +924,6 @@ import java.util.*;
 		    revalidate();
 	    }
     }
-    
     private void		removeMonadCommand()
     {
     	if (monadPanes.getTabCount()>1)
@@ -919,61 +948,35 @@ import java.util.*;
 				e.printStackTrace();
 			}
 		}
-		else
-		{
+		else	// The only way to get here is if the monad to be removed is the last one in the nyad.
+		{		// That causes the entire nyad to be removed.
 			_GUI._GeometryDisplay.removeNyad.doClick();
 		}
     }
-    
-    private 	void 		setReferences()
+
+	private 	void 		setReferences()
     {
     	switch (_repMode)
     	{
     		case DivField.REALF:	nyadName.setText(repNyadF.getName());
+    								protoXML.setText(repNyadF.getProto().toXMLString());
 	    							nyadOrder.setText((new StringBuffer().append(repNyadF.getMonadList().size())).toString());
 	    							nyadFoot.setText(repNyadF.getFootPoint().getFootName());
 	    							break;
     		case DivField.REALD:	nyadName.setText(repNyadD.getName());
+    								protoXML.setText(repNyadD.getProto().toXMLString());
 	    							nyadOrder.setText((new StringBuffer().append(repNyadD.getMonadList().size())).toString());
 	    							nyadFoot.setText(repNyadD.getFootPoint().getFootName());
 	    							break;
     		case DivField.COMPLEXF:	nyadName.setText(repNyadCF.getName());
+    								protoXML.setText(repNyadCF.getProto().toXMLString());
 	    							nyadOrder.setText((new StringBuffer().append(repNyadCF.getMonadList().size())).toString());
 	    							nyadFoot.setText(repNyadCF.getFootPoint().getFootName());
 	    							break;
     		case DivField.COMPLEXD: nyadName.setText(repNyadCD.getName());
+    								protoXML.setText(repNyadCD.getProto().toXMLString());
 	    							nyadOrder.setText((new StringBuffer().append(repNyadCD.getMonadList().size())).toString());
 	    							nyadFoot.setText(repNyadCD.getFootPoint().getFootName());
     	}
     }
-    /**
-     * This method is overridden to allow the NyadPanel with the focus to update the FieldBar with 
-     * the DivFieldType of the protonumber within the represented nyad.
-     * This is similar to what a monad panel does when it receives focus and updates the values 
-     * in the FieldBar.
-     */
-	@Override
-	public void focusGained(FocusEvent e) 
-	{
-		if (e.getComponent() instanceof NyadPanel)
-		{
-			switch (((NyadPanel)e.getComponent()).getRepMode())
-			{
-				case DivField.REALF:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadRF().getProto()).getFieldType());;
-										break;
-				case DivField.REALD:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadRD().getProto()).getFieldType());;
-										break;
-				case DivField.COMPLEXF:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadCF().getProto()).getFieldType());;
-										break;
-				case DivField.COMPLEXD:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadCD().getProto()).getFieldType());;
-			}
-		}
-		else _GUI._StatusBar.setStatusMsg("\n\nNot sure what got focus on the Nyad Panel, but it did.");
-	}
-
-	@Override
-	public void focusLost(FocusEvent e) 
-	{
-		;
-	}
 }

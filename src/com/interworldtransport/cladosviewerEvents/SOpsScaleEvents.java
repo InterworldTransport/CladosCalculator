@@ -102,7 +102,6 @@ public class SOpsScaleEvents implements ActionListener
 	    								RealF tFieldRF = new RealF(			(tNSpotPnl.getNyadRF()).getProto().getFieldType(), 
 	    																	Float.parseFloat(_parent._GUI._FieldBar.getRealText()));
 							    		tMonadRF.scale(tFieldRF);
-							    		tMSpotPnl.setCoefficientDisplay();
 							 		    _parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by ");
 							 		    _parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+"\n");
 	    								break;
@@ -110,7 +109,6 @@ public class SOpsScaleEvents implements ActionListener
 										RealD tFieldRD = new RealD(			(tNSpotPnl.getNyadRD()).getProto().getFieldType(), 
 																			Double.parseDouble(_parent._GUI._FieldBar.getRealText()));
 										tMonadRD.scale(tFieldRD);
-										tMSpotPnl.setCoefficientDisplay();
 										_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by ");
 										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+"\n");
 										break;
@@ -119,21 +117,20 @@ public class SOpsScaleEvents implements ActionListener
 																			Float.parseFloat(_parent._GUI._FieldBar.getRealText()),
 																			Float.parseFloat(_parent._GUI._FieldBar.getImgText()));
 										tMonadCF.scale(tFieldCF);
-										tMSpotPnl.setCoefficientDisplay();
-										_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by (");
-										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+", ");
+										_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by (R");
+										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+", I");
 										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getImgText()+")\n");
 										break;
 	    		case DivField.COMPLEXD:	MonadComplexD tMonadCD = tMSpotPnl.getMonadCD();
-										ComplexD tFieldCD = new ComplexD(	(tNSpotPnl.getNyadCF()).getProto().getFieldType(), 
+										ComplexD tFieldCD = new ComplexD(	(tNSpotPnl.getNyadCD()).getProto().getFieldType(), 
 																			Double.parseDouble(_parent._GUI._FieldBar.getRealText()),
 																			Double.parseDouble(_parent._GUI._FieldBar.getImgText()));
 										tMonadCD.scale(tFieldCD);
-										tMSpotPnl.setCoefficientDisplay();
-										_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by (");
-										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+", ");
+										_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by (R");
+										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+", I");
 										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getImgText()+")\n");
 	    	}
+		    tMSpotPnl.setCoefficientDisplay();
 	    }
 		catch (FieldBinaryException eb)
 		{

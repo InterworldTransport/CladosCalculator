@@ -68,9 +68,9 @@ public class COpsAddEvents implements ActionListener
     public void actionPerformed(ActionEvent evt)
     {
     	int indxNydPnlSlctd = _parent._GUI._GeometryDisplay.getPaneFocus();
-    	if (indxNydPnlSlctd<0 | indxNydPnlSlctd == _parent._GUI._GeometryDisplay.getNyadListSize()) 
+    	if (indxNydPnlSlctd<0 | indxNydPnlSlctd == _parent._GUI._GeometryDisplay.getNyadListSize()-1) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus... or the last one is.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus... or the last one is.");
     		return;	
     	}
     	
@@ -80,7 +80,7 @@ public class COpsAddEvents implements ActionListener
     	int indxMndPnlSlctd = tSpot.getPaneFocus();
     	if (indxMndPnlSlctd<0 | indxNydPnlSlctd > tSpotPlus.getMonadListSize()) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nAddition needs two monads at the same index in a nyad. Nothing done.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\nAddition needs two monads at the same index in a nyad. Nothing done.");
     		return;
     	}
     	
@@ -98,7 +98,9 @@ public class COpsAddEvents implements ActionListener
     			case DivField.COMPLEXF:	(temp0.getMonadCF()).add(temp1.getMonadCF());
 										break;
     			case DivField.COMPLEXD:	(temp0.getMonadCD()).add(temp1.getMonadCD());
+    									
     		}
+    		temp0.setCoefficientDisplay();
     	}
     	catch (FieldBinaryException eb)
 		{

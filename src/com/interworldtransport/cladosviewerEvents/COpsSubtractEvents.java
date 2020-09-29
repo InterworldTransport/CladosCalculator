@@ -69,7 +69,7 @@ public class COpsSubtractEvents implements ActionListener
     public void actionPerformed(ActionEvent evt)
     {
     	int indxNydPnlSlctd = _parent._GUI._GeometryDisplay.getPaneFocus();
-    	if (indxNydPnlSlctd<0 | indxNydPnlSlctd == _parent._GUI._GeometryDisplay.getNyadListSize()) 
+    	if (indxNydPnlSlctd<0 | indxNydPnlSlctd == _parent._GUI._GeometryDisplay.getNyadListSize()-1) 
     	{
     		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus... or the last one is.\n");
     		return;	
@@ -100,6 +100,7 @@ public class COpsSubtractEvents implements ActionListener
 										break;
     			case DivField.COMPLEXD:	(temp0.getMonadCD()).subtract(temp1.getMonadCD());
     		}
+    		temp0.setCoefficientDisplay();
     	}
     	catch (FieldBinaryException eb)
 		{

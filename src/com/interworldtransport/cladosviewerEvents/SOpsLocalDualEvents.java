@@ -71,6 +71,8 @@ public class SOpsLocalDualEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
+    	String command = evt.getActionCommand();
+    	
     	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
@@ -88,8 +90,8 @@ public class SOpsLocalDualEvents implements ActionListener
     	
     	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
     	
-    	String command = evt.getActionCommand();
-    	if (command.equals("dual left"))
+    	
+    	if (command.equals("dual>"))
     	{
         	switch (tMSpotPnl.getRepMode())
         	{
@@ -103,7 +105,7 @@ public class SOpsLocalDualEvents implements ActionListener
         	}
     		_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been 'dualed' from the left.\n");
     	}
-    	if (command.equals("dual right"))
+    	if (command.equals("<dual"))
     	{
     		switch (tMSpotPnl.getRepMode())
         	{

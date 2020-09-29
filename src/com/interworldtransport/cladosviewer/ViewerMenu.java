@@ -168,12 +168,10 @@ public class ViewerMenu extends JMenuBar
     	mnuSOperations.add(mniSQMagnitudeOf);
     	mniNormalize=new JMenuItem("normalize");
     	mnuSOperations.add(mniNormalize);
-    	mniDualLeft=new JMenuItem("dual left");
+    	mniDualLeft=new JMenuItem("dual>");
     	mnuSOperations.add(mniDualLeft);
-    	mniDualRight=new JMenuItem("dual right");
+    	mniDualRight=new JMenuItem("<dual");
     	mnuSOperations.add(mniDualRight);
-    	//mniInverse=new JMenuItem("Inverse");
-    	//mnuSOperations.add(mniInverse);
     	mniInvert=new JMenuItem("invert");
     	mnuSOperations.add(mniInvert);
     	mniReverse=new JMenuItem("reverse");

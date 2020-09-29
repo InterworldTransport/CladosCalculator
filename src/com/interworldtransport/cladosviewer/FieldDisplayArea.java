@@ -45,8 +45,8 @@ import com.interworldtransport.cladosviewerExceptions.*;
  */
 public class FieldDisplayArea extends JTextArea 
 {
-	public static final int FLOATSIZE=11;
-	public static final int DOUBLESIZE=15;
+	public static final int DOUBLESIZE=16;
+	public static final int FLOATSIZE=10;
 	
 	//private		String[]	_lines = new String[1];
 	
@@ -55,12 +55,7 @@ public class FieldDisplayArea extends JTextArea
 	 * The displayField is a copy of the cladosF magnitude that can be safely displayed
 	 * and manipulated without harming the cladosG object using the original magnitude.
 	 */
-	protected	RealF		displayFieldRF;
-	/**
-	 * The displayField is a copy of the cladosF magnitude that can be safely displayed
-	 * and manipulated without harming the cladosG object using the original magnitude.
-	 */
-	protected	RealD		displayFieldRD;
+	protected	ComplexD	displayFieldCD;
 	/**
 	 * The displayField is a copy of the cladosF magnitude that can be safely displayed
 	 * and manipulated without harming the cladosG object using the original magnitude.
@@ -70,49 +65,33 @@ public class FieldDisplayArea extends JTextArea
 	 * The displayField is a copy of the cladosF magnitude that can be safely displayed
 	 * and manipulated without harming the cladosG object using the original magnitude.
 	 */
-	protected	ComplexD	displayFieldCD;
+	protected	RealD		displayFieldRD;
+	/**
+	 * The displayField is a copy of the cladosF magnitude that can be safely displayed
+	 * and manipulated without harming the cladosG object using the original magnitude.
+	 */
+	protected	RealF		displayFieldRF;
 
 	/**
 	 * The FieldPanel class is intended to be the contain a cladosF Field in much
 	 * the same way as Monad and Nyad panels represent their contents to the calculator
 	 * @param pField
-	 *  RealF
-	 * This is the RealF to be displayed in the text area presented by this panel.
+	 *  ComplexD
+	 * This is the ComplexD to be displayed in the text area presented by this panel.
 	 * @throws UtilitiesException 
 	 * Most likely means no cladosF field is passed to the constructor
 	 */
-	public FieldDisplayArea(RealF pField) throws UtilitiesException
+	public FieldDisplayArea(ComplexD pField) throws UtilitiesException
 	{
-		super(1, FieldDisplayArea.FLOATSIZE);
+		super(2, FieldDisplayArea.DOUBLESIZE);
 		if (pField == null)
 			throw new UtilitiesException("FieldArea must receive valid DivField on construction.");
 	    
-	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-	    //setColumns(8);
-		setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-		displayFieldRF = pField;
-		//setRows(1);
-		_repMode = DivField.REALF;
-	}
-	/**
-	 * The FieldPanel class is intended to be the contain a cladosF Field in much
-	 * the same way as Monad and Nyad panels represent their contents to the calculator
-	 * @param pField
-	 *  RealD
-	 * This is the RealD to be displayed in the text area presented by this panel.
-	 * @throws UtilitiesException 
-	 * Most likely means no cladosF field is passed to the constructor
-	 */
-	public FieldDisplayArea(RealD pField) throws UtilitiesException
-	{
-		super(1, FieldDisplayArea.DOUBLESIZE);
-		if (pField == null)
-			throw new UtilitiesException("FieldArea must receive valid DivField on construction.");
-	    
+
 	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-		displayFieldRD = pField;
-		_repMode = DivField.REALD;
+		displayFieldCD = pField;
+		_repMode = DivField.COMPLEXD;
 	}
 	/**
 	 * The FieldPanel class is intended to be the contain a cladosF Field in much
@@ -139,22 +118,41 @@ public class FieldDisplayArea extends JTextArea
 	 * The FieldPanel class is intended to be the contain a cladosF Field in much
 	 * the same way as Monad and Nyad panels represent their contents to the calculator
 	 * @param pField
-	 *  ComplexD
-	 * This is the ComplexD to be displayed in the text area presented by this panel.
+	 *  RealD
+	 * This is the RealD to be displayed in the text area presented by this panel.
 	 * @throws UtilitiesException 
 	 * Most likely means no cladosF field is passed to the constructor
 	 */
-	public FieldDisplayArea(ComplexD pField) throws UtilitiesException
+	public FieldDisplayArea(RealD pField) throws UtilitiesException
 	{
-		super(2, FieldDisplayArea.DOUBLESIZE);
+		super(1, FieldDisplayArea.DOUBLESIZE);
 		if (pField == null)
 			throw new UtilitiesException("FieldArea must receive valid DivField on construction.");
 	    
-
 	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-		displayFieldCD = pField;
-		_repMode = DivField.COMPLEXD;
+		displayFieldRD = pField;
+		_repMode = DivField.REALD;
+	}
+	/**
+	 * The FieldPanel class is intended to be the contain a cladosF Field in much
+	 * the same way as Monad and Nyad panels represent their contents to the calculator
+	 * @param pField
+	 *  RealF
+	 * This is the RealF to be displayed in the text area presented by this panel.
+	 * @throws UtilitiesException 
+	 * Most likely means no cladosF field is passed to the constructor
+	 */
+	public FieldDisplayArea(RealF pField) throws UtilitiesException
+	{
+		super(1, FieldDisplayArea.FLOATSIZE);
+		if (pField == null)
+			throw new UtilitiesException("FieldArea must receive valid DivField on construction.");
+	    
+	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+		setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+		displayFieldRF = pField;
+		_repMode = DivField.REALF;
 	}
 	
 	public void displayContents() throws BadLocationException
@@ -216,39 +214,20 @@ public class FieldDisplayArea extends JTextArea
 	/**
 	 * When a new cladosF number is to be displayed, it is passed in through this method.
 	 * @param pField
-	 *  RealF
-	 * This is the RealF to be displayed in the text area presented by this panel.
+	 *  ComplexD
+	 * This is the ComplexD to be displayed in the text area presented by this panel.
 	 * @throws UtilitiesException 
 	 * Most likely means no cladosF field is passed to the constructor
 	 * @throws BadLocationException 
 	 * This exception will get thrown when there is difficulty parsing the text on display
-	 * in this field. The format expected is [R]Float
+	 * in this field. The format expected is [R]Double\n[I]Double
 	 */
-	public void updateField(RealF pField) throws UtilitiesException, BadLocationException
+	public void updateField(ComplexD pField) throws UtilitiesException, BadLocationException
 	{
 		if (pField == null)
-			throw new UtilitiesException("FieldArea must receive valid RealF on update.");
+			throw new UtilitiesException("FieldArea must receive valid ComplexD on update.");
 
-		displayFieldRF = RealF.copyOf(pField);
-		displayContents();
-	}
-	/**
-	 * When a new cladosF number is to be displayed, it is passed in through this method.
-	 * @param pField
-	 *  RealD
-	 * This is the RealD to be displayed in the text area presented by this panel.
-	 * @throws UtilitiesException 
-	 * Most likely means no cladosF field is passed to the constructor
-	 * @throws BadLocationException 
-	 * This exception will get thrown when there is difficulty parsing the text on display
-	 * in this field. The format expected is [R]Double
-	 */
-	public void updateField(RealD pField) throws UtilitiesException, BadLocationException
-	{
-		if (pField == null)
-			throw new UtilitiesException("FieldArea must receive valid RealD on update.");
-
-		displayFieldRD = RealD.copyOf(pField);
+		displayFieldCD = ComplexD.copyOf(pField);
 		displayContents();
 	}
 	/**
@@ -273,20 +252,39 @@ public class FieldDisplayArea extends JTextArea
 	/**
 	 * When a new cladosF number is to be displayed, it is passed in through this method.
 	 * @param pField
-	 *  ComplexD
-	 * This is the ComplexD to be displayed in the text area presented by this panel.
+	 *  RealD
+	 * This is the RealD to be displayed in the text area presented by this panel.
 	 * @throws UtilitiesException 
 	 * Most likely means no cladosF field is passed to the constructor
 	 * @throws BadLocationException 
 	 * This exception will get thrown when there is difficulty parsing the text on display
-	 * in this field. The format expected is [R]Double\n[I]Double
+	 * in this field. The format expected is [R]Double
 	 */
-	public void updateField(ComplexD pField) throws UtilitiesException, BadLocationException
+	public void updateField(RealD pField) throws UtilitiesException, BadLocationException
 	{
 		if (pField == null)
-			throw new UtilitiesException("FieldArea must receive valid ComplexD on update.");
+			throw new UtilitiesException("FieldArea must receive valid RealD on update.");
 
-		displayFieldCD = ComplexD.copyOf(pField);
+		displayFieldRD = RealD.copyOf(pField);
+		displayContents();
+	}
+	/**
+	 * When a new cladosF number is to be displayed, it is passed in through this method.
+	 * @param pField
+	 *  RealF
+	 * This is the RealF to be displayed in the text area presented by this panel.
+	 * @throws UtilitiesException 
+	 * Most likely means no cladosF field is passed to the constructor
+	 * @throws BadLocationException 
+	 * This exception will get thrown when there is difficulty parsing the text on display
+	 * in this field. The format expected is [R]Float
+	 */
+	public void updateField(RealF pField) throws UtilitiesException, BadLocationException
+	{
+		if (pField == null)
+			throw new UtilitiesException("FieldArea must receive valid RealF on update.");
+
+		displayFieldRF = RealF.copyOf(pField);
 		displayContents();
 	}
 }

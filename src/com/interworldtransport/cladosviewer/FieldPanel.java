@@ -28,12 +28,11 @@ import com.interworldtransport.cladosF.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.NumberFormat;
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.EtchedBorder;
+
 
 /** 
  * The FieldPanel class is intended to be the the numeric input panel for the calculator.
@@ -55,26 +54,26 @@ import javax.swing.border.EtchedBorder;
 	public				CladosCalculator				_GUI;
 	private		final	Color							_backColor = new Color(230, 255, 255);
 	private		final	Color							_nullColor = new Color(255, 230, 255);
-	private		final	String[]						_valLabels= {"real", "img"};
 	private				String							_repMode;
-	private				Dimension						squareMedium=new Dimension(21,21);
+	private		final	String[]						_valLabels= {"real", "img"};
+	private				JPanel							buttons;
+	private				JPanel							displays;
+	
 	private				Dimension						squareLarge=new Dimension(42,42);
+	private				Dimension						squareMedium=new Dimension(21,21);
 	
 	protected			double[]						_valsD = new double[2];
 	protected			float[]							_valsF = new float[2];
-	
-	private				JPanel							buttons;
-	private				JPanel							displays;
 	protected			JButton							clear;
 	protected			JTextField 						fieldDisplay = new JTextField();
 	protected			DivFieldType					fieldType;
-    protected			JButton							makeReal;
     protected			JButton							makeComplex;
-    protected			JButton							makeFloat;
     protected			JButton							makeDouble;
+    protected			JButton							makeFloat;
+    protected			JButton							makeReal;
     protected			DivField						repField;
     protected			JButton							syncWithNyad;
-    protected			ArrayList<JFormattedTextField>	valDisplays;
+    protected			ArrayList<JTextField>	valDisplays;
 
     /**
      * The FieldPanel class is intended to be contain a cladosF Field in much
@@ -93,7 +92,7 @@ import javax.swing.border.EtchedBorder;
     {
     	super();
     	_GUI=pGUI;
-    	valDisplays= new ArrayList<JFormattedTextField>(2);
+    	valDisplays= new ArrayList<JTextField>(2);
     	_valsD = new double[2];
     	_repMode = DivField.COMPLEXD;
     	setCoefficientDisplay(pIn);
@@ -117,7 +116,7 @@ import javax.swing.border.EtchedBorder;
     {
     	super();
     	_GUI=pGUI;
-    	valDisplays= new ArrayList<JFormattedTextField>(2);
+    	valDisplays= new ArrayList<JTextField>(2);
     	_valsF = new float[2];
     	_repMode = DivField.COMPLEXF;
     	setCoefficientDisplay(pIn);
@@ -141,7 +140,7 @@ import javax.swing.border.EtchedBorder;
     {
     	super();
     	_GUI=pGUI;
-    	valDisplays= new ArrayList<JFormattedTextField>(1);
+    	valDisplays= new ArrayList<JTextField>(1);
     	_valsD = new double[1];
     	_repMode = DivField.REALD;
     	setCoefficientDisplay(pIn);
@@ -165,7 +164,7 @@ import javax.swing.border.EtchedBorder;
     {
     	super();
     	_GUI=pGUI;
-    	valDisplays= new ArrayList<JFormattedTextField>(1);
+    	valDisplays= new ArrayList<JTextField>(1);
     	_valsF = new float[1];
     	_repMode = DivField.REALF;
     	setCoefficientDisplay(pIn);
@@ -176,11 +175,11 @@ import javax.swing.border.EtchedBorder;
     public void 	actionPerformed(ActionEvent event)
     {
     	String command = event.getActionCommand();
-    	if (command == "clearIt")
+    	if (command.equals("clearIt"))
     	{
-    		int i = valDisplays.size();
-    		for (int m=i; m<=0; m--)
-    			valDisplays.get(m).setText("");	
+    		if (_repMode == DivField.COMPLEXF | _repMode == DivField.COMPLEXD)
+    			valDisplays.get(1).setText("");
+    		valDisplays.get(0).setText("");
     	}
     	else if (_GUI._GeometryDisplay.getNyadListSize() == 0)
     	{
@@ -193,14 +192,14 @@ import javax.swing.border.EtchedBorder;
 	    								_repMode = DivField.REALF;
 	    								_valsF = new float[1];
 	    								_valsD = null;
-	    								valDisplays = new ArrayList<JFormattedTextField>(1);
+	    								valDisplays = new ArrayList<JTextField>(1);
 	    							}
 						    		if (_repMode == DivField.COMPLEXD)	
 						    		{
 						    			_repMode = DivField.COMPLEXF;
 						    			_valsF = new float[2];
 						    			_valsD = null;
-						    			valDisplays = new ArrayList<JFormattedTextField>(2);
+						    			valDisplays = new ArrayList<JTextField>(2);
 						    		}
 						    		makeDouble.setEnabled(true);
 						    		makeFloat.setEnabled(false);
@@ -210,14 +209,14 @@ import javax.swing.border.EtchedBorder;
 					    				_repMode = DivField.REALD;
 					    				_valsF = null;
 					    				_valsD = new double[1];
-					    				valDisplays = new ArrayList<JFormattedTextField>(1);
+					    				valDisplays = new ArrayList<JTextField>(1);
 					    			}
 						    		if (_repMode == DivField.COMPLEXF)	
 						    		{
 						    			_repMode = DivField.COMPLEXD;
 						    			_valsF = null;
 						    			_valsD = new double[2];
-						    			valDisplays = new ArrayList<JFormattedTextField>(2);
+						    			valDisplays = new ArrayList<JTextField>(2);
 						    		}
 						    		makeFloat.setEnabled(true);
 					    			makeDouble.setEnabled(false);
@@ -234,7 +233,7 @@ import javax.swing.border.EtchedBorder;
 						    			_valsF = null;
 						    			_valsD = new double[1];
 						    		}
-						    		valDisplays = new ArrayList<JFormattedTextField>(1);
+						    		valDisplays = new ArrayList<JTextField>(1);
 						    		makeComplex.setEnabled(true);
 					    			makeReal.setEnabled(false);
 									break;
@@ -250,24 +249,20 @@ import javax.swing.border.EtchedBorder;
 						    			_valsF = null;
 						    			_valsD = new double[2];
 						    		}
-						    		valDisplays = new ArrayList<JFormattedTextField>(2);
+						    		valDisplays = new ArrayList<JTextField>(2);
 						    		makeReal.setEnabled(true);
 					    			makeComplex.setEnabled(false);
 	    	}
 	    	createDisplaysLayout();
 	    	add(displays, BorderLayout.CENTER);
 	    	add(clear, BorderLayout.LINE_END);
-	    	revalidate();
-	    	//repaint();
+	    	//revalidate();
+
 	    	_GUI.pack();
     	}
     	else _GUI._StatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");	
     }
   
-    public String	getRepMode()
-    {
-    	return _repMode;
-    }
     public String	getImgText()
     {
     	return valDisplays.get(1).getText();
@@ -275,6 +270,10 @@ import javax.swing.border.EtchedBorder;
     public String	getRealText()
     {
     	return valDisplays.get(0).getText();
+    }
+    public String	getRepMode()
+    {
+    	return _repMode;
     }
     /**
      * This 'set' function simply adjusts the displayed complex number by accepting an input
@@ -424,6 +423,59 @@ import javax.swing.border.EtchedBorder;
 	{
 		valDisplays.get(0).setText((new StringBuffer(pWhat)).toString());
 	}
+	private void createControlLayout()
+	{
+		buttons = new JPanel();
+		buttons.setBackground(_backColor);
+		buttons.setLayout(new GridBagLayout());
+		buttons.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+	
+	 	GridBagConstraints c1 = new GridBagConstraints();
+    	c1.insets = new Insets(0, 0, 0, 0);
+    	c1.fill=GridBagConstraints.BOTH;
+    	c1.anchor=GridBagConstraints.WEST;
+    	
+    	c1.gridx = 0;
+    	c1.gridy = 0;
+    	c1.weightx=0;
+    	c1.weighty=0;
+    	
+    	makeReal = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Real")));
+    	makeReal.setActionCommand("makeReal");
+    	makeReal.setToolTipText("use real numbers");
+    	makeReal.setPreferredSize(squareMedium);
+    	makeReal.setBorder(BorderFactory.createEtchedBorder(0));
+    	makeReal.addActionListener(this);
+    	buttons.add(makeReal, c1);
+    	c1.gridx++;
+    	
+    	makeComplex = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Complex")));
+    	makeComplex.setActionCommand("makeComplex");
+    	makeComplex.setToolTipText("use complex numbers");
+    	makeComplex.setPreferredSize(squareMedium);
+    	makeComplex.setBorder(BorderFactory.createEtchedBorder(0));
+    	makeComplex.addActionListener(this);
+    	buttons.add(makeComplex, c1);
+    	c1.gridx = 0;
+    	c1.gridy++;
+
+    	makeFloat = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Float")));
+    	makeFloat.setActionCommand("makeFloat");
+    	makeFloat.setToolTipText("use floating precision");
+    	makeFloat.setPreferredSize(squareMedium);
+    	makeFloat.setBorder(BorderFactory.createEtchedBorder(0));
+    	makeFloat.addActionListener(this);
+    	buttons.add(makeFloat, c1);
+    	c1.gridx++;
+    	
+    	makeDouble = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Double")));
+    	makeDouble.setActionCommand("makeDouble");
+    	makeDouble.setToolTipText("use double precision");
+    	makeDouble.setPreferredSize(squareMedium);
+    	makeDouble.setBorder(BorderFactory.createEtchedBorder(0));
+    	makeDouble.addActionListener(this);
+    	buttons.add(makeDouble, c1);
+	}
 	private void createDisplaysLayout()
 	{
 		displays = new JPanel();
@@ -491,16 +543,17 @@ import javax.swing.border.EtchedBorder;
     	displays.add(fieldDisplay, c2);
 		c2.gridx++;
 		
-		NumberFormat amountFormat = NumberFormat.getNumberInstance();
+		//NumberFormat amountFormat = NumberFormat.getNumberInstance();
+		//amountFormat.setGroupingUsed(false);
 		short m;
-		JFormattedTextField tSpot;
+		JTextField tSpot;
 		switch (_repMode)
 		{
 			case DivField.REALF: 	for (m=0; m<_valsF.length; m++)
 									{
-										tSpot = new JFormattedTextField(amountFormat);
-										tSpot.setColumns(11);
-							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
+										tSpot = new JTextField();
+										tSpot.setColumns(FieldDisplayArea.FLOATSIZE);
+							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
 							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 							    		valDisplays.add(m, tSpot);
 							    		displays.add(tSpot, c2);
@@ -511,9 +564,9 @@ import javax.swing.border.EtchedBorder;
 									break;
 			case DivField.REALD: 	for (m=0; m<_valsD.length; m++)
 									{
-										tSpot = new JFormattedTextField(amountFormat);
-										tSpot.setColumns(14);
-							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
+										tSpot = new JTextField();
+										tSpot.setColumns(FieldDisplayArea.DOUBLESIZE);
+							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
 							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 							    		valDisplays.add(m, tSpot);
 							    		displays.add(tSpot, c2);
@@ -524,9 +577,9 @@ import javax.swing.border.EtchedBorder;
 									break;
 			case DivField.COMPLEXF:	for (m=0; m<_valsF.length; m++)
 									{
-										tSpot = new JFormattedTextField(amountFormat);
-										tSpot.setColumns(11);
-							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
+										tSpot = new JTextField();
+										tSpot.setColumns(FieldDisplayArea.FLOATSIZE);
+							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
 							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 							    		valDisplays.add(m, tSpot);
 							    		displays.add(tSpot, c2);
@@ -537,9 +590,9 @@ import javax.swing.border.EtchedBorder;
 									break;
 			case DivField.COMPLEXD:	for (m=0; m<_valsD.length; m++)
 									{
-										tSpot = new JFormattedTextField(amountFormat);
-										tSpot.setColumns(14);
-							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
+										tSpot = new JTextField();
+										tSpot.setColumns(FieldDisplayArea.DOUBLESIZE);
+							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
 							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 							    		valDisplays.add(m, tSpot);
 							    		displays.add(tSpot, c2);
@@ -549,59 +602,6 @@ import javax.swing.border.EtchedBorder;
 									makeDouble.setEnabled(false);
 		}
 		
-	}
-	private void createControlLayout()
-	{
-		buttons = new JPanel();
-		buttons.setBackground(_backColor);
-		buttons.setLayout(new GridBagLayout());
-		buttons.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-	
-	 	GridBagConstraints c1 = new GridBagConstraints();
-    	c1.insets = new Insets(0, 0, 0, 0);
-    	c1.fill=GridBagConstraints.BOTH;
-    	c1.anchor=GridBagConstraints.WEST;
-    	
-    	c1.gridx = 0;
-    	c1.gridy = 0;
-    	c1.weightx=0;
-    	c1.weighty=0;
-    	
-    	makeReal = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Real")));
-    	makeReal.setActionCommand("makeReal");
-    	makeReal.setToolTipText("use real numbers");
-    	makeReal.setPreferredSize(squareMedium);
-    	makeReal.setBorder(BorderFactory.createEtchedBorder(0));
-    	makeReal.addActionListener(this);
-    	buttons.add(makeReal, c1);
-    	c1.gridx++;
-    	
-    	makeComplex = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Complex")));
-    	makeComplex.setActionCommand("makeComplex");
-    	makeComplex.setToolTipText("use complex numbers");
-    	makeComplex.setPreferredSize(squareMedium);
-    	makeComplex.setBorder(BorderFactory.createEtchedBorder(0));
-    	makeComplex.addActionListener(this);
-    	buttons.add(makeComplex, c1);
-    	c1.gridx = 0;
-    	c1.gridy++;
-
-    	makeFloat = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Float")));
-    	makeFloat.setActionCommand("makeFloat");
-    	makeFloat.setToolTipText("use floating precision");
-    	makeFloat.setPreferredSize(squareMedium);
-    	makeFloat.setBorder(BorderFactory.createEtchedBorder(0));
-    	makeFloat.addActionListener(this);
-    	buttons.add(makeFloat, c1);
-    	c1.gridx++;
-    	
-    	makeDouble = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Double")));
-    	makeDouble.setActionCommand("makeDouble");
-    	makeDouble.setToolTipText("use double precision");
-    	makeDouble.setPreferredSize(squareMedium);
-    	makeDouble.setBorder(BorderFactory.createEtchedBorder(0));
-    	makeDouble.addActionListener(this);
-    	buttons.add(makeDouble, c1);
 	}
 	
     private void createLayout()

@@ -57,16 +57,20 @@ import java.util.*;
 
  public class MonadPanel extends JPanel implements ActionListener, FocusListener
 {
+	public static final			int								COEFF_SIZE = 10;
+	public static final			String							ORIENT_HORIZONTAL = "Horizontal";
+	public static final			String							ORIENT_VERTICAL = "Vertical";
+	
 	public						CladosCalculator				_GUI;
 	private		final			Color							_backColor = new Color(212, 212, 192);
 	private						ArrayList<FieldDisplayArea>		_jCoeffs;
 	private						JPanel 							_monadCoeffPanel;
 	private						JPanel 							_monadReferences;
-	private						MonadRealF						_repMonadF;
-	private						MonadRealD						_repMonadD;
-	private						MonadComplexF					_repMonadCF;
-	private						MonadComplexD					_repMonadCD;
 	private						String							_repMode;
+	private						MonadComplexD					_repMonadCD;
+	private						MonadComplexF					_repMonadCF;
+	private						MonadRealD						_repMonadD;
+	private						MonadRealF						_repMonadF;
 	private		final			Color							_unlockColor = new Color(255, 192, 192);
 	private						JPanel 							monadAlterControls;
 	private						JPanel 							monadEditControls;
@@ -87,14 +91,14 @@ import java.util.*;
 	protected					JButton							dualLeft;
 	protected					JButton							dualRight;
 	protected					JTextField						foot=new JTextField(10);
-	protected					JTextField						frame=new JTextField(20);
+	protected					JTextField						frame=new JTextField(16);
 	protected					JButton							gradeCrop;
 	protected					JButton							gradeCut;
 	protected					JTextField						gradeKey=new JTextField(10);
 	protected					ImageIcon						iconHorizontal;
 	protected					ImageIcon						iconVertical;
 	protected					JButton							invertMonad; //This is NOT multiplicative inverse
-	protected					JTextField						name=new JTextField(20);
+	protected					JTextField						name=new JTextField(16);
 	protected					JButton							normalizeMonad;
 	protected					JButton							reverseMonad;
 	protected					JButton							scaleMonad;
@@ -116,7 +120,7 @@ import java.util.*;
 		   throw new UtilitiesException("A GUI must be passed to a MonadPanel");
 	   _GUI=pGUI;
 	   
-	   name.setText("__c");
+	   name.setText("tablePlace");
 	   aname.setText(_GUI.IniProps.getProperty("Desktop.Default.AlgebraName"));
 	   frame.setText(_GUI.IniProps.getProperty("Desktop.Default.FrameName"));
 	   foot.setText(_GUI.IniProps.getProperty("Desktop.Default.FootName"));
@@ -131,92 +135,49 @@ import java.util.*;
     }
 
    /**
-    * The MonadPanel class is intended to hold a single Monad and act as its GUI.
-    * This constructor is the base one.
-    * @param pGUI			
-    * 	CladosCalculator
-    * This is just a reference to the owner application so error messages can be presented.
-    * @param pM
-    * 	MonadRealF
-    * This is a reference to the monad to be displayed and manipulated.
-    * @throws UtilitiesException
-    * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
-    */
-    public MonadPanel(	CladosCalculator pGUI,
-    					MonadRealF pM)
-    		throws 		UtilitiesException			
-    {
+   * The MonadPanel class is intended to hold a single Monad and act as its GUI.
+   * This constructor is the base one.
+   * @param pGUI			
+   * 	CladosCalculator
+   * This is just a reference to the owner application so error messages can be presented.
+   * @param pM
+   * 	MonadComplexD
+   * This is a reference to the monad to be displayed and manipulated.
+   * @throws UtilitiesException
+   * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
+   */
+     public MonadPanel(		CladosCalculator pGUI,
+     						MonadComplexD pM)
+     			throws 		UtilitiesException			
+     {
     	super();
-    	useFullPanel=true;
-    	
-    	if (pGUI==null)
-    		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
-    	_GUI=pGUI;
-    	
-    	if (pM==null)
-    		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
-    	_repMonadF=pM;
-    	_repMode=DivField.REALF;
-    	
-    	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
-    	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
-    	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
-   
+       	useFullPanel=true;
+       	
+       	if (pGUI==null)
+       		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
+       	_GUI=pGUI;
+       	
+       	if (pM==null)
+       		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
+       	_repMonadCD=pM;
+       	_repMode=DivField.COMPLEXD;
+       	
+       	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
+       	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
+       	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
+    
         setReferences();
-        		
+           		
         setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         setBackground(_backColor);
         setLayout(new BorderLayout());
-       
+          
         createCoeffLayout();
         createReferenceLayout();
         createEditLayout();
         createManagementLayout();
-    }
+     }
     /**
-     * The MonadPanel class is intended to hold a single Monad and act as its GUI.
-     * This constructor is the base one.
-     * @param pGUI			
-     * 	CladosCalculator
-     * This is just a reference to the owner application so error messages can be presented.
-     * @param pM
-     * 	MonadRealD
-     * This is a reference to the monad to be displayed and manipulated.
-     * @throws UtilitiesException
-     * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
-     */
-       public MonadPanel(	CladosCalculator pGUI,
-       						MonadRealD pM)
-       			throws 		UtilitiesException			
-       {
-	       	super();
-	       	useFullPanel=true;
-	       	
-	       	if (pGUI==null)
-	       		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
-	       	_GUI=pGUI;
-	       	
-	       	if (pM==null)
-	       		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
-	       	_repMonadD=pM;
-	       	_repMode=DivField.REALD;
-	       	
-	       	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
-	       	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
-	       	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
-     
-	        setReferences();
-	           		
-	        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-	        setBackground(_backColor);
-	        setLayout(new BorderLayout());
-	          
-	        createCoeffLayout();
-	        createReferenceLayout();
-	        createEditLayout();
-	        createManagementLayout();
-       }
-       /**
         * The MonadPanel class is intended to hold a single Monad and act as its GUI.
         * This constructor is the base one.
         * @param pGUI			
@@ -259,49 +220,92 @@ import java.util.*;
    	        createEditLayout();
    	        createManagementLayout();
           }
+       /**
+     * The MonadPanel class is intended to hold a single Monad and act as its GUI.
+     * This constructor is the base one.
+     * @param pGUI			
+     * 	CladosCalculator
+     * This is just a reference to the owner application so error messages can be presented.
+     * @param pM
+     * 	MonadRealD
+     * This is a reference to the monad to be displayed and manipulated.
+     * @throws UtilitiesException
+     * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
+     */
+       public MonadPanel(	CladosCalculator pGUI,
+       						MonadRealD pM)
+       			throws 		UtilitiesException			
+       {
+	       	super();
+	       	useFullPanel=true;
+	       	
+	       	if (pGUI==null)
+	       		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
+	       	_GUI=pGUI;
+	       	
+	       	if (pM==null)
+	       		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
+	       	_repMonadD=pM;
+	       	_repMode=DivField.REALD;
+	       	
+	       	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
+	       	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
+	       	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
+     
+	        setReferences();
+	           		
+	        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+	        setBackground(_backColor);
+	        setLayout(new BorderLayout());
+	          
+	        createCoeffLayout();
+	        createReferenceLayout();
+	        createEditLayout();
+	        createManagementLayout();
+       }
           /**
-           * The MonadPanel class is intended to hold a single Monad and act as its GUI.
-           * This constructor is the base one.
-           * @param pGUI			
-           * 	CladosCalculator
-           * This is just a reference to the owner application so error messages can be presented.
-           * @param pM
-           * 	MonadComplexD
-           * This is a reference to the monad to be displayed and manipulated.
-           * @throws UtilitiesException
-           * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
-           */
-             public MonadPanel(		CladosCalculator pGUI,
-             						MonadComplexD pM)
-             			throws 		UtilitiesException			
-             {
-            	super();
-       	       	useFullPanel=true;
-       	       	
-       	       	if (pGUI==null)
-       	       		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
-       	       	_GUI=pGUI;
-       	       	
-       	       	if (pM==null)
-       	       		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
-       	       	_repMonadCD=pM;
-       	       	_repMode=DivField.COMPLEXD;
-       	       	
-       	       	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
-       	       	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
-       	       	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
-            
-       	        setReferences();
-       	           		
-       	        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-       	        setBackground(_backColor);
-       	        setLayout(new BorderLayout());
-       	          
-       	        createCoeffLayout();
-       	        createReferenceLayout();
-       	        createEditLayout();
-       	        createManagementLayout();
-             }
+		    * The MonadPanel class is intended to hold a single Monad and act as its GUI.
+		    * This constructor is the base one.
+		    * @param pGUI			
+		    * 	CladosCalculator
+		    * This is just a reference to the owner application so error messages can be presented.
+		    * @param pM
+		    * 	MonadRealF
+		    * This is a reference to the monad to be displayed and manipulated.
+		    * @throws UtilitiesException
+		    * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
+		    */
+		    public MonadPanel(	CladosCalculator pGUI,
+		    					MonadRealF pM)
+		    		throws 		UtilitiesException			
+		    {
+		    	super();
+		    	useFullPanel=true;
+		    	
+		    	if (pGUI==null)
+		    		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
+		    	_GUI=pGUI;
+		    	
+		    	if (pM==null)
+		    		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
+		    	_repMonadF=pM;
+		    	_repMode=DivField.REALF;
+		    	
+		    	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
+		    	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
+		    	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
+		   
+		        setReferences();
+		        		
+		        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+		        setBackground(_backColor);
+		        setLayout(new BorderLayout());
+		       
+		        createCoeffLayout();
+		        createReferenceLayout();
+		        createEditLayout();
+		        createManagementLayout();
+		    }
     
     @Override
     public void 	actionPerformed(ActionEvent event)
@@ -638,49 +642,6 @@ import java.util.*;
 		}
     }
 
-    private void	createInitCoeffList() 
-    		throws UtilitiesException // Just toss it upstream to be considered there.
-    {
-    	
-    		short j=0;
-    		FieldDisplayArea tSpot;
-    		switch (_repMode)
-    		{
-    			case DivField.REALF: 	_jCoeffs=new ArrayList<FieldDisplayArea>(_repMonadF.getAlgebra().getGProduct().getBladeCount());
-						    			for (j=0; j<_repMonadF.getAlgebra().getGProduct().getBladeCount(); j++)
-						    	    	{
-						    	    		tSpot = new FieldDisplayArea(RealF.copyOf(_repMonadF.getCoeff(j)));
-						    	    		tSpot.addFocusListener(this);
-						    	    		_jCoeffs.add(j, tSpot);
-						    	    	}
-    									break;
-    			case DivField.REALD:	_jCoeffs=new ArrayList<FieldDisplayArea>(_repMonadD.getAlgebra().getGProduct().getBladeCount());
-						    			for (j=0; j<_repMonadD.getAlgebra().getGProduct().getBladeCount(); j++)
-						    	    	{
-						    	    		tSpot = new FieldDisplayArea(RealD.copyOf(_repMonadD.getCoeff(j)));
-						    	    		tSpot.addFocusListener(this);
-						    	    		_jCoeffs.add(j, tSpot);
-						    	    	}
-    									break;
-    			case DivField.COMPLEXF: _jCoeffs=new ArrayList<FieldDisplayArea>(_repMonadCF.getAlgebra().getGProduct().getBladeCount());
-						    			for (j=0; j<_repMonadCF.getAlgebra().getGProduct().getBladeCount(); j++)
-						    	    	{
-						    	    		tSpot = new FieldDisplayArea(ComplexF.copyOf(_repMonadCF.getCoeff(j)));
-						    	    		tSpot.addFocusListener(this);
-						    	    		_jCoeffs.add(j, tSpot);
-						    	    	}
-    									break;
-    			case DivField.COMPLEXD: _jCoeffs=new ArrayList<FieldDisplayArea>(_repMonadCD.getAlgebra().getGProduct().getBladeCount());
-						    			for (j=0; j<_repMonadCD.getAlgebra().getGProduct().getBladeCount(); j++)
-						    	    	{
-						    	    		tSpot = new FieldDisplayArea(ComplexD.copyOf(_repMonadCD.getCoeff(j)));
-						    	    		tSpot.addFocusListener(this);
-						    	    		_jCoeffs.add(j, tSpot);
-						    	    	}
-    		}	
-    	
-    }
-    
     private void 	createCoeffLayout() 
     		throws UtilitiesException	// Toss it upstream to the constructor to be handed there.
     {		
@@ -706,7 +667,7 @@ import java.util.*;
     	cn1.ipadx=0;
     	cn1.ipady=0;
     		
-    	if (orient.equals("Vertical"))
+    	if (orient.equals(MonadPanel.ORIENT_VERTICAL))
     	{
     		short j=0;
     		short k=0;
@@ -717,7 +678,7 @@ import java.util.*;
     			case DivField.REALF:	for (j=0; j<_repMonadF.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.CENTER);
-						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
 						        			_monadCoeffPanel.add(headLabel, cn1);
 						        			cn1.gridy++;
 						        			
@@ -735,7 +696,7 @@ import java.util.*;
     			case DivField.REALD:	for (j=0; j<_repMonadD.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.CENTER);
-						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
 						        			_monadCoeffPanel.add(headLabel, cn1);
 						        			cn1.gridy++;
 						        			
@@ -753,7 +714,7 @@ import java.util.*;
     			case DivField.COMPLEXF:	for (j=0; j<_repMonadCF.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.CENTER);
-						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
 						        			_monadCoeffPanel.add(headLabel, cn1);
 						        			cn1.gridy++;
 						        			
@@ -771,7 +732,7 @@ import java.util.*;
     			case DivField.COMPLEXD:	for (j=0; j<_repMonadCD.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.CENTER);
-						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
 						        			_monadCoeffPanel.add(headLabel, cn1);
 						        			cn1.gridy++;
 						        			
@@ -788,7 +749,7 @@ import java.util.*;
     		}
     		
     	}
-    	if (orient.equals("Horizontal"))
+    	if (orient.equals(MonadPanel.ORIENT_HORIZONTAL))
     	{
     		short j=0;
     		short k=0;
@@ -799,7 +760,7 @@ import java.util.*;
     			case DivField.REALF:	for (j=0; j<_repMonadF.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.RIGHT);
-						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
 						        			_monadCoeffPanel.add(headLabel, cn1);
 						        			cn1.gridx++;
 						        			
@@ -817,7 +778,7 @@ import java.util.*;
     			case DivField.REALD:	for (j=0; j<_repMonadD.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.RIGHT);
-						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
 						        			_monadCoeffPanel.add(headLabel, cn1);
 						        			cn1.gridx++;
 						        			
@@ -835,7 +796,7 @@ import java.util.*;
     			case DivField.COMPLEXF:	for (j=0; j<_repMonadCF.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.RIGHT);
-						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
 						        			_monadCoeffPanel.add(headLabel, cn1);
 						        			cn1.gridx++;
 						        			
@@ -853,7 +814,7 @@ import java.util.*;
     			case DivField.COMPLEXD:	for (j=0; j<_repMonadCD.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.RIGHT);
-						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
 						        			_monadCoeffPanel.add(headLabel, cn1);
 						        			cn1.gridx++;
 						        			
@@ -872,7 +833,7 @@ import java.util.*;
     	add(_monadCoeffPanel, "Center");
     	setCoefficientDisplay();
     }
-
+    
     private void		createEditLayout()
     {
     	monadEditControls=new JPanel();
@@ -944,6 +905,49 @@ import java.util.*;
     	monadEditControls.add(new JLabel(), cn);
     	
     	add(monadEditControls, "West");
+    }
+
+    private void	createInitCoeffList() 
+    		throws UtilitiesException // Just toss it upstream to be considered there.
+    {
+    	
+    		short j=0;
+    		FieldDisplayArea tSpot;
+    		switch (_repMode)
+    		{
+    			case DivField.REALF: 	_jCoeffs=new ArrayList<FieldDisplayArea>(_repMonadF.getAlgebra().getGProduct().getBladeCount());
+						    			for (j=0; j<_repMonadF.getAlgebra().getGProduct().getBladeCount(); j++)
+						    	    	{
+						    	    		tSpot = new FieldDisplayArea(RealF.copyOf(_repMonadF.getCoeff(j)));
+						    	    		tSpot.addFocusListener(this);
+						    	    		_jCoeffs.add(j, tSpot);
+						    	    	}
+    									break;
+    			case DivField.REALD:	_jCoeffs=new ArrayList<FieldDisplayArea>(_repMonadD.getAlgebra().getGProduct().getBladeCount());
+						    			for (j=0; j<_repMonadD.getAlgebra().getGProduct().getBladeCount(); j++)
+						    	    	{
+						    	    		tSpot = new FieldDisplayArea(RealD.copyOf(_repMonadD.getCoeff(j)));
+						    	    		tSpot.addFocusListener(this);
+						    	    		_jCoeffs.add(j, tSpot);
+						    	    	}
+    									break;
+    			case DivField.COMPLEXF: _jCoeffs=new ArrayList<FieldDisplayArea>(_repMonadCF.getAlgebra().getGProduct().getBladeCount());
+						    			for (j=0; j<_repMonadCF.getAlgebra().getGProduct().getBladeCount(); j++)
+						    	    	{
+						    	    		tSpot = new FieldDisplayArea(ComplexF.copyOf(_repMonadCF.getCoeff(j)));
+						    	    		tSpot.addFocusListener(this);
+						    	    		_jCoeffs.add(j, tSpot);
+						    	    	}
+    									break;
+    			case DivField.COMPLEXD: _jCoeffs=new ArrayList<FieldDisplayArea>(_repMonadCD.getAlgebra().getGProduct().getBladeCount());
+						    			for (j=0; j<_repMonadCD.getAlgebra().getGProduct().getBladeCount(); j++)
+						    	    	{
+						    	    		tSpot = new FieldDisplayArea(ComplexD.copyOf(_repMonadCD.getCoeff(j)));
+						    	    		tSpot.addFocusListener(this);
+						    	    		_jCoeffs.add(j, tSpot);
+						    	    	}
+    		}	
+    	
     }
     
     private void 	createManagementLayout()
