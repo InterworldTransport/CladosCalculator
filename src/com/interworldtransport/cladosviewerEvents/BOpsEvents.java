@@ -69,7 +69,7 @@ public class BOpsEvents implements ActionListener
 		grade = new BOpsGradeEvents(		_GUIMenu.mniisGrade, this);
 		nilp = new BOpsNilpotentEvents(		_GUIMenu.mniisNilpotent, this);
 		idemp = new BOpsIdempotentEvents(	_GUIMenu.mniisIdempotent, this);
-		midemp = new BOpsMIdempotentEvents(	_GUIMenu.mniisIdempotentMultiple, this);
+		midemp = new BOpsMIdempotentEvents(	_GUIMenu.mniisScaledIdempotent, this);
 		equal = new BOpsEqualEvents(		_GUIMenu.mniisEqual, this);
 		zero = new BOpsZeroEvents(			_GUIMenu.mniisZero,	this);
 		rmatch = new BOpsRMatchEvents(		_GUIMenu.mniisReferenceMatch, this);

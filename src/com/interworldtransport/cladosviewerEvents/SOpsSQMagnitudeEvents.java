@@ -106,11 +106,11 @@ public class SOpsSQMagnitudeEvents implements ActionListener
 							    		_parent._GUI._FieldBar.setWhatDoubleR(scaleCD.getModulus());
 							    		_parent._GUI._FieldBar.setWhatDoubleI(0.0D);
         	}
-    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad SQmagnitude has been computed.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad SQmagnitude has been computed.\n");
     	} 
     	catch (CladosMonadException e) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad SQmagnitude has NOT been computed due to a Clados Monad Exception.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad SQmagnitude has NOT been computed due to a Clados Monad Exception.\n");
     		_parent._GUI._StatusBar.setStatusMsg(e.getSourceMessage());
     	}
     }

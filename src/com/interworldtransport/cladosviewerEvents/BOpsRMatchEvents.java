@@ -95,8 +95,8 @@ public class BOpsRMatchEvents implements ActionListener
     		case DivField.COMPLEXD: test = NyadComplexD.isStrongReferenceMatch(panelNyadSelected.getNyadCD(), panelNyadNext.getNyadCD());
     	}
     	if (test)
-			_parent._GUI._StatusBar.setStatusMsg("\tselected nyad and the next are STRONG REF MATCHED.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected nyad and the next are STRONG REF MATCHED.\n");
 		else
-			_parent._GUI._StatusBar.setStatusMsg("\tselected nyad and the next are NOT strong ref matched.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected nyad and the next are NOT strong ref matched.\n");
     }
  }

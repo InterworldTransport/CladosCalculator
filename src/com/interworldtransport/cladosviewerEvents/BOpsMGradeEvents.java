@@ -95,8 +95,8 @@ public class BOpsMGradeEvents implements ActionListener
     	}
 	
 		if (test)
-			_parent._GUI._StatusBar.setStatusMsg("\tselected monad is a multigrade.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is a multigrade.\n");
 		else
-			_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT multigrade.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is NOT multigrade.\n");
     }
  }

@@ -26,6 +26,9 @@ package com.interworldtransport.cladosviewer;
 
 import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosF.RealF;
+import com.interworldtransport.cladosG.MonadComplexD;
+import com.interworldtransport.cladosG.MonadComplexF;
+import com.interworldtransport.cladosG.MonadRealD;
 import com.interworldtransport.cladosG.MonadRealF;
 
 import com.interworldtransport.cladosG.NyadRealF;
@@ -51,6 +54,8 @@ import java.io.*;
  */
 public class CladosCalculator extends JFrame implements ActionListener
 {
+	private static final long serialVersionUID = 4368190040198207044L;
+
 	public static void main(String[] args)
 	{
 		//default string entries in case someone starts this without any arg's at all
@@ -76,67 +81,47 @@ public class CladosCalculator extends JFrame implements ActionListener
 		 fr.setVisible(true);
 	}
 	/**
-	 * The global button display panel for the application.
-	 * Located at the top of the GUI and intended for nyad management.
-	 */
-    private		JPanel				_ControlBar;
-	/**
 	 * The EventModel for the application.
 	 */
-	public		ViewerEventModel	_EventModel;
+    public		ViewerEventModel	_EventModel;
+	/**
+	 * The Field Display Panel for the application.
+	 * Located at the top of the GUI and intended for numeric inputs.
+	 */
+	public		FieldPanel			_FieldBar;
 	/**
 	 * The Center Display Panel for the application.
 	 * Located in the center of the GUI and intended for display panels.
 	 */
-	public		ViewerPanel			_GeometryDisplay;
-	    
-	/**
-	 * The in-window Menu for the application.
-	 */
-	public		ViewerMenu			_MenuBar;
+	public		ViewerPanel			_GeometryDisplay; 
 	/**
 	 * The Status Display Panel for the application.
 	 * Located at the bottom of the GUI and intended for status information.
 	 */
 	public		UtilityStatusBar	_StatusBar;
-	/**
-	 * The Field Display Panel for the application.
-	 * Located at the top of the GUI and intended for numeric inputs.
-	 */
-	public		FieldPanel		_FieldBar;
 	
-
-    public		JButton			isEqual;
-    public		JButton			isGrade;
-    public		JButton			isIdempotent;
-    public		JButton			isMIdempotent;
-    public		JButton			isMultiGrade;
-    public		JButton			isNilpotent;
-    /**
-	 * Buttons for use in the control bar for nyad management.    
-	 */
-    public		JButton			isRefMatch;
-    public		JButton			isZero;
-
-    public		JButton			whatGrade;
-    public		JButton			whatMagn;
-    public		JButton			whatSQMagn;
-
-    private		Color			_backColor = new Color(255, 255, 222);
-    
-    /*
-	 * 
-	 */
-    private		JFileChooser 	fc;
-    /*
-     * This FileWriter points to the actual save file for historical snapshot data
-	 */
-    private		FileWriter		saveItTo;
+	private	final Color				_backColor = new Color(255, 255, 222);
+	private		ViewerMenu			_MenuBar;
+	private		JButton				btnHasGrade;
+	private		JButton				btnIsEqual;
+	private		JButton				btnIsGrade;
+	private		JButton				btnIsIdempotent;
+	private		JButton				btnIsMultiGrade;
+	private		JButton				btnIsNilpotent;
+	private		JButton				btnIsRefMatch;
+	private		JButton				btnIsScaleIdempotent;
+	private		JButton				btnIsZero;
+	private		JButton				btnWhatGrade;
+	private		JButton				btnWhatMagn;
+	private		JButton				btnWhatSQMagn;
+    private		JFileChooser 		fc;
+    private		JPanel				pnlControlBar; // global button display for easy menu access
+    private		FileWriter			saveItTo;
 	/*
      * This is the properties object containing key/value pairs from the config file
      * and any system settings that might be useful.
      */
-    protected	Properties		IniProps;
+    protected	Properties			IniProps;
 
     /**
 	 * This is the main constructor the the Monad Viewer
@@ -174,24 +159,18 @@ public class CladosCalculator extends JFrame implements ActionListener
 	    Container cp=getContentPane();
 	    	
 	    _MenuBar=new ViewerMenu(this);
-	    setJMenuBar(_MenuBar);	//The Menu Bar is an element of the parent class JFrame
-	    _EventModel=new ViewerEventModel(_MenuBar);
+	    setJMenuBar(_MenuBar);						//The Menu Bar is an element of the parent class JFrame
+	    _EventModel=new ViewerEventModel(_MenuBar);	//EventModel relies on existance of _MenuBar
 	    	
-	    _StatusBar=new UtilityStatusBar(this);
+	    _StatusBar=new UtilityStatusBar(this);		//Next up because errors have to be reported somewhere.
 	    cp.add(_StatusBar, "South");
 	    	
-	    _ControlBar=new JPanel();
-	    _ControlBar.setLayout(new GridBagLayout());
-	    _ControlBar.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-	    _ControlBar.setBackground(_backColor);
-	    createTestControls();
-	    cp.add(_ControlBar,"West");
+
 	    	
-	    _GeometryDisplay=new ViewerPanel(this);
+	    _GeometryDisplay=new ViewerPanel(this);		//ViewerPanel next to display stuff from nyads and monads
 	    _GeometryDisplay.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 	    cp.add(_GeometryDisplay, "Center");
-	    
-
+	    											//FieldBar MUST follow ViewerPanel to make use of protonumbers
 	    int indxNPanelSelected = _GeometryDisplay.getPaneFocus();
     	if (indxNPanelSelected>=0) 
     	{
@@ -218,6 +197,12 @@ public class CladosCalculator extends JFrame implements ActionListener
 			cp.add(_FieldBar, "North");
     	}
 	    
+	    pnlControlBar=new JPanel();
+	    pnlControlBar.setLayout(new GridBagLayout());
+	    pnlControlBar.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+	    pnlControlBar.setBackground(_backColor);
+	    createTestControls();
+	    cp.add(pnlControlBar,"West");
 	    	
 	    fc = new JFileChooser();
 	    fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -248,7 +233,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     		_MenuBar.mniisIdempotent.doClick();
     	
     	if (command.equals("scaled idempotent"))
-    		_MenuBar.mniisIdempotentMultiple.doClick();
+    		_MenuBar.mniisScaledIdempotent.doClick();
     	
     	if (command.equals("is grade"))
     		_MenuBar.mniisGrade.doClick();
@@ -258,6 +243,9 @@ public class CladosCalculator extends JFrame implements ActionListener
     	
     	if (command.equals("is grade!"))
     		_MenuBar.mniisSGrade.doClick();
+    	
+    	if (command.equals("has grade"))
+    		_MenuBar.mnihasGrade.doClick();
     	
     	if (command.equals("magnitude of"))
     		_MenuBar.mniMagnitudeOf.doClick();
@@ -320,7 +308,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 		    		saveItTo.write("\r\n");
 		    		saveItTo.flush();
 		    		saveItTo.close();
-		    		_StatusBar.setStatusMsg("\tsnapshot of stack is saved.\n");
+		    		_StatusBar.setStatusMsg("Snapshot of stack is saved.\n");
 		    		
 		    		//Change the Snapshot property so it can be used for 'Save' next
 		    		//time.  No chooser dialog should be needed then.
@@ -352,8 +340,6 @@ public class CladosCalculator extends JFrame implements ActionListener
 		}
     }
 
-    
-    
     private void createTestControls()
     {
     	Dimension square = new Dimension(44,44);
@@ -370,173 +356,186 @@ public class CladosCalculator extends JFrame implements ActionListener
 		cn.gridheight=1;
 		cn.gridwidth=1;
 
-    	// button triple
-    	isRefMatch = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.RefMatch")));
-    	isRefMatch.setActionCommand("reference match");
-    	isRefMatch.setToolTipText("refernce Match Nyad Test");
-    	isRefMatch.setPreferredSize(square);
-    	isRefMatch.setBorder(BorderFactory.createEtchedBorder(0));
-    	isRefMatch.addActionListener(this);
-    	_ControlBar.add(isRefMatch, cn);
+    	// button double
+    	btnIsRefMatch = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.RefMatch")));
+    	btnIsRefMatch.setActionCommand("reference match");
+    	btnIsRefMatch.setToolTipText("refernce Match Nyad Test");
+    	btnIsRefMatch.setPreferredSize(square);
+    	btnIsRefMatch.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsRefMatch.addActionListener(this);
+    	pnlControlBar.add(btnIsRefMatch, cn);
     	cn.gridx++;
     	
-    	isEqual = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Equal")));
-    	isEqual.setActionCommand("equal");
-    	isEqual.setToolTipText("strong Equality Nyad Test");
-    	isEqual.setPreferredSize(square);
-    	isEqual.setBorder(BorderFactory.createEtchedBorder(0));
-    	isEqual.addActionListener(this);
-    	_ControlBar.add(isEqual, cn);
-    	cn.gridx++;
+    	btnIsEqual = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Equal")));
+    	btnIsEqual.setActionCommand("equal");
+    	btnIsEqual.setToolTipText("strong Equality Nyad Test");
+    	btnIsEqual.setPreferredSize(square);
+    	btnIsEqual.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsEqual.addActionListener(this);
+    	pnlControlBar.add(btnIsEqual, cn);
+    	cn.gridx = 0;
+    	cn.gridy++;
 
-    	isZero = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Zero")));
-    	isZero.setActionCommand("zero");
-    	isZero.setToolTipText("additive Identity (Zero) Monad Test");
-    	isZero.setPreferredSize(square);
-    	isZero.setBorder(BorderFactory.createEtchedBorder(0));
-    	isZero.addActionListener(this);
-    	_ControlBar.add(isZero, cn);
+    	// button double
+    	btnIsZero = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Zero")));
+    	btnIsZero.setActionCommand("zero");
+    	btnIsZero.setToolTipText("additive Identity (Zero) Monad Test");
+    	btnIsZero.setPreferredSize(square);
+    	btnIsZero.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsZero.addActionListener(this);
+    	pnlControlBar.add(btnIsZero, cn);
+    	cn.gridx++;
     	
+    	btnIsNilpotent = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Nilpotent")));
+    	btnIsNilpotent.setActionCommand("nilpotent");
+    	btnIsNilpotent.setToolTipText("nilpotent Monad Test");
+    	btnIsNilpotent.setPreferredSize(square);
+    	btnIsNilpotent.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsNilpotent.addActionListener(this);
+    	pnlControlBar.add(btnIsNilpotent, cn);
     	cn.gridx = 0;
     	cn.gridy++;
     	
-    	// button triple
-    	isMIdempotent = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.MIdempotent")));
-    	isMIdempotent.setActionCommand("scaled idempotent");
-    	isMIdempotent.setToolTipText("multiple of Idempotent Monad Test");
-    	isMIdempotent.setPreferredSize(square);
-    	isMIdempotent.setBorder(BorderFactory.createEtchedBorder(0));
-    	isMIdempotent.addActionListener(this);
-    	_ControlBar.add(isMIdempotent, cn);
+    	// button double
+    	btnIsIdempotent = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Idempotent")));
+    	btnIsIdempotent.setActionCommand("idempotent");
+    	btnIsIdempotent.setToolTipText("idempotent Monad Test");
+    	btnIsIdempotent.setPreferredSize(square);
+    	btnIsIdempotent.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsIdempotent.addActionListener(this);
+    	pnlControlBar.add(btnIsIdempotent, cn);  
     	cn.gridx++;
     	
-    	isIdempotent = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Idempotent")));
-    	isIdempotent.setActionCommand("idempotent");
-    	isIdempotent.setToolTipText("idempotent Monad Test");
-    	isIdempotent.setPreferredSize(square);
-    	isIdempotent.setBorder(BorderFactory.createEtchedBorder(0));
-    	isIdempotent.addActionListener(this);
-    	_ControlBar.add(isIdempotent, cn);
+    	btnIsScaleIdempotent = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.MIdempotent")));
+    	btnIsScaleIdempotent.setActionCommand("scaled idempotent");
+    	btnIsScaleIdempotent.setToolTipText("multiple of Idempotent Monad Test");
+    	btnIsScaleIdempotent.setPreferredSize(square);
+    	btnIsScaleIdempotent.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsScaleIdempotent.addActionListener(this);
+    	pnlControlBar.add(btnIsScaleIdempotent, cn);
+    	cn.gridx = 0;
+    	cn.gridy++;
+    	   	
+    	// button double
+    	btnWhatMagn = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Magnitude")));
+    	btnWhatMagn.setActionCommand("magnitude of");
+    	btnWhatMagn.setToolTipText("discover Monad Magnitude");
+    	btnWhatMagn.setPreferredSize(square);
+    	btnWhatMagn.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnWhatMagn.addActionListener(this);
+    	pnlControlBar.add(btnWhatMagn, cn);
     	cn.gridx++;
     	
-    	isNilpotent = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Nilpotent")));
-    	isNilpotent.setActionCommand("nilpotent");
-    	isNilpotent.setToolTipText("nilpotent Monad Test");
-    	isNilpotent.setPreferredSize(square);
-    	isNilpotent.setBorder(BorderFactory.createEtchedBorder(0));
-    	isNilpotent.addActionListener(this);
-    	_ControlBar.add(isNilpotent, cn);
+    	btnWhatSQMagn = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.SQMagnitude")));
+    	btnWhatSQMagn.setActionCommand("sqmagnitude of");
+    	btnWhatSQMagn.setToolTipText("discover Monad Magnitude^2");
+    	btnWhatSQMagn.setPreferredSize(square);
+    	btnWhatSQMagn.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnWhatSQMagn.addActionListener(this);
+    	pnlControlBar.add(btnWhatSQMagn, cn);
+    	cn.gridx = 0;
+    	cn.gridy++;
+
+    	// button double
+    	btnIsGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Grade")));
+    	btnIsGrade.setActionCommand("is grade");
+    	btnIsGrade.setToolTipText("is Grade() Monad Test");
+    	btnIsGrade.setPreferredSize(square);
+    	btnIsGrade.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsGrade.addActionListener(this);
+    	pnlControlBar.add(btnIsGrade, cn);
+    	cn.gridx++;
+    	
+    	btnIsMultiGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.MultiGrade")));
+    	btnIsMultiGrade.setActionCommand("is mgrade");
+    	btnIsMultiGrade.setToolTipText("is MultiGrade Monad Test");
+    	btnIsMultiGrade.setPreferredSize(square);
+    	btnIsMultiGrade.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsMultiGrade.addActionListener(this);
+    	pnlControlBar.add(btnIsMultiGrade, cn);
+       	cn.gridx = 0;
+    	cn.gridy++;
+    	
+    	btnHasGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.HasGrade")));
+    	btnHasGrade.setActionCommand("has grade");
+    	btnHasGrade.setToolTipText("Has Grade Monad Test");
+    	btnHasGrade.setPreferredSize(square);
+    	btnHasGrade.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnHasGrade.addActionListener(this);
+    	pnlControlBar.add(btnHasGrade, cn);
+    	cn.gridx++;
+    	
+    	btnWhatGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.WhatGrade")));
+    	btnWhatGrade.setActionCommand("is grade!");
+    	btnWhatGrade.setToolTipText("what Unique Grade Monad Test");
+    	btnWhatGrade.setPreferredSize(square);
+    	btnWhatGrade.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnWhatGrade.addActionListener(this);
+    	pnlControlBar.add(btnWhatGrade, cn);
     	
     	cn.gridx = 0;
     	cn.gridy++;
-    	//end button triple
-    	
-    	// button triple
-    	isGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Grade")));
-    	isGrade.setActionCommand("is grade");
-    	isGrade.setToolTipText("is Grade() Monad Test");
-    	isGrade.setPreferredSize(square);
-    	isGrade.setBorder(BorderFactory.createEtchedBorder(0));
-    	isGrade.addActionListener(this);
-    	_ControlBar.add(isGrade, cn);
-    	cn.gridx++;
-    	
-    	isMultiGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.MultiGrade")));
-    	isMultiGrade.setActionCommand("is mgrade");
-    	isMultiGrade.setToolTipText("is MultiGrade Monad Test");
-    	isMultiGrade.setPreferredSize(square);
-    	isMultiGrade.setBorder(BorderFactory.createEtchedBorder(0));
-    	isMultiGrade.addActionListener(this);
-    	_ControlBar.add(isMultiGrade, cn);
-    	cn.gridx++;
-    	
-    	whatGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.WhatGrade")));
-    	whatGrade.setActionCommand("is grade!");
-    	whatGrade.setToolTipText("what Unique Grade Monad Test");
-    	whatGrade.setPreferredSize(square);
-    	whatGrade.setBorder(BorderFactory.createEtchedBorder(0));
-    	whatGrade.addActionListener(this);
-    	_ControlBar.add(whatGrade, cn);
-    	
-    	cn.gridx = 0;
-    	cn.gridy++;
-    	//end button triple
-    	
-    	// button triple
-    	whatMagn = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Magnitude")));
-    	whatMagn.setActionCommand("magnitude of");
-    	whatMagn.setToolTipText("discover Monad Magnitude");
-    	whatMagn.setPreferredSize(square);
-    	whatMagn.setBorder(BorderFactory.createEtchedBorder(0));
-    	whatMagn.addActionListener(this);
-    	_ControlBar.add(whatMagn, cn);
-    	cn.gridx++;
-    	
-    	whatSQMagn = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.SQMagnitude")));
-    	whatSQMagn.setActionCommand("sqmagnitude of");
-    	whatSQMagn.setToolTipText("discover Monad Magnitude^2");
-    	whatSQMagn.setPreferredSize(square);
-    	whatSQMagn.setBorder(BorderFactory.createEtchedBorder(0));
-    	whatSQMagn.addActionListener(this);
-    	_ControlBar.add(whatSQMagn, cn);
-    	//cn.gridx++;
-   
-    	
-    	cn.gridx = 0;
-    	cn.gridy++;
-    	//end button triple
-    	
+
     	cn.weightx=1;
 		cn.weighty=1;
 		cn.gridheight=2;
-		cn.gridwidth=3;
+		cn.gridwidth=2;
 		cn.fill=GridBagConstraints.BOTH;
-    	_ControlBar.add(new JLabel(new ImageIcon(IniProps.getProperty("Desktop.Image.Header2"))),cn);
+    	pnlControlBar.add(new JLabel(new ImageIcon(IniProps.getProperty("Desktop.Image.Header2"))),cn);
     }
     
     private String makeSnapshotContent()
 	{
-		StringBuffer content=new StringBuffer();
-	
-		content.append("<Application Name=\"clados Calculator\", ");
-		content.append("Rights=\"Copyright 2020 Alfred Differ\", ");
-		content.append("Licensee=\"");
-		content.append(IniProps.getProperty("User.Name"));
-		content.append("\" />\r\n");
+    	if (_GeometryDisplay.getNyadListSize() == 0) return "Nothing in panels to save.";
+    	
+    	// TODO There should be two versions of this. One gives full XML strings. 
+    	// The second does the light weight version.
+    	
+		StringBuffer content=new StringBuffer("<Application Name=\"Clados Calculator\", ");
+		content.append("Licensee=\""+IniProps.getProperty("User.Name")+"\" />\r\n");
+		content.append("<NyadList size=\""+_GeometryDisplay.getNyadListSize()+"\">\r\n");
 
-		content.append("<NyadList size=\"");
-		content.append(_GeometryDisplay.getNyadListSize());
-		content.append("\">\r\n");
-
-		//for (int j=0; j<_GeometryDisplay.getNyadListSize(); j++)
 		for (NyadPanel tempNPN : _GeometryDisplay.getNyadPanels())
 		{
-			NyadRealF tempNp=tempNPN.getNyadRF();
-			    		
-			content.append("<Nyad");
-			content.append(" Name=\"");
-			content.append(tempNp.getName());
-			content.append("\", ");
-			
-			content.append(" Order=\"");
-			content.append(tempNp.getNyadOrder());
-			content.append("\", ");
-			
-			content.append(" Foot=\"");
-			content.append(tempNp.getFootPoint().getFootName());
-			
-			content.append("\">\r\n");
-			
-			content.append("<MonadList>\r\n");
-			//Start another loop here when more than one monad is in a nyad
-			for (int m=0; m<tempNp.getNyadOrder(); m++)
-				content.append(MonadRealF.toXMLString(tempNp.getMonadList(m)));
+			switch(tempNPN.getRepMode())
+			{
+				case DivField.REALF:	NyadRealF tempNF=tempNPN.getNyadRF();
+										content.append("<Nyad Name=\""+tempNF.getName()+"\", ");
+										content.append("Order=\""+tempNF.getNyadOrder()+"\", ");
+										content.append("Foot=\""+tempNF.getFootPoint().getFootName()+"\">\r\n");
+										content.append("<MonadList>\r\n");
+										for (int m=0; m<tempNF.getNyadOrder(); m++)
+											content.append(MonadRealF.toXMLFullString(tempNF.getMonadList(m)));
+										break;
+				case DivField.REALD:	NyadRealD tempND=tempNPN.getNyadRD();
+										content.append("<Nyad Name=\""+tempND.getName()+"\", ");
+										content.append("Order=\""+tempND.getNyadOrder()+"\", ");
+										content.append("Foot=\""+tempND.getFootPoint().getFootName()+"\">\r\n");
+										content.append("<MonadList>\r\n");
+										for (int m=0; m<tempND.getNyadOrder(); m++)
+											content.append(MonadRealD.toXMLFullString(tempND.getMonadList(m)));
+										break;
+				case DivField.COMPLEXF:	NyadComplexF tempNCF=tempNPN.getNyadCF();
+										content.append("<Nyad Name=\""+tempNCF.getName()+"\", ");
+										content.append("Order=\""+tempNCF.getNyadOrder()+"\", ");
+										content.append("Foot=\""+tempNCF.getFootPoint().getFootName()+"\">\r\n");
+										content.append("<MonadList>\r\n");
+										for (int m=0; m<tempNCF.getNyadOrder(); m++)
+											content.append(MonadComplexF.toXMLFullString(tempNCF.getMonadList(m)));
+										break;
+				case DivField.COMPLEXD:	NyadComplexD tempNCD=tempNPN.getNyadCD();
+										content.append("<Nyad Name=\""+tempNCD.getName()+"\", ");
+										content.append("Order=\""+tempNCD.getNyadOrder()+"\", ");
+										content.append("Foot=\""+tempNCD.getFootPoint().getFootName()+"\">\r\n");
+										content.append("<MonadList>\r\n");
+										for (int m=0; m<tempNCD.getNyadOrder(); m++)
+											content.append(MonadComplexD.toXMLFullString(tempNCD.getMonadList(m)));
+			}
 			content.append("</MonadList>\r\n");
 			content.append("</Nyad>\r\n");
 		}
 		content.append("</NyadList>\r\n");
-		String contentstring = new String(content);
-		return contentstring;
+		return content.toString();
 	}
 	
 	/**

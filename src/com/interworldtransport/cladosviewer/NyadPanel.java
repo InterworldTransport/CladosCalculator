@@ -50,35 +50,37 @@ import java.util.*;
  * @author Dr Alfred W Differ
  */
 
- public class NyadPanel extends JPanel implements ActionListener, FocusListener
+ public class NyadPanel extends JPanel implements ActionListener//, FocusListener
 {
+
+	private static final long 						serialVersionUID = -1379147617356173590L;
 	public					CladosCalculator		_GUI;
-	public					JTabbedPane				monadPanes;
-	public					NyadComplexD			repNyadCD;
-	public					NyadComplexF			repNyadCF;
-	public					NyadRealD				repNyadD;
-	public					NyadRealF				repNyadF;
-	private			final	Color					_backColor = new Color(212, 200, 212);
-	private					JPanel 					_controlPanel;
-	private					JPanel 					_controlPanel2;
-	private					JPanel 					_refPanel;
-	private			final	Color					_unlockColor = new Color(255, 192, 192);
-	private					JButton					copyButton;
-	private					JButton					editButton;
-	private					JButton					newMonad;
+	private					NyadComplexD			_repNyadCD;
+	private					NyadComplexF			_repNyadCF;
+	private					NyadRealD				_repNyadD;
+	private					NyadRealF				_repNyadF;
+	private					JButton					btnCopyMonad;
+	private					JButton					btnEditMonad;
+	private					JButton					btnNewMonad;
+	private					JButton					btnRemoveMonad;
+	private					JButton					btnSaveEdits;
+	private					JButton					btnSwapAbove;
+	private					JButton					btnSwapBelow;
+	private					JButton					btnUndoEdits;
+	private			final	Color					clrBackColor = new Color(212, 200, 212);
+	private			final	Color					clrUnlockColor = new Color(255, 192, 192);
 	private					JLabel					nyadFoot=new JLabel();
 	private					JTextField				nyadName=new JTextField(20);
 	private					JLabel					nyadOrder=new JLabel();
+	private					JPanel 					pnlControlPanel;
+	private					JPanel 					pnlControlPanel2;
+	private					JPanel 					pnlRefPanel;
 	private					JTextField				protoXML=new JTextField(40);
-	private					JButton					removeButton;
-	private					JButton					restoreButton;
-	private					JButton					saveButton;
 	private 		final	Dimension 				square = new Dimension(25,25);
-	private					JButton					swapAbove;
-	private					JButton					swapBelow;
 	private					ImageIcon				tabIcon;
-	protected				String					_repMode; 
-    protected				ArrayList<MonadPanel>	monadPanelList;
+	protected				String					_repMode;
+	protected				ArrayList<MonadPanel>	monadPanelList; 
+    protected				JTabbedPane				monadPanes;
     
     /**
      * The NyadPanel class is intended to be contain a cladosG Nyad in order to offer its parts
@@ -108,13 +110,13 @@ import java.util.*;
    		 
    	    if (pN==null)
    	      		throw new UtilitiesException("A Nyad must be passed to this MonadPanel constructor");
-   	    repNyadCD=pN;
+   	    _repNyadCD=pN;
    		_repMode=DivField.COMPLEXD;
    		 
    		setReferences();
    			 
    		setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-   		setBackground(_backColor);
+   		setBackground(clrBackColor);
    		setLayout(new BorderLayout());
 
    		tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabM"));
@@ -125,19 +127,19 @@ import java.util.*;
    			 
    		monadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
    		monadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-   		monadPanelList=new ArrayList<MonadPanel>(repNyadCD.getMonadList().size());
+   		monadPanelList=new ArrayList<MonadPanel>(_repNyadCD.getMonadList().size());
    			 
-   		for (short j=0; j<repNyadCD.getMonadList().size(); j++)
+   		for (short j=0; j<_repNyadCD.getMonadList().size(); j++)
    		{
    			String count =new StringBuffer().append(j).toString();
-   			monadPanelList.add(j, new MonadPanel(_GUI, repNyadCD.getMonadList(j)));
+   			monadPanelList.add(j, new MonadPanel(_GUI, _repNyadCD.getMonadList(j)));
    			JScrollPane tempPane=new JScrollPane(monadPanelList.get(j));
    			tempPane.setWheelScrollingEnabled(true);
    				 
    			monadPanes.addTab(	count, 
    						 		tabIcon, 
    						 		tempPane,
-   						 		repNyadCD.getName()+" | "+monadPanelList.get(j).getMonadCD().getName()
+   						 		_repNyadCD.getName()+" | "+monadPanelList.get(j).getMonadCD().getName()
    						 		);
    		}
    			 
@@ -172,13 +174,13 @@ import java.util.*;
    		 
    	    if (pN==null)
    	      		throw new UtilitiesException("A Nyad must be passed to this MonadPanel constructor");
-   	    repNyadCF=pN;
+   	    _repNyadCF=pN;
    		_repMode=DivField.COMPLEXF;
    		 
    		setReferences();
    			 
    		setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-   		setBackground(_backColor);
+   		setBackground(clrBackColor);
    		setLayout(new BorderLayout());
 
    		tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabM"));
@@ -189,19 +191,19 @@ import java.util.*;
    			 
    		monadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
    		monadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-   		monadPanelList=new ArrayList<MonadPanel>(repNyadCF.getMonadList().size());
+   		monadPanelList=new ArrayList<MonadPanel>(_repNyadCF.getMonadList().size());
    			 
-   		for (short j=0; j<repNyadCF.getMonadList().size(); j++)
+   		for (short j=0; j<_repNyadCF.getMonadList().size(); j++)
    		{
    			String count =new StringBuffer().append(j).toString();
-   			monadPanelList.add(j, new MonadPanel(_GUI, repNyadCF.getMonadList(j)));
+   			monadPanelList.add(j, new MonadPanel(_GUI, _repNyadCF.getMonadList(j)));
    			JScrollPane tempPane=new JScrollPane(monadPanelList.get(j));
    			tempPane.setWheelScrollingEnabled(true);
    				 
    			monadPanes.addTab(	count, 
    						 		tabIcon, 
    						 		tempPane,
-   						 		repNyadCF.getName()+" | "+monadPanelList.get(j).getMonadCF().getName()
+   						 		_repNyadCF.getName()+" | "+monadPanelList.get(j).getMonadCF().getName()
    						 		);
    		}
    			 
@@ -236,13 +238,13 @@ import java.util.*;
    		 
    	    if (pN==null)
    	      		throw new UtilitiesException("A Nyad must be passed to this MonadPanel constructor");
-   	    repNyadD=pN;
+   	    _repNyadD=pN;
    		_repMode=DivField.REALD;
    		 
    		setReferences();
    			 
    		setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-   		setBackground(_backColor);
+   		setBackground(clrBackColor);
    		setLayout(new BorderLayout());
 
    		tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabM"));
@@ -253,19 +255,19 @@ import java.util.*;
    			 
    		monadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
    		monadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-   		monadPanelList=new ArrayList<MonadPanel>(repNyadD.getMonadList().size());
+   		monadPanelList=new ArrayList<MonadPanel>(_repNyadD.getMonadList().size());
    			 
-   		for (short j=0; j<repNyadD.getMonadList().size(); j++)
+   		for (short j=0; j<_repNyadD.getMonadList().size(); j++)
    		{
    			String count =new StringBuffer().append(j).toString();
-   			monadPanelList.add(j, new MonadPanel(_GUI, repNyadD.getMonadList(j)));
+   			monadPanelList.add(j, new MonadPanel(_GUI, _repNyadD.getMonadList(j)));
    			JScrollPane tempPane=new JScrollPane(monadPanelList.get(j));
    			tempPane.setWheelScrollingEnabled(true);
    				 
    			monadPanes.addTab(	count, 
    						 		tabIcon, 
    						 		tempPane,
-   						 		repNyadD.getName()+" | "+monadPanelList.get(j).getMonadRD().getName()
+   						 		_repNyadD.getName()+" | "+monadPanelList.get(j).getMonadRD().getName()
    						 		);
    		}
    			 
@@ -300,13 +302,13 @@ import java.util.*;
 		 
 	    if (pN==null)
 	      		throw new UtilitiesException("A Nyad must be passed to this MonadPanel constructor");
-	    repNyadF=pN;
+	    _repNyadF=pN;
 		_repMode=DivField.REALF;
 		 
 		setReferences();
 			 
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		setBackground(_backColor);
+		setBackground(clrBackColor);
 		setLayout(new BorderLayout());
 
 		tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabM"));
@@ -317,19 +319,19 @@ import java.util.*;
 			 
 		monadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
 		monadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		monadPanelList=new ArrayList<MonadPanel>(repNyadF.getMonadList().size());
+		monadPanelList=new ArrayList<MonadPanel>(_repNyadF.getMonadList().size());
 			 
-		for (short j=0; j<repNyadF.getMonadList().size(); j++)
+		for (short j=0; j<_repNyadF.getMonadList().size(); j++)
 		{
 			String count =new StringBuffer().append(j).toString();
-			monadPanelList.add(j, new MonadPanel(_GUI, repNyadF.getMonadList(j)));
+			monadPanelList.add(j, new MonadPanel(_GUI, _repNyadF.getMonadList(j)));
 			JScrollPane tempPane=new JScrollPane(monadPanelList.get(j));
 			tempPane.setWheelScrollingEnabled(true);
 				 
 			monadPanes.addTab(	count, 
 						 		tabIcon, 
 						 		tempPane,
-						 		repNyadF.getName()+" | "+monadPanelList.get(j).getMonadRF().getName()
+						 		_repNyadF.getName()+" | "+monadPanelList.get(j).getMonadRF().getName()
 						 		);
 		}
 			 
@@ -350,13 +352,13 @@ import java.util.*;
     	{
     		switch (_repMode)
     		{
-	    		case DivField.REALF:	if (nyadName.getText() != repNyadF.getName()) repNyadF.setName(nyadName.getText());
+	    		case DivField.REALF:	if (nyadName.getText() != _repNyadF.getName()) _repNyadF.setName(nyadName.getText());
 	    								break;
-	    		case DivField.REALD:	if (nyadName.getText() != repNyadD.getName()) repNyadD.setName(nyadName.getText());
+	    		case DivField.REALD:	if (nyadName.getText() != _repNyadD.getName()) _repNyadD.setName(nyadName.getText());
 										break;
-	    		case DivField.COMPLEXF:	if (nyadName.getText() != repNyadCF.getName()) repNyadCF.setName(nyadName.getText());
+	    		case DivField.COMPLEXF:	if (nyadName.getText() != _repNyadCF.getName()) _repNyadCF.setName(nyadName.getText());
 										break;
-	    		case DivField.COMPLEXD:	if (nyadName.getText() != repNyadCD.getName()) repNyadCD.setName(nyadName.getText());
+	    		case DivField.COMPLEXD:	if (nyadName.getText() != _repNyadCD.getName()) _repNyadCD.setName(nyadName.getText());
     		}
     		command=".edit.";
     	}
@@ -377,19 +379,19 @@ import java.util.*;
     	
     	if (command=="edit")
     	{
-    		editButton.setActionCommand(".edit.");
-    		editButton.setToolTipText("end edits w/o save");
-    		saveButton.setEnabled(true);
-        	restoreButton.setEnabled(true);
+    		btnEditMonad.setActionCommand(".edit.");
+    		btnEditMonad.setToolTipText("end edits w/o save");
+    		btnSaveEdits.setEnabled(true);
+        	btnUndoEdits.setEnabled(true);
     		makeWritable();
     	}
     	
     	if (command==".edit.")
     	{
-    		editButton.setActionCommand("edit");
-        	editButton.setToolTipText("start edits");
-    		saveButton.setEnabled(false);
-        	restoreButton.setEnabled(false);
+    		btnEditMonad.setActionCommand("edit");
+        	btnEditMonad.setToolTipText("start edits");
+    		btnSaveEdits.setEnabled(false);
+        	btnUndoEdits.setEnabled(false);
     		makeNotWritable();
     	}
     }
@@ -451,22 +453,22 @@ import java.util.*;
 	    	case DivField.REALF:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
 	    												tabIcon, 
 	    												new JScrollPane(pMP),
-	    												repNyadF.getName()+" | "+pMP.getMonadRF().getName());
+	    												_repNyadF.getName()+" | "+pMP.getMonadRF().getName());
 	    							break;
 	    	case DivField.REALD:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
 														tabIcon, 
 														new JScrollPane(pMP),
-														repNyadD.getName()+" | "+pMP.getMonadRD().getName());
+														_repNyadD.getName()+" | "+pMP.getMonadRD().getName());
 	    							break;
 	    	case DivField.COMPLEXF:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
 														tabIcon, 
 														new JScrollPane(pMP),
-														repNyadCF.getName()+" | "+pMP.getMonadCF().getName());
+														_repNyadCF.getName()+" | "+pMP.getMonadCF().getName());
 									break;
 	    	case DivField.COMPLEXD:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
 														tabIcon, 
 														new JScrollPane(pMP),
-														repNyadCD.getName()+" | "+pMP.getMonadCD().getName());			
+														_repNyadCD.getName()+" | "+pMP.getMonadCD().getName());			
 	    }
 	    nyadOrder.setText((new StringBuffer()).append(next+1).toString());
     }
@@ -514,30 +516,31 @@ import java.util.*;
      * This is similar to what a monad panel does when it receives focus and updates the values 
      * in the FieldBar.
      */
-	@Override
-	public void focusGained(FocusEvent e) 
-	{
+	//@Override
+	//public void focusGained(FocusEvent e) 
+	/**{	
 		if (e.getComponent() instanceof NyadPanel)
 		{
 			switch (((NyadPanel)e.getComponent()).getRepMode())
 			{
-				case DivField.REALF:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadRF().getProto()).getFieldType());;
+				case DivField.REALF:	_GUI._FieldBar.setField((((NyadPanel) e.getComponent()).getNyadRF().getProto()));;
 										break;
-				case DivField.REALD:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadRD().getProto()).getFieldType());;
+				case DivField.REALD:	_GUI._FieldBar.setField((((NyadPanel) e.getComponent()).getNyadRD().getProto()));;
 										break;
-				case DivField.COMPLEXF:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadCF().getProto()).getFieldType());;
+				case DivField.COMPLEXF:	_GUI._FieldBar.setField((((NyadPanel) e.getComponent()).getNyadCF().getProto()));;
 										break;
-				case DivField.COMPLEXD:	_GUI._FieldBar.setFieldType((((NyadPanel) e.getComponent()).getNyadCD().getProto()).getFieldType());;
+				case DivField.COMPLEXD:	_GUI._FieldBar.setField((((NyadPanel) e.getComponent()).getNyadCD().getProto()));;
 			}
 		}
 		else _GUI._StatusBar.setStatusMsg("\n\nNot sure what got focus on the Nyad Panel, but it did.");
-	}
+		*/
+	//}
 
-    @Override
-	public void focusLost(FocusEvent e) 
-	{
-		;
-	}
+    //@Override
+	//public void focusLost(FocusEvent e) 
+	//{
+	//	;
+	//}
     public	int			getMonadListSize()
     {
 	    return monadPanelList.size();
@@ -554,19 +557,19 @@ import java.util.*;
     }
     public NyadComplexD getNyadCD()
     {
-	    return repNyadCD;
+	    return _repNyadCD;
     }
     public NyadComplexF	getNyadCF()
     {
-	    return repNyadCF;
+	    return _repNyadCF;
     }
     public NyadRealD 	getNyadRD()
     {
-	    return repNyadD;
+	    return _repNyadD;
     }
     public NyadRealF 	getNyadRF()
     {
-	    return repNyadF;
+	    return _repNyadF;
     }
     public int 			getOrder()
     {
@@ -583,8 +586,8 @@ import java.util.*;
     }
     public 	void 		makeNotWritable()
     {
-    	if (_refPanel!=null)
-    		_refPanel.setBackground(_backColor);
+    	if (pnlRefPanel!=null)
+    		pnlRefPanel.setBackground(clrBackColor);
     	nyadName.setEditable(false);
     	//_order.setEditable(false);
     	//_foot.setEditable(false);
@@ -595,8 +598,8 @@ import java.util.*;
      */
     public 	void 		makeWritable()
     {
-    	if (_refPanel!=null)
-    		_refPanel.setBackground(_unlockColor);
+    	if (pnlRefPanel!=null)
+    		pnlRefPanel.setBackground(clrUnlockColor);
     	nyadName.setEditable(true);
     }
     
@@ -641,7 +644,7 @@ import java.util.*;
 																					buildAlgRF,
 																					buildFrameName,
 																					focusMonadRF.getCoeff());
-										repNyadF.appendMonad(newMonadCopyRF);
+										_repNyadF.appendMonad(newMonadCopyRF);
 										addMonadPanel(newMonadCopyRF);
 										break;
 				case DivField.REALD:	MonadRealD focusMonadRD=getMonadPanel(getPaneFocus()).getMonadRD();
@@ -656,7 +659,7 @@ import java.util.*;
 																					buildAlgRD,
 																					buildFrameName,
 																					focusMonadRD.getCoeff());
-										repNyadD.appendMonad(newMonadCopyRD);
+										_repNyadD.appendMonad(newMonadCopyRD);
 										addMonadPanel(newMonadCopyRD);
 										break;
 				case DivField.COMPLEXF:	MonadComplexF focusMonadCF=getMonadPanel(getPaneFocus()).getMonadCF();
@@ -671,7 +674,7 @@ import java.util.*;
 																							buildAlgCF,
 																							buildFrameName,
 																							focusMonadCF.getCoeff());
-										repNyadCF.appendMonad(newMonadCopyCF);
+										_repNyadCF.appendMonad(newMonadCopyCF);
 										addMonadPanel(newMonadCopyCF);
 										break;
 				case DivField.COMPLEXD:	MonadComplexD focusMonadCD=getMonadPanel(getPaneFocus()).getMonadCD();
@@ -686,7 +689,7 @@ import java.util.*;
 																							buildAlgCD,
 																							buildFrameName,
 																							focusMonadCD.getCoeff());
-										repNyadCD.appendMonad(newMonadCopyCD);
+										_repNyadCD.appendMonad(newMonadCopyCD);
 										addMonadPanel(newMonadCopyCD);
 			}
 		}
@@ -707,12 +710,12 @@ import java.util.*;
     
     private 	void		createEditLayout()
     {
-    	_controlPanel=new JPanel();
-    	_controlPanel.setBackground(_backColor);
+    	pnlControlPanel=new JPanel();
+    	pnlControlPanel.setBackground(clrBackColor);
     	//if ((_GUI.IniProps.getProperty("Desktop.Default.Object")).equals("Monad")) return;
     	
-    	_controlPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-    	_controlPanel.setLayout(new GridBagLayout());
+    	pnlControlPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+    	pnlControlPanel.setLayout(new GridBagLayout());
     	
     	GridBagConstraints cn = new GridBagConstraints();
     	cn.insets = new Insets(0, 0, 0, 0);
@@ -720,56 +723,56 @@ import java.util.*;
     	cn.anchor=GridBagConstraints.NORTH;
     	makeNotWritable();
     	
-   	 	saveButton=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Save")));
-   	 	saveButton.setActionCommand("save");
-   	 	saveButton.setToolTipText("save edits to nyad");
-   	 	saveButton.setBorder(BorderFactory.createEtchedBorder(0));
-   	 	saveButton.setEnabled(false);
-	 	saveButton.setPreferredSize(square);
+   	 	btnSaveEdits=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Save")));
+   	 	btnSaveEdits.setActionCommand("save");
+   	 	btnSaveEdits.setToolTipText("save edits to nyad");
+   	 	btnSaveEdits.setBorder(BorderFactory.createEtchedBorder(0));
+   	 	btnSaveEdits.setEnabled(false);
+	 	btnSaveEdits.setPreferredSize(square);
    	 	
-   	 	editButton=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Edit")));
-    	editButton.setActionCommand("edit");
-    	editButton.setToolTipText("start edits on nyad");
-    	editButton.setBorder(BorderFactory.createEtchedBorder(0));
-	 	editButton.setPreferredSize(square);
+   	 	btnEditMonad=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Edit")));
+    	btnEditMonad.setActionCommand("edit");
+    	btnEditMonad.setToolTipText("start edits on nyad");
+    	btnEditMonad.setBorder(BorderFactory.createEtchedBorder(0));
+	 	btnEditMonad.setPreferredSize(square);
 	 	
-	 	restoreButton=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Restore")));
-    	restoreButton.setActionCommand("abort");
-    	restoreButton.setToolTipText("abandon edits to nyad");
-    	restoreButton.setBorder(BorderFactory.createEtchedBorder(0));
-    	restoreButton.setEnabled(false);
-	 	restoreButton.setPreferredSize(square);
+	 	btnUndoEdits=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Restore")));
+    	btnUndoEdits.setActionCommand("abort");
+    	btnUndoEdits.setToolTipText("abandon edits to nyad");
+    	btnUndoEdits.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnUndoEdits.setEnabled(false);
+	 	btnUndoEdits.setPreferredSize(square);
     	
     	cn.gridx = 0;
     	cn.gridy = 0;
     	cn.weightx=0;
     	cn.weighty=0;
     	
-    	editButton.addActionListener(this);
-    	_controlPanel.add(editButton, cn);
+    	btnEditMonad.addActionListener(this);
+    	pnlControlPanel.add(btnEditMonad, cn);
     	cn.gridy++;
     	
-    	saveButton.addActionListener(this);
-    	_controlPanel.add(saveButton, cn);
+    	btnSaveEdits.addActionListener(this);
+    	pnlControlPanel.add(btnSaveEdits, cn);
     	cn.gridy++;
     	
-    	restoreButton.addActionListener(this);
-    	_controlPanel.add(restoreButton, cn);
+    	btnUndoEdits.addActionListener(this);
+    	pnlControlPanel.add(btnUndoEdits, cn);
     	cn.gridy++;
     
     	cn.weighty=1;
-    	_controlPanel.add(new JLabel(), cn);
+    	pnlControlPanel.add(new JLabel(), cn);
     	
-    	add(_controlPanel, "West");
+    	add(pnlControlPanel, "West");
     }
     
     private 	void		createReferenceLayout()
     {
-    	_refPanel=new JPanel();
-    	_refPanel.setBackground(_backColor);
+    	pnlRefPanel=new JPanel();
+    	pnlRefPanel.setBackground(clrBackColor);
     	
-    	_refPanel.setBorder(BorderFactory.createTitledBorder("N"));
-    	_refPanel.setLayout(new GridBagLayout());
+    	pnlRefPanel.setBorder(BorderFactory.createTitledBorder("N"));
+    	pnlRefPanel.setLayout(new GridBagLayout());
     	
     	GridBagConstraints cn0 = new GridBagConstraints();
     	cn0.anchor=GridBagConstraints.WEST;
@@ -779,42 +782,42 @@ import java.util.*;
     	cn0.weightx=0;
     	cn0.weighty=0;
     	
-    	_refPanel.add(new JLabel("Name ", SwingConstants.RIGHT), cn0);
+    	pnlRefPanel.add(new JLabel("Name ", SwingConstants.RIGHT), cn0);
     	cn0.gridx++;
     	nyadName.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
     	cn0.weightx=1;
-    	_refPanel.add(nyadName, cn0);	
+    	pnlRefPanel.add(nyadName, cn0);	
     	cn0.gridx++;
     	
     	protoXML.setFont(new Font(Font.SERIF, Font.PLAIN, 8));
     	protoXML.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    	_refPanel.add(protoXML, cn0);
+    	pnlRefPanel.add(protoXML, cn0);
     	cn0.gridx++;
     	
     	cn0.weightx=0;
     	cn0.ipadx=20;
-    	_refPanel.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot"))), cn0);
+    	pnlRefPanel.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot"))), cn0);
     	cn0.gridx++;
     	nyadFoot.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
     	nyadFoot.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    	_refPanel.add(nyadFoot, cn0);
+    	pnlRefPanel.add(nyadFoot, cn0);
     	cn0.gridx++;
     	
-    	_refPanel.add(new JLabel("Order ", SwingConstants.RIGHT), cn0);
+    	pnlRefPanel.add(new JLabel("Order ", SwingConstants.RIGHT), cn0);
     	cn0.gridx++;
     	//_order.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
     	nyadOrder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    	_refPanel.add(nyadOrder, cn0);
+    	pnlRefPanel.add(nyadOrder, cn0);
     	
-    	add(_refPanel, "South");
+    	add(pnlRefPanel, "South");
     }
     
     private void createStackLayout()
     {
-    	_controlPanel2=new JPanel();
-    	_controlPanel2.setLayout(new GridBagLayout());
-    	_controlPanel2.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-    	_controlPanel2.setBackground(_backColor);
+    	pnlControlPanel2=new JPanel();
+    	pnlControlPanel2.setLayout(new GridBagLayout());
+    	pnlControlPanel2.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+    	pnlControlPanel2.setBackground(clrBackColor);
   	    
     	GridBagConstraints cn = new GridBagConstraints();
 		cn.insets = new Insets(0, 0, 0, 0);
@@ -827,55 +830,55 @@ import java.util.*;
 		cn.weighty=0;
 		cn.gridheight=1;
 		cn.gridwidth=1;
-    	swapBelow=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Push")));
-    	swapBelow.setActionCommand("push");
-    	swapBelow.setToolTipText("push monad down on stack");
-    	swapBelow.setPreferredSize(square);
-    	swapBelow.setBorder(BorderFactory.createEtchedBorder(0));
-    	swapBelow.addActionListener(this);
-    	_controlPanel2.add(swapBelow, cn);
+    	btnSwapBelow=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Push")));
+    	btnSwapBelow.setActionCommand("push");
+    	btnSwapBelow.setToolTipText("push monad down on stack");
+    	btnSwapBelow.setPreferredSize(square);
+    	btnSwapBelow.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnSwapBelow.addActionListener(this);
+    	pnlControlPanel2.add(btnSwapBelow, cn);
     	cn.gridy++;
     	
-    	swapAbove=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Pop")));
-    	swapAbove.setActionCommand("pop");
-    	swapAbove.setToolTipText("pop monad up on stack");
-    	swapAbove.setPreferredSize(square);
-    	swapAbove.setBorder(BorderFactory.createEtchedBorder(0));
-    	swapAbove.addActionListener(this);
-    	_controlPanel2.add(swapAbove, cn);
+    	btnSwapAbove=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Pop")));
+    	btnSwapAbove.setActionCommand("pop");
+    	btnSwapAbove.setToolTipText("pop monad up on stack");
+    	btnSwapAbove.setPreferredSize(square);
+    	btnSwapAbove.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnSwapAbove.addActionListener(this);
+    	pnlControlPanel2.add(btnSwapAbove, cn);
 		cn.gridy++;
     	
-		copyButton=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Copy")));
-   	 	copyButton.setActionCommand("copy");
-   	 	copyButton.setToolTipText("copy monad to end of stack");
-   	 	copyButton.setPreferredSize(square);
-   	 	copyButton.setBorder(BorderFactory.createEtchedBorder(0));
-   	 	copyButton.addActionListener(this);
-   	 	_controlPanel2.add(copyButton, cn);
+		btnCopyMonad=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Copy")));
+   	 	btnCopyMonad.setActionCommand("copy");
+   	 	btnCopyMonad.setToolTipText("copy monad to end of stack");
+   	 	btnCopyMonad.setPreferredSize(square);
+   	 	btnCopyMonad.setBorder(BorderFactory.createEtchedBorder(0));
+   	 	btnCopyMonad.addActionListener(this);
+   	 	pnlControlPanel2.add(btnCopyMonad, cn);
     	cn.gridy++;
     	
-    	removeButton=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Remove")));
-   	 	removeButton.setActionCommand("erase");
-   	 	removeButton.setToolTipText("remove monad from stack");
-   	 	removeButton.setPreferredSize(square);
-   	 	removeButton.setBorder(BorderFactory.createEtchedBorder(0));
-   	 	removeButton.addActionListener(this);
-    	_controlPanel2.add(removeButton, cn);
+    	btnRemoveMonad=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Remove")));
+   	 	btnRemoveMonad.setActionCommand("erase");
+   	 	btnRemoveMonad.setToolTipText("remove monad from stack");
+   	 	btnRemoveMonad.setPreferredSize(square);
+   	 	btnRemoveMonad.setBorder(BorderFactory.createEtchedBorder(0));
+   	 	btnRemoveMonad.addActionListener(this);
+    	pnlControlPanel2.add(btnRemoveMonad, cn);
     	cn.gridy++;
     	
-    	newMonad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Create")));
-    	newMonad.setActionCommand("create");
-    	newMonad.setToolTipText("create new monad");
-    	newMonad.setPreferredSize(square);
-    	newMonad.setBorder(BorderFactory.createEtchedBorder(0));
-    	newMonad.addActionListener(this);
-    	_controlPanel2.add(newMonad, cn);
+    	btnNewMonad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Create")));
+    	btnNewMonad.setActionCommand("create");
+    	btnNewMonad.setToolTipText("create new monad");
+    	btnNewMonad.setPreferredSize(square);
+    	btnNewMonad.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnNewMonad.addActionListener(this);
+    	pnlControlPanel2.add(btnNewMonad, cn);
     	cn.gridy++;
     	
     	cn.weighty=1;
-    	_controlPanel2.add(new JLabel(), cn);
+    	pnlControlPanel2.add(new JLabel(), cn);
     	
-    	add(_controlPanel2,"East");
+    	add(pnlControlPanel2,"East");
     }
     
     private	void		pop()
@@ -933,13 +936,13 @@ import java.util.*;
 				int point = monadPanes.getSelectedIndex();
 				switch (_repMode)
 				{
-					case DivField.REALF: 	repNyadF.removeMonad(point);
+					case DivField.REALF: 	_repNyadF.removeMonad(point);
 											break;
-					case DivField.REALD: 	repNyadD.removeMonad(point);
+					case DivField.REALD: 	_repNyadD.removeMonad(point);
 											break;
-					case DivField.COMPLEXF:	repNyadCF.removeMonad(point);
+					case DivField.COMPLEXF:	_repNyadCF.removeMonad(point);
 											break;
-					case DivField.COMPLEXD:	repNyadCD.removeMonad(point);
+					case DivField.COMPLEXD:	_repNyadCD.removeMonad(point);
 				}
 				removeMonadTab(point);
 			} 
@@ -950,7 +953,7 @@ import java.util.*;
 		}
 		else	// The only way to get here is if the monad to be removed is the last one in the nyad.
 		{		// That causes the entire nyad to be removed.
-			_GUI._GeometryDisplay.removeNyad.doClick();
+			_GUI._GeometryDisplay.removeNyadPanel(0);
 		}
     }
 
@@ -958,25 +961,25 @@ import java.util.*;
     {
     	switch (_repMode)
     	{
-    		case DivField.REALF:	nyadName.setText(repNyadF.getName());
-    								protoXML.setText(repNyadF.getProto().toXMLString());
-	    							nyadOrder.setText((new StringBuffer().append(repNyadF.getMonadList().size())).toString());
-	    							nyadFoot.setText(repNyadF.getFootPoint().getFootName());
+    		case DivField.REALF:	nyadName.setText(_repNyadF.getName());
+    								protoXML.setText(_repNyadF.getProto().toXMLString());
+	    							nyadOrder.setText((new StringBuffer().append(_repNyadF.getMonadList().size())).toString());
+	    							nyadFoot.setText(_repNyadF.getFootPoint().getFootName());
 	    							break;
-    		case DivField.REALD:	nyadName.setText(repNyadD.getName());
-    								protoXML.setText(repNyadD.getProto().toXMLString());
-	    							nyadOrder.setText((new StringBuffer().append(repNyadD.getMonadList().size())).toString());
-	    							nyadFoot.setText(repNyadD.getFootPoint().getFootName());
+    		case DivField.REALD:	nyadName.setText(_repNyadD.getName());
+    								protoXML.setText(_repNyadD.getProto().toXMLString());
+	    							nyadOrder.setText((new StringBuffer().append(_repNyadD.getMonadList().size())).toString());
+	    							nyadFoot.setText(_repNyadD.getFootPoint().getFootName());
 	    							break;
-    		case DivField.COMPLEXF:	nyadName.setText(repNyadCF.getName());
-    								protoXML.setText(repNyadCF.getProto().toXMLString());
-	    							nyadOrder.setText((new StringBuffer().append(repNyadCF.getMonadList().size())).toString());
-	    							nyadFoot.setText(repNyadCF.getFootPoint().getFootName());
+    		case DivField.COMPLEXF:	nyadName.setText(_repNyadCF.getName());
+    								protoXML.setText(_repNyadCF.getProto().toXMLString());
+	    							nyadOrder.setText((new StringBuffer().append(_repNyadCF.getMonadList().size())).toString());
+	    							nyadFoot.setText(_repNyadCF.getFootPoint().getFootName());
 	    							break;
-    		case DivField.COMPLEXD: nyadName.setText(repNyadCD.getName());
-    								protoXML.setText(repNyadCD.getProto().toXMLString());
-	    							nyadOrder.setText((new StringBuffer().append(repNyadCD.getMonadList().size())).toString());
-	    							nyadFoot.setText(repNyadCD.getFootPoint().getFootName());
+    		case DivField.COMPLEXD: nyadName.setText(_repNyadCD.getName());
+    								protoXML.setText(_repNyadCD.getProto().toXMLString());
+	    							nyadOrder.setText((new StringBuffer().append(_repNyadCD.getMonadList().size())).toString());
+	    							nyadFoot.setText(_repNyadCD.getFootPoint().getFootName());
     	}
     }
 }

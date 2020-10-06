@@ -91,34 +91,34 @@ public class BOpsMIdempotentEvents implements ActionListener
     	{
 	    	switch (tSpot.getRepMode())
 	    	{
-		    	case DivField.REALF: 	test = MonadRealF.isIdempotentMultiple(tSpot.getMonadRF());
+		    	case DivField.REALF: 	test = MonadRealF.isScaledIdempotent(tSpot.getMonadRF());
 								    	break;
-		    	case DivField.REALD: 	test = MonadRealD.isIdempotentMultiple(tSpot.getMonadRD());
+		    	case DivField.REALD: 	test = MonadRealD.isScaledIdempotent(tSpot.getMonadRD());
 								    	break;
-		    	case DivField.COMPLEXF:	test = MonadComplexF.isIdempotentMultiple(tSpot.getMonadCF());
+		    	case DivField.COMPLEXF:	test = MonadComplexF.isScaledIdempotent(tSpot.getMonadCF());
 								    	break;
-		    	case DivField.COMPLEXD:	test = MonadComplexD.isIdempotentMultiple(tSpot.getMonadCD());
+		    	case DivField.COMPLEXD:	test = MonadComplexD.isScaledIdempotent(tSpot.getMonadCD());
 	    	}
 	    	if (test)
-				_parent._GUI._StatusBar.setStatusMsg("\tselected monad is multiple of an idempotent.\n");
+				_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is multiple of an idempotent.\n");
 	    	else
-	    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT multiple of an idempotent.\n");
+	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is NOT multiple of an idempotent.\n");
     	}
 		catch (CladosMonadException e)
 		{
-			_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad created a CladosMonadException.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad created a CladosMonadException.\n");
 			_parent._GUI._StatusBar.setStatusMsg(e.getSourceMessage());
 			_parent._GUI._StatusBar.setStatusMsg("\n\n");
 		}
 		catch (FieldBinaryException eb)
 		{
-			_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad created a FieldBinaryException.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad created a FieldBinaryException.\n");
 			_parent._GUI._StatusBar.setStatusMsg(eb.getSourceMessage());
 			_parent._GUI._StatusBar.setStatusMsg("\n\n");
 		}
     	catch (FieldException ef)
     	{
-			_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad created a general FieldException.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad created a general FieldException.\n");
 			_parent._GUI._StatusBar.setStatusMsg(ef.getSourceMessage());
 			_parent._GUI._StatusBar.setStatusMsg("\n\n");
     	}

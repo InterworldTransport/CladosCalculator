@@ -134,7 +134,7 @@ public class SOpsScaleEvents implements ActionListener
 	    }
 		catch (FieldBinaryException eb)
 		{
-		    _parent._GUI._StatusBar.setStatusMsg("\t\tmonad has NOT been rescaled due to field binary exception.\n");
+		    _parent._GUI._StatusBar.setStatusMsg("-->Monad has NOT been rescaled due to field binary exception.\n");
 		}
 	    
     }

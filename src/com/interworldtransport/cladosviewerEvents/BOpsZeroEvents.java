@@ -97,8 +97,8 @@ public class BOpsZeroEvents implements ActionListener
     	}
 	
 		if (test)
-			_parent._GUI._StatusBar.setStatusMsg("\tselected monad is ZERO.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is ZERO.\n");
 		else
-			_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT zero.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is NOT zero.\n");
     }
  }

@@ -100,19 +100,19 @@ public class BOpsIdempotentEvents implements ActionListener
 		    	case DivField.COMPLEXD:	test = MonadComplexD.isIdempotent(tSpot.getMonadCD());
 	    	}
 	    	if (test)
-				_parent._GUI._StatusBar.setStatusMsg("\tselected monad is idempotent.\n");
+				_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is idempotent.\n");
 	    	else
-	    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT idempotent.\n");
+	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is NOT idempotent.\n");
     	}
 		catch (CladosMonadException e)
 		{
-			_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad created a CladosMonadException.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad created a CladosMonadException.\n");
 			_parent._GUI._StatusBar.setStatusMsg(e.getSourceMessage());
 			_parent._GUI._StatusBar.setStatusMsg("\n\n");
 		}
 		catch (FieldBinaryException eb)
 		{
-			_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad created a FieldBinaryException.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad created a FieldBinaryException.\n");
 			_parent._GUI._StatusBar.setStatusMsg(eb.getSourceMessage());
 			_parent._GUI._StatusBar.setStatusMsg("\n\n");
 		}

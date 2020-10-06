@@ -91,30 +91,41 @@ public class BOpsNilpotentEvents implements ActionListener
     	boolean test = false;
     	try
     	{
+    		int pow2Test = (int) Float.parseFloat(_parent._GUI._FieldBar.getRealText());
 	    	switch (tSpot.getRepMode())
 	    	{
-		    	case DivField.REALF: 	test = MonadRealF.isNilpotent(tSpot.getMonadRF());
+		    	case DivField.REALF: 	test = MonadRealF.isNilpotent(tSpot.getMonadRF(), pow2Test);
 								    	break;
-		    	case DivField.REALD: 	test = MonadRealD.isNilpotent(tSpot.getMonadRD());
+		    	case DivField.REALD: 	test = MonadRealD.isNilpotent(tSpot.getMonadRD(), pow2Test);
 								    	break;
-		    	case DivField.COMPLEXF:	test = MonadComplexF.isNilpotent(tSpot.getMonadCF());
+		    	case DivField.COMPLEXF:	test = MonadComplexF.isNilpotent(tSpot.getMonadCF(), pow2Test);
 								    	break;
-		    	case DivField.COMPLEXD:	test = MonadComplexD.isNilpotent(tSpot.getMonadCD());
+		    	case DivField.COMPLEXD:	test = MonadComplexD.isNilpotent(tSpot.getMonadCD(), pow2Test);
 	    	}
 	    	if (test)
-				_parent._GUI._StatusBar.setStatusMsg("\tselected monad is nilpotent.\n");
+				_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is nilpotent at power="+pow2Test+".\n");
 	    	else
-	    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT nilpotent.\n");
+	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is NOT nilpotent at power="+pow2Test+".\n");
+    	}
+    	catch (NullPointerException eNull)	// Catch the empty text 'real number' text field on the FieldBar.
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nPower Nilpotent Test must have a real # in the FieldBar. Nothing done.\n");
+    		return;
+    	}
+    	catch (NumberFormatException eFormat)	// Catch the non-parse-able text 'real number' text field on the FieldBar.
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nPower Nilpotent Test must have a parse-able real # in the FieldBar. Nothing done.\n");
+    		return;
     	}
 		catch (CladosMonadException e)
 		{
-			_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad created a CladosMonadException.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad created a CladosMonadException.\n");
 			_parent._GUI._StatusBar.setStatusMsg(e.getSourceMessage());
 			_parent._GUI._StatusBar.setStatusMsg("\n\n");
 		}
 		catch (FieldBinaryException eb)
 		{
-			_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad created a FieldBinaryException.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad created a FieldBinaryException.\n");
 			_parent._GUI._StatusBar.setStatusMsg(eb.getSourceMessage());
 			_parent._GUI._StatusBar.setStatusMsg("\n\n");
 		}

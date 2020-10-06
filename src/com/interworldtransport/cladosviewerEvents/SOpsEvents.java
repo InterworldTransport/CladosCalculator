@@ -42,6 +42,7 @@ import com.interworldtransport.cladosviewer.ViewerMenu;
 public class SOpsEvents implements ActionListener
 {
     protected 	SOpsGradeEvents			grade;
+    protected 	SOpsHasGradeEvents		hasgrade;
     protected 	SOpsMagnitudeEvents		mag;
     protected 	SOpsSQMagnitudeEvents	sqmag;
     public	 	SOpsNormalizeEvents		norm;
@@ -69,6 +70,7 @@ public class SOpsEvents implements ActionListener
 		_GUI=_GUIMenu._parentGUI;
 
 		grade = new SOpsGradeEvents(			_GUIMenu.mniisSGrade, this);
+		hasgrade = new SOpsHasGradeEvents(		_GUIMenu.mnihasGrade, this);
 		mag = new SOpsMagnitudeEvents(			_GUIMenu.mniMagnitudeOf, this);
 		sqmag = new SOpsSQMagnitudeEvents(		_GUIMenu.mniSQMagnitudeOf, this);
 		norm = new SOpsNormalizeEvents(			_GUIMenu.mniNormalize, this);

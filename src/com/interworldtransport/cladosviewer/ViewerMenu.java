@@ -63,7 +63,7 @@ public class ViewerMenu extends JMenuBar
     public	JMenuItem		mniisGrade;
     public	JMenuItem		mniisNilpotent;
     public	JMenuItem		mniisIdempotent;
-    public	JMenuItem		mniisIdempotentMultiple;
+    public	JMenuItem		mniisScaledIdempotent;
     public	JMenuItem		mniisEqual;
     public	JMenuItem		mniisZero;
     public	JMenuItem		mniisReferenceMatch;
@@ -73,6 +73,7 @@ public class ViewerMenu extends JMenuBar
  */
     public	JMenu			mnuSOperations;
     public	JMenuItem		mniisSGrade;
+    public	JMenuItem		mnihasGrade;
     public	JMenuItem		mniMagnitudeOf;
     public	JMenuItem		mniSQMagnitudeOf;
     public	JMenuItem		mniNormalize;
@@ -156,12 +157,14 @@ public class ViewerMenu extends JMenuBar
     	mnuBOperations.add(mniisNilpotent);
     	mniisIdempotent=new JMenuItem("is Idempotent?");
     	mnuBOperations.add(mniisIdempotent);
-    	mniisIdempotentMultiple=new JMenuItem("is Scaled Idempotent?");
-    	mnuBOperations.add(mniisIdempotentMultiple);
+    	mniisScaledIdempotent=new JMenuItem("is Scaled Idempotent?");
+    	mnuBOperations.add(mniisScaledIdempotent);
     	
     	
-    	mniisSGrade=new JMenuItem("grade?");
+    	mniisSGrade=new JMenuItem("unique grade?");
     	mnuSOperations.add(mniisSGrade);
+    	mnihasGrade=new JMenuItem("has grade?");
+    	mnuSOperations.add(mnihasGrade);
     	mniMagnitudeOf=new JMenuItem("magnitude?");
     	mnuSOperations.add(mniMagnitudeOf);
     	mniSQMagnitudeOf=new JMenuItem("sq magnitude?");

@@ -108,10 +108,10 @@ public class SOpsGradeEvents implements ActionListener
     	}
     	
     	if (logGradeKey != Math.floor(logGradeKey))
-    		_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad IS NOT a single grade.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad IS NOT a single grade.\n");
     	else
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad IS single grade.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad IS single grade.\n");
     		_parent._GUI._FieldBar.setWhatDoubleR(logGradeKey);
     	}
     }

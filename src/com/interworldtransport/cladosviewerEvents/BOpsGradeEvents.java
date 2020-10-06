@@ -104,9 +104,9 @@ public class BOpsGradeEvents implements ActionListener
 		    	case DivField.COMPLEXD:	test = MonadComplexD.isGrade(tSpot.getMonadCD(), grade2Test);
         	}
         	if (test)
-	    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is a pure "+grade2Test+"-grade.\n");
+	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is a pure "+grade2Test+"-grade.\n");
 	    	else
-	    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad is NOT a pure "+grade2Test+"-grade.\n");
+	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is NOT a pure "+grade2Test+"-grade.\n");
     	}
     	catch (NullPointerException eNull)	// Catch the empty text 'real number' text field on the FieldBar.
     	{

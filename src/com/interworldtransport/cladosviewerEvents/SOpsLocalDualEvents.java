@@ -103,7 +103,7 @@ public class SOpsLocalDualEvents implements ActionListener
     							    	break;
     	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().dualLeft();
         	}
-    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been 'dualed' from the left.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the left.\n");
     	}
     	if (command.equals("<dual"))
     	{
@@ -118,7 +118,7 @@ public class SOpsLocalDualEvents implements ActionListener
     	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().dualRight();
     							    	break;
         	}
-    		_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been 'dualed' from the right.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the right.\n");
     	}
     	tMSpotPnl.setCoefficientDisplay();
     }

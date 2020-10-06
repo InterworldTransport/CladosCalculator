@@ -101,11 +101,11 @@ public class SOpsNormalizeEvents implements ActionListener
 		    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().normalize();
 	    	}
 	    	tMSpotPnl.setCoefficientDisplay();
-	    	_parent._GUI._StatusBar.setStatusMsg("\tselected monad has been normalized.\n");
+	    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been normalized.\n");
     	}
     	catch (CladosMonadException e)	// Normalization can fail if the monad does not have an inverse.
 		{
-			_parent._GUI._StatusBar.setStatusMsg("\t\tselected monad has NOT been normalized.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has NOT been normalized.\n");
 		}
     }
  }
