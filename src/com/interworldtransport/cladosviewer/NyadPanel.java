@@ -33,8 +33,6 @@ import com.interworldtransport.cladosviewerExceptions.UtilitiesException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -50,7 +48,7 @@ import java.util.*;
  * @author Dr Alfred W Differ
  */
 
- public class NyadPanel extends JPanel implements ActionListener//, FocusListener
+ public class NyadPanel extends JPanel implements ActionListener
 {
 
 	private static final long 						serialVersionUID = -1379147617356173590L;
@@ -510,41 +508,18 @@ import java.util.*;
     	MonadPanel pMP=new MonadPanel(_GUI, pM);
     	addMonadPanel(pMP); 
     }
-    /**
-     * This method is overridden to allow the NyadPanel with the focus to update the FieldBar with 
-     * the DivFieldType of the protonumber within the represented nyad.
-     * This is similar to what a monad panel does when it receives focus and updates the values 
-     * in the FieldBar.
-     */
-	//@Override
-	//public void focusGained(FocusEvent e) 
-	/**{	
-		if (e.getComponent() instanceof NyadPanel)
-		{
-			switch (((NyadPanel)e.getComponent()).getRepMode())
-			{
-				case DivField.REALF:	_GUI._FieldBar.setField((((NyadPanel) e.getComponent()).getNyadRF().getProto()));;
-										break;
-				case DivField.REALD:	_GUI._FieldBar.setField((((NyadPanel) e.getComponent()).getNyadRD().getProto()));;
-										break;
-				case DivField.COMPLEXF:	_GUI._FieldBar.setField((((NyadPanel) e.getComponent()).getNyadCF().getProto()));;
-										break;
-				case DivField.COMPLEXD:	_GUI._FieldBar.setField((((NyadPanel) e.getComponent()).getNyadCD().getProto()));;
-			}
-		}
-		else _GUI._StatusBar.setStatusMsg("\n\nNot sure what got focus on the Nyad Panel, but it did.");
-		*/
-	//}
-
-    //@Override
-	//public void focusLost(FocusEvent e) 
-	//{
-	//	;
-	//}
+   
     public	int			getMonadListSize()
     {
 	    return monadPanelList.size();
     }
+    /**
+     * 
+     * @param pInd int
+     * get the MonadPanel at this integer spot
+     * @return MonadPanel
+     * The MonadPanel at the indicated location in the monadPanelList
+     */
     public	MonadPanel	getMonadPanel(int pInd)
     {
 	    int limit=monadPanelList.size();
