@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.BOpsRMatchEvents<br>
+ * ---com.interworldtransport.cladosviewer.BOpsRWeakMatchEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.BOpsRMatchEvents<br>
+ * ---com.interworldtransport.cladosviewer.BOpsRWeakMatchEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
 package com.interworldtransport.cladosviewerEvents;
@@ -41,7 +41,7 @@ import javax.swing.*;
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class BOpsRMatchEvents implements ActionListener
+public class BOpsRWeakMatchEvents implements ActionListener
  {
     protected JMenuItem 		_control;
     protected BOpsEvents 		_parent;
@@ -55,7 +55,7 @@ public class BOpsRMatchEvents implements ActionListener
  * 	BOpsEvents
  * This is a reference to the BOpsEvents parent event handler
  */
-    public BOpsRMatchEvents(JMenuItem pmniControlled,
+    public BOpsRWeakMatchEvents(JMenuItem pmniControlled,
     						BOpsEvents pParent)
     {
 		_control=pmniControlled;
@@ -86,17 +86,17 @@ public class BOpsRMatchEvents implements ActionListener
     	boolean test = false;
     	switch (panelNyadSelected.getRepMode())
     	{
-    		case DivField.REALF: 	test = NyadRealF.isStrongReferenceMatch(panelNyadSelected.getNyadRF(), panelNyadNext.getNyadRF());
+    		case DivField.REALF: 	test = NyadRealF.isWeakReferenceMatch(panelNyadSelected.getNyadRF(), panelNyadNext.getNyadRF());
     								break;
-    		case DivField.REALD: 	test = NyadRealD.isStrongReferenceMatch(panelNyadSelected.getNyadRD(), panelNyadNext.getNyadRD());
+    		case DivField.REALD: 	test = NyadRealD.isWeakReferenceMatch(panelNyadSelected.getNyadRD(), panelNyadNext.getNyadRD());
 									break;
-    		case DivField.COMPLEXF: test = NyadComplexF.isStrongReferenceMatch(panelNyadSelected.getNyadCF(), panelNyadNext.getNyadCF());
+    		case DivField.COMPLEXF: test = NyadComplexF.isWeakReferenceMatch(panelNyadSelected.getNyadCF(), panelNyadNext.getNyadCF());
 									break;
-    		case DivField.COMPLEXD: test = NyadComplexD.isStrongReferenceMatch(panelNyadSelected.getNyadCD(), panelNyadNext.getNyadCD());
+    		case DivField.COMPLEXD: test = NyadComplexD.isWeakReferenceMatch(panelNyadSelected.getNyadCD(), panelNyadNext.getNyadCD());
     	}
     	if (test)
-			_parent._GUI._StatusBar.setStatusMsg("-->Selected nyad and the next are STRONG REF MATCHED.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected nyad and the next are WEAK REF MATCHED.\n");
 		else
-			_parent._GUI._StatusBar.setStatusMsg("-->Selected nyad and the next are NOT strong ref matched.\n");
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected nyad and the next are NOT weak ref matched.\n");
     }
  }

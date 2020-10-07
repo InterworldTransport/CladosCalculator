@@ -49,7 +49,6 @@ public class ViewerMenu extends JMenuBar
  * The File Parent Menu for the application.
  */
     public	JMenu			mnuFile;
-    //public	JMenuItem	mniNew;
     //public	JMenuItem	mniOpen;
     public	JMenuItem		mniSave;
     public	JMenuItem		mniSaveAs;
@@ -66,7 +65,8 @@ public class ViewerMenu extends JMenuBar
     public	JMenuItem		mniisScaledIdempotent;
     public	JMenuItem		mniisEqual;
     public	JMenuItem		mniisZero;
-    public	JMenuItem		mniisReferenceMatch;
+    public	JMenuItem		mniisStrgReferenceMatch;
+    public	JMenuItem		mniisWeakReferenceMatch;
 
 /**
  * The Simple Operations Parent Menu for the application.
@@ -143,12 +143,14 @@ public class ViewerMenu extends JMenuBar
     	mniExit=new JMenuItem("Exit");
     	mnuFile.add(mniExit);
     	
+    	mniisStrgReferenceMatch=new JMenuItem("is Strong Reference Match?");
+    	mnuBOperations.add(mniisStrgReferenceMatch);
+    	mniisWeakReferenceMatch=new JMenuItem("is Weak Reference Match?");
+    	mnuBOperations.add(mniisWeakReferenceMatch);
     	mniisZero=new JMenuItem("is Zero?");
     	mnuBOperations.add(mniisZero);
     	mniisEqual=new JMenuItem("is Equal?");
     	mnuBOperations.add(mniisEqual);
-    	mniisReferenceMatch=new JMenuItem("is Reference Match?");
-    	mnuBOperations.add(mniisReferenceMatch);
     	mniisGrade=new JMenuItem("is Grade?");
     	mnuBOperations.add(mniisGrade);
     	mniisMultiGrade=new JMenuItem("is Multigrade?");
@@ -201,7 +203,6 @@ public class ViewerMenu extends JMenuBar
     	
     	mniCreate=new JMenuItem("create");
     	mnuTools.add(mniCreate);
-    	//mniCreate.setEnabled(false);
     	mniOptions=new JMenuItem("options");
     	mnuTools.add(mniOptions);
     	//Options Menu items added

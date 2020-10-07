@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.FieldAreaRealF<br>
+ * ---com.interworldtransport.cladosviewer.FieldDisplay<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.FieldAreaRealF<br>
+ * ---com.interworldtransport.cladosviewer.FieldDisplay<br>
  * ------------------------------------------------------------------------ <br>
  */
 

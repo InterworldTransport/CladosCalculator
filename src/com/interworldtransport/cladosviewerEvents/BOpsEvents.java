@@ -24,7 +24,7 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-import java.awt.event.*;
+//import java.awt.event.*;
 
 import com.interworldtransport.cladosviewer.*;
 
@@ -39,11 +39,12 @@ import com.interworldtransport.cladosviewer.*;
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class BOpsEvents implements ActionListener
+public class BOpsEvents //implements ActionListener
 {
 	protected BOpsZeroEvents		zero;
 	protected BOpsEqualEvents		equal;
-	protected BOpsRMatchEvents		rmatch;
+	protected BOpsRMatchEvents		strgrmatch;
+	protected BOpsRWeakMatchEvents	weakrmatch;
 	protected BOpsGradeEvents		grade;
     protected BOpsMGradeEvents		mgrade;
     protected BOpsNilpotentEvents	nilp;
@@ -65,23 +66,24 @@ public class BOpsEvents implements ActionListener
 		_GUIMenu=pTheGUIMenu;
 		_GUI=_GUIMenu._parentGUI;
 	
-		mgrade = new BOpsMGradeEvents(		_GUIMenu.mniisMultiGrade, this);
-		grade = new BOpsGradeEvents(		_GUIMenu.mniisGrade, this);
-		nilp = new BOpsNilpotentEvents(		_GUIMenu.mniisNilpotent, this);
-		idemp = new BOpsIdempotentEvents(	_GUIMenu.mniisIdempotent, this);
-		midemp = new BOpsMIdempotentEvents(	_GUIMenu.mniisScaledIdempotent, this);
-		equal = new BOpsEqualEvents(		_GUIMenu.mniisEqual, this);
-		zero = new BOpsZeroEvents(			_GUIMenu.mniisZero,	this);
-		rmatch = new BOpsRMatchEvents(		_GUIMenu.mniisReferenceMatch, this);
+		mgrade = new BOpsMGradeEvents(			_GUIMenu.mniisMultiGrade, this);
+		grade = new BOpsGradeEvents(			_GUIMenu.mniisGrade, this);
+		nilp = new BOpsNilpotentEvents(			_GUIMenu.mniisNilpotent, this);
+		idemp = new BOpsIdempotentEvents(		_GUIMenu.mniisIdempotent, this);
+		midemp = new BOpsMIdempotentEvents(		_GUIMenu.mniisScaledIdempotent, this);
+		equal = new BOpsEqualEvents(			_GUIMenu.mniisEqual, this);
+		zero = new BOpsZeroEvents(				_GUIMenu.mniisZero,	this);
+		strgrmatch = new BOpsRMatchEvents(		_GUIMenu.mniisStrgReferenceMatch, this);
+		weakrmatch = new BOpsRWeakMatchEvents(	_GUIMenu.mniisWeakReferenceMatch, this);
     }
 
 /** 
  * This is the default action to be performed by all members of the menu.
  * It will be overridden by specific members of the menu.
  */
-    public void actionPerformed(ActionEvent evt)
-    {
-    	;
-    }
+ //   public void actionPerformed(ActionEvent evt)
+ //   {
+ //   	;
+//    }
 
 }

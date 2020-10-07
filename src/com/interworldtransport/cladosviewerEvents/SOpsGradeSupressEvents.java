@@ -103,7 +103,7 @@ public class SOpsGradeSupressEvents implements ActionListener
     	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().gradeSuppress(tGrade);	
         	}
         	tMSpotPnl.setCoefficientDisplay();
-	    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been cropped at "+tGrade+"-grade.\n");
+	    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been cut at "+tGrade+"-grade.\n");
     	}
     	catch (NullPointerException eNull)
     	{

@@ -108,7 +108,9 @@ public class CladosCalculator extends JFrame implements ActionListener
 	private		JButton				btnIsIdempotent;
 	private		JButton				btnIsMultiGrade;
 	private		JButton				btnIsNilpotent;
-	private		JButton				btnIsRefMatch;
+	private		JButton				btnIsStrgRefMatch;
+	private		JButton				btnIsWeekRefMatch;
+	private		JButton				btnHasAlgebra;
 	private		JButton				btnIsScaleIdempotent;
 	private		JButton				btnIsZero;
 	private		JButton				btnWhatGrade;
@@ -217,8 +219,14 @@ public class CladosCalculator extends JFrame implements ActionListener
     {
     	String command = event.getActionCommand();
     	
-    	if (command.equals("reference match"))
-    		_MenuBar.mniisReferenceMatch.doClick();
+    	if (command.equals("strong ref match"))
+    		_MenuBar.mniisStrgReferenceMatch.doClick();
+    	
+    	if (command.equals("weak ref match"))
+    		_MenuBar.mniisWeakReferenceMatch.doClick();
+    	
+    	if (command.equals("algebra detect"))
+    		_MenuBar.mniisStrgReferenceMatch.doClick();
     	
     	if (command.equals("equal"))
     		_MenuBar.mniisEqual.doClick();
@@ -357,13 +365,32 @@ public class CladosCalculator extends JFrame implements ActionListener
 		cn.gridwidth=1;
 
     	// button double
-    	btnIsRefMatch = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.RefMatch")));
-    	btnIsRefMatch.setActionCommand("reference match");
-    	btnIsRefMatch.setToolTipText("refernce Match Nyad Test");
-    	btnIsRefMatch.setPreferredSize(square);
-    	btnIsRefMatch.setBorder(BorderFactory.createEtchedBorder(0));
-    	btnIsRefMatch.addActionListener(this);
-    	pnlControlBar.add(btnIsRefMatch, cn);
+    	btnIsStrgRefMatch = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.RefMatch")));
+    	btnIsStrgRefMatch.setActionCommand("strong ref match");
+    	btnIsStrgRefMatch.setToolTipText("Strong Reference Match [Nyad]?");
+    	btnIsStrgRefMatch.setPreferredSize(square);
+    	btnIsStrgRefMatch.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsStrgRefMatch.addActionListener(this);
+    	pnlControlBar.add(btnIsStrgRefMatch, cn);
+    	cn.gridx++;
+    	
+    	btnIsWeekRefMatch = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.WeakRefMatch")));
+    	btnIsWeekRefMatch.setActionCommand("weak ref match");
+    	btnIsWeekRefMatch.setToolTipText("Weak reference Match [Nyad]?");
+    	btnIsWeekRefMatch.setPreferredSize(square);
+    	btnIsWeekRefMatch.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsWeekRefMatch.addActionListener(this);
+    	pnlControlBar.add(btnIsWeekRefMatch, cn);
+    	cn.gridx = 0;
+    	cn.gridy++;
+    	
+    	btnHasAlgebra = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.HasAlgebra")));
+    	btnHasAlgebra.setActionCommand("algebra detect");
+    	btnHasAlgebra.setToolTipText("Next Nyad Has Algebra?");
+    	btnHasAlgebra.setPreferredSize(square);
+    	btnHasAlgebra.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnHasAlgebra.addActionListener(this);
+    	pnlControlBar.add(btnHasAlgebra, cn);
     	cn.gridx++;
     	
     	btnIsEqual = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Equal")));
