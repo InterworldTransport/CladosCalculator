@@ -56,11 +56,7 @@ import javax.swing.border.BevelBorder;
  {
 	private static final long 					serialVersionUID = 1473044880763412386L;
 	public				CladosCalculator		_GUI;
-	protected			ComplexD				_repComplexD;
-	protected			ComplexF				_repComplexF;
 	private				String					_repMode;
-	protected			RealD					_repRealD;
-	protected			RealF					_repRealF;
 	private		final	String[]				_valLabels= {"R", "I"};
 	private				JButton					btnClear;
 	private				JButton					btnConjugate;
@@ -71,15 +67,16 @@ import javax.swing.border.BevelBorder;
 	private				JButton					btnMakeReal;
 	private		final	Color					clrBackColor = new Color(230, 255, 255);
 	private		final	Color					clrNullColor = new Color(255, 230, 255);
-	//private			JButton					btnSyncWithNyad;
-    private				JTextField 				fieldDisplay = new JTextField();
-	//private			DivFieldType			fieldType;
+   // private				JLabel 					fieldDisplay = new JLabel();
 	private				JPanel					pnlButtons;
 	private				JPanel					pnlDisplays;
-	//private			DivField				repField;
 	private		final	Dimension				squareLarge=new Dimension(42,42);
-    private		final	Dimension				squareMedium=new Dimension(21,21);
-    private				ArrayList<JTextField>	valDisplays;
+	private		final	Dimension				squareMedium=new Dimension(21,21);
+	private				ArrayList<JTextField>	valDisplays;
+	protected			ComplexD				_repComplexD;
+	protected			ComplexF				_repComplexF;
+    protected			RealD					_repRealD;
+    protected			RealF					_repRealF;
 
     /**
      * The FieldPanel class is intended to be contain a cladosF Field in much
@@ -100,10 +97,15 @@ import javax.swing.border.BevelBorder;
     	_GUI=pGUI;
     	_repMode = DivField.COMPLEXD;
     	_repComplexD = pIn;
-    	createLayout();
+    	setBackground(clrBackColor);
+		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		createControlLayout();
+    	add(pnlButtons, BorderLayout.LINE_START);
+    	
+    	createDisplaysLayout();
+    	add(pnlDisplays, BorderLayout.LINE_END);
     	setCoefficientDisplay(pIn);
     	_GUI._GeometryDisplay.registerFieldPanel(this);
-    	addFocusListener(this);
     }
     /**
      * The FieldPanel class is intended to be contain a cladosF Field in much
@@ -124,10 +126,15 @@ import javax.swing.border.BevelBorder;
     	_GUI=pGUI;
     	_repMode = DivField.COMPLEXF;
     	_repComplexF = pIn;
-    	createLayout();
+    	setBackground(clrBackColor);
+		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		createControlLayout();
+    	add(pnlButtons, BorderLayout.LINE_START);
+    	
+    	createDisplaysLayout();
+    	add(pnlDisplays, BorderLayout.LINE_END);
     	setCoefficientDisplay(pIn);
     	_GUI._GeometryDisplay.registerFieldPanel(this);
-    	addFocusListener(this);
     }
     /**
      * The FieldPanel class is intended to be contain a cladosF Field in much
@@ -148,10 +155,15 @@ import javax.swing.border.BevelBorder;
     	_GUI=pGUI;
     	_repMode = DivField.REALD;
     	_repRealD = pIn;
-    	createLayout();
+    	setBackground(clrBackColor);
+		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		createControlLayout();
+    	add(pnlButtons, BorderLayout.LINE_START);
+    	
+    	createDisplaysLayout();
+    	add(pnlDisplays, BorderLayout.LINE_END);
     	setCoefficientDisplay(pIn);
     	_GUI._GeometryDisplay.registerFieldPanel(this);
-    	addFocusListener(this);
     }
     /**
      * The FieldPanel class is intended to be contain a cladosF Field in much
@@ -172,10 +184,15 @@ import javax.swing.border.BevelBorder;
     	_GUI=pGUI;
     	_repMode = DivField.REALF;
     	_repRealF = pIn;
-    	createLayout();
+    	setBackground(clrBackColor);
+		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		createControlLayout();
+    	add(pnlButtons, BorderLayout.LINE_START);
+    	
+    	createDisplaysLayout();
+    	add(pnlDisplays, BorderLayout.LINE_END);
     	setCoefficientDisplay(pIn);
     	_GUI._GeometryDisplay.registerFieldPanel(this);
-    	addFocusListener(this);
     }
     @Override
     public void 	actionPerformed(ActionEvent event)
@@ -184,8 +201,8 @@ import javax.swing.border.BevelBorder;
     	if (command.equals("clearIt"))
     	{	
     		if (_repMode == DivField.COMPLEXF | _repMode == DivField.COMPLEXD)
-    			valDisplays.get(1).setText("");
-    		valDisplays.get(0).setText("");
+    			setImgText("");
+    		setRealText("");
     	}
     	else if (command.equals("conjugate"))
     	{
@@ -194,24 +211,24 @@ import javax.swing.border.BevelBorder;
 	    		switch (_repMode)
 	    		{
 	    			case DivField.REALF:	_repRealF = new RealF(	_repRealF.getFieldType(), 
-	    															Float.parseFloat(valDisplays.get(0).getText())
+	    															Float.parseFloat(getRealText())
 	    															);
 	    									setCoefficientDisplay(_repRealF.conjugate());
 	    									break;
 	    			case DivField.REALD:	_repRealD = new RealD(	_repRealD.getFieldType(), 
-	    															Double.parseDouble(valDisplays.get(0).getText())
+	    															Double.parseDouble(getRealText())
 	    															);
 											setCoefficientDisplay(_repRealD.conjugate());
 											break;
 	    			case DivField.COMPLEXF:	_repComplexF = new ComplexF(_repComplexF.getFieldType(), 
-	    																Float.parseFloat(valDisplays.get(0).getText()), 
-	    																Float.parseFloat(valDisplays.get(1).getText())
+	    																Float.parseFloat(getRealText()), 
+	    																Float.parseFloat(getImgText())
 	    																);
 	    									setCoefficientDisplay(_repComplexF.conjugate());
 											break;
 	    			case DivField.COMPLEXD:	_repComplexD = new ComplexD(_repComplexD.getFieldType(), 
-	    																Double.parseDouble(valDisplays.get(0).getText()), 
-	    																Double.parseDouble(valDisplays.get(1).getText())
+	    																Double.parseDouble(getRealText()), 
+	    																Double.parseDouble(getImgText())
 	    																);
 											setCoefficientDisplay(_repComplexD.conjugate());
 	    		}
@@ -229,24 +246,24 @@ import javax.swing.border.BevelBorder;
 	    		switch (_repMode)
 	    		{
 	    			case DivField.REALF:	_repRealF = new RealF(	_repRealF.getFieldType(),
-	    															Float.parseFloat(valDisplays.get(0).getText())
+	    															Float.parseFloat(getRealText())
 	    															);
 	    									setCoefficientDisplay(_repRealF.invert());
 	    									break;
 	    			case DivField.REALD:	_repRealD = new RealD(	_repRealD.getFieldType(),
-	    															Double.parseDouble(valDisplays.get(0).getText())
+	    															Double.parseDouble(getRealText())
 	    															);
 											setCoefficientDisplay(_repRealD.invert());
 											break;
 	    			case DivField.COMPLEXF:	_repComplexF = new ComplexF(_repComplexF.getFieldType(), 
-	    																Float.parseFloat(valDisplays.get(0).getText()), 
-	    																Float.parseFloat(valDisplays.get(1).getText())
+	    																Float.parseFloat(getRealText()), 
+	    																Float.parseFloat(getImgText())
 	    																);
 	    									setCoefficientDisplay(_repComplexF.invert());
 											break;
 	    			case DivField.COMPLEXD:	_repComplexD = new ComplexD(_repComplexD.getFieldType(),  
-	    																Double.parseDouble(valDisplays.get(0).getText()), 
-	    																Double.parseDouble(valDisplays.get(1).getText())
+	    																Double.parseDouble(getRealText()), 
+	    																Double.parseDouble(getImgText())
 	    																);
 											setCoefficientDisplay(_repComplexD.invert());
 	    		}
@@ -254,13 +271,13 @@ import javax.swing.border.BevelBorder;
     		catch (FieldException e)
     		{
     			_GUI._StatusBar.setStatusMsg("Field Exception prevented inversion.\n");
-    			_GUI._StatusBar.setStatusMsg(e.getSourceMessage());
-    			_GUI._StatusBar.setStatusMsg(e.getSource().getFieldTypeString());
+    			_GUI._StatusBar.setStatusMsg(e.getSourceMessage()+"\n");
+    			_GUI._StatusBar.setStatusMsg(e.getSource().getFieldTypeString()+"\n");
     		}
     		catch (NumberFormatException en)
     		{
     			_GUI._StatusBar.setStatusMsg("Number Format Exception prevented inversion.\n");
-    			_GUI._StatusBar.setStatusMsg(en.getMessage());
+    			_GUI._StatusBar.setStatusMsg(en.getMessage()+"\n");
     		}
     	}
     	else if (_GUI._GeometryDisplay.getNyadListSize() == 0)
@@ -270,44 +287,150 @@ import javax.swing.border.BevelBorder;
 	    	switch (command)
 	    	{
 	    		case "makeFloat":	if (_repMode == DivField.REALD)	
+	    							{
 	    								_repMode = DivField.REALF;
-						    		if (_repMode == DivField.COMPLEXD)	
+	    								if (_repRealF == null) 
+	    									_repRealF = RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+	    							}
+	    							if (_repMode == DivField.COMPLEXD)	
+	    							{
 						    			_repMode = DivField.COMPLEXF;
+						    			if (_repComplexF == null) 
+						    				_repComplexF = ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+	    							}
 						    		btnMakeDouble.setEnabled(true);
 						    		btnMakeFloat.setEnabled(false);
+						    		repaint();
 	    							break;
 	    		case "makeDouble":	if (_repMode == DivField.REALF)
-					    				_repMode = DivField.REALD;
+						    		{
+										_repMode = DivField.REALD;
+										if (_repRealD == null) 
+											_repRealD = RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+									}
 						    		if (_repMode == DivField.COMPLEXF)
+						    		{
 						    			_repMode = DivField.COMPLEXD;
+						    			if (_repComplexD == null) 
+						    				_repComplexD = ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+									}
 						    		btnMakeFloat.setEnabled(true);
 					    			btnMakeDouble.setEnabled(false);
 									break;
 	    		case "makeReal":	if (_repMode == DivField.COMPLEXF)	
-					    				_repMode = DivField.REALF;
+	    							{
+						    			_repMode = DivField.REALF;
+										if (_repRealF == null) 
+											_repRealF = RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+	    							}
 						    		if (_repMode == DivField.COMPLEXD)	
-						    			_repMode = DivField.REALD;
+						    		{
+										_repMode = DivField.REALD;
+										if (_repRealD == null) 
+											_repRealD = RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+									}
 						    		btnMakeComplex.setEnabled(true);
 					    			btnMakeReal.setEnabled(false);
 									break;
 	    		case "makeComplex":	if (_repMode == DivField.REALF)	
-					    				_repMode = DivField.COMPLEXF;
+	    							{
+						    			_repMode = DivField.COMPLEXF;
+						    			if (_repComplexF == null) 
+						    				_repComplexF = ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+									}
 						    		if (_repMode == DivField.REALD)	
+						    		{
 						    			_repMode = DivField.COMPLEXD;
+						    			if (_repComplexD == null) 
+						    				_repComplexD = ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+									}
 						    		btnMakeReal.setEnabled(true);
 					    			btnMakeComplex.setEnabled(false);
 	    	}
 	    	createDisplaysLayout();
-	    	add(pnlDisplays, BorderLayout.CENTER);
-	    	add(btnClear, BorderLayout.LINE_END);
-	    	add(btnInverse, BorderLayout.LINE_END);
-	    	add(btnConjugate, BorderLayout.LINE_END);
+	    	add(pnlDisplays, BorderLayout.LINE_END);
 
 	    	_GUI.pack();
     	}
     	else _GUI._StatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");	
     }
   
+    /**
+	 * This method is called when focus is gained on the FieldBar. It covers for the possibility that the 
+	 * underlying DivField is out of sync with displays, so the display content is updated
+	 * 
+	 * Any earlier parsing difficulty will get overwritten when focus returns, so this is also a reset feature.
+	 */
+	@Override
+	public void focusGained(FocusEvent e) 
+	{
+		switch (_repMode)
+		{
+			case DivField.REALF:	if (_repRealF != null) setRealText(Float.valueOf(_repRealF.getReal()).toString());
+									break;
+			case DivField.REALD:	if (_repRealD != null) setRealText(Double.valueOf(_repRealD.getReal()).toString());
+									break;
+			case DivField.COMPLEXF:	if (_repComplexD != null)
+									{
+										setRealText(Float.valueOf(_repComplexF.getReal()).toString());
+										setImgText(Float.valueOf(_repComplexF.getImg()).toString());
+									}
+									break;
+			case DivField.COMPLEXD:	if (_repComplexD != null)
+									{
+										setRealText(Double.valueOf(_repComplexD.getReal()).toString());
+										setImgText(Double.valueOf(_repComplexD.getImg()).toString());
+									}
+		}
+	}
+    /**
+	 * This method is called when focus is lost on the FieldBar. The actions attempted assume that change might
+	 * have occurred while focus was present. Changes might leave the underlying DivField out of sync with 
+	 * what is displayed, so the display content is copied down to the DivField.
+	 * 
+	 * Any parsing difficulty results in an exception that simply stops the update. That CAN leave the 
+	 * represented DivField out of sync with the display. In that event, just bring focus back to the FieldBar
+	 * and fix things so the numbers can be parsed successfully.
+	 */
+	@Override
+	public void focusLost(FocusEvent e) 
+	{
+		//_GUI._StatusBar.setStatusMsg("Focus Lost on Field Panel. "+e.getSource().getClass().getName());
+		try
+		{
+			switch (_repMode)
+			{
+				case DivField.REALF:	if (_repRealF != null) _repRealF.setReal(Float.parseFloat(getRealText()));
+										break;
+				case DivField.REALD:	if (_repRealD != null) _repRealD.setReal(Double.parseDouble(getRealText()));
+										break;
+				case DivField.COMPLEXF:	if (_repComplexF != null) 
+										{
+											_repComplexF.setReal(Float.parseFloat(getRealText()));
+											_repComplexF.setImg(Float.parseFloat(getImgText()));
+										}
+										break;
+				case DivField.COMPLEXD:	if (_repComplexD != null) 
+										{
+											_repComplexD.setReal(Double.parseDouble(getRealText()));
+											_repComplexD.setImg(Double.parseDouble(getImgText()));
+										}
+			}
+		}
+		catch (NumberFormatException en)
+		{
+			_GUI._StatusBar.setStatusMsg("Couldn't parse FieldBar, so doing nothing to set the Div Field it represents.");
+		}
+
+	}
+	public void	setRealText(String pIn)
+    {
+    	valDisplays.get(0).setText(pIn);
+    }
+	public void	setImgText(String pIn)
+    {
+    	valDisplays.get(1).setText(pIn);
+    }
     public String	getImgText()
     {
     	return valDisplays.get(1).getText();
@@ -329,7 +452,7 @@ import javax.swing.border.BevelBorder;
      */
     public void setWhatDoubleI(double pWhat)
 	{
-		valDisplays.get(1).setText((new StringBuffer().append(pWhat)).toString());
+    	setImgText((new StringBuffer().append(pWhat)).toString());
 	}
     /**
      * This 'set' function simply sets the displayed number (a double) into the real number display text field.
@@ -340,7 +463,7 @@ import javax.swing.border.BevelBorder;
      */
     public void setWhatDoubleR(double pWhat)
 	{
-		valDisplays.get(0).setText((new StringBuffer().append(pWhat)).toString());
+    	setRealText((new StringBuffer().append(pWhat)).toString());
 	}
     /**
      * This 'set' function simply sets the displayed number (a float) into the first imaginary number display text field.
@@ -351,7 +474,7 @@ import javax.swing.border.BevelBorder;
      */
     public void setWhatFloatI(float pWhat)
 	{
-		valDisplays.get(1).setText((new StringBuffer().append(pWhat)).toString());
+    	setImgText((new StringBuffer().append(pWhat)).toString());
 	}
     /**
      * This 'set' function simply sets the displayed number (a float) into the real number display text field.
@@ -362,7 +485,7 @@ import javax.swing.border.BevelBorder;
      */
     public void setWhatFloatR(float pWhat)
 	{
-		valDisplays.get(0).setText((new StringBuffer().append(pWhat)).toString());
+    	setRealText((new StringBuffer().append(pWhat)).toString());
 	}
     /**
      * This 'set' function simply sets the displayed number (an int) into the first imaginary display text field.
@@ -375,7 +498,7 @@ import javax.swing.border.BevelBorder;
      */
 	public void setWhatIntI(int pWhat)
 	{
-		valDisplays.get(1).setText((new StringBuffer(pWhat)).toString());
+		setImgText((new StringBuffer(pWhat)).toString());
 	}
     /**
      * This 'set' function simply sets the displayed number (an int) into the real number display text field.
@@ -388,7 +511,7 @@ import javax.swing.border.BevelBorder;
      */
 	public void setWhatIntR(int pWhat)
 	{
-		valDisplays.get(0).setText((new StringBuffer(pWhat)).toString());
+		setRealText((new StringBuffer(pWhat)).toString());
 	}
     private void createControlLayout()
 	{
@@ -414,7 +537,7 @@ import javax.swing.border.BevelBorder;
     	btnMakeReal.setBorder(BorderFactory.createEtchedBorder(0));
     	btnMakeReal.addActionListener(this);
     	pnlButtons.add(btnMakeReal, c1);
-    	c1.gridx++;
+    	c1.gridy++;
     	
     	btnMakeComplex = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Complex")));
     	btnMakeComplex.setActionCommand("makeComplex");
@@ -423,8 +546,8 @@ import javax.swing.border.BevelBorder;
     	btnMakeComplex.setBorder(BorderFactory.createEtchedBorder(0));
     	btnMakeComplex.addActionListener(this);
     	pnlButtons.add(btnMakeComplex, c1);
-    	c1.gridx = 0;
-    	c1.gridy++;
+    	c1.gridy = 0;
+    	c1.gridx++;
 
     	btnMakeFloat = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Float")));
     	btnMakeFloat.setActionCommand("makeFloat");
@@ -433,7 +556,7 @@ import javax.swing.border.BevelBorder;
     	btnMakeFloat.setBorder(BorderFactory.createEtchedBorder(0));
     	btnMakeFloat.addActionListener(this);
     	pnlButtons.add(btnMakeFloat, c1);
-    	c1.gridx++;
+    	c1.gridy++;
     	
     	btnMakeDouble = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Double")));
     	btnMakeDouble.setActionCommand("makeDouble");
@@ -442,8 +565,38 @@ import javax.swing.border.BevelBorder;
     	btnMakeDouble.setBorder(BorderFactory.createEtchedBorder(0));
     	btnMakeDouble.addActionListener(this);
     	pnlButtons.add(btnMakeDouble, c1);
+    	c1.gridy = 0;
+    	c1.gridx++;
+    	
+		c1.gridheight=2;
+		c1.gridwidth=2;
+		
+		btnClear = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.ClearIt")));
+    	btnClear.setActionCommand("clearIt");
+    	btnClear.setPreferredSize(squareLarge);
+    	btnClear.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnClear.addActionListener(this);
+    	pnlButtons.add(btnClear, c1);
+    	c1.gridx += 2;
+    	
+    	btnInverse = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Inverse")));
+    	btnInverse.setActionCommand("inverse");
+    	btnInverse.setPreferredSize(squareLarge);
+    	btnInverse.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnInverse.addActionListener(this);
+    	pnlButtons.add(btnInverse, c1);
+    	c1.gridx += 2;
+    	
+    	btnConjugate = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Conjugate")));
+    	btnConjugate.setActionCommand("conjugate");
+    	btnConjugate.setPreferredSize(squareLarge);
+    	btnConjugate.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnConjugate.addActionListener(this);
+    	pnlButtons.add(btnConjugate, c1);
+		
 	}
-    private void createDisplaysLayout()
+
+	private void createDisplaysLayout()
 	{
 		pnlDisplays = new JPanel();
 		pnlDisplays.setBackground(clrBackColor);
@@ -460,15 +613,15 @@ import javax.swing.border.BevelBorder;
     	c2.weighty=1;
     	
     	
-    	pnlDisplays.add(new JLabel("name", SwingConstants.CENTER), c2);
-    	c2.gridx++;
+    	//pnlDisplays.add(new JLabel("name", SwingConstants.CENTER), c2);
+    	//c2.gridx++;
     	
     	switch (_repMode)
     	{
     		case DivField.REALF:	for (short m=0; m<1; m++)
 									{
 							    		pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
-							    		c2.gridx++;
+							    		c2.gridy++;
 									}
     								btnMakeComplex.setEnabled(true);
     								btnMakeReal.setEnabled(false);
@@ -476,7 +629,7 @@ import javax.swing.border.BevelBorder;
     		case DivField.REALD:	for (short m=0; m<1; m++)
 									{
     									pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
-							    		c2.gridx++;
+							    		c2.gridy++;
 									}
 									btnMakeComplex.setEnabled(true);
 									btnMakeReal.setEnabled(false);
@@ -484,7 +637,7 @@ import javax.swing.border.BevelBorder;
     		case DivField.COMPLEXF:	for (short m=0; m<2; m++)
 									{
     									pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
-							    		c2.gridx++;
+							    		c2.gridy++;
 									}
 									btnMakeComplex.setEnabled(false);
 									btnMakeReal.setEnabled(true);
@@ -492,20 +645,20 @@ import javax.swing.border.BevelBorder;
     		case DivField.COMPLEXD:	for (short m=0; m<2; m++)
 									{
     									pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
-							    		c2.gridx++;
+							    		c2.gridy++;
 									}
 									btnMakeComplex.setEnabled(false);
 									btnMakeReal.setEnabled(true);
     	}
 
-    	c2.gridx=0;
-    	c2.gridy++;
+    	c2.gridy=0;
+    	c2.gridx++;
     	
-    	fieldDisplay.setColumns(20);
-    	fieldDisplay.setFont(new Font("Serif", Font.PLAIN, 14));
-    	fieldDisplay.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-    	pnlDisplays.add(fieldDisplay, c2);
-		c2.gridx++;
+    	//fieldDisplay.setColumns(20);
+    	//fieldDisplay.setFont(new Font("Serif", Font.PLAIN, 14));
+    	//fieldDisplay.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+    	//pnlDisplays.add(fieldDisplay, c2);
+		//c2.gridx++;
 		
 		int m;
 		JTextField tSpot;
@@ -518,9 +671,10 @@ import javax.swing.border.BevelBorder;
 										tSpot.setColumns(FieldDisplay.FLOATSIZE);
 							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
 							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+							    		tSpot.addFocusListener(this);
 							    		valDisplays.add(m, tSpot);
 							    		pnlDisplays.add(tSpot, c2);
-							    		c2.gridx++;
+							    		c2.gridy++;
 									}
 									btnMakeFloat.setEnabled(false);
 									btnMakeDouble.setEnabled(true);
@@ -532,9 +686,10 @@ import javax.swing.border.BevelBorder;
 										tSpot.setColumns(FieldDisplay.DOUBLESIZE);
 							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
 							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+							    		tSpot.addFocusListener(this);
 							    		valDisplays.add(m, tSpot);
 							    		pnlDisplays.add(tSpot, c2);
-							    		c2.gridx++;
+							    		c2.gridy++;
 									}
 									btnMakeFloat.setEnabled(true);
 									btnMakeDouble.setEnabled(false);
@@ -546,9 +701,10 @@ import javax.swing.border.BevelBorder;
 										tSpot.setColumns(FieldDisplay.FLOATSIZE);
 							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
 							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+							    		tSpot.addFocusListener(this);
 							    		valDisplays.add(m, tSpot);
 							    		pnlDisplays.add(tSpot, c2);
-							    		c2.gridx++;
+							    		c2.gridy++;
 									}
 									btnMakeFloat.setEnabled(false);
 									btnMakeDouble.setEnabled(true);
@@ -560,49 +716,28 @@ import javax.swing.border.BevelBorder;
 										tSpot.setColumns(FieldDisplay.DOUBLESIZE);
 							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
 							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+							    		tSpot.addFocusListener(this);
 							    		valDisplays.add(m, tSpot);
 							    		pnlDisplays.add(tSpot, c2);
-							    		c2.gridx++;
+							    		c2.gridy++;
 									}
 									btnMakeFloat.setEnabled(true);
 									btnMakeDouble.setEnabled(false);
 		}
 		
 	}
-    private void createLayout()
-    {
-    	setBackground(clrBackColor);
-		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-	
-    	createControlLayout();
-    	add(pnlButtons, BorderLayout.LINE_START);
-    	
-    	createDisplaysLayout();
-    	add(pnlDisplays, BorderLayout.CENTER);
-    	
-    	btnClear = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.ClearIt")));
-    	btnClear.setActionCommand("clearIt");
-    	btnClear.setPreferredSize(squareLarge);
-    	btnClear.setBorder(BorderFactory.createEtchedBorder(0));
-    	btnClear.addActionListener(this);
-    	add(btnClear, BorderLayout.LINE_END);
-    	
-    	btnInverse = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Inverse")));
-    	btnInverse.setActionCommand("inverse");
-    	btnInverse.setPreferredSize(squareLarge);
-    	btnInverse.setBorder(BorderFactory.createEtchedBorder(0));
-    	btnInverse.addActionListener(this);
-    	add(btnInverse, BorderLayout.LINE_END);
-    	
-    	btnConjugate = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Conjugate")));
-    	btnConjugate.setActionCommand("conjugate");
-    	btnConjugate.setPreferredSize(squareLarge);
-    	btnConjugate.setBorder(BorderFactory.createEtchedBorder(0));
-    	btnConjugate.addActionListener(this);
-    	add(btnConjugate, BorderLayout.LINE_END);
-    }
-
 	/**
+     * This clearing function wipes the slate within the Field panel. No represented Fields should remain.
+     */
+	protected void clearFieldType()
+	{
+	    _repRealF = null;
+	    _repRealD = null;
+	    _repComplexF = null;
+	    _repComplexD = null;
+	}
+	
+    /**
      * This 'set' function simply adjusts the displayed complex number by accepting an input
      * and then pushing those parts to values stored in the panel. 
      * @param pIn
@@ -613,21 +748,21 @@ import javax.swing.border.BevelBorder;
     {
     	if (_repMode == DivField.COMPLEXD & pIn != null)
     	{	
-    		valDisplays.get(0).setText(Double.valueOf(pIn.getReal()).toString());
-			valDisplays.get(1).setText(Double.valueOf(pIn.getImg()).toString());
+    		setRealText(Double.valueOf(pIn.getReal()).toString());
+    		setImgText(Double.valueOf(pIn.getImg()).toString());
     		if (pIn.getFieldType() != null)
     	    {
     	    	setBackground(clrBackColor);
-    	    	fieldDisplay.setText(pIn.getFieldTypeString());
+    	    	//fieldDisplay.setText(pIn.getFieldTypeString());
     	    }
     	    else
     	    {
     	    	setBackground(clrNullColor);
-    	    	fieldDisplay.setText("null");
+    	    	//fieldDisplay.setText("");
     	    }
     	}
     }
-	/**
+    /**
      * This 'set' function simply adjusts the displayed complex number by accepting an input
      * and then pushing those parts to values stored in the panel. 
      * @param pIn
@@ -638,21 +773,21 @@ import javax.swing.border.BevelBorder;
     {	
     	if (_repMode == DivField.COMPLEXF & pIn != null)
     	{	
-    		valDisplays.get(0).setText(Float.valueOf(pIn.getReal()).toString());
-			valDisplays.get(1).setText(Float.valueOf(pIn.getImg()).toString());
+    		setRealText(Float.valueOf(pIn.getReal()).toString());
+    		setImgText(Float.valueOf(pIn.getImg()).toString());
     		if (pIn.getFieldType() != null)
     	    {
     	    	setBackground(clrBackColor);
-    	    	fieldDisplay.setText(pIn.getFieldTypeString());
+    	    	//fieldDisplay.setText(pIn.getFieldTypeString());
     	    }
     	    else
     	    {
     	    	setBackground(clrNullColor);
-    	    	fieldDisplay.setText("null");
+    	    	//fieldDisplay.setText("");
     	    }
     	}
     }
-	/**
+    /**
      * This 'set' function simply adjusts the displayed complex number by accepting an input
      * and then pushing those part(s) to values stored in the panel. 
      * @param pIn
@@ -663,20 +798,19 @@ import javax.swing.border.BevelBorder;
     {	
     	if (_repMode == DivField.REALD & pIn != null)
     	{	
-    		valDisplays.get(0).setText(Double.valueOf(pIn.getReal()).toString());
+    		setRealText(Double.valueOf(pIn.getReal()).toString());
 	    	if (pIn.getFieldType() != null)
 	    	{
 	    		setBackground(clrBackColor);
-	    	   	fieldDisplay.setText(pIn.getFieldTypeString());
+	    	   	//fieldDisplay.setText(pIn.getFieldTypeString());
 	    	}
 	    	else
 	    	{
 	    	   	setBackground(clrNullColor);
-	    	   	fieldDisplay.setText("null");
+	    	   	//fieldDisplay.setText("null");
 	    	}
     	}
     }
-	
     /**
      * This 'set' function simply adjusts the displayed complex number by accepting an input
      * and then pushing those part(s) to values stored in the panel. 
@@ -688,16 +822,16 @@ import javax.swing.border.BevelBorder;
     {
     	if (_repMode == DivField.REALF & pIn != null)
     	{	
-    		valDisplays.get(0).setText(Float.valueOf(pIn.getReal()).toString());
+    		setRealText(Float.valueOf(pIn.getReal()).toString());
     		if (pIn.getFieldType() != null)
 	        {
 	        	setBackground(clrBackColor);
-	        	fieldDisplay.setText(pIn.getFieldTypeString());
+	        	//fieldDisplay.setText(pIn.getFieldTypeString());
 	        }
 	        else
 	        {
 	        	setBackground(clrNullColor);
-	        	fieldDisplay.setText("null");
+	        	//fieldDisplay.setText("null");
 	        }
     	}
     }
@@ -716,12 +850,12 @@ import javax.swing.border.BevelBorder;
 		    if (pField.getFieldType() != null)
     		{
     	    	setBackground(clrBackColor);
-    	    	fieldDisplay.setText(pField.getFieldTypeString());
+    	    	//fieldDisplay.setText(pField.getFieldTypeString());
     	    }
     	    else
     	    {
     	    	setBackground(clrNullColor);
-    	    	fieldDisplay.setText("null");
+    	    	//fieldDisplay.setText("");
     	    }
     	}
 	}
@@ -740,16 +874,16 @@ import javax.swing.border.BevelBorder;
     		if (pField.getFieldType() != null)
     		{
     	    	setBackground(clrBackColor);
-    	    	fieldDisplay.setText(pField.getFieldTypeString());
+    	    	//fieldDisplay.setText(pField.getFieldTypeString());
     	    }
     	    else
     	    {
     	    	setBackground(clrNullColor);
-    	    	fieldDisplay.setText("null");
+    	    	//fieldDisplay.setText("");
     	    }
     	}
 	}
-    /**
+	/**
      * This 'set' function simply accepts a DivField used as context for the division field being displayed.
      * <p>
      * @param pField
@@ -764,16 +898,16 @@ import javax.swing.border.BevelBorder;
 		    if (pField.getFieldType() != null)
 			{
 		    	setBackground(clrBackColor);
-		    	fieldDisplay.setText(pField.getFieldTypeString());
+		    	//fieldDisplay.setText(pField.getFieldTypeString());
 		    }
 		    else
 		    {
 		    	setBackground(clrNullColor);
-		    	fieldDisplay.setText("null");
+		    	//fieldDisplay.setText("");
 		    }
     	}
 	}
-    /**
+	/**
      * This 'set' function simply accepts a DivField used as context for the division field being displayed.
      * <p>
      * @param pField
@@ -788,78 +922,27 @@ import javax.swing.border.BevelBorder;
 		    if (pField.getFieldType() != null)
 			{
 		    	setBackground(clrBackColor);
-		    	fieldDisplay.setText(pField.getFieldTypeString());
+		    	//fieldDisplay.setText(pField.getFieldTypeString());
 		    }
 		    else
 		    {
 		    	setBackground(clrNullColor);
-		    	fieldDisplay.setText("null");
+		    	//fieldDisplay.setText("");
 		    }
     	}
 	}
-    /**
-     * This clearing function wipes the slate within the Field panel. No represented Fields should remain.
-     */
-	protected void clearFieldType()
-	{
-	    _repRealF = null;
-	    _repRealD = null;
-	    _repComplexF = null;
-	    _repComplexD = null;
-	}
-	/**
-	 * This method is called when focus is gained on the FieldBar. It covers for the possibility that the 
-	 * underlying DivField is out of sync with displays, so the display content is updated
-	 * 
-	 * Any earlier parsing difficulty will get overwritten when focus returns, so this is also a reset feature.
-	 */
-	@Override
-	public void focusGained(FocusEvent e) 
-	{
-		switch (_repMode)
-		{
-			case DivField.REALF:	valDisplays.get(0).setText(Float.valueOf(_repRealF.getReal()).toString());
-									break;
-			case DivField.REALD:	valDisplays.get(0).setText(Double.valueOf(_repRealD.getReal()).toString());
-									break;
-			case DivField.COMPLEXF:	valDisplays.get(0).setText(Float.valueOf(_repComplexF.getReal()).toString());
-									valDisplays.get(1).setText(Float.valueOf(_repComplexF.getImg()).toString());
-									break;
-			case DivField.COMPLEXD:	valDisplays.get(0).setText(Double.valueOf(_repComplexD.getReal()).toString());
-									valDisplays.get(1).setText(Double.valueOf(_repComplexD.getImg()).toString());
-		}
-	}
-	/**
-	 * This method is called when focus is lost on the FieldBar. The actions attempted assume that change might
-	 * have occurred while focus was present. Changes might leave the underlying DivField out of sync with 
-	 * what is displayed, so the display content is copied down to the DivField.
-	 * 
-	 * Any parsing difficulty results in an exception that simply stops the update. That CAN leave the 
-	 * represented DivField out of sync with the display. In that event, just bring focus back to the FieldBar
-	 * and fix things so the numbers can be parsed successfully.
-	 */
-	@Override
-	public void focusLost(FocusEvent e) 
-	{
-		try
-		{
-			switch (_repMode)
-			{
-				case DivField.REALF:	_repRealF.setReal(Float.parseFloat(valDisplays.get(0).getText()));
-										break;
-				case DivField.REALD:	_repRealD.setReal(Double.parseDouble(valDisplays.get(0).getText()));
-										break;
-				case DivField.COMPLEXF:	_repComplexF.setReal(Float.parseFloat(valDisplays.get(0).getText()));
-										_repComplexF.setImg(Float.parseFloat(valDisplays.get(1).getText()));
-										break;
-				case DivField.COMPLEXD:	_repComplexD.setReal(Double.parseDouble(valDisplays.get(0).getText()));
-										_repComplexD.setImg(Double.parseDouble(valDisplays.get(1).getText()));
-			}
-		}
-		catch (NumberFormatException en)
-		{
-			_GUI._StatusBar.setStatusMsg("Couldn't parse FieldBar, so doing nothing to set the Div Field it represents.");
-		}
-
-	}
+    protected void 	makeNotWritable()
+    {
+    	//fieldDisplay.setEditable(false);
+    	if (valDisplays != null)
+    		for (JTextField point : valDisplays)
+    			point.setEditable(false);
+    }
+    protected void 	makeWritable()
+    {
+    	//fieldDisplay.setEditable(true);
+    	if (valDisplays != null)
+    		for (JTextField point : valDisplays)
+    			point.setEditable(true);
+    }
 }

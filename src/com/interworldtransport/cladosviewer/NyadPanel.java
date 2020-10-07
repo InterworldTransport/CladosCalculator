@@ -73,7 +73,7 @@ import java.util.*;
 	private					JPanel 					pnlControlPanel;
 	private					JPanel 					pnlControlPanel2;
 	private					JPanel 					pnlRefPanel;
-	private					JTextField				protoXML=new JTextField(40);
+	private					JLabel					protoXML=new JLabel();
 	private 		final	Dimension 				square = new Dimension(25,25);
 	private					ImageIcon				tabIcon;
 	protected				String					_repMode;
@@ -923,7 +923,7 @@ import java.util.*;
 			} 
 			catch (CladosNyadException e) 
 			{
-				e.printStackTrace();
+				_GUI._StatusBar.setStatusMsg("Could not remove the monad. "+e.getSourceMessage()+"\n");
 			}
 		}
 		else	// The only way to get here is if the monad to be removed is the last one in the nyad.

@@ -101,12 +101,12 @@ import java.util.*;
 	 */
 	private					boolean						useFullPanel;
 	
-	protected				JTextField					aname=new JTextField(10);
-	protected				JTextField					foot=new JTextField(10);
+	protected				JTextField					aname=new JTextField(16);
+	protected				JTextField					foot=new JTextField(16);
 	protected				JTextField					frame=new JTextField(16);
-	protected				JTextField					gradeKey=new JTextField(10);
+	protected				JLabel						gradeKey=new JLabel();
 	protected				JTextField					name=new JTextField(16);
-	protected				JTextField					sig=new JTextField(10);
+	protected				JTextField					sig=new JTextField(16);
 
   /**
   * The MonadPanel class is intended to be contain a cladosG Monad in order to offer its parts
@@ -355,18 +355,12 @@ import java.util.*;
     	}
     	
     	if (command == "save")
-    	{
-    		//	Reset internal details of the represented Monad to reflect what shows in the MonadPanel
-    		//	This includes all possible changes, but a check is made for everything except the coefficients
-    		//	in case changes were NOT made. [It is assumed most changes will be Coefficients.]
-  
-    		//switch starts here, but pull the gradeKey setter in here. See below.
+    	{	//	Reset internal details of the represented Monad to reflect what shows in the MonadPanel
     		try
     		{	
 	    		switch (_repMode)
 	    		{
 	    			case DivField.REALF:	if (name.getText() != _repMonadF.getName())			_repMonadF.setName(name.getText());
-	    						    		if (frame.getText() != _repMonadF.getFrameName())	_repMonadF.setFrameName(frame.getText());
 	    						    		RealF[] _repMonadCoeffsF = new RealF[_repMonadF.getAlgebra().getGProduct().getBladeCount()];
 	    						    		for (short j=0; j<_repMonadF.getAlgebra().getGProduct().getBladeCount(); j++)
 	    						        	{
@@ -375,10 +369,8 @@ import java.util.*;
 	    						        	}
 	    						    		_repMonadF.setCoeff(_repMonadCoeffsF);
 	    						        	gradeKey.setText(new StringBuffer().append(_repMonadF.getGradeKey()).toString());
-	    						        	//_GUI._StatusBar.setStatusMsg(MonadRealF.toXMLFullString(_repMonadF));
 	    						    		break;
 	    			case DivField.REALD:	if (name.getText() != _repMonadD.getName())			_repMonadD.setName(name.getText());
-								    		if (frame.getText() != _repMonadD.getFrameName())	_repMonadD.setFrameName(frame.getText());
 								    		RealD[] _repMonadCoeffsD = new RealD[_repMonadD.getAlgebra().getGProduct().getBladeCount()];
 								    		for (short k=0; k<_repMonadD.getAlgebra().getGProduct().getBladeCount(); k++)
 								        	{
@@ -387,10 +379,8 @@ import java.util.*;
 								        	}
 								    		_repMonadD.setCoeff(_repMonadCoeffsD);
 								        	gradeKey.setText(new StringBuffer().append(_repMonadD.getGradeKey()).toString());
-								        	//_GUI._StatusBar.setStatusMsg(MonadRealD.toXMLFullString(_repMonadD));
 								    		break;
 	    			case DivField.COMPLEXF:	if (name.getText() != _repMonadCF.getName())		_repMonadCF.setName(name.getText());
-								    		if (frame.getText() != _repMonadCF.getFrameName())	_repMonadCF.setFrameName(frame.getText());
 								    		ComplexF[] _repMonadCoeffsCF = new ComplexF[_repMonadCF.getAlgebra().getGProduct().getBladeCount()];
 								    		for (short i=0; i<_repMonadCF.getAlgebra().getGProduct().getBladeCount(); i++)
 								        	{
@@ -399,10 +389,8 @@ import java.util.*;
 								        	}
 								    		_repMonadCF.setCoeff(_repMonadCoeffsCF);
 								        	gradeKey.setText(new StringBuffer().append(_repMonadCF.getGradeKey()).toString());
-								        	//_GUI._StatusBar.setStatusMsg(MonadComplexF.toXMLFullString(_repMonadCF));
 								    		break;
 	    			case DivField.COMPLEXD:	if (name.getText() != _repMonadCD.getName())		_repMonadCD.setName(name.getText());
-								    		if (frame.getText() != _repMonadCD.getFrameName())	_repMonadCD.setFrameName(frame.getText());
 								    		ComplexD[] _repMonadCoeffsCD = new ComplexD[_repMonadCD.getAlgebra().getGProduct().getBladeCount()];
 								    		for (short m=0; m<_repMonadCD.getAlgebra().getGProduct().getBladeCount(); m++)
 								        	{
@@ -411,7 +399,6 @@ import java.util.*;
 								        	}
 								    		_repMonadCD.setCoeff(_repMonadCoeffsCD);
 								        	gradeKey.setText(new StringBuffer().append(_repMonadCD.getGradeKey()).toString());
-								        	//_GUI._StatusBar.setStatusMsg(MonadComplexD.toXMLFullString(_repMonadCD));
 	    		}
 	    		_editMode=false;
     		}
@@ -667,7 +654,30 @@ import java.util.*;
     		remove(pnlMonadCoeffPanel);
     		
 	    pnlMonadCoeffPanel=new JPanel();
-	    pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder("ct, x, y, z, ..."));
+	    StringBuffer tB = new StringBuffer();
+	    switch (_repMode)
+	    {
+	    	case DivField.REALF:	tB.append(_repMonadF.getAlgebra().getFoot().getFootName()+" | ");
+	    							tB.append(_repMonadF.getAlgebra().getAlgebraName()+" | ");
+	    							tB.append(_repMonadF.getAlgebra().getGProduct().getSignature());
+	    							pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
+	    							break;
+	    	case DivField.REALD:	tB.append(_repMonadD.getAlgebra().getFoot().getFootName()+" | ");
+									tB.append(_repMonadD.getAlgebra().getAlgebraName()+" | ");
+									tB.append(_repMonadD.getAlgebra().getGProduct().getSignature());
+									pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
+									break;
+	    	case DivField.COMPLEXF:	tB.append(_repMonadCF.getAlgebra().getFoot().getFootName()+" | ");
+									tB.append(_repMonadCF.getAlgebra().getAlgebraName()+" | ");
+									tB.append(_repMonadCF.getAlgebra().getGProduct().getSignature());
+									pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
+									break;
+	    	case DivField.COMPLEXD:	tB.append(_repMonadCD.getAlgebra().getFoot().getFootName()+" | ");
+									tB.append(_repMonadCD.getAlgebra().getAlgebraName()+" | ");
+									tB.append(_repMonadCD.getAlgebra().getGProduct().getSignature());
+									pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
+	    }
+	    //pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder("ct, x, y, z, ..."));
 	    pnlMonadCoeffPanel.setBackground(clrBackColor);
 	    pnlMonadCoeffPanel.setLayout(new GridBagLayout());
     	
@@ -1126,37 +1136,38 @@ import java.util.*;
     	name.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
     	cn0.weightx=1;
     	pnlMonadReferences.add(name, cn0);
-    	cn0.weightx=0;
+    	cn0.weightx=0.25;
     	cn0.gridx++;
     	
-    	pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Alg"))), cn0);
-    	cn0.gridx++;
-    	aname.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-    	pnlMonadReferences.add(aname, cn0);
-    	cn0.gridx++;
+    	//pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Alg"))), cn0);
+    	//cn0.gridx++;
+    	//aname.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	//pnlMonadReferences.add(aname, cn0);
+    	//cn0.gridx++;
     	
-    	pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Sig"))), cn0);
-    	cn0.gridx++;
-    	sig.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-    	pnlMonadReferences.add(sig, cn0);
+    	//pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Sig"))), cn0);
+    	//cn0.gridx++;
+    	//sig.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	//pnlMonadReferences.add(sig, cn0);
 
     	
-    	cn0.gridx = 0;
-    	cn0.gridy++;
+    	//cn0.gridx = 0;
+    	//cn0.gridy++;
+    	cn0.weightx=0;
     	
     	pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Frame"))), cn0);
     	cn0.gridx++;
     	frame.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
     	cn0.weightx=1;
     	pnlMonadReferences.add(frame, cn0);
-    	cn0.weightx=0;
+    	cn0.weightx=0.25;
     	cn0.gridx++;
     	
-    	pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot"))), cn0);
-    	cn0.gridx++;
-    	foot.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-    	pnlMonadReferences.add(foot, cn0);
-    	cn0.gridx++;
+    	//pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot"))), cn0);
+    	//cn0.gridx++;
+    	//foot.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	//pnlMonadReferences.add(foot, cn0);
+    	//cn0.gridx++;
     	
     	pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Key"))), cn0);
     	cn0.gridx++;
@@ -1174,11 +1185,6 @@ import java.util.*;
     	if (pnlMonadCoeffPanel!=null)
     		pnlMonadCoeffPanel.setBackground(clrBackColor);
 	    name.setEditable(false);
-	    sig.setEditable(false);
-	    frame.setEditable(false);
-	    foot.setEditable(false);
-	    aname.setEditable(false);
-	    gradeKey.setEditable(false);
 	    
 	    if (useFullPanel)
 	    	for (FieldDisplay point : _jCoeffs)
@@ -1231,31 +1237,9 @@ import java.util.*;
     		pnlMonadCoeffPanel.setBackground(clrUnlockColor);
     	
 	    name.setEditable(true);
-	    aname.setEditable(true);
-	    frame.setEditable(true);
-	    gradeKey.setEditable(false);
-	    
 	    if (useFullPanel)
-	    {
-	    	sig.setEditable(false);
-	    	foot.setEditable(false);
 		    for (FieldDisplay point : _jCoeffs)
 		    	point.setEditable(true);
-	    }
-	    else
-	    {
-	    	sig.setEditable(true);
-	    	foot.setEditable(true);
-	    }    
-    }
-    /**
-     * This method registers a Focus Listener for a JTextField (likely a descedent of one) 
-     * so the Monad Panel can respond to events.
-     * @param pTextField	JTextField
-     */
-    //protected 	void		registerTextChange(JTextField pTextField)
-   //{
-    //	pTextField.addFocusListener(null);						
-    //}
-    	
+	    
+    }    	
 }

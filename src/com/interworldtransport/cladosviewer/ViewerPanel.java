@@ -115,7 +115,7 @@ import java.util.*;
     	
     	nyadPanelList=new ArrayList<NyadPanel>(0);
   	    
-  	    //createObjectsLayout();	This is the old initializer. TODO change to an XML reader
+  	    createObjectsLayout();	//This is the old initializer. TODO change to an XML reader
     }
 
     @Override
@@ -610,11 +610,31 @@ import java.util.*;
 		if (nyadPanes.getTabCount()>0)
 		{
 			int point = nyadPanes.getSelectedIndex();
+			switch (getNyadPanel(point).getRepMode())
+			{
+				case DivField.REALF: 	_GUI._FieldBar._repRealF = null;
+										_GUI._FieldBar.setRealText("");
+										break;
+				case DivField.REALD: 	_GUI._FieldBar._repRealD = null;
+										_GUI._FieldBar.setRealText("");
+										break;
+				case DivField.COMPLEXF:	_GUI._FieldBar._repComplexF = null;
+										_GUI._FieldBar.setRealText("");
+										_GUI._FieldBar.setImgText("");
+										break;
+				case DivField.COMPLEXD: _GUI._FieldBar._repComplexD = null;
+										_GUI._FieldBar.setRealText("");
+										_GUI._FieldBar.setImgText("");
+			}
 			removeNyadPanel(point);
+		}
+		else
+		{
+			_GUI._FieldBar.makeNotWritable();
 		}
 	}
     
-    private	void		pop()
+    private	void pop()
     {
 	    int where=nyadPanes.getSelectedIndex();
 	    if (where>0)
@@ -827,6 +847,7 @@ import java.util.*;
 															break;
 			    					case DivField.COMPLEXD:	pFieldPanel.setField(nyadPanelList.get(j).getNyadCD().getProto());
 			    				}
+			    				_GUI._FieldBar.makeWritable();
 			    			}
 			    			else
 			    				pFieldPanel.clearFieldType();
