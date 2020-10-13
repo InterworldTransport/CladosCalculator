@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.COpsRMultEvents<br>
+ * ---com.interworldtransport.cladosviewer.NOpsSubtractEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,14 +19,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.COpsRMultEvents<br>
+ * ---com.interworldtransport.cladosviewer.NOpsSubtractEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
 
 package com.interworldtransport.cladosviewerEvents;
 import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosFExceptions.FieldBinaryException;
-import com.interworldtransport.cladosG.*;
 import com.interworldtransport.cladosGExceptions.*;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
@@ -34,17 +33,17 @@ import com.interworldtransport.cladosviewer.NyadPanel;
 import java.awt.event.*;
 import javax.swing.*;
 
-/** com.interworldtransport.cladosviewer.COpsRMultEvents
+/** com.interworldtransport.cladosviewer.COpsSubtractEvents
  *  This class manages events relating to a complex operation.
- *  Right multiply this Monad by another Monad.
+ *  Subtract from this Monad another Monad.
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class COpsRMultEvents implements ActionListener
+public class NOpsSubtractEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected COpsEvents 		_parent;
+    protected NOpsParentEvents 	_parent;
 
 /** 
  * This is the default constructor.
@@ -53,17 +52,18 @@ public class COpsRMultEvents implements ActionListener
  * This is a reference to the Menu Item for which this event acts.
  * @param pParent
  * 	COpsEvents
- * This is a reference to the BOpsEvents parent event handler
+ * This is a reference to the NOpsParentEvents parent event handler
  */
-    public COpsRMultEvents(	JMenuItem pmniControlled,
-    						COpsEvents pParent)
+    public NOpsSubtractEvents(	JMenuItem 			pmniControlled,
+    							NOpsParentEvents 	pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);
 		_parent=pParent;
     }
 
-/** This is the actual action to be performed by this member of the menu.
+/** 
+ * This is the actual action to be performed by this member of the menu.
  */
     public void actionPerformed(ActionEvent evt)
     {
@@ -80,7 +80,7 @@ public class COpsRMultEvents implements ActionListener
     	int indxMndPnlSlctd = tSpot.getPaneFocus();
     	if (indxMndPnlSlctd<0 | indxNydPnlSlctd > tSpotPlus.getMonadListSize()) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nMultiplication needs two monads at the same index in a nyad. Nothing done.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\nSubtraction needs two monads at the same index in a nyad. Nothing done.\n");
     		return;
     	}
     	
@@ -91,13 +91,13 @@ public class COpsRMultEvents implements ActionListener
     	{
     		switch (temp0.getRepMode())
     		{
-    			case DivField.REALF:	(temp0.getMonadRF()).multiplyRight(temp1.getMonadRF());
+    			case DivField.REALF:	(temp0.getMonadRF()).subtract(temp1.getMonadRF());
     									break;
-    			case DivField.REALD:	(temp0.getMonadRD()).multiplyRight(temp1.getMonadRD());
+    			case DivField.REALD:	(temp0.getMonadRD()).subtract(temp1.getMonadRD());
     									break;
-    			case DivField.COMPLEXF:	(temp0.getMonadCF()).multiplyRight(temp1.getMonadCF());
+    			case DivField.COMPLEXF:	(temp0.getMonadCF()).subtract(temp1.getMonadCF());
 										break;
-    			case DivField.COMPLEXD:	(temp0.getMonadCD()).multiplyRight(temp1.getMonadCD());
+    			case DivField.COMPLEXD:	(temp0.getMonadCD()).subtract(temp1.getMonadCD());
     		}
     		temp0.setCoefficientDisplay();
     	}

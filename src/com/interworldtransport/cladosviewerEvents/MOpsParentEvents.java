@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsParentEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,11 +19,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsParentEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
 package com.interworldtransport.cladosviewerEvents;
-import java.awt.event.*;
 
 import com.interworldtransport.cladosviewer.CladosCalculator;
 import com.interworldtransport.cladosviewer.ViewerMenu;
@@ -39,20 +38,20 @@ import com.interworldtransport.cladosviewer.ViewerMenu;
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class SOpsEvents implements ActionListener
+public class MOpsParentEvents //implements ActionListener
 {
-    protected 	SOpsGradeEvents			grade;
-    protected 	SOpsHasGradeEvents		hasgrade;
-    protected 	SOpsMagnitudeEvents		mag;
-    protected 	SOpsSQMagnitudeEvents	sqmag;
-    public	 	SOpsNormalizeEvents		norm;
-    public	 	SOpsLocalDualEvents		dualLeft;
-    public	 	SOpsLocalDualEvents		dualRight;
-    public	 	SOpsInvertEvents		invt;
-    public	 	SOpsReverseEvents		rev;
-    public		SOpsScaleEvents			scale;
-    public	 	SOpsGradePartEvents		gradep;
-    public	 	SOpsGradeSupressEvents	grades;
+    protected 	MOpsFindGradeEvents		grade;
+    protected 	MOpsHasGradeEvents		hasgrade;
+    protected 	MOpsMagnitudeEvents		mag;
+    protected 	MOpsSQMagnitudeEvents	sqmag;
+    public	 	MOpsNormalizeEvents		norm;
+    public	 	MOpsLocalDualEvents		dualLeft;
+    public	 	MOpsLocalDualEvents		dualRight;
+    public	 	MOpsInvertEvents		invt;
+    public	 	MOpsReverseEvents		rev;
+    public		MOpsScaleEvents			scale;
+    public	 	MOpsGradePartEvents		gradep;
+    public	 	MOpsGradeSupressEvents	grades;
 
     protected 	ViewerMenu 				_GUIMenu;
     protected 	CladosCalculator		_GUI;
@@ -64,31 +63,31 @@ public class SOpsEvents implements ActionListener
  *  ViewerMenu
  * This is a reference to the owner menu containing this one.
  */
-    public SOpsEvents(ViewerMenu pTheGUIMenu)
+    public MOpsParentEvents(ViewerMenu pTheGUIMenu)
     {
 		_GUIMenu=pTheGUIMenu;
 		_GUI=_GUIMenu._parentGUI;
 
-		grade = new SOpsGradeEvents(			_GUIMenu.mniisSGrade, this);
-		hasgrade = new SOpsHasGradeEvents(		_GUIMenu.mnihasGrade, this);
-		mag = new SOpsMagnitudeEvents(			_GUIMenu.mniMagnitudeOf, this);
-		sqmag = new SOpsSQMagnitudeEvents(		_GUIMenu.mniSQMagnitudeOf, this);
-		norm = new SOpsNormalizeEvents(			_GUIMenu.mniNormalize, this);
-		dualLeft = new SOpsLocalDualEvents(		_GUIMenu.mniDualLeft, this);
-		dualRight = new SOpsLocalDualEvents(	_GUIMenu.mniDualRight, this);
-		invt = new SOpsInvertEvents(			_GUIMenu.mniInvert, this);
-		rev = new SOpsReverseEvents(			_GUIMenu.mniReverse, this);
-		scale = new SOpsScaleEvents(			_GUIMenu.mniScale, this);
-		gradep = new SOpsGradePartEvents(		_GUIMenu.mniGradeCrop, this);
-		grades = new SOpsGradeSupressEvents(	_GUIMenu.mniGradeCut, this);
+		grade = new MOpsFindGradeEvents(		_GUIMenu.mniisSGrade, this);
+		hasgrade = new MOpsHasGradeEvents(		_GUIMenu.mnihasGrade, this);
+		mag = new MOpsMagnitudeEvents(			_GUIMenu.mniMagnitudeOf, this);
+		sqmag = new MOpsSQMagnitudeEvents(		_GUIMenu.mniSQMagnitudeOf, this);
+		norm = new MOpsNormalizeEvents(			_GUIMenu.mniNormalize, this);
+		dualLeft = new MOpsLocalDualEvents(		_GUIMenu.mniDualLeft, this);
+		dualRight = new MOpsLocalDualEvents(	_GUIMenu.mniDualRight, this);
+		invt = new MOpsInvertEvents(			_GUIMenu.mniInvert, this);
+		rev = new MOpsReverseEvents(			_GUIMenu.mniReverse, this);
+		scale = new MOpsScaleEvents(			_GUIMenu.mniScale, this);
+		gradep = new MOpsGradePartEvents(		_GUIMenu.mniGradeCrop, this);
+		grades = new MOpsGradeSupressEvents(	_GUIMenu.mniGradeCut, this);
     }
 
 /** 
  * This is the default action to be performed by all members of the menu.
  * It will be overridden by specific members of the menu.
  */
-    public void actionPerformed(ActionEvent evt)
-    {
-    	;	
-    }
+    //public void actionPerformed(ActionEvent evt)
+    //{
+    //	;	
+    //}
 }

@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsReverseEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsInvertEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,13 +19,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsReverseEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsInvertEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
 
 package com.interworldtransport.cladosviewerEvents;
 
 import com.interworldtransport.cladosF.DivField;
+import com.interworldtransport.cladosG.MonadComplexD;
+import com.interworldtransport.cladosG.MonadComplexF;
+import com.interworldtransport.cladosG.MonadRealD;
+import com.interworldtransport.cladosG.MonadRealF;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -34,15 +38,15 @@ import javax.swing.*;
 
 /** 
  *  This class manages events relating to a simple operation...
- *  Reverse this Monad.
+ *  Invert this Monad.
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class SOpsReverseEvents implements ActionListener
+public class MOpsInvertEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected SOpsEvents 		_parent;
+    protected MOpsParentEvents 		_parent;
 
 /** 
  * This is the default constructor.
@@ -50,11 +54,11 @@ public class SOpsReverseEvents implements ActionListener
  *  JMenuItem
  * This is a reference to the Menu Item for which this event acts.
  * @param pParent
- * 	BOpsEvents
- * This is a reference to the BOpsEvents parent event handler
+ * 	NOpsParentEvents
+ * This is a reference to the NOpsParentEvents parent event handler
  */
-    public SOpsReverseEvents(	JMenuItem pmniControlled,
-								SOpsEvents pParent)
+    public MOpsInvertEvents(	JMenuItem pmniControlled,
+								MOpsParentEvents pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);
@@ -63,10 +67,10 @@ public class SOpsReverseEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
- * The monad with focus has its blades multiplication order reversed. 
- * Blade a^b^c^d becomes d^c^b^a on the default (canonical) basis.
+ * The monad with focus has its generators inverted. 
+ * Blade a^b^c^d becomes (-a)^(-b)^(-c)^(-d) on the default (canonical) basis.
  * 
- * A future version of the reverse method must reverse the 1-blades represented in 
+ * A future version of the invert method must invert the 1-blades represented in 
  * the reference frame instead. Fourier decomposition is done against that frame 
  * and not the canonical one most of the time.
  */
@@ -83,7 +87,7 @@ public class SOpsReverseEvents implements ActionListener
     	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nReverse Operation must have a monad in focus. Nothing done.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\nInvert Operation must have a monad in focus. Nothing done.\n");
     		return;
     	}
     	
@@ -91,15 +95,15 @@ public class SOpsReverseEvents implements ActionListener
     	
     	switch (tMSpotPnl.getRepMode())
     	{
-	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().reverse();
+	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().invert();
 							    	break;
-	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().reverse();
+	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().invert();
 							    	break;
-	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().reverse();
+	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().invert();
 							    	break;
-	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().reverse();
+	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().invert();
     	}
     	tMSpotPnl.setCoefficientDisplay();
-    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been reversed.\n");
+    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been inverted.\n");
     }
  }

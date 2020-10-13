@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.COpsDotEvents<br>
+ * ---com.interworldtransport.cladosviewer.NOpsRMultEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,48 +19,50 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.COpsDotEvents<br>
+ * ---com.interworldtransport.cladosviewer.NOpsRMultEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
+
 package com.interworldtransport.cladosviewerEvents;
+import com.interworldtransport.cladosF.DivField;
+import com.interworldtransport.cladosFExceptions.FieldBinaryException;
 import com.interworldtransport.cladosGExceptions.*;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
-import com.interworldtransport.cladosF.DivField;
-import com.interworldtransport.cladosFExceptions.*;
+
 import java.awt.event.*;
 import javax.swing.*;
 
-/** com.interworldtransport.cladosviewer.COpsDotEvents
+/** com.interworldtransport.cladosviewer.COpsRMultEvents
  *  This class manages events relating to a complex operation.
- *  Symmetric Multiply this Monad with another Monad.
+ *  Right multiply this Monad by another Monad.
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class COpSymmMultEvents implements ActionListener
+public class NOpsRMultEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected COpsEvents 		_parent;
+    protected NOpsParentEvents 	_parent;
 
-/** This is the default constructor.
+/** 
+ * This is the default constructor.
  * @param pmniControlled
  *  JMenuItem
  * This is a reference to the Menu Item for which this event acts.
  * @param pParent
  * 	COpsEvents
- * This is a reference to the BOpsEvents parent event handler
+ * This is a reference to the NOpsParentEvents parent event handler
  */
-    public COpSymmMultEvents(	JMenuItem pmniControlled,
-    							COpsEvents pParent)
+    public NOpsRMultEvents(	JMenuItem 			pmniControlled,
+    						NOpsParentEvents 	pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);
 		_parent=pParent;
     }
 
-/** 
- * This is the actual action to be performed by this member of the menu.
+/** This is the actual action to be performed by this member of the menu.
  */
     public void actionPerformed(ActionEvent evt)
     {
@@ -88,13 +90,13 @@ public class COpSymmMultEvents implements ActionListener
     	{
     		switch (temp0.getRepMode())
     		{
-    			case DivField.REALF:	(temp0.getMonadRF()).multiplySymm(temp1.getMonadRF());
+    			case DivField.REALF:	(temp0.getMonadRF()).multiplyRight(temp1.getMonadRF());
     									break;
-    			case DivField.REALD:	(temp0.getMonadRD()).multiplySymm(temp1.getMonadRD());
+    			case DivField.REALD:	(temp0.getMonadRD()).multiplyRight(temp1.getMonadRD());
     									break;
-    			case DivField.COMPLEXF:	(temp0.getMonadCF()).multiplySymm(temp1.getMonadCF());
+    			case DivField.COMPLEXF:	(temp0.getMonadCF()).multiplyRight(temp1.getMonadCF());
 										break;
-    			case DivField.COMPLEXD:	(temp0.getMonadCD()).multiplySymm(temp1.getMonadCD());
+    			case DivField.COMPLEXD:	(temp0.getMonadCD()).multiplyRight(temp1.getMonadCD());
     		}
     		temp0.setCoefficientDisplay();
     	}

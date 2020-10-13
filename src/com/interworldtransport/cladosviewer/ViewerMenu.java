@@ -55,23 +55,38 @@ public class ViewerMenu extends JMenuBar
     public	JMenuItem		mniExit;
 
 /**
- * The Boolean Operations Parent Menu for the application.
+ * The Nyad Operations Parent Menu for the application.
  */
-    public	JMenu			mnuBOperations;
+    public	JMenu			mnuNyadOps;
+    public	JMenu			mnuNyadBooleanOps;
+    public	JMenuItem		mniisEqual;
+    public	JMenuItem		mniisZero;
+    public	JMenuItem		mniisStrgReferenceMatch;
+    public	JMenuItem		mniisWeakReferenceMatch;
+    
+    public	JMenu			mnuOneInputNyadOps;
+    public	JMenuItem		mnihasAlgebra;
+    
+    public	JMenu			mnuTwoInputNyadOps;
+    public	JMenuItem		mniAdd;
+    public	JMenuItem		mniSubtract;
+    public	JMenuItem		mniLeftMultiply;
+    public	JMenuItem		mniRightMultiply;
+    public	JMenuItem		mniSymm;
+    public	JMenuItem		mniASymm;
+    
+/**
+ * The Monad Operations Parent Menu for the application.
+ */
+    public	JMenu			mnuMonadOps;
+    public	JMenu			mnuMonadBooleanOps;
     public	JMenuItem		mniisMultiGrade;
     public	JMenuItem		mniisGrade;
     public	JMenuItem		mniisNilpotent;
     public	JMenuItem		mniisIdempotent;
     public	JMenuItem		mniisScaledIdempotent;
-    public	JMenuItem		mniisEqual;
-    public	JMenuItem		mniisZero;
-    public	JMenuItem		mniisStrgReferenceMatch;
-    public	JMenuItem		mniisWeakReferenceMatch;
-
-/**
- * The Simple Operations Parent Menu for the application.
- */
-    public	JMenu			mnuSOperations;
+    
+    public	JMenu			mnuOneInputMonadOps;
     public	JMenuItem		mniisSGrade;
     public	JMenuItem		mnihasGrade;
     public	JMenuItem		mniMagnitudeOf;
@@ -84,17 +99,8 @@ public class ViewerMenu extends JMenuBar
     public	JMenuItem		mniScale;
     public	JMenuItem		mniGradeCrop;
     public	JMenuItem		mniGradeCut;
-
-/**
- * The Complex Operations Parent Menu for the application.
- */
-    public	JMenu			mnuCOperations;
-    public	JMenuItem		mniAdd;
-    public	JMenuItem		mniSubtract;
-    public	JMenuItem		mniLeftMultiply;
-    public	JMenuItem		mniRightMultiply;
-    public	JMenuItem		mniSymm;
-    public	JMenuItem		mniASymm;
+    
+    public	JMenu			mnuTwoInputMonadOps;
 
 /**
  * The Tools Parent Menu for the application.
@@ -125,92 +131,106 @@ public class ViewerMenu extends JMenuBar
     	
     	mnuFile=new JMenu("File");
     	add(mnuFile);
-    	mnuBOperations=new JMenu("Boolean Ops");
-    	add(mnuBOperations);
-    	mnuSOperations=new JMenu("Unary Ops");
-    	add(mnuSOperations);
-    	mnuCOperations=new JMenu("Binary Ops");
-    	add(mnuCOperations);
+	    	mniSave=new JMenuItem("Save");
+	    	mnuFile.add(mniSave);
+	    	mniSaveAs=new JMenuItem("Save As");
+	    	mnuFile.add(mniSaveAs);
+	    	mniExit=new JMenuItem("Exit");
+	    	mnuFile.add(mniExit);
+	    	
+    	mnuNyadOps=new JMenu("Nyad Ops");
+    	add(mnuNyadOps);
+    	
+	    	mnuNyadBooleanOps=new JMenu("Boolean");
+	    	mnuNyadOps.add(mnuNyadBooleanOps);
+	    	   	mniisStrgReferenceMatch=new JMenuItem("is Strong Reference Match?");
+		    	mnuNyadBooleanOps.add(mniisStrgReferenceMatch);
+		    	mniisWeakReferenceMatch=new JMenuItem("is Weak Reference Match?");
+		    	mnuNyadBooleanOps.add(mniisWeakReferenceMatch);
+		    	mniisZero=new JMenuItem("is Zero?");
+		    	mnuNyadBooleanOps.add(mniisZero);
+		    	mniisEqual=new JMenuItem("is Equal?");
+		    	mnuNyadBooleanOps.add(mniisEqual);
+		    	
+		    mnuOneInputNyadOps=new JMenu("One Input");
+			mnuNyadOps.add(mnuOneInputNyadOps);
+				mnihasAlgebra=new JMenuItem("has Algebra?");
+				mnuOneInputNyadOps.add(mnihasAlgebra);
+		    	
+		    mnuTwoInputNyadOps=new JMenu("Two Inputs");
+		    mnuNyadOps.add(mnuTwoInputNyadOps);
+			   	mniAdd=new JMenuItem("Add");
+			   	mnuTwoInputNyadOps.add(mniAdd);
+			   	mniSubtract=new JMenuItem("Subtract");
+			   	mnuTwoInputNyadOps.add(mniSubtract);
+			   	mniLeftMultiply=new JMenuItem("Left Multiply");
+			   	mnuTwoInputNyadOps.add(mniLeftMultiply);
+			   	mniRightMultiply=new JMenuItem("Right Multiply");
+			   	mnuTwoInputNyadOps.add(mniRightMultiply);
+			   	mniSymm=new JMenuItem("Symm Multiply");
+			   	mnuTwoInputNyadOps.add(mniSymm);
+			   	mniASymm=new JMenuItem("ASymm Multiply");
+			   	mnuTwoInputNyadOps.add(mniASymm);
+		
+		mnuMonadOps=new JMenu("Monad Ops");
+		add(mnuMonadOps);
+		
+			mnuMonadBooleanOps=new JMenu("Boolean");
+	    	mnuMonadOps.add(mnuMonadBooleanOps);
+		    	mniisGrade=new JMenuItem("is Grade?");
+		    	mnuMonadBooleanOps.add(mniisGrade);
+		    	mniisMultiGrade=new JMenuItem("is Multigrade?");
+		    	mnuMonadBooleanOps.add(mniisMultiGrade);
+		    	mniisNilpotent=new JMenuItem("is Nilpotent?");
+		    	mnuMonadBooleanOps.add(mniisNilpotent);
+		    	mniisIdempotent=new JMenuItem("is Idempotent?");
+		    	mnuMonadBooleanOps.add(mniisIdempotent);
+		    	mniisScaledIdempotent=new JMenuItem("is Scaled Idempotent?");
+		    	mnuMonadBooleanOps.add(mniisScaledIdempotent);
+	    	
+	    	mnuOneInputMonadOps=new JMenu("One Input");
+	    	mnuMonadOps.add(mnuOneInputMonadOps);
+		    	mniisSGrade=new JMenuItem("unique grade?");
+		    	mnuOneInputMonadOps.add(mniisSGrade);
+		    	mnihasGrade=new JMenuItem("has grade?");
+		    	mnuOneInputMonadOps.add(mnihasGrade);
+		    	mniMagnitudeOf=new JMenuItem("magnitude?");
+		    	mnuOneInputMonadOps.add(mniMagnitudeOf);
+		    	mniSQMagnitudeOf=new JMenuItem("sq magnitude?");
+		    	mnuOneInputMonadOps.add(mniSQMagnitudeOf);
+		    	mniNormalize=new JMenuItem("normalize");
+		    	mnuOneInputMonadOps.add(mniNormalize);
+		    	mniDualLeft=new JMenuItem("dual>");
+		    	mnuOneInputMonadOps.add(mniDualLeft);
+		    	mniDualRight=new JMenuItem("<dual");
+		    	mnuOneInputMonadOps.add(mniDualRight);
+		    	mniInvert=new JMenuItem("invert");
+		    	mnuOneInputMonadOps.add(mniInvert);
+		    	mniReverse=new JMenuItem("reverse");
+		    	mnuOneInputMonadOps.add(mniReverse);
+		    	mniScale=new JMenuItem("scale");
+		    	mnuOneInputMonadOps.add(mniScale);
+		    	mniGradeCrop=new JMenuItem("grade crop");
+		    	mnuOneInputMonadOps.add(mniGradeCrop);
+		    	mniGradeCut=new JMenuItem("grade cut");
+		    	mnuOneInputMonadOps.add(mniGradeCut);
+		    	
+	    	mnuTwoInputMonadOps=new JMenu("Two Inputs");
+	    	mnuMonadOps.add(mnuTwoInputMonadOps);
+    		
     	mnuTools=new JMenu("Tools");
     	add(mnuTools);
+	    	mniCreate=new JMenuItem("create");
+	    	mnuTools.add(mniCreate);
+	    	mniOptions=new JMenuItem("options");
+	    	mnuTools.add(mniOptions);
+    	
     	mnuHelp=new JMenu("Help");
-    	add(mnuHelp);  //Primary Menus are added
-    	
-    	mniSave=new JMenuItem("Save");
-    	mnuFile.add(mniSave);
-    	mniSaveAs=new JMenuItem("Save As");
-    	mnuFile.add(mniSaveAs);
-    	mniExit=new JMenuItem("Exit");
-    	mnuFile.add(mniExit);
-    	
-    	mniisStrgReferenceMatch=new JMenuItem("is Strong Reference Match?");
-    	mnuBOperations.add(mniisStrgReferenceMatch);
-    	mniisWeakReferenceMatch=new JMenuItem("is Weak Reference Match?");
-    	mnuBOperations.add(mniisWeakReferenceMatch);
-    	mniisZero=new JMenuItem("is Zero?");
-    	mnuBOperations.add(mniisZero);
-    	mniisEqual=new JMenuItem("is Equal?");
-    	mnuBOperations.add(mniisEqual);
-    	mniisGrade=new JMenuItem("is Grade?");
-    	mnuBOperations.add(mniisGrade);
-    	mniisMultiGrade=new JMenuItem("is Multigrade?");
-    	mnuBOperations.add(mniisMultiGrade);
-    	mniisNilpotent=new JMenuItem("is Nilpotent?");
-    	mnuBOperations.add(mniisNilpotent);
-    	mniisIdempotent=new JMenuItem("is Idempotent?");
-    	mnuBOperations.add(mniisIdempotent);
-    	mniisScaledIdempotent=new JMenuItem("is Scaled Idempotent?");
-    	mnuBOperations.add(mniisScaledIdempotent);
-    	
-    	
-    	mniisSGrade=new JMenuItem("unique grade?");
-    	mnuSOperations.add(mniisSGrade);
-    	mnihasGrade=new JMenuItem("has grade?");
-    	mnuSOperations.add(mnihasGrade);
-    	mniMagnitudeOf=new JMenuItem("magnitude?");
-    	mnuSOperations.add(mniMagnitudeOf);
-    	mniSQMagnitudeOf=new JMenuItem("sq magnitude?");
-    	mnuSOperations.add(mniSQMagnitudeOf);
-    	mniNormalize=new JMenuItem("normalize");
-    	mnuSOperations.add(mniNormalize);
-    	mniDualLeft=new JMenuItem("dual>");
-    	mnuSOperations.add(mniDualLeft);
-    	mniDualRight=new JMenuItem("<dual");
-    	mnuSOperations.add(mniDualRight);
-    	mniInvert=new JMenuItem("invert");
-    	mnuSOperations.add(mniInvert);
-    	mniReverse=new JMenuItem("reverse");
-    	mnuSOperations.add(mniReverse);
-    	mniScale=new JMenuItem("scale");
-    	mnuSOperations.add(mniScale);
-    	mniGradeCrop=new JMenuItem("grade crop");
-    	mnuSOperations.add(mniGradeCrop);
-    	mniGradeCut=new JMenuItem("grade cut");
-    	mnuSOperations.add(mniGradeCut);
-    	
-    	mniAdd=new JMenuItem("Add");
-    	mnuCOperations.add(mniAdd);
-    	mniSubtract=new JMenuItem("Subtract");
-    	mnuCOperations.add(mniSubtract);
-    	mniLeftMultiply=new JMenuItem("Left Multiply");
-    	mnuCOperations.add(mniLeftMultiply);
-    	mniRightMultiply=new JMenuItem("Right Multiply");
-    	mnuCOperations.add(mniRightMultiply);
-    	mniSymm=new JMenuItem("Symm Multiply");
-    	mnuCOperations.add(mniSymm);
-    	mniASymm=new JMenuItem("ASymm Multiply");
-    	mnuCOperations.add(mniASymm);
-    	
-    	mniCreate=new JMenuItem("create");
-    	mnuTools.add(mniCreate);
-    	mniOptions=new JMenuItem("options");
-    	mnuTools.add(mniOptions);
-    	//Options Menu items added
-    	
-    	mniSupport=new JMenuItem("support");
-    	mnuHelp.add(mniSupport);
-    	mniAbout=new JMenuItem("about");
-    	mnuHelp.add(mniAbout);
+    	add(mnuHelp);
+	    	mniSupport=new JMenuItem("support");
+	    	mnuHelp.add(mniSupport);
+	    	mniAbout=new JMenuItem("about");
+	    	mnuHelp.add(mniAbout);
     	//Help Menu items added
     }
     

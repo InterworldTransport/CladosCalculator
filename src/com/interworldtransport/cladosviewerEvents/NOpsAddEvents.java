@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.COpsLMultEvents<br>
+ * ---com.interworldtransport.cladosviewer.NOpsAddEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,12 +19,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.COpsLMultEvents<br>
+ * ---com.interworldtransport.cladosviewer.NOpsAddEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
 
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosG.*;
 import com.interworldtransport.cladosGExceptions.*;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
@@ -33,17 +32,17 @@ import com.interworldtransport.cladosFExceptions.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-/** com.interworldtransport.cladosviewer.COpsLMultEvents
+/** com.interworldtransport.cladosviewer.COpsAddEvents
  *  This class manages events relating to a complex operation.
- *  Left multiply this Monad by another Monad.
+ *  Add to this Monad another Monad.
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class COpsLMultEvents implements ActionListener
+public class NOpsAddEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected COpsEvents 		_parent;
+    protected NOpsParentEvents 	_parent;
 
 /** 
  * This is the default constructor.
@@ -52,24 +51,25 @@ public class COpsLMultEvents implements ActionListener
  * This is a reference to the Menu Item for which this event acts.
  * @param pParent
  * 	COpsEvents
- * This is a reference to the BOpsEvents parent event handler
+ * This is a reference to the NOpsParentEvents parent event handler
  */
-    public COpsLMultEvents(	JMenuItem pmniControlled,
-    						COpsEvents pParent)
+    public NOpsAddEvents(	JMenuItem 		pmniControlled,
+    						NOpsParentEvents pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);
 		_parent=pParent;
     }
 
-/** This is the actual action to be performed by this member of the menu.
+/** 
+ * This is the actual action to be performed by this member of the menu.
  */
     public void actionPerformed(ActionEvent evt)
     {
     	int indxNydPnlSlctd = _parent._GUI._GeometryDisplay.getPaneFocus();
     	if (indxNydPnlSlctd<0 | indxNydPnlSlctd == _parent._GUI._GeometryDisplay.getNyadListSize()-1) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus... or the last one is.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus... or the last one is.");
     		return;	
     	}
     	
@@ -79,7 +79,7 @@ public class COpsLMultEvents implements ActionListener
     	int indxMndPnlSlctd = tSpot.getPaneFocus();
     	if (indxMndPnlSlctd<0 | indxNydPnlSlctd > tSpotPlus.getMonadListSize()) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nMultiplication needs two monads at the same index in a nyad. Nothing done.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\nAddition needs two monads at the same index in a nyad. Nothing done.");
     		return;
     	}
     	
@@ -90,13 +90,14 @@ public class COpsLMultEvents implements ActionListener
     	{
     		switch (temp0.getRepMode())
     		{
-    			case DivField.REALF:	(temp0.getMonadRF()).multiplyLeft(temp1.getMonadRF());
+    			case DivField.REALF:	(temp0.getMonadRF()).add(temp1.getMonadRF());
     									break;
-    			case DivField.REALD:	(temp0.getMonadRD()).multiplyLeft(temp1.getMonadRD());
+    			case DivField.REALD:	(temp0.getMonadRD()).add(temp1.getMonadRD());
     									break;
-    			case DivField.COMPLEXF:	(temp0.getMonadCF()).multiplyLeft(temp1.getMonadCF());
+    			case DivField.COMPLEXF:	(temp0.getMonadCF()).add(temp1.getMonadCF());
 										break;
-    			case DivField.COMPLEXD:	(temp0.getMonadCD()).multiplyLeft(temp1.getMonadCD());
+    			case DivField.COMPLEXD:	(temp0.getMonadCD()).add(temp1.getMonadCD());
+    									
     		}
     		temp0.setCoefficientDisplay();
     	}

@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.COpsWedgeEvents<br>
+ * ---com.interworldtransport.cladosviewer.NOpsAntiSymmMultEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,14 +19,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.COpsWedgeEvents<br>
+ * ---com.interworldtransport.cladosviewer.NOpsAntiSymmMultEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
 
 package com.interworldtransport.cladosviewerEvents;
 import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosFExceptions.FieldBinaryException;
-import com.interworldtransport.cladosG.*;
 import com.interworldtransport.cladosGExceptions.*;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
@@ -41,10 +40,10 @@ import javax.swing.*;
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class COpsAntiSymmMultEvents implements ActionListener
+public class NOpsAntiSymmMultEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected COpsEvents 		_parent;
+    protected NOpsParentEvents 	_parent;
 
 /** 
  * This is the default constructor.
@@ -53,10 +52,10 @@ public class COpsAntiSymmMultEvents implements ActionListener
  * This is a reference to the Menu Item for which this event acts.
  * @param pParent
  * 	COpsEvents
- * This is a reference to the BOpsEvents parent event handler
+ * This is a reference to the NOpsParentEvents parent event handler
  */
-    public COpsAntiSymmMultEvents(	JMenuItem pmniControlled,
-    						COpsEvents pParent)
+    public NOpsAntiSymmMultEvents(	JMenuItem 			pmniControlled,
+    								NOpsParentEvents 	pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);

@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsGradePartEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsSQMagnitudeEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,11 +19,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsGradePartEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsSQMagnitudeEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
+
 package com.interworldtransport.cladosviewerEvents;
+
+import com.interworldtransport.cladosF.ComplexD;
+import com.interworldtransport.cladosF.ComplexF;
 import com.interworldtransport.cladosF.DivField;
+import com.interworldtransport.cladosF.RealD;
+import com.interworldtransport.cladosF.RealF;
+import com.interworldtransport.cladosGExceptions.CladosMonadException;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -31,16 +38,16 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /** 
- *  This class manages events relating to a simple requirement
- *  Limit this Monad to a particular grade.
+ *  This class manages events relating to the answering of a simple question.
+ *  What is the squared magnitude of this Monad?
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class SOpsGradePartEvents implements ActionListener
+public class MOpsSQMagnitudeEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected SOpsEvents 		_parent;
+    protected MOpsParentEvents 		_parent;
 
 /** 
  * This is the default constructor.
@@ -48,11 +55,11 @@ public class SOpsGradePartEvents implements ActionListener
  *  JMenuItem
  * This is a reference to the Menu Item for which this event acts.
  * @param pParent
- * 	BOpsEvents
- * This is a reference to the BOpsEvents parent event handler
+ * 	NOpsParentEvents
+ * This is a reference to the NOpsParentEvents parent event handler
  */
-    public SOpsGradePartEvents(	JMenuItem pmniControlled,
-    							SOpsEvents pParent)
+    public MOpsSQMagnitudeEvents(	JMenuItem pmniControlled,
+									MOpsParentEvents pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);
@@ -61,13 +68,6 @@ public class SOpsGradePartEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
- * This is the classic GradePart method. It is typically used to get scalar parts.
- * Basically, the monad in focus is cropped around the grade that should be kept as is.
- * 
- * A future version of the  method must use the grade represented in 
- * the reference frame instead. Fourier decomposition is done against that frame 
- * and not the canonical one most of the time. That means the getPart(short) method
- * will channel through the ReferenceFrame of the monad.
  */
     public void actionPerformed(ActionEvent evt)
     {
@@ -79,40 +79,39 @@ public class SOpsGradePartEvents implements ActionListener
     	}
     	
     	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	
     	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nGradePart Operation must have a monad in focus. Nothing done.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\nSQ Magnitude Discovery needs one monad in focus. Nothing done.\n");
     		return;
     	}
     	
-    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
-    	
-    	try
-    	{
-    		short tGrade = (short) Float.parseFloat(_parent._GUI._FieldBar.getRealText());
-        	switch (tMSpotPnl.getRepMode())
+    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(indxMndPnlSlctd);
+    	try 
+    	{    		
+    		switch (tMSpotPnl.getRepMode())
         	{
-    	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().gradePart(tGrade);
-    							    	break;
-    	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().gradePart(tGrade);
-    							    	break;
-    	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().gradePart(tGrade);
-    							    	break;
-    	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().gradePart(tGrade);	
+		    	case DivField.REALF: 	RealF scaleRF = tMSpotPnl.getMonadRF().sqMagnitude();
+							    		_parent._GUI._FieldBar.setWhatFloatR(scaleRF.getModulus());
+								    	break;
+		    	case DivField.REALD: 	RealD scaleRD = tMSpotPnl.getMonadRD().sqMagnitude();
+							    		_parent._GUI._FieldBar.setWhatDoubleR(scaleRD.getModulus());
+								    	break;
+		    	case DivField.COMPLEXF:	ComplexF scaleCF = tMSpotPnl.getMonadCF().sqMagnitude();
+							    		_parent._GUI._FieldBar.setWhatFloatR(scaleCF.getModulus());
+							    		_parent._GUI._FieldBar.setWhatFloatI(0.0F);
+								    	break;
+		    	case DivField.COMPLEXD:	ComplexD scaleCD = tMSpotPnl.getMonadCD().sqMagnitude();
+							    		_parent._GUI._FieldBar.setWhatDoubleR(scaleCD.getModulus());
+							    		_parent._GUI._FieldBar.setWhatDoubleI(0.0D);
         	}
-        	tMSpotPnl.setCoefficientDisplay();
-	    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been cropped around "+tGrade+"-grade.\n");
-    	}
-    	catch (NullPointerException eNull)
+    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad SQmagnitude has been computed.\n");
+    	} 
+    	catch (CladosMonadException e) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nGradePart Operation must have a real # in the FieldBar. Nothing done.\n");
-    		return;
-    	}
-    	catch (NumberFormatException eFormat)
-    	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nGradePart Operation must have a parse-able real # in the FieldBar. Nothing done.\n");
-    		return;
+    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad SQmagnitude has NOT been computed due to a Clados Monad Exception.\n");
+    		_parent._GUI._StatusBar.setStatusMsg(e.getSourceMessage());
     	}
     }
  }

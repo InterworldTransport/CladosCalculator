@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsSQMagnitudeEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsLocalDualEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,18 +19,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsSQMagnitudeEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsLocalDualEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
 
 package com.interworldtransport.cladosviewerEvents;
 
-import com.interworldtransport.cladosF.ComplexD;
-import com.interworldtransport.cladosF.ComplexF;
 import com.interworldtransport.cladosF.DivField;
-import com.interworldtransport.cladosF.RealD;
-import com.interworldtransport.cladosF.RealF;
-import com.interworldtransport.cladosGExceptions.CladosMonadException;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -38,16 +33,16 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /** 
- *  This class manages events relating to the answering of a simple question.
- *  What is the squared magnitude of this Monad?
+ *  This class manages events relating to a simple operation...
+ *  Take the dual of this Monad.
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class SOpsSQMagnitudeEvents implements ActionListener
- {
+public class MOpsLocalDualEvents implements ActionListener
+{
     protected JMenuItem 		_control;
-    protected SOpsEvents 		_parent;
+    protected MOpsParentEvents 		_parent;
 
 /** 
  * This is the default constructor.
@@ -55,11 +50,11 @@ public class SOpsSQMagnitudeEvents implements ActionListener
  *  JMenuItem
  * This is a reference to the Menu Item for which this event acts.
  * @param pParent
- * 	BOpsEvents
- * This is a reference to the BOpsEvents parent event handler
+ * 	NOpsParentEvents
+ * This is a reference to the NOpsParentEvents parent event handler
  */
-    public SOpsSQMagnitudeEvents(	JMenuItem pmniControlled,
-									SOpsEvents pParent)
+    public MOpsLocalDualEvents(	JMenuItem pmniControlled,
+								MOpsParentEvents pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);
@@ -68,9 +63,16 @@ public class SOpsSQMagnitudeEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
+ * The monad with focus has is multiplied by the PS on the right or left. 
+ * 
+ * A future version of the method must use the PS represented in the
+ * reference frame instead. Fourier decomposition is done against that frame 
+ * and not the canonical one most of the time.
  */
     public void actionPerformed(ActionEvent evt)
     {
+    	String command = evt.getActionCommand();
+    	
     	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
@@ -79,39 +81,45 @@ public class SOpsSQMagnitudeEvents implements ActionListener
     	}
     	
     	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
-    	
     	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nSQ Magnitude Discovery needs one monad in focus. Nothing done.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\nDual Operation must have a monad in focus. Nothing done.\n");
     		return;
     	}
     	
-    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(indxMndPnlSlctd);
-    	try 
-    	{    		
+    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+    	
+    	
+    	if (command.equals("dual>"))
+    	{
+        	switch (tMSpotPnl.getRepMode())
+        	{
+    	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().dualLeft();
+    							    	break;
+    	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().dualLeft();
+    							    	break;
+    	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().dualLeft();
+    							    	break;
+    	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().dualLeft();
+        	}
+    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the left.\n");
+    	}
+    	if (command.equals("<dual"))
+    	{
     		switch (tMSpotPnl.getRepMode())
         	{
-		    	case DivField.REALF: 	RealF scaleRF = tMSpotPnl.getMonadRF().sqMagnitude();
-							    		_parent._GUI._FieldBar.setWhatFloatR(scaleRF.getModulus());
-								    	break;
-		    	case DivField.REALD: 	RealD scaleRD = tMSpotPnl.getMonadRD().sqMagnitude();
-							    		_parent._GUI._FieldBar.setWhatDoubleR(scaleRD.getModulus());
-								    	break;
-		    	case DivField.COMPLEXF:	ComplexF scaleCF = tMSpotPnl.getMonadCF().sqMagnitude();
-							    		_parent._GUI._FieldBar.setWhatFloatR(scaleCF.getModulus());
-							    		_parent._GUI._FieldBar.setWhatFloatI(0.0F);
-								    	break;
-		    	case DivField.COMPLEXD:	ComplexD scaleCD = tMSpotPnl.getMonadCD().sqMagnitude();
-							    		_parent._GUI._FieldBar.setWhatDoubleR(scaleCD.getModulus());
-							    		_parent._GUI._FieldBar.setWhatDoubleI(0.0D);
+    	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().dualRight();
+    							    	break;
+    	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().dualRight();
+    							    	break;
+    	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().dualRight();
+    							    	break;
+    	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().dualRight();
+    							    	break;
         	}
-    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad SQmagnitude has been computed.\n");
-    	} 
-    	catch (CladosMonadException e) 
-    	{
-    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad SQmagnitude has NOT been computed due to a Clados Monad Exception.\n");
-    		_parent._GUI._StatusBar.setStatusMsg(e.getSourceMessage());
+    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the right.\n");
     	}
+    	tMSpotPnl.setCoefficientDisplay();
     }
  }

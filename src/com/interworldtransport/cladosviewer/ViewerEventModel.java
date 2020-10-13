@@ -24,12 +24,12 @@
  */
 
 package com.interworldtransport.cladosviewer;
-import com.interworldtransport.cladosGExceptions.*;
-import com.interworldtransport.cladosviewerEvents.BOpsEvents;
-import com.interworldtransport.cladosviewerEvents.COpsEvents;
+//import com.interworldtransport.cladosGExceptions.*;
+import com.interworldtransport.cladosviewerEvents.NOpsParentEvents;
+//import com.interworldtransport.cladosviewerEvents.COpsEvents;
 import com.interworldtransport.cladosviewerEvents.FileEvents;
 import com.interworldtransport.cladosviewerEvents.HelpEvents;
-import com.interworldtransport.cladosviewerEvents.SOpsEvents;
+import com.interworldtransport.cladosviewerEvents.MOpsParentEvents;
 import com.interworldtransport.cladosviewerEvents.ToolsEvents;
 
 
@@ -55,25 +55,25 @@ public class ViewerEventModel
     protected 	FileEvents		FileParts;
 
 /**
- * The BOpsEvents object collects all Boolean Operations Event Handlers in one
+ * The NOpsParentEvents object collects all Boolean Operations Event Handlers in one
  * place in case there are actions they all share.  This object is responsible
  * for constructing all related Event Handlers.
  */
-    protected	BOpsEvents		BOpsParts;
+    protected	NOpsParentEvents		NOpsParts;
 
 /**
- * The SOpsEvents object collects all Simple Operations Event Handlers in one
+ * The MOpsParentEvents object collects all Simple Operations Event Handlers in one
  * place in case there are actions they all share.  This object is responsible
  * for constructing all related Event Handlers.
  */
-    protected	SOpsEvents		SOpsParts;
+    protected	MOpsParentEvents		MOpsParts;
 
 /**
  * The COpsEvents object collects all Complex Operations Event Handlers in one
  * place in case there are actions they all share.  This object is responsible
  * for constructing all related Event Handlers.
  */
-    protected	COpsEvents		COpsParts;
+    //protected	COpsEvents		COpsParts;
 
 /**
  * The ToolEvents object collects all Tool Event Handlers in one place in case
@@ -105,9 +105,9 @@ public class ViewerEventModel
 
     	FileParts = new FileEvents(GUIParentMenu);
 
-    	BOpsParts = new BOpsEvents(GUIParentMenu);
-    	SOpsParts = new SOpsEvents(GUIParentMenu);
-		COpsParts = new COpsEvents(GUIParentMenu);
+    	NOpsParts = new NOpsParentEvents(GUIParentMenu);
+    	MOpsParts = new MOpsParentEvents(GUIParentMenu);
+		//COpsParts = new COpsEvents(GUIParentMenu);
 	
 		ToolParts = new ToolsEvents(GUIParentMenu);
 		HelpParts = new HelpEvents(GUIParentMenu);

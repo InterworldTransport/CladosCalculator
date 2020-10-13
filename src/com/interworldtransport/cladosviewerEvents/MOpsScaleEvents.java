@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsScaleEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsScaleEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsScaleEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsScaleEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
 
@@ -47,10 +47,10 @@ import javax.swing.*;
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class SOpsScaleEvents implements ActionListener
+public class MOpsScaleEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected SOpsEvents 		_parent;
+    protected MOpsParentEvents 		_parent;
 
 /** 
  * This is the default constructor.
@@ -58,11 +58,11 @@ public class SOpsScaleEvents implements ActionListener
  *  JMenuItem
  * This is a reference to the Menu Item for which this event acts.
  * @param pParent
- * 	BOpsEvents
- * This is a reference to the BOpsEvents parent event handler
+ * 	NOpsParentEvents
+ * This is a reference to the NOpsParentEvents parent event handler
  */
-    public SOpsScaleEvents(	JMenuItem pmniControlled,
-    						SOpsEvents pParent)
+    public MOpsScaleEvents(	JMenuItem pmniControlled,
+    						MOpsParentEvents pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);
@@ -99,21 +99,21 @@ public class SOpsScaleEvents implements ActionListener
 		    switch(tMSpotPnl.getRepMode())
 	    	{
 	    		case DivField.REALF:	MonadRealF tMonadRF = tMSpotPnl.getMonadRF();
-	    								RealF tFieldRF = new RealF(			(tNSpotPnl.getNyadRF()).getProto().getFieldType(), 
+	    								RealF tFieldRF = new RealF(			(tNSpotPnl.getNyadRF()).getProto().getCardinal(), 
 	    																	Float.parseFloat(_parent._GUI._FieldBar.getRealText()));
 							    		tMonadRF.scale(tFieldRF);
 							 		    _parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by ");
 							 		    _parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+"\n");
 	    								break;
 	    		case DivField.REALD:	MonadRealD tMonadRD = tMSpotPnl.getMonadRD();
-										RealD tFieldRD = new RealD(			(tNSpotPnl.getNyadRD()).getProto().getFieldType(), 
+										RealD tFieldRD = new RealD(			(tNSpotPnl.getNyadRD()).getProto().getCardinal(), 
 																			Double.parseDouble(_parent._GUI._FieldBar.getRealText()));
 										tMonadRD.scale(tFieldRD);
 										_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by ");
 										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+"\n");
 										break;
 	    		case DivField.COMPLEXF:	MonadComplexF tMonadCF = tMSpotPnl.getMonadCF();
-										ComplexF tFieldCF = new ComplexF(	(tNSpotPnl.getNyadCF()).getProto().getFieldType(), 
+										ComplexF tFieldCF = new ComplexF(	(tNSpotPnl.getNyadCF()).getProto().getCardinal(), 
 																			Float.parseFloat(_parent._GUI._FieldBar.getRealText()),
 																			Float.parseFloat(_parent._GUI._FieldBar.getImgText()));
 										tMonadCF.scale(tFieldCF);
@@ -122,7 +122,7 @@ public class SOpsScaleEvents implements ActionListener
 										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getImgText()+")\n");
 										break;
 	    		case DivField.COMPLEXD:	MonadComplexD tMonadCD = tMSpotPnl.getMonadCD();
-										ComplexD tFieldCD = new ComplexD(	(tNSpotPnl.getNyadCD()).getProto().getFieldType(), 
+										ComplexD tFieldCD = new ComplexD(	(tNSpotPnl.getNyadCD()).getProto().getCardinal(), 
 																			Double.parseDouble(_parent._GUI._FieldBar.getRealText()),
 																			Double.parseDouble(_parent._GUI._FieldBar.getImgText()));
 										tMonadCD.scale(tFieldCD);

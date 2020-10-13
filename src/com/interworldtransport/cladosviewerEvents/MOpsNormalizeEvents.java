@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsInvertEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsNormalizeEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,17 +19,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsInvertEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsNormalizeEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
 
 package com.interworldtransport.cladosviewerEvents;
-
 import com.interworldtransport.cladosF.DivField;
-import com.interworldtransport.cladosG.MonadComplexD;
-import com.interworldtransport.cladosG.MonadComplexF;
-import com.interworldtransport.cladosG.MonadRealD;
-import com.interworldtransport.cladosG.MonadRealF;
+import com.interworldtransport.cladosGExceptions.CladosMonadException;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -38,15 +34,15 @@ import javax.swing.*;
 
 /** 
  *  This class manages events relating to a simple operation...
- *  Invert this Monad.
+ *  Normalize the selected Monad.
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class SOpsInvertEvents implements ActionListener
+public class MOpsNormalizeEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected SOpsEvents 		_parent;
+    protected MOpsParentEvents 		_parent;
 
 /** 
  * This is the default constructor.
@@ -54,11 +50,11 @@ public class SOpsInvertEvents implements ActionListener
  *  JMenuItem
  * This is a reference to the Menu Item for which this event acts.
  * @param pParent
- * 	BOpsEvents
- * This is a reference to the BOpsEvents parent event handler
+ * 	NOpsParentEvents
+ * This is a reference to the NOpsParentEvents parent event handler
  */
-    public SOpsInvertEvents(	JMenuItem pmniControlled,
-								SOpsEvents pParent)
+    public MOpsNormalizeEvents(	JMenuItem pmniControlled,
+    							MOpsParentEvents pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);
@@ -67,12 +63,12 @@ public class SOpsInvertEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
- * The monad with focus has its generators inverted. 
- * Blade a^b^c^d becomes (-a)^(-b)^(-c)^(-d) on the default (canonical) basis.
+ * The monad with focus is normalized if possible.
+ * Watch out for idempotents and nilpotents.
  * 
- * A future version of the invert method must invert the 1-blades represented in 
- * the reference frame instead. Fourier decomposition is done against that frame 
- * and not the canonical one most of the time.
+ * The normalize() method on a monad needs some work. In the future, it must
+ * channel through the reference frame instead of the canonical basis. Also,
+ * attention might be needed on exactly how it is calculated.
  */
     public void actionPerformed(ActionEvent evt)
     {
@@ -87,23 +83,29 @@ public class SOpsInvertEvents implements ActionListener
     	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nInvert Operation must have a monad in focus. Nothing done.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\nNormalize Operation must have a monad in focus. Nothing done.\n");
     		return;
     	}
     	
     	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
-    	
-    	switch (tMSpotPnl.getRepMode())
+    	try
     	{
-	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().invert();
-							    	break;
-	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().invert();
-							    	break;
-	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().invert();
-							    	break;
-	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().invert();
+	    	switch (tMSpotPnl.getRepMode())
+	    	{
+		    	case DivField.REALF: 	tMSpotPnl.getMonadRF().normalize();
+								    	break;
+		    	case DivField.REALD: 	tMSpotPnl.getMonadRD().normalize();
+								    	break;
+		    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().normalize();
+								    	break;
+		    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().normalize();
+	    	}
+	    	tMSpotPnl.setCoefficientDisplay();
+	    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been normalized.\n");
     	}
-    	tMSpotPnl.setCoefficientDisplay();
-    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been inverted.\n");
+    	catch (CladosMonadException e)	// Normalization can fail if the monad does not have an inverse.
+		{
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has NOT been normalized.\n");
+		}
     }
  }

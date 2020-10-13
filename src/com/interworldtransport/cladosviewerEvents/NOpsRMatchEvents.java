@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.BOpsRMatchEvents<br>
+ * ---com.interworldtransport.cladosviewer.NOpsRMatchEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.BOpsRMatchEvents<br>
+ * ---com.interworldtransport.cladosviewer.NOpsRMatchEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
 package com.interworldtransport.cladosviewerEvents;
@@ -41,10 +41,10 @@ import javax.swing.*;
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class BOpsRMatchEvents implements ActionListener
+public class NOpsRMatchEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected BOpsEvents 		_parent;
+    protected NOpsParentEvents 	_parent;
 
 /** 
  * This is the default constructor.
@@ -52,11 +52,11 @@ public class BOpsRMatchEvents implements ActionListener
  *  JMenuItem
  * This is a reference to the Menu Item for which this event acts.
  * @param pParent
- * 	BOpsEvents
- * This is a reference to the BOpsEvents parent event handler
+ * 	NOpsParentEvents
+ * This is a reference to the NOpsParentEvents parent event handler
  */
-    public BOpsRMatchEvents(JMenuItem pmniControlled,
-    						BOpsEvents pParent)
+    public NOpsRMatchEvents(JMenuItem pmniControlled,
+    						NOpsParentEvents pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);

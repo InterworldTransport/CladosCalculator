@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsMagnitudeEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsReverseEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,22 +19,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsMagnitudeEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsReverseEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
 
 package com.interworldtransport.cladosviewerEvents;
 
-import com.interworldtransport.cladosF.ComplexD;
-import com.interworldtransport.cladosF.ComplexF;
 import com.interworldtransport.cladosF.DivField;
-import com.interworldtransport.cladosF.RealD;
-import com.interworldtransport.cladosF.RealF;
-import com.interworldtransport.cladosG.MonadComplexD;
-import com.interworldtransport.cladosG.MonadComplexF;
-import com.interworldtransport.cladosG.MonadRealD;
-import com.interworldtransport.cladosG.MonadRealF;
-import com.interworldtransport.cladosGExceptions.CladosMonadException;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -42,16 +33,16 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /** 
- *  This class manages events relating to the answering of a simple question.
- *  What is the magnitude of this Monad?
+ *  This class manages events relating to a simple operation...
+ *  Reverse this Monad.
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class SOpsMagnitudeEvents implements ActionListener
-{
+public class MOpsReverseEvents implements ActionListener
+ {
     protected JMenuItem 		_control;
-    protected SOpsEvents 		_parent;
+    protected MOpsParentEvents 		_parent;
 
 /** 
  * This is the default constructor.
@@ -59,11 +50,11 @@ public class SOpsMagnitudeEvents implements ActionListener
  *  JMenuItem
  * This is a reference to the Menu Item for which this event acts.
  * @param pParent
- * 	BOpsEvents
- * This is a reference to the BOpsEvents parent event handler
+ * 	NOpsParentEvents
+ * This is a reference to the NOpsParentEvents parent event handler
  */
-    public SOpsMagnitudeEvents(	JMenuItem pmniControlled,
-								SOpsEvents pParent)
+    public MOpsReverseEvents(	JMenuItem pmniControlled,
+								MOpsParentEvents pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);
@@ -72,6 +63,12 @@ public class SOpsMagnitudeEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
+ * The monad with focus has its blades multiplication order reversed. 
+ * Blade a^b^c^d becomes d^c^b^a on the default (canonical) basis.
+ * 
+ * A future version of the reverse method must reverse the 1-blades represented in 
+ * the reference frame instead. Fourier decomposition is done against that frame 
+ * and not the canonical one most of the time.
  */
     public void actionPerformed(ActionEvent evt)
     {
@@ -83,39 +80,26 @@ public class SOpsMagnitudeEvents implements ActionListener
     	}
     	
     	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
-    	
     	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nMagnitude Discovery needs one monad in focus. Nothing done.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\nReverse Operation must have a monad in focus. Nothing done.\n");
     		return;
     	}
     	
-    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(indxMndPnlSlctd);
-    	try 
-    	{    		
-    		switch (tMSpotPnl.getRepMode())
-        	{
-		    	case DivField.REALF: 	RealF scaleRF = tMSpotPnl.getMonadRF().magnitude();
-							    		_parent._GUI._FieldBar.setWhatFloatR(scaleRF.getModulus());
-								    	break;
-		    	case DivField.REALD: 	RealD scaleRD = tMSpotPnl.getMonadRD().magnitude();
-							    		_parent._GUI._FieldBar.setWhatDoubleR(scaleRD.getModulus());
-								    	break;
-		    	case DivField.COMPLEXF:	ComplexF scaleCF = tMSpotPnl.getMonadCF().magnitude();
-							    		_parent._GUI._FieldBar.setWhatFloatR(scaleCF.getModulus());
-							    		_parent._GUI._FieldBar.setWhatFloatI(0.0F);
-								    	break;
-		    	case DivField.COMPLEXD:	ComplexD scaleCD = tMSpotPnl.getMonadCD().magnitude();
-							    		_parent._GUI._FieldBar.setWhatDoubleR(scaleCD.getModulus());
-							    		_parent._GUI._FieldBar.setWhatDoubleI(0.0D);
-        	}
-    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad magnitude has been computed.\n");
-    	} 
-    	catch (CladosMonadException e) 
+    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+    	
+    	switch (tMSpotPnl.getRepMode())
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad magnitude has NOT been computed due to a Clados Monad Exception.\n");
-    		_parent._GUI._StatusBar.setStatusMsg(e.getSourceMessage());
+	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().reverse();
+							    	break;
+	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().reverse();
+							    	break;
+	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().reverse();
+							    	break;
+	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().reverse();
     	}
+    	tMSpotPnl.setCoefficientDisplay();
+    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been reversed.\n");
     }
  }

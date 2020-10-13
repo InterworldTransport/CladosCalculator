@@ -39,20 +39,28 @@ import com.interworldtransport.cladosviewer.*;
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class BOpsEvents //implements ActionListener
+public class NOpsParentEvents
 {
-	protected BOpsZeroEvents		zero;
-	protected BOpsEqualEvents		equal;
-	protected BOpsRMatchEvents		strgrmatch;
-	protected BOpsRWeakMatchEvents	weakrmatch;
-	protected BOpsGradeEvents		grade;
-    protected BOpsMGradeEvents		mgrade;
-    protected BOpsNilpotentEvents	nilp;
-    protected BOpsIdempotentEvents	idemp;
-    protected BOpsMIdempotentEvents	midemp;
+	protected NOpsZeroEvents				zero;
+	protected NOpsEqualEvents				equal;
+	protected NOpsRMatchEvents				strgrmatch;
+	protected NOpsRWeakMatchEvents			weakrmatch;
+	
+	protected MOpsGradeEvents				grade;
+    protected MOpsMultGradeEvents			mgrade;
+    protected MOpsNilpotentEvents			nilp;
+    protected MOpsIdempotentEvents			idemp;
+    protected MOpsScaledIdempotentEvents	midemp;
+    
+    protected NOpsAddEvents					add;
+    protected NOpsSubtractEvents			sub;
+    protected NOpsLMultEvents				lmult;
+    protected NOpsRMultEvents				rmult;
+    protected NOpsSymmMultEvents			symm;
+    protected NOpsAntiSymmMultEvents		asymm;
 
-    protected ViewerMenu 			_GUIMenu;
-    protected CladosCalculator		_GUI;
+    protected ViewerMenu 					_GUIMenu;
+    protected CladosCalculator				_GUI;
 
 /** 
  * This is the default constructor.  The event structure of the
@@ -61,29 +69,27 @@ public class BOpsEvents //implements ActionListener
  *  ViewerMenu
  * This is a reference to the owner menu containing this one.
  */
-    public BOpsEvents(ViewerMenu pTheGUIMenu)
+    public NOpsParentEvents(ViewerMenu pTheGUIMenu)
     {
 		_GUIMenu=pTheGUIMenu;
 		_GUI=_GUIMenu._parentGUI;
+		
+		equal = new NOpsEqualEvents(			_GUIMenu.mniisEqual, this);
+		zero = new NOpsZeroEvents(				_GUIMenu.mniisZero,	this);
+		strgrmatch = new NOpsRMatchEvents(		_GUIMenu.mniisStrgReferenceMatch, this);
+		weakrmatch = new NOpsRWeakMatchEvents(	_GUIMenu.mniisWeakReferenceMatch, this);
 	
-		mgrade = new BOpsMGradeEvents(			_GUIMenu.mniisMultiGrade, this);
-		grade = new BOpsGradeEvents(			_GUIMenu.mniisGrade, this);
-		nilp = new BOpsNilpotentEvents(			_GUIMenu.mniisNilpotent, this);
-		idemp = new BOpsIdempotentEvents(		_GUIMenu.mniisIdempotent, this);
-		midemp = new BOpsMIdempotentEvents(		_GUIMenu.mniisScaledIdempotent, this);
-		equal = new BOpsEqualEvents(			_GUIMenu.mniisEqual, this);
-		zero = new BOpsZeroEvents(				_GUIMenu.mniisZero,	this);
-		strgrmatch = new BOpsRMatchEvents(		_GUIMenu.mniisStrgReferenceMatch, this);
-		weakrmatch = new BOpsRWeakMatchEvents(	_GUIMenu.mniisWeakReferenceMatch, this);
+		mgrade = new MOpsMultGradeEvents(		_GUIMenu.mniisMultiGrade, this);
+		grade = new MOpsGradeEvents(			_GUIMenu.mniisGrade, this);
+		nilp = new MOpsNilpotentEvents(			_GUIMenu.mniisNilpotent, this);
+		idemp = new MOpsIdempotentEvents(		_GUIMenu.mniisIdempotent, this);
+		midemp = new MOpsScaledIdempotentEvents(_GUIMenu.mniisScaledIdempotent, this);
+		
+		add = new NOpsAddEvents(				_GUIMenu.mniAdd, this);
+		sub = new NOpsSubtractEvents(			_GUIMenu.mniSubtract, this);
+		lmult = new NOpsLMultEvents(			_GUIMenu.mniLeftMultiply, this);
+		rmult = new NOpsRMultEvents(			_GUIMenu.mniRightMultiply, this);
+		symm = new NOpsSymmMultEvents(			_GUIMenu.mniSymm, this);
+		asymm = new NOpsAntiSymmMultEvents(		_GUIMenu.mniASymm, this);
     }
-
-/** 
- * This is the default action to be performed by all members of the menu.
- * It will be overridden by specific members of the menu.
- */
- //   public void actionPerformed(ActionEvent evt)
- //   {
- //   	;
-//    }
-
 }

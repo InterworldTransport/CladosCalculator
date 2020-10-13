@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsNormalizeEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsGradeSupressEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,30 +19,29 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsNormalizeEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsGradeSupressEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
 
 package com.interworldtransport.cladosviewerEvents;
 import com.interworldtransport.cladosF.DivField;
-import com.interworldtransport.cladosGExceptions.CladosMonadException;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
 import java.awt.event.*;
 import javax.swing.*;
 
-/** 
- *  This class manages events relating to a simple operation...
- *  Normalize the selected Monad.
+/**
+ *  This class manages events relating to a simple requirement
+ *  Limit this Monad to everything except a particular grade.
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class SOpsNormalizeEvents implements ActionListener
- {
+public class MOpsGradeSupressEvents implements ActionListener
+ {	
     protected JMenuItem 		_control;
-    protected SOpsEvents 		_parent;
+    protected MOpsParentEvents 		_parent;
 
 /** 
  * This is the default constructor.
@@ -50,11 +49,11 @@ public class SOpsNormalizeEvents implements ActionListener
  *  JMenuItem
  * This is a reference to the Menu Item for which this event acts.
  * @param pParent
- * 	BOpsEvents
- * This is a reference to the BOpsEvents parent event handler
+ * 	NOpsParentEvents
+ * This is a reference to the NOpsParentEvents parent event handler
  */
-    public SOpsNormalizeEvents(	JMenuItem pmniControlled,
-    							SOpsEvents pParent)
+    public MOpsGradeSupressEvents(	JMenuItem pmniControlled,
+    								MOpsParentEvents pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);
@@ -63,12 +62,13 @@ public class SOpsNormalizeEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
- * The monad with focus is normalized if possible.
- * Watch out for idempotents and nilpotents.
+ * This is the complement of the GradePart method.
+ * Basically, the monad in focus has a particular grade sliced out (set to zero) while others are kept as is.
  * 
- * The normalize() method on a monad needs some work. In the future, it must
- * channel through the reference frame instead of the canonical basis. Also,
- * attention might be needed on exactly how it is calculated.
+ * A future version of the  method must use the grade represented in 
+ * the reference frame instead. Fourier decomposition is done against that frame 
+ * and not the canonical one most of the time. That means the getSuppress(short) method
+ * will channel through the ReferenceFrame of the monad.
  */
     public void actionPerformed(ActionEvent evt)
     {
@@ -83,29 +83,37 @@ public class SOpsNormalizeEvents implements ActionListener
     	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNormalize Operation must have a monad in focus. Nothing done.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\nGradeSuppress Operation must have a monad in focus. Nothing done.\n");
     		return;
     	}
     	
     	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+    	
     	try
     	{
-	    	switch (tMSpotPnl.getRepMode())
-	    	{
-		    	case DivField.REALF: 	tMSpotPnl.getMonadRF().normalize();
-								    	break;
-		    	case DivField.REALD: 	tMSpotPnl.getMonadRD().normalize();
-								    	break;
-		    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().normalize();
-								    	break;
-		    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().normalize();
-	    	}
-	    	tMSpotPnl.setCoefficientDisplay();
-	    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been normalized.\n");
+    		short tGrade = (short) Float.parseFloat(_parent._GUI._FieldBar.getRealText());
+        	switch (tMSpotPnl.getRepMode())
+        	{
+    	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().gradeSuppress(tGrade);
+    							    	break;
+    	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().gradeSuppress(tGrade);
+    							    	break;
+    	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().gradeSuppress(tGrade);
+    							    	break;
+    	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().gradeSuppress(tGrade);	
+        	}
+        	tMSpotPnl.setCoefficientDisplay();
+	    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been cut at "+tGrade+"-grade.\n");
     	}
-    	catch (CladosMonadException e)	// Normalization can fail if the monad does not have an inverse.
-		{
-			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has NOT been normalized.\n");
-		}
+    	catch (NullPointerException eNull)
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nGradeSuppress Operation must have a real # in the FieldBar. Nothing done.\n");
+    		return;
+    	}
+    	catch (NumberFormatException eFormat)
+    	{
+    		_parent._GUI._StatusBar.setStatusMsg("\nGradeSuppress Operation must have a parse-able real # in the FieldBar. Nothing done.\n");
+    		return;
+    	}
     }
  }

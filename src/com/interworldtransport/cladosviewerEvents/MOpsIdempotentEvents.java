@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.BOpsGradeEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsIdempotentEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,16 +19,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.BOpsGradeEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsIdempotentEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
 
 package com.interworldtransport.cladosviewerEvents;
 import com.interworldtransport.cladosF.DivField;
-import com.interworldtransport.cladosG.MonadRealF;
-import com.interworldtransport.cladosG.MonadRealD;
-import com.interworldtransport.cladosG.MonadComplexF;
-import com.interworldtransport.cladosG.MonadComplexD;
+import com.interworldtransport.cladosFExceptions.FieldBinaryException;
+import com.interworldtransport.cladosG.*;
+import com.interworldtransport.cladosGExceptions.*;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -37,15 +36,15 @@ import javax.swing.*;
 
 /** 
  *  This class manages events relating to the answering of a boolean question.
- *  Is the selected monad a particular grade?
+ *  Is the selected monad idempotent?
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class BOpsGradeEvents implements ActionListener
+public class MOpsIdempotentEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected BOpsEvents 		_parent;
+    protected NOpsParentEvents 		_parent;
 
 /** 
  * This is the default constructor.
@@ -53,11 +52,11 @@ public class BOpsGradeEvents implements ActionListener
  *  JMenuItem
  * This is a reference to the Menu Item for which this event acts.
  * @param pParent
- * 	BOpsEvents
- * This is a reference to the BOpsEvents parent event handler
+ * 	NOpsParentEvents
+ * This is a reference to the NOpsParentEvents parent event handler
  */
-    public BOpsGradeEvents(	JMenuItem pmniControlled,
-							BOpsEvents pParent)
+    public MOpsIdempotentEvents(JMenuItem pmniControlled,
+								NOpsParentEvents pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);
@@ -66,7 +65,7 @@ public class BOpsGradeEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
- * The Monad with focus is tested to see if it is k-grade with k coming from the real part of FieldBar.
+ * The Monad with focus is tested to see if it is idempotent.
  * If it is (or isn't) the test is reported to the StatusBar.
  */
     public void actionPerformed(ActionEvent evt)
@@ -77,46 +76,45 @@ public class BOpsGradeEvents implements ActionListener
     		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
     		return;	
     	}
-    	
+    	    	
     	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
     	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nGrade Test needs one monad in focus. Nothing done.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("\nIdempotent Test needs one monad in focus. Nothing done.\n");
     		return;
     	}
     	
+    	MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+    	boolean test = false;
     	try
     	{
-    		// Production of the grade to be tested could fail hard at parseFloat(...getRealText())
-    		// Hence the need for a try/catch phrase around all this
-    		int grade2Test = (int) Float.parseFloat(_parent._GUI._FieldBar.getRealText());
-	    	MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
-	    	boolean test = false;
-        	switch (tSpot.getRepMode())
-        	{
-		    	case DivField.REALF: 	test = MonadRealF.isGrade(tSpot.getMonadRF(), grade2Test);
+	    	switch (tSpot.getRepMode())
+	    	{
+		    	case DivField.REALF: 	test = MonadRealF.isIdempotent(tSpot.getMonadRF());
 								    	break;
-		    	case DivField.REALD: 	test = MonadRealD.isGrade(tSpot.getMonadRD(), grade2Test);
+		    	case DivField.REALD: 	test = MonadRealD.isIdempotent(tSpot.getMonadRD());
 								    	break;
-		    	case DivField.COMPLEXF:	test = MonadComplexF.isGrade(tSpot.getMonadCF(), grade2Test);
+		    	case DivField.COMPLEXF:	test = MonadComplexF.isIdempotent(tSpot.getMonadCF());
 								    	break;
-		    	case DivField.COMPLEXD:	test = MonadComplexD.isGrade(tSpot.getMonadCD(), grade2Test);
-        	}
-        	if (test)
-	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is a pure "+grade2Test+"-grade.\n");
+		    	case DivField.COMPLEXD:	test = MonadComplexD.isIdempotent(tSpot.getMonadCD());
+	    	}
+	    	if (test)
+				_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is idempotent.\n");
 	    	else
-	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is NOT a pure "+grade2Test+"-grade.\n");
+	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is NOT idempotent.\n");
     	}
-    	catch (NullPointerException eNull)	// Catch the empty text 'real number' text field on the FieldBar.
-    	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nGrade Test must have a real # in the FieldBar. Nothing done.\n");
-    		return;
-    	}
-    	catch (NumberFormatException eFormat)	// Catch the non-parse-able text 'real number' text field on the FieldBar.
-    	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nGrade Test must have a parse-able real # in the FieldBar. Nothing done.\n");
-    		return;
-    	}
+		catch (CladosMonadException e)
+		{
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad created a CladosMonadException.\n");
+			_parent._GUI._StatusBar.setStatusMsg(e.getSourceMessage());
+			_parent._GUI._StatusBar.setStatusMsg("\n\n");
+		}
+		catch (FieldBinaryException eb)
+		{
+			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad created a FieldBinaryException.\n");
+			_parent._GUI._StatusBar.setStatusMsg(eb.getSourceMessage());
+			_parent._GUI._StatusBar.setStatusMsg("\n\n");
+		}
     }
  }

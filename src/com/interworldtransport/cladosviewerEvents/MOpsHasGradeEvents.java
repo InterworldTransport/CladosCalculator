@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsGradeEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsHasGradeEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---com.interworldtransport.cladosviewer.SOpsGradeEvents<br>
+ * ---com.interworldtransport.cladosviewer.MOpsHasGradeEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
 
@@ -38,10 +38,10 @@ import javax.swing.*;
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class SOpsHasGradeEvents implements ActionListener
+public class MOpsHasGradeEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected SOpsEvents 		_parent;
+    protected MOpsParentEvents 		_parent;
 
 /** 
  * This is the default constructor.
@@ -49,11 +49,11 @@ public class SOpsHasGradeEvents implements ActionListener
  *  JMenuItem
  * This is a reference to the Menu Item for which this event acts.
  * @param pParent
- * 	SOpsEvents
- * This is a reference to the BOpsEvents parent event handler
+ * 	MOpsParentEvents
+ * This is a reference to the NOpsParentEvents parent event handler
  */
-    public SOpsHasGradeEvents(	JMenuItem pmniControlled,
-    							SOpsEvents pParent)
+    public MOpsHasGradeEvents(	JMenuItem pmniControlled,
+    							MOpsParentEvents pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);
