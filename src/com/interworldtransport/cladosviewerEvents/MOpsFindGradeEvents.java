@@ -33,7 +33,7 @@ import javax.swing.*;
 
 /**
  *  This class manages events relating to the answering of a simple question.
- *  What is the grade of the selected monad?
+ *  What is the findgrade of the selected monad?
  *
  * @version 0.85
  * @author Dr Alfred W Differ
@@ -63,9 +63,9 @@ public class MOpsFindGradeEvents implements ActionListener
 /** 
  * This is the actual action to be performed by this member of the menu.
  * Find the log of the gradeKey of the selected Monad and see if it is an integer.
- * If so, monad is of a single grade... so show the log of the gradeKey = monad grade
+ * If so, monad is of a single findgrade... so show the log of the gradeKey = monad findgrade
  * 
- * A future version of the  method must use the grade represented in 
+ * A future version of the  method must use the findgrade represented in 
  * the reference frame instead. Fourier decomposition is done against that frame 
  * and not the canonical one most of the time. That means the getGradeKey() method
  * will channel through the ReferenceFrame of the monad.
@@ -108,10 +108,10 @@ public class MOpsFindGradeEvents implements ActionListener
     	}
     	
     	if (logGradeKey != Math.floor(logGradeKey))
-    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad IS NOT a single grade.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad IS NOT a single findgrade.\n");
     	else
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad IS single grade.\n");
+    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad IS single findgrade.\n");
     		_parent._GUI._FieldBar.setWhatDoubleR(logGradeKey);
     	}
     }

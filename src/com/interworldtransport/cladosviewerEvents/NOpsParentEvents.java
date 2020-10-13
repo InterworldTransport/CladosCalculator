@@ -46,11 +46,7 @@ public class NOpsParentEvents
 	protected NOpsRMatchEvents				strgrmatch;
 	protected NOpsRWeakMatchEvents			weakrmatch;
 	
-	protected MOpsGradeEvents				grade;
-    protected MOpsMultGradeEvents			mgrade;
-    protected MOpsNilpotentEvents			nilp;
-    protected MOpsIdempotentEvents			idemp;
-    protected MOpsScaledIdempotentEvents	midemp;
+	protected NOpsHasAlgebraMatchEvents		hasalgebra;
     
     protected NOpsAddEvents					add;
     protected NOpsSubtractEvents			sub;
@@ -78,12 +74,8 @@ public class NOpsParentEvents
 		zero = new NOpsZeroEvents(				_GUIMenu.mniisZero,	this);
 		strgrmatch = new NOpsRMatchEvents(		_GUIMenu.mniisStrgReferenceMatch, this);
 		weakrmatch = new NOpsRWeakMatchEvents(	_GUIMenu.mniisWeakReferenceMatch, this);
-	
-		mgrade = new MOpsMultGradeEvents(		_GUIMenu.mniisMultiGrade, this);
-		grade = new MOpsGradeEvents(			_GUIMenu.mniisGrade, this);
-		nilp = new MOpsNilpotentEvents(			_GUIMenu.mniisNilpotent, this);
-		idemp = new MOpsIdempotentEvents(		_GUIMenu.mniisIdempotent, this);
-		midemp = new MOpsScaledIdempotentEvents(_GUIMenu.mniisScaledIdempotent, this);
+		
+		hasalgebra = new NOpsHasAlgebraMatchEvents(_GUIMenu.mnihasAlgebra, this);
 		
 		add = new NOpsAddEvents(				_GUIMenu.mniAdd, this);
 		sub = new NOpsSubtractEvents(			_GUIMenu.mniSubtract, this);

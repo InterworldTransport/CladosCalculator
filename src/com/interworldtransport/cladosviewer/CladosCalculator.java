@@ -226,7 +226,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     		_MenuBar.mniisWeakReferenceMatch.doClick();
     	
     	if (command.equals("algebra detect"))
-    		_MenuBar.mniisStrgReferenceMatch.doClick();
+    		_MenuBar.mnihasAlgebra.doClick();
     	
     	if (command.equals("equal"))
     		_MenuBar.mniisEqual.doClick();
@@ -243,16 +243,16 @@ public class CladosCalculator extends JFrame implements ActionListener
     	if (command.equals("scaled idempotent"))
     		_MenuBar.mniisScaledIdempotent.doClick();
     	
-    	if (command.equals("is grade"))
+    	if (command.equals("is findgrade"))
     		_MenuBar.mniisGrade.doClick();
     	
     	if (command.equals("is mgrade"))
     		_MenuBar.mniisMultiGrade.doClick();
     	
-    	if (command.equals("is grade!"))
+    	if (command.equals("is findgrade!"))
     		_MenuBar.mniisSGrade.doClick();
     	
-    	if (command.equals("has grade"))
+    	if (command.equals("has findgrade"))
     		_MenuBar.mnihasGrade.doClick();
     	
     	if (command.equals("magnitude of"))
@@ -465,7 +465,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 
     	// button double
     	btnIsGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Grade")));
-    	btnIsGrade.setActionCommand("is grade");
+    	btnIsGrade.setActionCommand("is findgrade");
     	btnIsGrade.setToolTipText("is Grade() Monad Test");
     	btnIsGrade.setPreferredSize(square);
     	btnIsGrade.setBorder(BorderFactory.createEtchedBorder(0));
@@ -484,7 +484,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	cn.gridy++;
     	
     	btnHasGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.HasGrade")));
-    	btnHasGrade.setActionCommand("has grade");
+    	btnHasGrade.setActionCommand("has findgrade");
     	btnHasGrade.setToolTipText("Has Grade Monad Test");
     	btnHasGrade.setPreferredSize(square);
     	btnHasGrade.setBorder(BorderFactory.createEtchedBorder(0));
@@ -493,7 +493,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	cn.gridx++;
     	
     	btnWhatGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.WhatGrade")));
-    	btnWhatGrade.setActionCommand("is grade!");
+    	btnWhatGrade.setActionCommand("is findgrade!");
     	btnWhatGrade.setToolTipText("what Unique Grade Monad Test");
     	btnWhatGrade.setPreferredSize(square);
     	btnWhatGrade.setBorder(BorderFactory.createEtchedBorder(0));

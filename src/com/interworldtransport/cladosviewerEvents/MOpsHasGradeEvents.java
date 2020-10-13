@@ -33,7 +33,7 @@ import javax.swing.*;
 
 /**
  *  This class manages events relating to the answering of a simple question.
- *  What is the grade of the selected monad?
+ *  What is the findgrade of the selected monad?
  *
  * @version 0.85
  * @author Dr Alfred W Differ
@@ -63,9 +63,9 @@ public class MOpsHasGradeEvents implements ActionListener
 /** 
  * This is the actual action to be performed by this member of the menu.
  * Find the log of the gradeKey of the selected Monad and see if it is an integer.
- * If so, monad is of a single grade... so show the log of the gradeKey = monad grade
+ * If so, monad is of a single findgrade... so show the log of the gradeKey = monad findgrade
  * 
- * A future version of the  method must use the grade represented in 
+ * A future version of the  method must use the findgrade represented in 
  * the reference frame instead. Fourier decomposition is done against that frame 
  * and not the canonical one most of the time. That means the getGradeKey() method
  * will channel through the ReferenceFrame of the monad.
@@ -87,7 +87,7 @@ public class MOpsHasGradeEvents implements ActionListener
     		return;
     	}
     	
-    	// Production of the grade to be tested could fail hard at parseFloat(...getRealText())
+    	// Production of the findgrade to be tested could fail hard at parseFloat(...getRealText())
 		// Hence the need for a try/catch phrase around all this;
     	int grade2Test = 0;
     	try
@@ -127,9 +127,9 @@ public class MOpsHasGradeEvents implements ActionListener
     	// the fourth digit of the tempGradeKey is '1'. Basically, 10^grade2test shows up.
     	
     	// Finding the log10 of tempGradeKey and truncating to an integer reveals the largest
-    	// grade in the key. If that is larger than grade2Test, we simply remove that from the 
+    	// findgrade in the key. If that is larger than grade2Test, we simply remove that from the 
     	// key and build a new key (a long integer) based on what's left. Loop through this until 
-    	// the reduced grade key has the same number of digits (or less) than key2Test and 
+    	// the reduced findgrade key has the same number of digits (or less) than key2Test and 
     	// we are ready to try the actual hasGrade test.
     	
     	
@@ -142,16 +142,16 @@ public class MOpsHasGradeEvents implements ActionListener
     	}
     	// At this point, reducedMaxGrade will either BE grade2Test or smaller.
     	if (reducedMaxGrade < grade2Test)
-    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad does NOT not have grade "+grade2Test+".\n");
+    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad does NOT not have findgrade "+grade2Test+".\n");
     	else 
     		if (grade2Test > 0)			// We know reducedMasGrade == grade2Test
-    			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad HAS grade "+grade2Test+".\n");
+    			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad HAS findgrade "+grade2Test+".\n");
 	    	else 
 	    		if (tempGradeKey == 1)	// We know grade2Test == 0 and reducedMasGrade == grade2Test
-		    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad HAS scalar grade... possibly zero.\n");
+		    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad HAS scalar findgrade... possibly zero.\n");
 		    	else 					// We know tempGradeKey > 1 and reducedMasGrade == grade2Test
-		    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad does NOT have scalar grade.\n");
-    				// This last phrase works because monads with higher grade blades don't have scalar parts if
+		    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad does NOT have scalar findgrade.\n");
+    				// This last phrase works because monads with higher findgrade blades don't have scalar parts if
     				// the scalar coeff is zero. The only time a zero scalar coefficient is acceptable is when no higher
     				// blade is contained in the monad.
     }

@@ -107,7 +107,6 @@ public class ViewerEventModel
 
     	NOpsParts = new NOpsParentEvents(GUIParentMenu);
     	MOpsParts = new MOpsParentEvents(GUIParentMenu);
-		//COpsParts = new COpsEvents(GUIParentMenu);
 	
 		ToolParts = new ToolsEvents(GUIParentMenu);
 		HelpParts = new HelpEvents(GUIParentMenu);

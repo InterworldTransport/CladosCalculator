@@ -32,7 +32,7 @@ import javax.swing.*;
 
 /** 
  *  This class manages events relating to a simple requirement
- *  Limit this Monad to a particular grade.
+ *  Limit this Monad to a particular findgrade.
  *
  * @version 0.85
  * @author Dr Alfred W Differ
@@ -62,9 +62,9 @@ public class MOpsGradePartEvents implements ActionListener
 /** 
  * This is the actual action to be performed by this member of the menu.
  * This is the classic GradePart method. It is typically used to get scalar parts.
- * Basically, the monad in focus is cropped around the grade that should be kept as is.
+ * Basically, the monad in focus is cropped around the findgrade that should be kept as is.
  * 
- * A future version of the  method must use the grade represented in 
+ * A future version of the  method must use the findgrade represented in 
  * the reference frame instead. Fourier decomposition is done against that frame 
  * and not the canonical one most of the time. That means the getPart(short) method
  * will channel through the ReferenceFrame of the monad.
@@ -102,7 +102,7 @@ public class MOpsGradePartEvents implements ActionListener
     	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().gradePart(tGrade);	
         	}
         	tMSpotPnl.setCoefficientDisplay();
-	    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been cropped around "+tGrade+"-grade.\n");
+	    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been cropped around "+tGrade+"-findgrade.\n");
     	}
     	catch (NullPointerException eNull)
     	{

@@ -40,7 +40,7 @@ import com.interworldtransport.cladosviewer.ViewerMenu;
  */
 public class MOpsParentEvents //implements ActionListener
 {
-    protected 	MOpsFindGradeEvents		grade;
+    protected 	MOpsFindGradeEvents		findgrade;
     protected 	MOpsHasGradeEvents		hasgrade;
     protected 	MOpsMagnitudeEvents		mag;
     protected 	MOpsSQMagnitudeEvents	sqmag;
@@ -52,6 +52,12 @@ public class MOpsParentEvents //implements ActionListener
     public		MOpsScaleEvents			scale;
     public	 	MOpsGradePartEvents		gradep;
     public	 	MOpsGradeSupressEvents	grades;
+    
+	protected 	MOpsGradeEvents				grade;
+    protected 	MOpsMultGradeEvents			mgrade;
+    protected 	MOpsNilpotentEvents			nilp;
+    protected 	MOpsIdempotentEvents		idemp;
+    protected 	MOpsScaledIdempotentEvents	midemp;
 
     protected 	ViewerMenu 				_GUIMenu;
     protected 	CladosCalculator		_GUI;
@@ -68,7 +74,7 @@ public class MOpsParentEvents //implements ActionListener
 		_GUIMenu=pTheGUIMenu;
 		_GUI=_GUIMenu._parentGUI;
 
-		grade = new MOpsFindGradeEvents(		_GUIMenu.mniisSGrade, this);
+		findgrade = new MOpsFindGradeEvents(	_GUIMenu.mniisSGrade, this);
 		hasgrade = new MOpsHasGradeEvents(		_GUIMenu.mnihasGrade, this);
 		mag = new MOpsMagnitudeEvents(			_GUIMenu.mniMagnitudeOf, this);
 		sqmag = new MOpsSQMagnitudeEvents(		_GUIMenu.mniSQMagnitudeOf, this);
@@ -80,14 +86,12 @@ public class MOpsParentEvents //implements ActionListener
 		scale = new MOpsScaleEvents(			_GUIMenu.mniScale, this);
 		gradep = new MOpsGradePartEvents(		_GUIMenu.mniGradeCrop, this);
 		grades = new MOpsGradeSupressEvents(	_GUIMenu.mniGradeCut, this);
+		
+		mgrade = new MOpsMultGradeEvents(		_GUIMenu.mniisMultiGrade, this);
+		grade = new MOpsGradeEvents(			_GUIMenu.mniisGrade, this);
+		nilp = new MOpsNilpotentEvents(			_GUIMenu.mniisNilpotent, this);
+		idemp = new MOpsIdempotentEvents(		_GUIMenu.mniisIdempotent, this);
+		midemp = new MOpsScaledIdempotentEvents(_GUIMenu.mniisScaledIdempotent, this);
     }
 
-/** 
- * This is the default action to be performed by all members of the menu.
- * It will be overridden by specific members of the menu.
- */
-    //public void actionPerformed(ActionEvent evt)
-    //{
-    //	;	
-    //}
 }

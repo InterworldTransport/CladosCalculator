@@ -46,7 +46,7 @@ import javax.swing.*;
 public class MOpsInvertEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected MOpsParentEvents 		_parent;
+    protected MOpsParentEvents 	_parent;
 
 /** 
  * This is the default constructor.

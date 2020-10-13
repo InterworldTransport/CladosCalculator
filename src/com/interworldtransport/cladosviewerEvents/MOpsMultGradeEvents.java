@@ -42,7 +42,7 @@ import javax.swing.*;
 public class MOpsMultGradeEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected NOpsParentEvents 		_parent;
+    protected MOpsParentEvents 		_parent;
 
 /** 
  * This is the default constructor.
@@ -53,8 +53,8 @@ public class MOpsMultGradeEvents implements ActionListener
  * 	NOpsParentEvents
  * This is a reference to the NOpsParentEvents parent event handler
  */
-    public MOpsMultGradeEvents(JMenuItem pmniControlled,
-							NOpsParentEvents pParent)
+    public MOpsMultGradeEvents(	JMenuItem 			pmniControlled,
+    							MOpsParentEvents 	pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);

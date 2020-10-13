@@ -444,12 +444,12 @@ import java.util.*;
     		makeWritable();
     	}
     	
-    	if (command == "grade crop")
+    	if (command == "findgrade crop")
     	{
     		_GUI._EventModel.MOpsParts.gradep.actionPerformed(event);
     	}
     	
-    	if (command == "grade cut")
+    	if (command == "findgrade cut")
     	{
     		_GUI._EventModel.MOpsParts.grades.actionPerformed(event);
     	}
@@ -1043,8 +1043,8 @@ import java.util.*;
     	cn.gridy++;
     	
     	btnGradeCrop = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.GradeCrop")));
-    	btnGradeCrop.setActionCommand("grade crop");
-    	btnGradeCrop.setToolTipText("crop around grade()");
+    	btnGradeCrop.setActionCommand("findgrade crop");
+    	btnGradeCrop.setToolTipText("crop around findgrade()");
     	btnGradeCrop.setPreferredSize(squareMedium);
     	btnGradeCrop.setBorder(BorderFactory.createEtchedBorder(0));
     	btnGradeCrop.addActionListener(this);
@@ -1052,8 +1052,8 @@ import java.util.*;
     	cn.gridy++;
     	
     	btnGradeCut = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.GradeCut")));
-    	btnGradeCut.setActionCommand("grade cut");
-    	btnGradeCut.setToolTipText("cut this grade()");
+    	btnGradeCut.setActionCommand("findgrade cut");
+    	btnGradeCut.setToolTipText("cut this findgrade()");
     	btnGradeCut.setPreferredSize(squareMedium);
     	btnGradeCut.setBorder(BorderFactory.createEtchedBorder(0));
     	btnGradeCut.addActionListener(this);

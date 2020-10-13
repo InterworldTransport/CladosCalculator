@@ -47,7 +47,7 @@ import javax.swing.*;
 public class MOpsNilpotentEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected NOpsParentEvents 		_parent;
+    protected MOpsParentEvents 	_parent;
 
 /** 
  * This is the default constructor.
@@ -58,8 +58,8 @@ public class MOpsNilpotentEvents implements ActionListener
  * 	NOpsParentEvents
  * This is a reference to the NOpsParentEvents parent event handler
  */
-    public MOpsNilpotentEvents(	JMenuItem pmniControlled,
-								NOpsParentEvents pParent)
+    public MOpsNilpotentEvents(	JMenuItem 			pmniControlled,
+    							MOpsParentEvents	pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);

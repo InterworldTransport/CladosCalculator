@@ -44,7 +44,7 @@ import javax.swing.*;
 public class NOpsRWeakMatchEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected NOpsParentEvents 		_parent;
+    protected NOpsParentEvents 	_parent;
 
 /** 
  * This is the default constructor.

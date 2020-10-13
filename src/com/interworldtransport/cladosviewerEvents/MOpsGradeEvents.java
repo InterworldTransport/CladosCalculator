@@ -37,7 +37,7 @@ import javax.swing.*;
 
 /** 
  *  This class manages events relating to the answering of a boolean question.
- *  Is the selected monad a particular grade?
+ *  Is the selected monad a particular findgrade?
  *
  * @version 0.85
  * @author Dr Alfred W Differ
@@ -45,7 +45,7 @@ import javax.swing.*;
 public class MOpsGradeEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected NOpsParentEvents 		_parent;
+    protected MOpsParentEvents 	_parent;
 
 /** 
  * This is the default constructor.
@@ -56,8 +56,8 @@ public class MOpsGradeEvents implements ActionListener
  * 	NOpsParentEvents
  * This is a reference to the NOpsParentEvents parent event handler
  */
-    public MOpsGradeEvents(	JMenuItem pmniControlled,
-							NOpsParentEvents pParent)
+    public MOpsGradeEvents(	JMenuItem 			pmniControlled,
+    						MOpsParentEvents 	pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);
@@ -66,7 +66,7 @@ public class MOpsGradeEvents implements ActionListener
 
 /** 
  * This is the actual action to be performed by this member of the menu.
- * The Monad with focus is tested to see if it is k-grade with k coming from the real part of FieldBar.
+ * The Monad with focus is tested to see if it is k-findgrade with k coming from the real part of FieldBar.
  * If it is (or isn't) the test is reported to the StatusBar.
  */
     public void actionPerformed(ActionEvent evt)
@@ -88,7 +88,7 @@ public class MOpsGradeEvents implements ActionListener
     	
     	try
     	{
-    		// Production of the grade to be tested could fail hard at parseFloat(...getRealText())
+    		// Production of the findgrade to be tested could fail hard at parseFloat(...getRealText())
     		// Hence the need for a try/catch phrase around all this
     		int grade2Test = (int) Float.parseFloat(_parent._GUI._FieldBar.getRealText());
 	    	MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
@@ -104,9 +104,9 @@ public class MOpsGradeEvents implements ActionListener
 		    	case DivField.COMPLEXD:	test = MonadComplexD.isGrade(tSpot.getMonadCD(), grade2Test);
         	}
         	if (test)
-	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is a pure "+grade2Test+"-grade.\n");
+	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is a pure "+grade2Test+"-findgrade.\n");
 	    	else
-	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is NOT a pure "+grade2Test+"-grade.\n");
+	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is NOT a pure "+grade2Test+"-findgrade.\n");
     	}
     	catch (NullPointerException eNull)	// Catch the empty text 'real number' text field on the FieldBar.
     	{

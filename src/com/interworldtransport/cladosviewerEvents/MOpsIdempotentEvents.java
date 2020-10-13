@@ -44,7 +44,7 @@ import javax.swing.*;
 public class MOpsIdempotentEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected NOpsParentEvents 		_parent;
+    protected MOpsParentEvents 		_parent;
 
 /** 
  * This is the default constructor.
@@ -55,8 +55,8 @@ public class MOpsIdempotentEvents implements ActionListener
  * 	NOpsParentEvents
  * This is a reference to the NOpsParentEvents parent event handler
  */
-    public MOpsIdempotentEvents(JMenuItem pmniControlled,
-								NOpsParentEvents pParent)
+    public MOpsIdempotentEvents(JMenuItem			pmniControlled,
+    							MOpsParentEvents 	pParent)
     {
 		_control=pmniControlled;
 		_control.addActionListener(this);
