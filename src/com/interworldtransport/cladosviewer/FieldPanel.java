@@ -210,23 +210,23 @@ import javax.swing.border.BevelBorder;
     		{
 	    		switch (_repMode)
 	    		{
-	    			case DivField.REALF:	_repRealF = new RealF(	_repRealF.getFieldType(), 
+	    			case DivField.REALF:	_repRealF = new RealF(	_repRealF.getCardinal(), 
 	    															Float.parseFloat(getRealText())
 	    															);
 	    									setCoefficientDisplay(_repRealF.conjugate());
 	    									break;
-	    			case DivField.REALD:	_repRealD = new RealD(	_repRealD.getFieldType(), 
+	    			case DivField.REALD:	_repRealD = new RealD(	_repRealD.getCardinal(), 
 	    															Double.parseDouble(getRealText())
 	    															);
 											setCoefficientDisplay(_repRealD.conjugate());
 											break;
-	    			case DivField.COMPLEXF:	_repComplexF = new ComplexF(_repComplexF.getFieldType(), 
+	    			case DivField.COMPLEXF:	_repComplexF = new ComplexF(_repComplexF.getCardinal(), 
 	    																Float.parseFloat(getRealText()), 
 	    																Float.parseFloat(getImgText())
 	    																);
 	    									setCoefficientDisplay(_repComplexF.conjugate());
 											break;
-	    			case DivField.COMPLEXD:	_repComplexD = new ComplexD(_repComplexD.getFieldType(), 
+	    			case DivField.COMPLEXD:	_repComplexD = new ComplexD(_repComplexD.getCardinal(), 
 	    																Double.parseDouble(getRealText()), 
 	    																Double.parseDouble(getImgText())
 	    																);
@@ -245,23 +245,23 @@ import javax.swing.border.BevelBorder;
     		{
 	    		switch (_repMode)
 	    		{
-	    			case DivField.REALF:	_repRealF = new RealF(	_repRealF.getFieldType(),
+	    			case DivField.REALF:	_repRealF = new RealF(	_repRealF.getCardinal(),
 	    															Float.parseFloat(getRealText())
 	    															);
 	    									setCoefficientDisplay(_repRealF.invert());
 	    									break;
-	    			case DivField.REALD:	_repRealD = new RealD(	_repRealD.getFieldType(),
+	    			case DivField.REALD:	_repRealD = new RealD(	_repRealD.getCardinal(),
 	    															Double.parseDouble(getRealText())
 	    															);
 											setCoefficientDisplay(_repRealD.invert());
 											break;
-	    			case DivField.COMPLEXF:	_repComplexF = new ComplexF(_repComplexF.getFieldType(), 
+	    			case DivField.COMPLEXF:	_repComplexF = new ComplexF(_repComplexF.getCardinal(), 
 	    																Float.parseFloat(getRealText()), 
 	    																Float.parseFloat(getImgText())
 	    																);
 	    									setCoefficientDisplay(_repComplexF.invert());
 											break;
-	    			case DivField.COMPLEXD:	_repComplexD = new ComplexD(_repComplexD.getFieldType(),  
+	    			case DivField.COMPLEXD:	_repComplexD = new ComplexD(_repComplexD.getCardinal(),  
 	    																Double.parseDouble(getRealText()), 
 	    																Double.parseDouble(getImgText())
 	    																);
@@ -272,7 +272,7 @@ import javax.swing.border.BevelBorder;
     		{
     			_GUI._StatusBar.setStatusMsg("Field Exception prevented inversion.\n");
     			_GUI._StatusBar.setStatusMsg(e.getSourceMessage()+"\n");
-    			_GUI._StatusBar.setStatusMsg(e.getSource().getFieldTypeString()+"\n");
+    			_GUI._StatusBar.setStatusMsg(e.getSource().getCardinalString()+"\n");
     		}
     		catch (NumberFormatException en)
     		{
@@ -750,16 +750,10 @@ import javax.swing.border.BevelBorder;
     	{	
     		setRealText(Double.valueOf(pIn.getReal()).toString());
     		setImgText(Double.valueOf(pIn.getImg()).toString());
-    		if (pIn.getFieldType() != null)
-    	    {
-    	    	setBackground(clrBackColor);
-    	    	//fieldDisplay.setText(pIn.getFieldTypeString());
-    	    }
-    	    else
-    	    {
-    	    	setBackground(clrNullColor);
-    	    	//fieldDisplay.setText("");
-    	    }
+    		if (pIn.getCardinal() != null)
+		    	setBackground(clrBackColor);
+		    else
+		    	setBackground(clrNullColor);
     	}
     }
     /**
@@ -775,16 +769,10 @@ import javax.swing.border.BevelBorder;
     	{	
     		setRealText(Float.valueOf(pIn.getReal()).toString());
     		setImgText(Float.valueOf(pIn.getImg()).toString());
-    		if (pIn.getFieldType() != null)
-    	    {
-    	    	setBackground(clrBackColor);
-    	    	//fieldDisplay.setText(pIn.getFieldTypeString());
-    	    }
-    	    else
-    	    {
-    	    	setBackground(clrNullColor);
-    	    	//fieldDisplay.setText("");
-    	    }
+    		if (pIn.getCardinal() != null)
+		    	setBackground(clrBackColor);
+		    else
+		    	setBackground(clrNullColor);
     	}
     }
     /**
@@ -799,16 +787,10 @@ import javax.swing.border.BevelBorder;
     	if (_repMode == DivField.REALD & pIn != null)
     	{	
     		setRealText(Double.valueOf(pIn.getReal()).toString());
-	    	if (pIn.getFieldType() != null)
-	    	{
-	    		setBackground(clrBackColor);
-	    	   	//fieldDisplay.setText(pIn.getFieldTypeString());
-	    	}
-	    	else
-	    	{
-	    	   	setBackground(clrNullColor);
-	    	   	//fieldDisplay.setText("null");
-	    	}
+    		if (pIn.getCardinal() != null)
+		    	setBackground(clrBackColor);
+		    else
+		    	setBackground(clrNullColor);
     	}
     }
     /**
@@ -823,16 +805,10 @@ import javax.swing.border.BevelBorder;
     	if (_repMode == DivField.REALF & pIn != null)
     	{	
     		setRealText(Float.valueOf(pIn.getReal()).toString());
-    		if (pIn.getFieldType() != null)
-	        {
-	        	setBackground(clrBackColor);
-	        	//fieldDisplay.setText(pIn.getFieldTypeString());
-	        }
-	        else
-	        {
-	        	setBackground(clrNullColor);
-	        	//fieldDisplay.setText("null");
-	        }
+    		if (pIn.getCardinal() != null)
+		    	setBackground(clrBackColor);
+		    else
+		    	setBackground(clrNullColor);
     	}
     }
     /**
@@ -847,16 +823,10 @@ import javax.swing.border.BevelBorder;
     	if (_repMode == DivField.COMPLEXD & pField != null)
     	{
 		    _repComplexD = pField;
-		    if (pField.getFieldType() != null)
-    		{
-    	    	setBackground(clrBackColor);
-    	    	//fieldDisplay.setText(pField.getFieldTypeString());
-    	    }
-    	    else
-    	    {
-    	    	setBackground(clrNullColor);
-    	    	//fieldDisplay.setText("");
-    	    }
+		    if (pField.getCardinal() != null)
+		    	setBackground(clrBackColor);
+		    else
+		    	setBackground(clrNullColor);
     	}
 	}
     /**
@@ -871,16 +841,10 @@ import javax.swing.border.BevelBorder;
     	if (_repMode == DivField.COMPLEXF & pField != null)
     	{
     		_repComplexF = pField;
-    		if (pField.getFieldType() != null)
-    		{
-    	    	setBackground(clrBackColor);
-    	    	//fieldDisplay.setText(pField.getFieldTypeString());
-    	    }
-    	    else
-    	    {
-    	    	setBackground(clrNullColor);
-    	    	//fieldDisplay.setText("");
-    	    }
+    		if (pField.getCardinal() != null)
+		    	setBackground(clrBackColor);
+		    else
+		    	setBackground(clrNullColor);
     	}
 	}
 	/**
@@ -895,16 +859,10 @@ import javax.swing.border.BevelBorder;
     	if (_repMode == DivField.REALD & pField != null)
     	{
     		_repRealD = pField;
-		    if (pField.getFieldType() != null)
-			{
+    		if (pField.getCardinal() != null)
 		    	setBackground(clrBackColor);
-		    	//fieldDisplay.setText(pField.getFieldTypeString());
-		    }
 		    else
-		    {
 		    	setBackground(clrNullColor);
-		    	//fieldDisplay.setText("");
-		    }
     	}
 	}
 	/**
@@ -919,16 +877,10 @@ import javax.swing.border.BevelBorder;
     	if (_repMode == DivField.REALF & pField != null)
     	{
     		_repRealF = pField;
-		    if (pField.getFieldType() != null)
-			{
+		    if (pField.getCardinal() != null)
 		    	setBackground(clrBackColor);
-		    	//fieldDisplay.setText(pField.getFieldTypeString());
-		    }
 		    else
-		    {
 		    	setBackground(clrNullColor);
-		    	//fieldDisplay.setText("");
-		    }
     	}
 	}
     protected void 	makeNotWritable()

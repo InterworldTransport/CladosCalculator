@@ -446,42 +446,42 @@ import java.util.*;
     	
     	if (command == "grade crop")
     	{
-    		_GUI._EventModel.SOpsParts.gradep.actionPerformed(event);
+    		_GUI._EventModel.MOpsParts.gradep.actionPerformed(event);
     	}
     	
     	if (command == "grade cut")
     	{
-    		_GUI._EventModel.SOpsParts.grades.actionPerformed(event);
+    		_GUI._EventModel.MOpsParts.grades.actionPerformed(event);
     	}
     	
     	if (command == "scale")
     	{
-    		_GUI._EventModel.SOpsParts.scale.actionPerformed(event);
+    		_GUI._EventModel.MOpsParts.scale.actionPerformed(event);
     	}
     	
     	if (command == "normalize")
     	{
-    		_GUI._EventModel.SOpsParts.norm.actionPerformed(event);
+    		_GUI._EventModel.MOpsParts.norm.actionPerformed(event);
     	}
     	
     	if (command == "invert")
     	{
-    		_GUI._EventModel.SOpsParts.invt.actionPerformed(event);
+    		_GUI._EventModel.MOpsParts.invt.actionPerformed(event);
     	}
     	
     	if (command == "reverse")
     	{
-    		_GUI._EventModel.SOpsParts.rev.actionPerformed(event);
+    		_GUI._EventModel.MOpsParts.rev.actionPerformed(event);
     	}
     	
     	if (command == "<dual")
     	{
-    		_GUI._EventModel.SOpsParts.dualRight.actionPerformed(event);
+    		_GUI._EventModel.MOpsParts.dualRight.actionPerformed(event);
     	}
     	
     	if (command == "dual>")
     	{
-    		_GUI._EventModel.SOpsParts.dualLeft.actionPerformed(event);
+    		_GUI._EventModel.MOpsParts.dualLeft.actionPerformed(event);
     	}
     }
     /**

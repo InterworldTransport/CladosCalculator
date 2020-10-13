@@ -236,18 +236,18 @@ public class FieldDisplay extends JTextArea implements FocusListener
 			switch (_repMode)
 			{
 				case DivField.REALF:	float tSpotRF = Float.parseFloat(strB.substring(indexOfR, tBufferLength));
-										displayFieldRF=new RealF(displayFieldRF.getFieldType(), tSpotRF);
+										displayFieldRF=new RealF(displayFieldRF.getCardinal(), tSpotRF);
 										break;
 				case DivField.REALD:	double tSpotRD = Double.parseDouble(strB.substring(indexOfR, tBufferLength));
-										displayFieldRD=new RealD(displayFieldRD.getFieldType(), tSpotRD);
+										displayFieldRD=new RealD(displayFieldRD.getCardinal(), tSpotRD);
 										break;
 				case DivField.COMPLEXF:	float tSpotCF1 = Float.parseFloat(strB.substring(indexOfR, indexOfI-tI-1));
 										float tSpotCF2 = Float.parseFloat(strB.substring(indexOfI, tBufferLength));
-										displayFieldCF=new ComplexF(displayFieldCF.getFieldType(), tSpotCF1, tSpotCF2);
+										displayFieldCF=new ComplexF(displayFieldCF.getCardinal(), tSpotCF1, tSpotCF2);
 										break;
 				case DivField.COMPLEXD:	double tSpotCD1 = Double.parseDouble(strB.substring(indexOfR, indexOfI-tI-1));
 										double tSpotCD2 = Double.parseDouble(strB.substring(indexOfI, tBufferLength));
-										displayFieldCD=new ComplexD(displayFieldCD.getFieldType(), tSpotCD1, tSpotCD2);
+										displayFieldCD=new ComplexD(displayFieldCD.getCardinal(), tSpotCD1, tSpotCD2);
 			}
 			setFont(new Font(Font.SERIF, Font.PLAIN, 10));
 			displayContents();
