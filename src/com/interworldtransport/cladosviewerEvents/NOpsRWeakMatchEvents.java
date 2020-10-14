@@ -24,7 +24,6 @@
  */
 package com.interworldtransport.cladosviewerEvents;
 
-import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosG.NyadComplexD;
 import com.interworldtransport.cladosG.NyadComplexF;
 import com.interworldtransport.cladosG.NyadRealD;
@@ -86,13 +85,13 @@ public class NOpsRWeakMatchEvents implements ActionListener
     	boolean test = false;
     	switch (panelNyadSelected.getRepMode())
     	{
-    		case DivField.REALF: 	test = NyadRealF.isWeakReferenceMatch(panelNyadSelected.getNyadRF(), panelNyadNext.getNyadRF());
+    		case REALF: 	test = NyadRealF.isWeakReferenceMatch(panelNyadSelected.getNyadRF(), panelNyadNext.getNyadRF());
     								break;
-    		case DivField.REALD: 	test = NyadRealD.isWeakReferenceMatch(panelNyadSelected.getNyadRD(), panelNyadNext.getNyadRD());
+    		case REALD: 	test = NyadRealD.isWeakReferenceMatch(panelNyadSelected.getNyadRD(), panelNyadNext.getNyadRD());
 									break;
-    		case DivField.COMPLEXF: test = NyadComplexF.isWeakReferenceMatch(panelNyadSelected.getNyadCF(), panelNyadNext.getNyadCF());
+    		case COMPLEXF: test = NyadComplexF.isWeakReferenceMatch(panelNyadSelected.getNyadCF(), panelNyadNext.getNyadCF());
 									break;
-    		case DivField.COMPLEXD: test = NyadComplexD.isWeakReferenceMatch(panelNyadSelected.getNyadCD(), panelNyadNext.getNyadCD());
+    		case COMPLEXD: test = NyadComplexD.isWeakReferenceMatch(panelNyadSelected.getNyadCD(), panelNyadNext.getNyadCD());
     	}
     	if (test)
 			_parent._GUI._StatusBar.setStatusMsg("-->Selected nyad and the next are WEAK REF MATCHED.\n");

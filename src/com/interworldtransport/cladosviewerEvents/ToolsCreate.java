@@ -25,7 +25,6 @@
 
 package com.interworldtransport.cladosviewerEvents;
 
-import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosviewer.CreateDialog;
 
 import javax.swing.*;
@@ -64,12 +63,12 @@ public class ToolsCreate implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	String tSpot;
     	if (_parent._GUI._GeometryDisplay.getNyadListSize()>0)
-    			tSpot = _parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus()).getRepMode();
-    	else 	tSpot = _parent._GUI._FieldBar.getRepMode();
-    	
-    	CreateDialog.createNyad(_parent._GUI, tSpot);
+    		CreateDialog.createNyad(_parent._GUI, 
+    								_parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus()).getRepMode());
+    	else 	
+    		CreateDialog.createNyad(_parent._GUI, 
+    								_parent._GUI._FieldBar.getRepMode());
     	
     	// If no CreateDialog is instantiated, nothing will appear to happen.
     	// If one is, then there will be a link to the parent GUI to report errors.

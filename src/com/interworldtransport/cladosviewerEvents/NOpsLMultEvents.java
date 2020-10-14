@@ -28,7 +28,6 @@ package com.interworldtransport.cladosviewerEvents;
 import com.interworldtransport.cladosGExceptions.*;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
-import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosFExceptions.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -90,13 +89,13 @@ public class NOpsLMultEvents implements ActionListener
     	{
     		switch (temp0.getRepMode())
     		{
-    			case DivField.REALF:	(temp0.getMonadRF()).multiplyLeft(temp1.getMonadRF());
+    			case REALF:	(temp0.getMonadRF()).multiplyLeft(temp1.getMonadRF());
     									break;
-    			case DivField.REALD:	(temp0.getMonadRD()).multiplyLeft(temp1.getMonadRD());
+    			case REALD:	(temp0.getMonadRD()).multiplyLeft(temp1.getMonadRD());
     									break;
-    			case DivField.COMPLEXF:	(temp0.getMonadCF()).multiplyLeft(temp1.getMonadCF());
+    			case COMPLEXF:	(temp0.getMonadCF()).multiplyLeft(temp1.getMonadCF());
 										break;
-    			case DivField.COMPLEXD:	(temp0.getMonadCD()).multiplyLeft(temp1.getMonadCD());
+    			case COMPLEXD:	(temp0.getMonadCD()).multiplyLeft(temp1.getMonadCD());
     		}
     		temp0.setCoefficientDisplay();
     	}

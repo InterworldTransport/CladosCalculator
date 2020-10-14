@@ -24,7 +24,6 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosFExceptions.FieldBinaryException;
 import com.interworldtransport.cladosGExceptions.*;
 import com.interworldtransport.cladosviewer.MonadPanel;
@@ -90,13 +89,13 @@ public class NOpsAntiSymmMultEvents implements ActionListener
     	{
     		switch (temp0.getRepMode())
     		{
-    			case DivField.REALF:	(temp0.getMonadRF()).multiplyAntisymm(temp1.getMonadRF());
+    			case REALF:	(temp0.getMonadRF()).multiplyAntisymm(temp1.getMonadRF());
     									break;
-    			case DivField.REALD:	(temp0.getMonadRD()).multiplyAntisymm(temp1.getMonadRD());
+    			case REALD:	(temp0.getMonadRD()).multiplyAntisymm(temp1.getMonadRD());
     									break;
-    			case DivField.COMPLEXF:	(temp0.getMonadCF()).multiplyAntisymm(temp1.getMonadCF());
+    			case COMPLEXF:	(temp0.getMonadCF()).multiplyAntisymm(temp1.getMonadCF());
 										break;
-    			case DivField.COMPLEXD:	(temp0.getMonadCD()).multiplyAntisymm(temp1.getMonadCD());
+    			case COMPLEXD:	(temp0.getMonadCD()).multiplyAntisymm(temp1.getMonadCD());
     		}
     		temp0.setCoefficientDisplay();
     	}

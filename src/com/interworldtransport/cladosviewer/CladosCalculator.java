@@ -24,8 +24,8 @@
  */
 package com.interworldtransport.cladosviewer;
 
-import com.interworldtransport.cladosF.DivField;
-import com.interworldtransport.cladosF.RealF;
+import com.interworldtransport.cladosF.CladosFBuilder;
+
 import com.interworldtransport.cladosG.MonadComplexD;
 import com.interworldtransport.cladosG.MonadComplexF;
 import com.interworldtransport.cladosG.MonadRealD;
@@ -35,6 +35,7 @@ import com.interworldtransport.cladosG.NyadRealF;
 import com.interworldtransport.cladosG.NyadRealD;
 import com.interworldtransport.cladosG.NyadComplexF;
 import com.interworldtransport.cladosG.NyadComplexD;
+
 import com.interworldtransport.cladosviewerExceptions.CantGetIniException;
 import com.interworldtransport.cladosviewerExceptions.CantGetSaveException;
 
@@ -54,8 +55,9 @@ import java.io.*;
  */
 public class CladosCalculator extends JFrame implements ActionListener
 {
-	private static final long serialVersionUID = 4368190040198207044L;
-
+	private	static final Color		_backColor = new Color(255, 255, 222);
+	private static final long 		serialVersionUID = 4368190040198207044L;
+	
 	public static void main(String[] args)
 	{
 		//default string entries in case someone starts this without any arg's at all
@@ -88,29 +90,28 @@ public class CladosCalculator extends JFrame implements ActionListener
 	 * The Field Display Panel for the application.
 	 * Located at the top of the GUI and intended for numeric inputs.
 	 */
-	public		FieldPanel			_FieldBar;
+	public		FieldPanel			_FieldBar; 
 	/**
 	 * The Center Display Panel for the application.
 	 * Located in the center of the GUI and intended for display panels.
 	 */
-	public		ViewerPanel			_GeometryDisplay; 
+	public		ViewerPanel			_GeometryDisplay;
+	
 	/**
 	 * The Status Display Panel for the application.
 	 * Located at the bottom of the GUI and intended for status information.
 	 */
 	public		UtilityStatusBar	_StatusBar;
-	
-	private	final Color				_backColor = new Color(255, 255, 222);
 	private		ViewerMenu			_MenuBar;
 	private		JButton				btnHasGrade;
-	private		JButton				btnIsEqual;
+	private		JButton				btnHasNyadAlgebra;
 	private		JButton				btnIsGrade;
 	private		JButton				btnIsIdempotent;
 	private		JButton				btnIsMultiGrade;
 	private		JButton				btnIsNilpotent;
-	private		JButton				btnIsStrgRefMatch;
-	private		JButton				btnIsWeekRefMatch;
-	private		JButton				btnHasAlgebra;
+	private		JButton				btnIsNyadEqual;
+	private		JButton				btnIsNyadStrgRefMatch;
+	private		JButton				btnIsNyadWeakRefMatch;
 	private		JButton				btnIsScaleIdempotent;
 	private		JButton				btnIsZero;
 	private		JButton				btnWhatGrade;
@@ -136,7 +137,6 @@ public class CladosCalculator extends JFrame implements ActionListener
 	 */
 	public CladosCalculator(	String pTitle,
 	   							String pConfig)
-	   	//throws 	UtilitiesException
 	{
 	    super(pTitle);
 	    addWindowListener( new WindowAdapter()
@@ -179,23 +179,23 @@ public class CladosCalculator extends JFrame implements ActionListener
     		NyadPanel tSpot = _GeometryDisplay.getNyadPanel(indxNPanelSelected);
     		switch (_GeometryDisplay.getNyadPanel(indxNPanelSelected).getRepMode())
     		{
-    			case DivField.REALF:	_FieldBar=new FieldPanel(this, tSpot.getNyadRF().getProto());
-    									cp.add(_FieldBar, "North");
-    									break;
-    			case DivField.REALD:	_FieldBar=new FieldPanel(this, tSpot.getNyadRD().getProto());
-										cp.add(_FieldBar, "North");
-										break;
-    			case DivField.COMPLEXF:	_FieldBar=new FieldPanel(this, tSpot.getNyadCF().getProto());
-										cp.add(_FieldBar, "North");
-										break;
-				case DivField.COMPLEXD:	_FieldBar=new FieldPanel(this, tSpot.getNyadCD().getProto());
-										cp.add(_FieldBar, "North");
+    			case REALF:	_FieldBar=new FieldPanel(this, tSpot.getNyadRF().getProto());
+    						cp.add(_FieldBar, "North");
+    						break;
+    			case REALD:	_FieldBar=new FieldPanel(this, tSpot.getNyadRD().getProto());
+							cp.add(_FieldBar, "North");
+							break;
+    			case COMPLEXF:	_FieldBar=new FieldPanel(this, tSpot.getNyadCF().getProto());
+								cp.add(_FieldBar, "North");
+								break;
+				case COMPLEXD:	_FieldBar=new FieldPanel(this, tSpot.getNyadCD().getProto());
+								cp.add(_FieldBar, "North");
     		}
     		tSpot = null;
     	}
     	else	// This catches the possibility that no NyadPanel was created upon initialization
     	{
-    		_FieldBar=new FieldPanel(this, RealF.newZERO("Place Holder"));
+    		_FieldBar=new FieldPanel(this, CladosFBuilder.createRealFZERO("PlaceHolder"));
 			cp.add(_FieldBar, "North");
     	}
 	    
@@ -211,8 +211,6 @@ public class CladosCalculator extends JFrame implements ActionListener
 	    
 	    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 	    setLocation(dim.width/4-this.getSize().width/4, dim.height/4-this.getSize().height/4);
-	    	
-	    //setLocation(50, 50);
 	}
     
     public void actionPerformed(ActionEvent event)
@@ -365,41 +363,41 @@ public class CladosCalculator extends JFrame implements ActionListener
 		cn.gridwidth=1;
 
     	// button double
-    	btnIsStrgRefMatch = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.RefMatch")));
-    	btnIsStrgRefMatch.setActionCommand("strong ref match");
-    	btnIsStrgRefMatch.setToolTipText("Strong Reference Match [Nyad]?");
-    	btnIsStrgRefMatch.setPreferredSize(square);
-    	btnIsStrgRefMatch.setBorder(BorderFactory.createEtchedBorder(0));
-    	btnIsStrgRefMatch.addActionListener(this);
-    	pnlControlBar.add(btnIsStrgRefMatch, cn);
+    	btnIsNyadStrgRefMatch = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.RefMatch")));
+    	btnIsNyadStrgRefMatch.setActionCommand("strong ref match");
+    	btnIsNyadStrgRefMatch.setToolTipText("Strong Reference Match [Nyad]?");
+    	btnIsNyadStrgRefMatch.setPreferredSize(square);
+    	btnIsNyadStrgRefMatch.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsNyadStrgRefMatch.addActionListener(this);
+    	pnlControlBar.add(btnIsNyadStrgRefMatch, cn);
     	cn.gridx++;
     	
-    	btnIsWeekRefMatch = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.WeakRefMatch")));
-    	btnIsWeekRefMatch.setActionCommand("weak ref match");
-    	btnIsWeekRefMatch.setToolTipText("Weak reference Match [Nyad]?");
-    	btnIsWeekRefMatch.setPreferredSize(square);
-    	btnIsWeekRefMatch.setBorder(BorderFactory.createEtchedBorder(0));
-    	btnIsWeekRefMatch.addActionListener(this);
-    	pnlControlBar.add(btnIsWeekRefMatch, cn);
+    	btnIsNyadWeakRefMatch = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.WeakRefMatch")));
+    	btnIsNyadWeakRefMatch.setActionCommand("weak ref match");
+    	btnIsNyadWeakRefMatch.setToolTipText("Weak reference Match [Nyad]?");
+    	btnIsNyadWeakRefMatch.setPreferredSize(square);
+    	btnIsNyadWeakRefMatch.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsNyadWeakRefMatch.addActionListener(this);
+    	pnlControlBar.add(btnIsNyadWeakRefMatch, cn);
     	cn.gridx = 0;
     	cn.gridy++;
     	
-    	btnHasAlgebra = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.HasAlgebra")));
-    	btnHasAlgebra.setActionCommand("algebra detect");
-    	btnHasAlgebra.setToolTipText("Next Nyad Has Algebra?");
-    	btnHasAlgebra.setPreferredSize(square);
-    	btnHasAlgebra.setBorder(BorderFactory.createEtchedBorder(0));
-    	btnHasAlgebra.addActionListener(this);
-    	pnlControlBar.add(btnHasAlgebra, cn);
+    	btnHasNyadAlgebra = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.HasAlgebra")));
+    	btnHasNyadAlgebra.setActionCommand("algebra detect");
+    	btnHasNyadAlgebra.setToolTipText("Next Nyad Has Algebra?");
+    	btnHasNyadAlgebra.setPreferredSize(square);
+    	btnHasNyadAlgebra.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnHasNyadAlgebra.addActionListener(this);
+    	pnlControlBar.add(btnHasNyadAlgebra, cn);
     	cn.gridx++;
     	
-    	btnIsEqual = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Equal")));
-    	btnIsEqual.setActionCommand("equal");
-    	btnIsEqual.setToolTipText("strong Equality Nyad Test");
-    	btnIsEqual.setPreferredSize(square);
-    	btnIsEqual.setBorder(BorderFactory.createEtchedBorder(0));
-    	btnIsEqual.addActionListener(this);
-    	pnlControlBar.add(btnIsEqual, cn);
+    	btnIsNyadEqual = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Equal")));
+    	btnIsNyadEqual.setActionCommand("equal");
+    	btnIsNyadEqual.setToolTipText("strong Equality Nyad Test");
+    	btnIsNyadEqual.setPreferredSize(square);
+    	btnIsNyadEqual.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsNyadEqual.addActionListener(this);
+    	pnlControlBar.add(btnIsNyadEqual, cn);
     	cn.gridx = 0;
     	cn.gridy++;
 
@@ -526,37 +524,37 @@ public class CladosCalculator extends JFrame implements ActionListener
 		{
 			switch(tempNPN.getRepMode())
 			{
-				case DivField.REALF:	NyadRealF tempNF=tempNPN.getNyadRF();
-										content.append("<Nyad Name=\""+tempNF.getName()+"\", ");
-										content.append("Order=\""+tempNF.getNyadOrder()+"\", ");
-										content.append("Foot=\""+tempNF.getFootPoint().getFootName()+"\">\r\n");
-										content.append("<MonadList>\r\n");
-										for (int m=0; m<tempNF.getNyadOrder(); m++)
-											content.append(MonadRealF.toXMLFullString(tempNF.getMonadList(m)));
-										break;
-				case DivField.REALD:	NyadRealD tempND=tempNPN.getNyadRD();
-										content.append("<Nyad Name=\""+tempND.getName()+"\", ");
-										content.append("Order=\""+tempND.getNyadOrder()+"\", ");
-										content.append("Foot=\""+tempND.getFootPoint().getFootName()+"\">\r\n");
-										content.append("<MonadList>\r\n");
-										for (int m=0; m<tempND.getNyadOrder(); m++)
-											content.append(MonadRealD.toXMLFullString(tempND.getMonadList(m)));
-										break;
-				case DivField.COMPLEXF:	NyadComplexF tempNCF=tempNPN.getNyadCF();
-										content.append("<Nyad Name=\""+tempNCF.getName()+"\", ");
-										content.append("Order=\""+tempNCF.getNyadOrder()+"\", ");
-										content.append("Foot=\""+tempNCF.getFootPoint().getFootName()+"\">\r\n");
-										content.append("<MonadList>\r\n");
-										for (int m=0; m<tempNCF.getNyadOrder(); m++)
-											content.append(MonadComplexF.toXMLFullString(tempNCF.getMonadList(m)));
-										break;
-				case DivField.COMPLEXD:	NyadComplexD tempNCD=tempNPN.getNyadCD();
-										content.append("<Nyad Name=\""+tempNCD.getName()+"\", ");
-										content.append("Order=\""+tempNCD.getNyadOrder()+"\", ");
-										content.append("Foot=\""+tempNCD.getFootPoint().getFootName()+"\">\r\n");
-										content.append("<MonadList>\r\n");
-										for (int m=0; m<tempNCD.getNyadOrder(); m++)
-											content.append(MonadComplexD.toXMLFullString(tempNCD.getMonadList(m)));
+				case REALF:	NyadRealF tempNF=tempNPN.getNyadRF();
+							content.append("<Nyad Name=\""+tempNF.getName()+"\", ");
+							content.append("Order=\""+tempNF.getNyadOrder()+"\", ");
+							content.append("Foot=\""+tempNF.getFootPoint().getFootName()+"\">\r\n");
+							content.append("<MonadList>\r\n");
+							for (int m=0; m<tempNF.getNyadOrder(); m++)
+								content.append(MonadRealF.toXMLFullString(tempNF.getMonadList(m)));
+							break;
+				case REALD:	NyadRealD tempND=tempNPN.getNyadRD();
+							content.append("<Nyad Name=\""+tempND.getName()+"\", ");
+							content.append("Order=\""+tempND.getNyadOrder()+"\", ");
+							content.append("Foot=\""+tempND.getFootPoint().getFootName()+"\">\r\n");
+							content.append("<MonadList>\r\n");
+							for (int m=0; m<tempND.getNyadOrder(); m++)
+								content.append(MonadRealD.toXMLFullString(tempND.getMonadList(m)));
+								break;
+				case COMPLEXF:	NyadComplexF tempNCF=tempNPN.getNyadCF();
+								content.append("<Nyad Name=\""+tempNCF.getName()+"\", ");
+								content.append("Order=\""+tempNCF.getNyadOrder()+"\", ");
+								content.append("Foot=\""+tempNCF.getFootPoint().getFootName()+"\">\r\n");
+								content.append("<MonadList>\r\n");
+								for (int m=0; m<tempNCF.getNyadOrder(); m++)
+									content.append(MonadComplexF.toXMLFullString(tempNCF.getMonadList(m)));
+								break;
+				case COMPLEXD:	NyadComplexD tempNCD=tempNPN.getNyadCD();
+								content.append("<Nyad Name=\""+tempNCD.getName()+"\", ");
+								content.append("Order=\""+tempNCD.getNyadOrder()+"\", ");
+								content.append("Foot=\""+tempNCD.getFootPoint().getFootName()+"\">\r\n");
+								content.append("<MonadList>\r\n");
+								for (int m=0; m<tempNCD.getNyadOrder(); m++)
+									content.append(MonadComplexD.toXMLFullString(tempNCD.getMonadList(m)));
 			}
 			content.append("</MonadList>\r\n");
 			content.append("</Nyad>\r\n");

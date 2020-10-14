@@ -24,7 +24,7 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosF.DivField;
+
 import com.interworldtransport.cladosFExceptions.FieldBinaryException;
 import com.interworldtransport.cladosG.*;
 import com.interworldtransport.cladosGExceptions.*;
@@ -91,13 +91,13 @@ public class MOpsIdempotentEvents implements ActionListener
     	{
 	    	switch (tSpot.getRepMode())
 	    	{
-		    	case DivField.REALF: 	test = MonadRealF.isIdempotent(tSpot.getMonadRF());
+		    	case REALF: 	test = MonadRealF.isIdempotent(tSpot.getMonadRF());
 								    	break;
-		    	case DivField.REALD: 	test = MonadRealD.isIdempotent(tSpot.getMonadRD());
+		    	case REALD: 	test = MonadRealD.isIdempotent(tSpot.getMonadRD());
 								    	break;
-		    	case DivField.COMPLEXF:	test = MonadComplexF.isIdempotent(tSpot.getMonadCF());
+		    	case COMPLEXF:	test = MonadComplexF.isIdempotent(tSpot.getMonadCF());
 								    	break;
-		    	case DivField.COMPLEXD:	test = MonadComplexD.isIdempotent(tSpot.getMonadCD());
+		    	case COMPLEXD:	test = MonadComplexD.isIdempotent(tSpot.getMonadCD());
 	    	}
 	    	if (test)
 				_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is idempotent.\n");

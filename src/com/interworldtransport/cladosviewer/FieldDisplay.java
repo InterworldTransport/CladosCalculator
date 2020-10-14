@@ -33,8 +33,11 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.text.BadLocationException;
 
-import com.interworldtransport.cladosF.*;
-
+import com.interworldtransport.cladosF.CladosField;
+import com.interworldtransport.cladosF.ComplexD;
+import com.interworldtransport.cladosF.ComplexF;
+import com.interworldtransport.cladosF.RealD;
+import com.interworldtransport.cladosF.RealF;
 import com.interworldtransport.cladosviewerExceptions.*;
 
 /** 
@@ -56,7 +59,7 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	
 	//private			FieldPanel	_editField;
 	private			MonadPanel	_parent;
-	protected		String		_repMode;
+	protected		CladosField	_repMode;
 	/**
 	 * The displayField is a copy of the cladosF magnitude that can be safely displayed
 	 * and manipulated without harming the cladosG object using the original magnitude.
@@ -99,7 +102,7 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		setFont(new Font(Font.SERIF, Font.PLAIN, 10));
 		displayFieldCD = pField;
-		_repMode = DivField.COMPLEXD;
+		_repMode = CladosField.COMPLEXD;
 		addFocusListener(this);
 	}
 	/**
@@ -123,7 +126,7 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		setFont(new Font(Font.SERIF, Font.PLAIN, 10));
 		displayFieldCF = pField;
-		_repMode = DivField.COMPLEXF;
+		_repMode = CladosField.COMPLEXF;
 		addFocusListener(this);
 	}
 	/**
@@ -146,7 +149,7 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		setFont(new Font(Font.SERIF, Font.PLAIN, 10));
 		displayFieldRD = pField;
-		_repMode = DivField.REALD;
+		_repMode = CladosField.REALD;
 		addFocusListener(this);
 	}
 	/**
@@ -169,7 +172,7 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		setFont(new Font(Font.SERIF, Font.PLAIN, 10));
 		displayFieldRF = pField;
-		_repMode = DivField.REALF;
+		_repMode = CladosField.REALF;
 		addFocusListener(this);
 	}
 	
@@ -178,16 +181,16 @@ public class FieldDisplay extends JTextArea implements FocusListener
 		StringBuffer str = new StringBuffer().append(FieldDisplay.REAL);
 		switch (_repMode)
 		{
-			case DivField.REALF:	str.append(displayFieldRF.getReal());
+			case REALF:	str.append(displayFieldRF.getReal());
 									setText(str.toString());
 									break;
-			case DivField.REALD:	str.append(displayFieldRD.getReal());
+			case REALD:	str.append(displayFieldRD.getReal());
 									setText(str.toString());
 									break;
-			case DivField.COMPLEXF:	str.append(displayFieldCF.getReal()).append("\n"+FieldDisplay.IMAGINARY).append(displayFieldCF.getImg());
+			case COMPLEXF:	str.append(displayFieldCF.getReal()).append("\n"+FieldDisplay.IMAGINARY).append(displayFieldCF.getImg());
 									setText(str.toString());
 									break;
-			case DivField.COMPLEXD:	str.append(displayFieldCD.getReal()).append("\n"+FieldDisplay.IMAGINARY).append(displayFieldCD.getImg());
+			case COMPLEXD:	str.append(displayFieldCD.getReal()).append("\n"+FieldDisplay.IMAGINARY).append(displayFieldCD.getImg());
 									setText(str.toString());
 		}
 	}
@@ -200,16 +203,16 @@ public class FieldDisplay extends JTextArea implements FocusListener
 		{
 			switch (_parent.getRepMode())
 			{
-				case DivField.REALF: 	displayFieldRF = RealF.copyOf(_parent._GUI._FieldBar._repRealF);
+				case REALF: 	displayFieldRF = RealF.copyOf(_parent._GUI._FieldBar._repRealF);
 										displayContents();
 										break;
-				case DivField.REALD: 	displayFieldRD = RealD.copyOf(_parent._GUI._FieldBar._repRealD);
+				case REALD: 	displayFieldRD = RealD.copyOf(_parent._GUI._FieldBar._repRealD);
 										displayContents();
 										break;
-				case DivField.COMPLEXF:	displayFieldCF = ComplexF.copyOf(_parent._GUI._FieldBar._repComplexF);
+				case COMPLEXF:	displayFieldCF = ComplexF.copyOf(_parent._GUI._FieldBar._repComplexF);
 										displayContents();
 										break;
-				case DivField.COMPLEXD:	displayFieldCD = ComplexD.copyOf(_parent._GUI._FieldBar._repComplexD);
+				case COMPLEXD:	displayFieldCD = ComplexD.copyOf(_parent._GUI._FieldBar._repComplexD);
 										displayContents();
 			}
 		}		
@@ -235,17 +238,17 @@ public class FieldDisplay extends JTextArea implements FocusListener
 			
 			switch (_repMode)
 			{
-				case DivField.REALF:	float tSpotRF = Float.parseFloat(strB.substring(indexOfR, tBufferLength));
+				case REALF:	float tSpotRF = Float.parseFloat(strB.substring(indexOfR, tBufferLength));
 										displayFieldRF=new RealF(displayFieldRF.getCardinal(), tSpotRF);
 										break;
-				case DivField.REALD:	double tSpotRD = Double.parseDouble(strB.substring(indexOfR, tBufferLength));
+				case REALD:	double tSpotRD = Double.parseDouble(strB.substring(indexOfR, tBufferLength));
 										displayFieldRD=new RealD(displayFieldRD.getCardinal(), tSpotRD);
 										break;
-				case DivField.COMPLEXF:	float tSpotCF1 = Float.parseFloat(strB.substring(indexOfR, indexOfI-tI-1));
+				case COMPLEXF:	float tSpotCF1 = Float.parseFloat(strB.substring(indexOfR, indexOfI-tI-1));
 										float tSpotCF2 = Float.parseFloat(strB.substring(indexOfI, tBufferLength));
 										displayFieldCF=new ComplexF(displayFieldCF.getCardinal(), tSpotCF1, tSpotCF2);
 										break;
-				case DivField.COMPLEXD:	double tSpotCD1 = Double.parseDouble(strB.substring(indexOfR, indexOfI-tI-1));
+				case COMPLEXD:	double tSpotCD1 = Double.parseDouble(strB.substring(indexOfR, indexOfI-tI-1));
 										double tSpotCD2 = Double.parseDouble(strB.substring(indexOfI, tBufferLength));
 										displayFieldCD=new ComplexD(displayFieldCD.getCardinal(), tSpotCD1, tSpotCD2);
 			}

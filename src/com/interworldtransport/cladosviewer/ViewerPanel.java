@@ -23,10 +23,9 @@
  * ------------------------------------------------------------------------ <br>
  */
 
-package com.interworldtransport.cladosviewer ;
+package com.interworldtransport.cladosviewer;
 
-import com.interworldtransport.cladosF.DivField;
-
+import com.interworldtransport.cladosF.CladosField;
 import com.interworldtransport.cladosF.RealF;
 import com.interworldtransport.cladosF.RealD;
 import com.interworldtransport.cladosF.ComplexF;
@@ -68,7 +67,7 @@ import java.util.*;
 {
 	private static final long 				serialVersionUID = 4262057036375030572L;
 	public			CladosCalculator		_GUI;
-	private			String					_repMode;
+	private			CladosField				_repMode;
     private			JButton					btnCopyNyad;
     private			JButton					btnNewNyad;
     private			JButton					btnRemoveNyad;
@@ -367,22 +366,22 @@ import java.util.*;
 		{
 			switch(getNyadPanel(getPaneFocus()).getRepMode())
 			{
-			case DivField.REALF:	NyadRealF focusNyadRF=getNyadPanel(getPaneFocus()).getNyadRF();
+			case REALF:	NyadRealF focusNyadRF=getNyadPanel(getPaneFocus()).getNyadRF();
 									buildName=new StringBuffer(focusNyadRF.getName()).append("_c").toString();
 									NyadRealF newNyadCopyRF=new NyadRealF(buildName, focusNyadRF);
 									addNyad(newNyadCopyRF);
 									break;
-			case DivField.REALD:	NyadRealD focusNyadRD=getNyadPanel(getPaneFocus()).getNyadRD();
+			case REALD:	NyadRealD focusNyadRD=getNyadPanel(getPaneFocus()).getNyadRD();
 									buildName=new StringBuffer(focusNyadRD.getName()).append("_c").toString();
 									NyadRealD newNyadCopyRD=new NyadRealD(buildName, focusNyadRD);
 									addNyad(newNyadCopyRD);
 									break;
-			case DivField.COMPLEXF:	NyadComplexF focusNyadCF=getNyadPanel(getPaneFocus()).getNyadCF();
+			case COMPLEXF:	NyadComplexF focusNyadCF=getNyadPanel(getPaneFocus()).getNyadCF();
 									buildName=new StringBuffer(focusNyadCF.getName()).append("_c").toString();
 									NyadComplexF newNyadCopyCF=new NyadComplexF(buildName, focusNyadCF);
 									addNyad(newNyadCopyCF);
 									break;
-			case DivField.COMPLEXD:	NyadComplexD focusNyadCD=getNyadPanel(getPaneFocus()).getNyadCD();
+			case COMPLEXD:	NyadComplexD focusNyadCD=getNyadPanel(getPaneFocus()).getNyadCD();
 									buildName=new StringBuffer(focusNyadCD.getName()).append("_c").toString();
 									NyadComplexD newNyadCopyCD=new NyadComplexD(buildName, focusNyadCD);
 									addNyad(newNyadCopyCD);
@@ -415,7 +414,7 @@ import java.util.*;
     	    	
     	//Look in the conf file and determine the DivField to use during initiation
     	//String sType = validateInitialDivField();
-		if (_repMode == "") // No valid DivField found, so don't construct a nyad
+		if (_repMode == null) // No valid DivField found, so don't construct a nyad
 		{
 			intOrd = 0;
 			intCount = 0;
@@ -431,7 +430,7 @@ import java.util.*;
     	{
     		switch (_repMode)
     		{
-    			case DivField.REALF:	NyadRealF aNyadRF = buildANyadRF(j, intOrd); // the NyadRF bootstrapper
+    			case REALF:	NyadRealF aNyadRF = buildANyadRF(j, intOrd); // the NyadRF bootstrapper
     						    		try	//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
     						    		{
     						    			if(aNyadRF != null)
@@ -456,7 +455,7 @@ import java.util.*;
     						    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
 										}
     									break;
-    			case DivField.REALD:	NyadRealD aNyadRD = buildANyadRD(j, intOrd); // the NyadRD bootstrapper
+    			case REALD:	NyadRealD aNyadRD = buildANyadRD(j, intOrd); // the NyadRD bootstrapper
 							    		try	//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
 							    		{
 							    			if(aNyadRD != null)
@@ -481,7 +480,7 @@ import java.util.*;
     						    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
 										}
 										break;						
-    			case DivField.COMPLEXF:	NyadComplexF aNyadCF = buildANyadCF(j, intOrd); // the NyadCF bootstrapper
+    			case COMPLEXF:	NyadComplexF aNyadCF = buildANyadCF(j, intOrd); // the NyadCF bootstrapper
 							    		try	//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
 							    		{
 							    			if(aNyadCF != null)
@@ -506,7 +505,7 @@ import java.util.*;
     						    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
 										}
 										break;	
-    			case DivField.COMPLEXD:	NyadComplexD aNyadCD = buildANyadCD(j, intOrd); // the NyadCD bootstrapper
+    			case COMPLEXD:	NyadComplexD aNyadCD = buildANyadCD(j, intOrd); // the NyadCD bootstrapper
 							    		try	//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
 							    		{
 							    			if(aNyadCD != null)
@@ -612,17 +611,17 @@ import java.util.*;
 			int point = nyadPanes.getSelectedIndex();
 			switch (getNyadPanel(point).getRepMode())
 			{
-				case DivField.REALF: 	_GUI._FieldBar._repRealF = null;
+				case REALF: 	_GUI._FieldBar._repRealF = null;
 										_GUI._FieldBar.setRealText("");
 										break;
-				case DivField.REALD: 	_GUI._FieldBar._repRealD = null;
+				case REALD: 	_GUI._FieldBar._repRealD = null;
 										_GUI._FieldBar.setRealText("");
 										break;
-				case DivField.COMPLEXF:	_GUI._FieldBar._repComplexF = null;
+				case COMPLEXF:	_GUI._FieldBar._repComplexF = null;
 										_GUI._FieldBar.setRealText("");
 										_GUI._FieldBar.setImgText("");
 										break;
-				case DivField.COMPLEXD: _GUI._FieldBar._repComplexD = null;
+				case COMPLEXD: _GUI._FieldBar._repComplexD = null;
 										_GUI._FieldBar.setRealText("");
 										_GUI._FieldBar.setImgText("");
 			}
@@ -687,18 +686,19 @@ import java.util.*;
 	    }
     }
 
-    private String validateInitialDivField()
+    private CladosField validateInitialDivField()
     {
-    	String nField="";
+    	//CladosField nField;
     	try
     	{
     		String sType = _GUI.IniProps.getProperty("Desktop.Default.DivField");
     		switch (sType)
     		{
-    			case "RealF": 		return DivField.REALF;
-    			case "RealD": 		return DivField.REALD;
-    			case "ComplexF": 	return DivField.COMPLEXF;			
-    			case "ComplexD": 	return DivField.COMPLEXD;
+    			case "RealF": 		return CladosField.REALF;
+    			case "RealD": 		return CladosField.REALD;
+    			case "ComplexF": 	return CladosField.COMPLEXF;			
+    			case "ComplexD": 	return CladosField.COMPLEXD;
+    			default: 			return null;
     		}
 
     	}
@@ -712,7 +712,7 @@ import java.util.*;
     		_GUI._StatusBar.setStatusMsg("\nDesktop.Default.DivField from the configuration file appears to be non-parse-able.\n");
     		_GUI._StatusBar.setStatusMsg("No nyad will be initialized.\n");
     	}
-    	return nField;
+    	return null;
     }
 
 	private int validateInitialNyadCount()
@@ -788,25 +788,25 @@ import java.util.*;
 	    
 	    switch (newP.getRepMode())
 	    {
-	    	case DivField.REALF: 	nyadPanes.addTab(	cnt, 
+	    	case REALF: 	nyadPanes.addTab(	cnt, 
 														tabIcon, 
 														new JScrollPane(newP),
 														newP.getNyadRF().getName()
 														);
 	    							break;
-	    	case DivField.REALD: 	nyadPanes.addTab(	cnt, 
+	    	case REALD: 	nyadPanes.addTab(	cnt, 
 														tabIcon, 
 														new JScrollPane(newP),
 														newP.getNyadRD().getName()
 														);
 									break;
-	    	case DivField.COMPLEXF: nyadPanes.addTab(	cnt, 
+	    	case COMPLEXF: nyadPanes.addTab(	cnt, 
 														tabIcon, 
 														new JScrollPane(newP),
 														newP.getNyadCF().getName()
 														);
 									break;
-	      	case DivField.COMPLEXD: nyadPanes.addTab(	cnt, 
+	      	case COMPLEXD: nyadPanes.addTab(	cnt, 
 														tabIcon, 
 														new JScrollPane(newP),
 														newP.getNyadCD().getName()
@@ -839,13 +839,13 @@ import java.util.*;
 			    				int j = nyadPanes.getSelectedIndex();
 			    				switch (nyadPanelList.get(j).getRepMode())
 			    				{
-			    					case DivField.REALF:	pFieldPanel.setField(nyadPanelList.get(j).getNyadRF().getProto());
+			    					case REALF:	pFieldPanel.setField(nyadPanelList.get(j).getNyadRF().getProto());
 			    											break;
-			    					case DivField.REALD:	pFieldPanel.setField(nyadPanelList.get(j).getNyadRD().getProto());
+			    					case REALD:	pFieldPanel.setField(nyadPanelList.get(j).getNyadRD().getProto());
 															break;
-			    					case DivField.COMPLEXF:	pFieldPanel.setField(nyadPanelList.get(j).getNyadCF().getProto());
+			    					case COMPLEXF:	pFieldPanel.setField(nyadPanelList.get(j).getNyadCF().getProto());
 															break;
-			    					case DivField.COMPLEXD:	pFieldPanel.setField(nyadPanelList.get(j).getNyadCD().getProto());
+			    					case COMPLEXD:	pFieldPanel.setField(nyadPanelList.get(j).getNyadCD().getProto());
 			    				}
 			    				_GUI._FieldBar.makeWritable();
 			    			}

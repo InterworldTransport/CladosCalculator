@@ -24,7 +24,7 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosF.DivField;
+//import com.interworldtransport.cladosF.CladosField;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -92,13 +92,13 @@ public class MOpsFindGradeEvents implements ActionListener
     	
     	switch(tSpot.getRepMode())
     	{
-    		case DivField.REALF:	logGradeKey=Math.log10(tSpot.getMonadRF().getGradeKey());
+    		case REALF:	logGradeKey=Math.log10(tSpot.getMonadRF().getGradeKey());
     								break;
-    		case DivField.REALD:	logGradeKey=Math.log10(tSpot.getMonadRD().getGradeKey());
+    		case REALD:	logGradeKey=Math.log10(tSpot.getMonadRD().getGradeKey());
 									break;
-    		case DivField.COMPLEXF:	logGradeKey=Math.log10(tSpot.getMonadCF().getGradeKey());
+    		case COMPLEXF:	logGradeKey=Math.log10(tSpot.getMonadCF().getGradeKey());
 									break;
-    		case DivField.COMPLEXD:	logGradeKey=Math.log10(tSpot.getMonadCD().getGradeKey());
+    		case COMPLEXD:	logGradeKey=Math.log10(tSpot.getMonadCD().getGradeKey());
     	}
     	
     	if (logGradeKey < 0) 

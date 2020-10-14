@@ -24,7 +24,6 @@
  */
 package com.interworldtransport.cladosviewerEvents;
 
-import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosG.NyadComplexD;
 import com.interworldtransport.cladosG.NyadComplexF;
 import com.interworldtransport.cladosG.NyadRealD;
@@ -96,16 +95,16 @@ public class NOpsHasAlgebraMatchEvents implements ActionListener
     	boolean test = false;
     	switch (panelNyadSelected.getRepMode())
     	{
-    		case DivField.REALF: 	test = NyadRealF.hasAlgebra(panelNyadNext.getNyadRF(), 
+    		case REALF: 	test = NyadRealF.hasAlgebra(panelNyadNext.getNyadRF(), 
     															panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadRF().getAlgebra());
     								break;
-    		case DivField.REALD: 	test = NyadRealD.hasAlgebra(panelNyadNext.getNyadRD(), 
+    		case REALD: 	test = NyadRealD.hasAlgebra(panelNyadNext.getNyadRD(), 
     															panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadRD().getAlgebra());
 									break;
-    		case DivField.COMPLEXF: test = NyadComplexF.hasAlgebra(	panelNyadNext.getNyadCF(), 
+    		case COMPLEXF: test = NyadComplexF.hasAlgebra(	panelNyadNext.getNyadCF(), 
     																panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadCF().getAlgebra());
     								break;
-    		case DivField.COMPLEXD: test = NyadComplexD.hasAlgebra(	panelNyadNext.getNyadCD(), 
+    		case COMPLEXD: test = NyadComplexD.hasAlgebra(	panelNyadNext.getNyadCD(), 
     																panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadCD().getAlgebra());
     	}
     	if (test)

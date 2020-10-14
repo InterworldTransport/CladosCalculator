@@ -23,7 +23,7 @@
  * ------------------------------------------------------------------------ <br>
  */
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosF.DivField;
+
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -93,13 +93,13 @@ public class MOpsGradePartEvents implements ActionListener
     		short tGrade = (short) Float.parseFloat(_parent._GUI._FieldBar.getRealText());
         	switch (tMSpotPnl.getRepMode())
         	{
-    	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().gradePart(tGrade);
+    	    	case REALF: 	tMSpotPnl.getMonadRF().gradePart(tGrade);
     							    	break;
-    	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().gradePart(tGrade);
+    	    	case REALD: 	tMSpotPnl.getMonadRD().gradePart(tGrade);
     							    	break;
-    	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().gradePart(tGrade);
+    	    	case COMPLEXF:	tMSpotPnl.getMonadCF().gradePart(tGrade);
     							    	break;
-    	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().gradePart(tGrade);	
+    	    	case COMPLEXD:	tMSpotPnl.getMonadCD().gradePart(tGrade);	
         	}
         	tMSpotPnl.setCoefficientDisplay();
 	    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been cropped around "+tGrade+"-findgrade.\n");

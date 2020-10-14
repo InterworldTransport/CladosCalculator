@@ -24,7 +24,7 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosF.DivField;
+
 import com.interworldtransport.cladosF.RealF;
 import com.interworldtransport.cladosF.RealD;
 import com.interworldtransport.cladosF.ComplexF;
@@ -98,21 +98,21 @@ public class MOpsScaleEvents implements ActionListener
 	    {
 		    switch(tMSpotPnl.getRepMode())
 	    	{
-	    		case DivField.REALF:	MonadRealF tMonadRF = tMSpotPnl.getMonadRF();
+	    		case REALF:	MonadRealF tMonadRF = tMSpotPnl.getMonadRF();
 	    								RealF tFieldRF = new RealF(			(tNSpotPnl.getNyadRF()).getProto().getCardinal(), 
 	    																	Float.parseFloat(_parent._GUI._FieldBar.getRealText()));
 							    		tMonadRF.scale(tFieldRF);
 							 		    _parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by ");
 							 		    _parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+"\n");
 	    								break;
-	    		case DivField.REALD:	MonadRealD tMonadRD = tMSpotPnl.getMonadRD();
+	    		case REALD:	MonadRealD tMonadRD = tMSpotPnl.getMonadRD();
 										RealD tFieldRD = new RealD(			(tNSpotPnl.getNyadRD()).getProto().getCardinal(), 
 																			Double.parseDouble(_parent._GUI._FieldBar.getRealText()));
 										tMonadRD.scale(tFieldRD);
 										_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by ");
 										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+"\n");
 										break;
-	    		case DivField.COMPLEXF:	MonadComplexF tMonadCF = tMSpotPnl.getMonadCF();
+	    		case COMPLEXF:	MonadComplexF tMonadCF = tMSpotPnl.getMonadCF();
 										ComplexF tFieldCF = new ComplexF(	(tNSpotPnl.getNyadCF()).getProto().getCardinal(), 
 																			Float.parseFloat(_parent._GUI._FieldBar.getRealText()),
 																			Float.parseFloat(_parent._GUI._FieldBar.getImgText()));
@@ -121,7 +121,7 @@ public class MOpsScaleEvents implements ActionListener
 										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+", I");
 										_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getImgText()+")\n");
 										break;
-	    		case DivField.COMPLEXD:	MonadComplexD tMonadCD = tMSpotPnl.getMonadCD();
+	    		case COMPLEXD:	MonadComplexD tMonadCD = tMSpotPnl.getMonadCD();
 										ComplexD tFieldCD = new ComplexD(	(tNSpotPnl.getNyadCD()).getProto().getCardinal(), 
 																			Double.parseDouble(_parent._GUI._FieldBar.getRealText()),
 																			Double.parseDouble(_parent._GUI._FieldBar.getImgText()));

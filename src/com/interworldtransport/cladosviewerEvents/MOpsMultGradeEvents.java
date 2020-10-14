@@ -24,8 +24,11 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosF.DivField;
-import com.interworldtransport.cladosG.*;
+
+import com.interworldtransport.cladosG.MonadRealF;
+import com.interworldtransport.cladosG.MonadRealD;
+import com.interworldtransport.cladosG.MonadComplexF;
+import com.interworldtransport.cladosG.MonadComplexD;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -42,7 +45,7 @@ import javax.swing.*;
 public class MOpsMultGradeEvents implements ActionListener
  {
     protected JMenuItem 		_control;
-    protected MOpsParentEvents 		_parent;
+    protected MOpsParentEvents 	_parent;
 
 /** 
  * This is the default constructor.
@@ -85,13 +88,13 @@ public class MOpsMultGradeEvents implements ActionListener
     	boolean test = false;
     	switch (tSpot.getRepMode())
     	{
-	    	case DivField.REALF: 	test = MonadRealF.isMultiGrade(tSpot.getMonadRF());
+	    	case REALF: 	test = MonadRealF.isMultiGrade(tSpot.getMonadRF());
 							    	break;
-	    	case DivField.REALD: 	test = MonadRealD.isMultiGrade(tSpot.getMonadRD());
+	    	case REALD: 	test = MonadRealD.isMultiGrade(tSpot.getMonadRD());
 							    	break;
-	    	case DivField.COMPLEXF:	test = MonadComplexF.isMultiGrade(tSpot.getMonadCF());
+	    	case COMPLEXF:	test = MonadComplexF.isMultiGrade(tSpot.getMonadCF());
 							    	break;
-	    	case DivField.COMPLEXD:	test = MonadComplexD.isMultiGrade(tSpot.getMonadCD());
+	    	case COMPLEXD:	test = MonadComplexD.isMultiGrade(tSpot.getMonadCD());
     	}
 	
 		if (test)

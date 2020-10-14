@@ -27,7 +27,6 @@ package com.interworldtransport.cladosviewerEvents;
 
 import com.interworldtransport.cladosF.ComplexD;
 import com.interworldtransport.cladosF.ComplexF;
-import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosF.RealD;
 import com.interworldtransport.cladosF.RealF;
 import com.interworldtransport.cladosG.MonadComplexD;
@@ -96,17 +95,17 @@ public class MOpsMagnitudeEvents implements ActionListener
     	{    		
     		switch (tMSpotPnl.getRepMode())
         	{
-		    	case DivField.REALF: 	RealF scaleRF = tMSpotPnl.getMonadRF().magnitude();
+		    	case REALF: 	RealF scaleRF = tMSpotPnl.getMonadRF().magnitude();
 							    		_parent._GUI._FieldBar.setWhatFloatR(scaleRF.getModulus());
 								    	break;
-		    	case DivField.REALD: 	RealD scaleRD = tMSpotPnl.getMonadRD().magnitude();
+		    	case REALD: 	RealD scaleRD = tMSpotPnl.getMonadRD().magnitude();
 							    		_parent._GUI._FieldBar.setWhatDoubleR(scaleRD.getModulus());
 								    	break;
-		    	case DivField.COMPLEXF:	ComplexF scaleCF = tMSpotPnl.getMonadCF().magnitude();
+		    	case COMPLEXF:	ComplexF scaleCF = tMSpotPnl.getMonadCF().magnitude();
 							    		_parent._GUI._FieldBar.setWhatFloatR(scaleCF.getModulus());
 							    		_parent._GUI._FieldBar.setWhatFloatI(0.0F);
 								    	break;
-		    	case DivField.COMPLEXD:	ComplexD scaleCD = tMSpotPnl.getMonadCD().magnitude();
+		    	case COMPLEXD:	ComplexD scaleCD = tMSpotPnl.getMonadCD().magnitude();
 							    		_parent._GUI._FieldBar.setWhatDoubleR(scaleCD.getModulus());
 							    		_parent._GUI._FieldBar.setWhatDoubleI(0.0D);
         	}

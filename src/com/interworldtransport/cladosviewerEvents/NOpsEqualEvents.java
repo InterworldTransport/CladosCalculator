@@ -24,7 +24,6 @@
  */
 package com.interworldtransport.cladosviewerEvents;
 
-import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosG.NyadRealF;
 import com.interworldtransport.cladosG.NyadRealD;
 import com.interworldtransport.cladosG.NyadComplexF;
@@ -86,13 +85,13 @@ public class NOpsEqualEvents implements ActionListener
     	boolean test = false;
     	switch (panelNyadSelected.getRepMode())
     	{
-    		case DivField.REALF: 	test = NyadRealF.isMEqual(panelNyadSelected.getNyadRF(), panelNyadNext.getNyadRF());
+    		case REALF: 	test = NyadRealF.isMEqual(panelNyadSelected.getNyadRF(), panelNyadNext.getNyadRF());
     								break;
-    		case DivField.REALD: 	test = NyadRealD.isMEqual(panelNyadSelected.getNyadRD(), panelNyadNext.getNyadRD());
+    		case REALD: 	test = NyadRealD.isMEqual(panelNyadSelected.getNyadRD(), panelNyadNext.getNyadRD());
 									break;
-    		case DivField.COMPLEXF: test = NyadComplexF.isMEqual(panelNyadSelected.getNyadCF(), panelNyadNext.getNyadCF());
+    		case COMPLEXF: test = NyadComplexF.isMEqual(panelNyadSelected.getNyadCF(), panelNyadNext.getNyadCF());
 									break;
-    		case DivField.COMPLEXD: test = NyadComplexD.isMEqual(panelNyadSelected.getNyadCD(), panelNyadNext.getNyadCD());
+    		case COMPLEXD: test = NyadComplexD.isMEqual(panelNyadSelected.getNyadCD(), panelNyadNext.getNyadCD());
     	}
     	if (test)
 			_parent._GUI._StatusBar.setStatusMsg("\tselected nyad and the next are EQUAL\n");

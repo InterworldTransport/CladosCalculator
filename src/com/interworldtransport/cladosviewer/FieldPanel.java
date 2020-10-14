@@ -24,7 +24,11 @@
  */
 
 package com.interworldtransport.cladosviewer ;
-import com.interworldtransport.cladosF.*;
+import com.interworldtransport.cladosF.CladosField;
+import com.interworldtransport.cladosF.ComplexD;
+import com.interworldtransport.cladosF.ComplexF;
+import com.interworldtransport.cladosF.RealD;
+import com.interworldtransport.cladosF.RealF;
 import com.interworldtransport.cladosFExceptions.FieldException;
 
 import java.awt.*;
@@ -56,7 +60,7 @@ import javax.swing.border.BevelBorder;
  {
 	private static final long 					serialVersionUID = 1473044880763412386L;
 	public				CladosCalculator		_GUI;
-	private				String					_repMode;
+	private				CladosField				_repMode;
 	private		final	String[]				_valLabels= {"R", "I"};
 	private				JButton					btnClear;
 	private				JButton					btnConjugate;
@@ -95,7 +99,7 @@ import javax.swing.border.BevelBorder;
     {
     	super();
     	_GUI=pGUI;
-    	_repMode = DivField.COMPLEXD;
+    	_repMode = CladosField.COMPLEXD;
     	_repComplexD = pIn;
     	setBackground(clrBackColor);
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
@@ -124,7 +128,7 @@ import javax.swing.border.BevelBorder;
     {
     	super();
     	_GUI=pGUI;
-    	_repMode = DivField.COMPLEXF;
+    	_repMode = CladosField.COMPLEXF;
     	_repComplexF = pIn;
     	setBackground(clrBackColor);
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
@@ -153,7 +157,7 @@ import javax.swing.border.BevelBorder;
     {
     	super();
     	_GUI=pGUI;
-    	_repMode = DivField.REALD;
+    	_repMode = CladosField.REALD;
     	_repRealD = pIn;
     	setBackground(clrBackColor);
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
@@ -182,7 +186,7 @@ import javax.swing.border.BevelBorder;
     {
     	super();
     	_GUI=pGUI;
-    	_repMode = DivField.REALF;
+    	_repMode = CladosField.REALF;
     	_repRealF = pIn;
     	setBackground(clrBackColor);
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
@@ -200,7 +204,7 @@ import javax.swing.border.BevelBorder;
     	String command = event.getActionCommand();
     	if (command.equals("clearIt"))
     	{	
-    		if (_repMode == DivField.COMPLEXF | _repMode == DivField.COMPLEXD)
+    		if (_repMode == CladosField.COMPLEXF | _repMode == CladosField.COMPLEXD)
     			setImgText("");
     		setRealText("");
     	}
@@ -210,23 +214,23 @@ import javax.swing.border.BevelBorder;
     		{
 	    		switch (_repMode)
 	    		{
-	    			case DivField.REALF:	_repRealF = new RealF(	_repRealF.getCardinal(), 
+	    			case REALF:	_repRealF = new RealF(	_repRealF.getCardinal(), 
 	    															Float.parseFloat(getRealText())
 	    															);
 	    									setCoefficientDisplay(_repRealF.conjugate());
 	    									break;
-	    			case DivField.REALD:	_repRealD = new RealD(	_repRealD.getCardinal(), 
+	    			case REALD:	_repRealD = new RealD(	_repRealD.getCardinal(), 
 	    															Double.parseDouble(getRealText())
 	    															);
 											setCoefficientDisplay(_repRealD.conjugate());
 											break;
-	    			case DivField.COMPLEXF:	_repComplexF = new ComplexF(_repComplexF.getCardinal(), 
+	    			case COMPLEXF:	_repComplexF = new ComplexF(_repComplexF.getCardinal(), 
 	    																Float.parseFloat(getRealText()), 
 	    																Float.parseFloat(getImgText())
 	    																);
 	    									setCoefficientDisplay(_repComplexF.conjugate());
 											break;
-	    			case DivField.COMPLEXD:	_repComplexD = new ComplexD(_repComplexD.getCardinal(), 
+	    			case COMPLEXD:	_repComplexD = new ComplexD(_repComplexD.getCardinal(), 
 	    																Double.parseDouble(getRealText()), 
 	    																Double.parseDouble(getImgText())
 	    																);
@@ -245,23 +249,23 @@ import javax.swing.border.BevelBorder;
     		{
 	    		switch (_repMode)
 	    		{
-	    			case DivField.REALF:	_repRealF = new RealF(	_repRealF.getCardinal(),
+	    			case REALF:	_repRealF = new RealF(	_repRealF.getCardinal(),
 	    															Float.parseFloat(getRealText())
 	    															);
 	    									setCoefficientDisplay(_repRealF.invert());
 	    									break;
-	    			case DivField.REALD:	_repRealD = new RealD(	_repRealD.getCardinal(),
+	    			case REALD:	_repRealD = new RealD(	_repRealD.getCardinal(),
 	    															Double.parseDouble(getRealText())
 	    															);
 											setCoefficientDisplay(_repRealD.invert());
 											break;
-	    			case DivField.COMPLEXF:	_repComplexF = new ComplexF(_repComplexF.getCardinal(), 
+	    			case COMPLEXF:	_repComplexF = new ComplexF(_repComplexF.getCardinal(), 
 	    																Float.parseFloat(getRealText()), 
 	    																Float.parseFloat(getImgText())
 	    																);
 	    									setCoefficientDisplay(_repComplexF.invert());
 											break;
-	    			case DivField.COMPLEXD:	_repComplexD = new ComplexD(_repComplexD.getCardinal(),  
+	    			case COMPLEXD:	_repComplexD = new ComplexD(_repComplexD.getCardinal(),  
 	    																Double.parseDouble(getRealText()), 
 	    																Double.parseDouble(getImgText())
 	    																);
@@ -286,15 +290,15 @@ import javax.swing.border.BevelBorder;
 	    	remove(pnlDisplays);
 	    	switch (command)
 	    	{
-	    		case "makeFloat":	if (_repMode == DivField.REALD)	
+	    		case "makeFloat":	if (_repMode == CladosField.REALD)	
 	    							{
-	    								_repMode = DivField.REALF;
+	    								_repMode = CladosField.REALF;
 	    								if (_repRealF == null) 
 	    									_repRealF = RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
 	    							}
-	    							if (_repMode == DivField.COMPLEXD)	
+	    							if (_repMode == CladosField.COMPLEXD)	
 	    							{
-						    			_repMode = DivField.COMPLEXF;
+						    			_repMode = CladosField.COMPLEXF;
 						    			if (_repComplexF == null) 
 						    				_repComplexF = ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
 	    							}
@@ -302,45 +306,45 @@ import javax.swing.border.BevelBorder;
 						    		btnMakeFloat.setEnabled(false);
 						    		repaint();
 	    							break;
-	    		case "makeDouble":	if (_repMode == DivField.REALF)
+	    		case "makeDouble":	if (_repMode == CladosField.REALF)
 						    		{
-										_repMode = DivField.REALD;
+										_repMode = CladosField.REALD;
 										if (_repRealD == null) 
 											_repRealD = RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
 									}
-						    		if (_repMode == DivField.COMPLEXF)
+						    		if (_repMode == CladosField.COMPLEXF)
 						    		{
-						    			_repMode = DivField.COMPLEXD;
+						    			_repMode = CladosField.COMPLEXD;
 						    			if (_repComplexD == null) 
 						    				_repComplexD = ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
 									}
 						    		btnMakeFloat.setEnabled(true);
 					    			btnMakeDouble.setEnabled(false);
 									break;
-	    		case "makeReal":	if (_repMode == DivField.COMPLEXF)	
+	    		case "makeReal":	if (_repMode == CladosField.COMPLEXF)	
 	    							{
-						    			_repMode = DivField.REALF;
+						    			_repMode = CladosField.REALF;
 										if (_repRealF == null) 
 											_repRealF = RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
 	    							}
-						    		if (_repMode == DivField.COMPLEXD)	
+						    		if (_repMode == CladosField.COMPLEXD)	
 						    		{
-										_repMode = DivField.REALD;
+										_repMode = CladosField.REALD;
 										if (_repRealD == null) 
 											_repRealD = RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
 									}
 						    		btnMakeComplex.setEnabled(true);
 					    			btnMakeReal.setEnabled(false);
 									break;
-	    		case "makeComplex":	if (_repMode == DivField.REALF)	
+	    		case "makeComplex":	if (_repMode == CladosField.REALF)	
 	    							{
-						    			_repMode = DivField.COMPLEXF;
+						    			_repMode = CladosField.COMPLEXF;
 						    			if (_repComplexF == null) 
 						    				_repComplexF = ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
 									}
-						    		if (_repMode == DivField.REALD)	
+						    		if (_repMode == CladosField.REALD)	
 						    		{
-						    			_repMode = DivField.COMPLEXD;
+						    			_repMode = CladosField.COMPLEXD;
 						    			if (_repComplexD == null) 
 						    				_repComplexD = ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
 									}
@@ -366,17 +370,17 @@ import javax.swing.border.BevelBorder;
 	{
 		switch (_repMode)
 		{
-			case DivField.REALF:	if (_repRealF != null) setRealText(Float.valueOf(_repRealF.getReal()).toString());
+			case REALF:	if (_repRealF != null) setRealText(Float.valueOf(_repRealF.getReal()).toString());
 									break;
-			case DivField.REALD:	if (_repRealD != null) setRealText(Double.valueOf(_repRealD.getReal()).toString());
+			case REALD:	if (_repRealD != null) setRealText(Double.valueOf(_repRealD.getReal()).toString());
 									break;
-			case DivField.COMPLEXF:	if (_repComplexD != null)
+			case COMPLEXF:	if (_repComplexD != null)
 									{
 										setRealText(Float.valueOf(_repComplexF.getReal()).toString());
 										setImgText(Float.valueOf(_repComplexF.getImg()).toString());
 									}
 									break;
-			case DivField.COMPLEXD:	if (_repComplexD != null)
+			case COMPLEXD:	if (_repComplexD != null)
 									{
 										setRealText(Double.valueOf(_repComplexD.getReal()).toString());
 										setImgText(Double.valueOf(_repComplexD.getImg()).toString());
@@ -400,17 +404,17 @@ import javax.swing.border.BevelBorder;
 		{
 			switch (_repMode)
 			{
-				case DivField.REALF:	if (_repRealF != null) _repRealF.setReal(Float.parseFloat(getRealText()));
+				case REALF:	if (_repRealF != null) _repRealF.setReal(Float.parseFloat(getRealText()));
 										break;
-				case DivField.REALD:	if (_repRealD != null) _repRealD.setReal(Double.parseDouble(getRealText()));
+				case REALD:	if (_repRealD != null) _repRealD.setReal(Double.parseDouble(getRealText()));
 										break;
-				case DivField.COMPLEXF:	if (_repComplexF != null) 
+				case COMPLEXF:	if (_repComplexF != null) 
 										{
 											_repComplexF.setReal(Float.parseFloat(getRealText()));
 											_repComplexF.setImg(Float.parseFloat(getImgText()));
 										}
 										break;
-				case DivField.COMPLEXD:	if (_repComplexD != null) 
+				case COMPLEXD:	if (_repComplexD != null) 
 										{
 											_repComplexD.setReal(Double.parseDouble(getRealText()));
 											_repComplexD.setImg(Double.parseDouble(getImgText()));
@@ -439,7 +443,7 @@ import javax.swing.border.BevelBorder;
     {
     	return valDisplays.get(0).getText();
     }
-    public String	getRepMode()
+    public CladosField	getRepMode()
     {
     	return _repMode;
     }
@@ -618,7 +622,7 @@ import javax.swing.border.BevelBorder;
     	
     	switch (_repMode)
     	{
-    		case DivField.REALF:	for (short m=0; m<1; m++)
+    		case REALF:	for (short m=0; m<1; m++)
 									{
 							    		pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
 							    		c2.gridy++;
@@ -626,7 +630,7 @@ import javax.swing.border.BevelBorder;
     								btnMakeComplex.setEnabled(true);
     								btnMakeReal.setEnabled(false);
     								break;
-    		case DivField.REALD:	for (short m=0; m<1; m++)
+    		case REALD:	for (short m=0; m<1; m++)
 									{
     									pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
 							    		c2.gridy++;
@@ -634,7 +638,7 @@ import javax.swing.border.BevelBorder;
 									btnMakeComplex.setEnabled(true);
 									btnMakeReal.setEnabled(false);
 									break;
-    		case DivField.COMPLEXF:	for (short m=0; m<2; m++)
+    		case COMPLEXF:	for (short m=0; m<2; m++)
 									{
     									pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
 							    		c2.gridy++;
@@ -642,7 +646,7 @@ import javax.swing.border.BevelBorder;
 									btnMakeComplex.setEnabled(false);
 									btnMakeReal.setEnabled(true);
 									break;
-    		case DivField.COMPLEXD:	for (short m=0; m<2; m++)
+    		case COMPLEXD:	for (short m=0; m<2; m++)
 									{
     									pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
 							    		c2.gridy++;
@@ -664,7 +668,7 @@ import javax.swing.border.BevelBorder;
 		JTextField tSpot;
 		switch (_repMode)
 		{
-			case DivField.REALF: 	valDisplays= new ArrayList<JTextField>(1);
+			case REALF: 	valDisplays= new ArrayList<JTextField>(1);
 									for (m=0; m<1; m++)
 									{
 										tSpot = new JTextField();
@@ -679,7 +683,7 @@ import javax.swing.border.BevelBorder;
 									btnMakeFloat.setEnabled(false);
 									btnMakeDouble.setEnabled(true);
 									break;
-			case DivField.REALD: 	valDisplays= new ArrayList<JTextField>(1);
+			case REALD: 	valDisplays= new ArrayList<JTextField>(1);
 									for (m=0; m<1; m++)
 									{
 										tSpot = new JTextField();
@@ -694,7 +698,7 @@ import javax.swing.border.BevelBorder;
 									btnMakeFloat.setEnabled(true);
 									btnMakeDouble.setEnabled(false);
 									break;
-			case DivField.COMPLEXF:	valDisplays= new ArrayList<JTextField>(2);
+			case COMPLEXF:	valDisplays= new ArrayList<JTextField>(2);
 									for (m=0; m<2; m++)
 									{
 										tSpot = new JTextField();
@@ -709,7 +713,7 @@ import javax.swing.border.BevelBorder;
 									btnMakeFloat.setEnabled(false);
 									btnMakeDouble.setEnabled(true);
 									break;
-			case DivField.COMPLEXD:	valDisplays= new ArrayList<JTextField>(2);
+			case COMPLEXD:	valDisplays= new ArrayList<JTextField>(2);
 									for (m=0; m<2; m++)
 									{
 										tSpot = new JTextField();
@@ -746,7 +750,7 @@ import javax.swing.border.BevelBorder;
      */
     protected void 	setCoefficientDisplay(ComplexD pIn)
     {
-    	if (_repMode == DivField.COMPLEXD & pIn != null)
+    	if (_repMode == CladosField.COMPLEXD & pIn != null)
     	{	
     		setRealText(Double.valueOf(pIn.getReal()).toString());
     		setImgText(Double.valueOf(pIn.getImg()).toString());
@@ -765,7 +769,7 @@ import javax.swing.border.BevelBorder;
      */
     protected void 	setCoefficientDisplay(ComplexF pIn)
     {	
-    	if (_repMode == DivField.COMPLEXF & pIn != null)
+    	if (_repMode == CladosField.COMPLEXF & pIn != null)
     	{	
     		setRealText(Float.valueOf(pIn.getReal()).toString());
     		setImgText(Float.valueOf(pIn.getImg()).toString());
@@ -784,7 +788,7 @@ import javax.swing.border.BevelBorder;
      */
     protected void 	setCoefficientDisplay(RealD pIn)
     {	
-    	if (_repMode == DivField.REALD & pIn != null)
+    	if (_repMode == CladosField.REALD & pIn != null)
     	{	
     		setRealText(Double.valueOf(pIn.getReal()).toString());
     		if (pIn.getCardinal() != null)
@@ -802,7 +806,7 @@ import javax.swing.border.BevelBorder;
      */
     protected void 	setCoefficientDisplay(RealF pIn)
     {
-    	if (_repMode == DivField.REALF & pIn != null)
+    	if (_repMode == CladosField.REALF & pIn != null)
     	{	
     		setRealText(Float.valueOf(pIn.getReal()).toString());
     		if (pIn.getCardinal() != null)
@@ -820,7 +824,7 @@ import javax.swing.border.BevelBorder;
      */
     protected void setField(ComplexD pField)
 	{
-    	if (_repMode == DivField.COMPLEXD & pField != null)
+    	if (_repMode == CladosField.COMPLEXD & pField != null)
     	{
 		    _repComplexD = pField;
 		    if (pField.getCardinal() != null)
@@ -838,7 +842,7 @@ import javax.swing.border.BevelBorder;
      */
     protected void setField(ComplexF pField)
 	{
-    	if (_repMode == DivField.COMPLEXF & pField != null)
+    	if (_repMode == CladosField.COMPLEXF & pField != null)
     	{
     		_repComplexF = pField;
     		if (pField.getCardinal() != null)
@@ -856,7 +860,7 @@ import javax.swing.border.BevelBorder;
      */
     protected void setField(RealD pField)
 	{
-    	if (_repMode == DivField.REALD & pField != null)
+    	if (_repMode == CladosField.REALD & pField != null)
     	{
     		_repRealD = pField;
     		if (pField.getCardinal() != null)
@@ -874,7 +878,7 @@ import javax.swing.border.BevelBorder;
      */
     protected void setField(RealF pField)
 	{
-    	if (_repMode == DivField.REALF & pField != null)
+    	if (_repMode == CladosField.REALF & pField != null)
     	{
     		_repRealF = pField;
 		    if (pField.getCardinal() != null)

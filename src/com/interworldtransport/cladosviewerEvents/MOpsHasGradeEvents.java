@@ -24,7 +24,7 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosF.DivField;
+//import com.interworldtransport.cladosF.CladosField;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -111,13 +111,13 @@ public class MOpsHasGradeEvents implements ActionListener
     	
     	switch(tSpot.getRepMode())
     	{
-    		case DivField.REALF:	tempGradeKey=tSpot.getMonadRF().getGradeKey();
+    		case REALF:	tempGradeKey=tSpot.getMonadRF().getGradeKey();
     								break;
-    		case DivField.REALD:	tempGradeKey=tSpot.getMonadRD().getGradeKey();
+    		case REALD:	tempGradeKey=tSpot.getMonadRD().getGradeKey();
 									break;
-    		case DivField.COMPLEXF:	tempGradeKey=tSpot.getMonadCF().getGradeKey();
+    		case COMPLEXF:	tempGradeKey=tSpot.getMonadCF().getGradeKey();
 									break;
-    		case DivField.COMPLEXD:	tempGradeKey=tSpot.getMonadCD().getGradeKey();
+    		case COMPLEXD:	tempGradeKey=tSpot.getMonadCD().getGradeKey();
     	}
     	
     	// We have a tempGradeKey AND a grade2Test. If this were a uniqueness test we'd just 

@@ -25,7 +25,6 @@
 
 package com.interworldtransport.cladosviewerEvents;
 
-import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -95,13 +94,13 @@ public class MOpsLocalDualEvents implements ActionListener
     	{
         	switch (tMSpotPnl.getRepMode())
         	{
-    	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().dualLeft();
+    	    	case REALF: 	tMSpotPnl.getMonadRF().dualLeft();
     							    	break;
-    	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().dualLeft();
+    	    	case REALD: 	tMSpotPnl.getMonadRD().dualLeft();
     							    	break;
-    	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().dualLeft();
+    	    	case COMPLEXF:	tMSpotPnl.getMonadCF().dualLeft();
     							    	break;
-    	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().dualLeft();
+    	    	case COMPLEXD:	tMSpotPnl.getMonadCD().dualLeft();
         	}
     		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the left.\n");
     	}
@@ -109,13 +108,13 @@ public class MOpsLocalDualEvents implements ActionListener
     	{
     		switch (tMSpotPnl.getRepMode())
         	{
-    	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().dualRight();
+    	    	case REALF: 	tMSpotPnl.getMonadRF().dualRight();
     							    	break;
-    	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().dualRight();
+    	    	case REALD: 	tMSpotPnl.getMonadRD().dualRight();
     							    	break;
-    	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().dualRight();
+    	    	case COMPLEXF:	tMSpotPnl.getMonadCF().dualRight();
     							    	break;
-    	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().dualRight();
+    	    	case COMPLEXD:	tMSpotPnl.getMonadCD().dualRight();
     							    	break;
         	}
     		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the right.\n");

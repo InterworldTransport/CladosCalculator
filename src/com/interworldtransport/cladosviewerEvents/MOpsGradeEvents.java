@@ -24,7 +24,7 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosF.DivField;
+
 import com.interworldtransport.cladosG.MonadRealF;
 import com.interworldtransport.cladosG.MonadRealD;
 import com.interworldtransport.cladosG.MonadComplexF;
@@ -95,13 +95,13 @@ public class MOpsGradeEvents implements ActionListener
 	    	boolean test = false;
         	switch (tSpot.getRepMode())
         	{
-		    	case DivField.REALF: 	test = MonadRealF.isGrade(tSpot.getMonadRF(), grade2Test);
+		    	case REALF: 	test = MonadRealF.isGrade(tSpot.getMonadRF(), grade2Test);
 								    	break;
-		    	case DivField.REALD: 	test = MonadRealD.isGrade(tSpot.getMonadRD(), grade2Test);
+		    	case REALD: 	test = MonadRealD.isGrade(tSpot.getMonadRD(), grade2Test);
 								    	break;
-		    	case DivField.COMPLEXF:	test = MonadComplexF.isGrade(tSpot.getMonadCF(), grade2Test);
+		    	case COMPLEXF:	test = MonadComplexF.isGrade(tSpot.getMonadCF(), grade2Test);
 								    	break;
-		    	case DivField.COMPLEXD:	test = MonadComplexD.isGrade(tSpot.getMonadCD(), grade2Test);
+		    	case COMPLEXD:	test = MonadComplexD.isGrade(tSpot.getMonadCD(), grade2Test);
         	}
         	if (test)
 	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is a pure "+grade2Test+"-findgrade.\n");

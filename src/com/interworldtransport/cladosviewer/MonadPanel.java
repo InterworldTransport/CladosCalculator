@@ -25,9 +25,10 @@
 
 package com.interworldtransport.cladosviewer ;
 
+import com.interworldtransport.cladosF.CladosField;
 import com.interworldtransport.cladosF.ComplexD;
 import com.interworldtransport.cladosF.ComplexF;
-import com.interworldtransport.cladosF.DivField;
+//import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosF.RealD;
 import com.interworldtransport.cladosF.RealF;
 
@@ -66,7 +67,7 @@ import java.util.*;
 	protected				boolean						_editMode;
 	protected				CladosCalculator			_GUI;
 	private					ArrayList<FieldDisplay>		_jCoeffs;
-	private					String						_repMode;
+	private					CladosField					_repMode;
 	private					MonadComplexD				_repMonadCD;
 	private					MonadComplexF				_repMonadCF;
 	private					MonadRealD					_repMonadD;
@@ -164,7 +165,7 @@ import java.util.*;
        	if (pM==null)
        		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
        	_repMonadCD=pM;
-       	_repMode=DivField.COMPLEXD;
+       	_repMode=CladosField.COMPLEXD;
        	
        	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
        	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
@@ -207,7 +208,7 @@ import java.util.*;
    	       	if (pM==null)
    	       		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
    	       	_repMonadCF=pM;
-   	       	_repMode=DivField.COMPLEXF;
+   	       	_repMode=CladosField.COMPLEXF;
    	       	
    	       	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
    	       	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
@@ -250,7 +251,7 @@ import java.util.*;
 	       	if (pM==null)
 	       		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
 	       	_repMonadD=pM;
-	       	_repMode=DivField.REALD;
+	       	_repMode=CladosField.REALD;
 	       	
 	       	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
 	       	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
@@ -293,7 +294,7 @@ import java.util.*;
 		    	if (pM==null)
 		    		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
 		    	_repMonadF=pM;
-		    	_repMode=DivField.REALF;
+		    	_repMode=CladosField.REALF;
 		    	
 		    	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
 		    	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
@@ -360,7 +361,7 @@ import java.util.*;
     		{	
 	    		switch (_repMode)
 	    		{
-	    			case DivField.REALF:	if (name.getText() != _repMonadF.getName())			_repMonadF.setName(name.getText());
+	    			case REALF:	if (name.getText() != _repMonadF.getName())			_repMonadF.setName(name.getText());
 	    						    		RealF[] _repMonadCoeffsF = new RealF[_repMonadF.getAlgebra().getGProduct().getBladeCount()];
 	    						    		for (short j=0; j<_repMonadF.getAlgebra().getGProduct().getBladeCount(); j++)
 	    						        	{
@@ -370,7 +371,7 @@ import java.util.*;
 	    						    		_repMonadF.setCoeff(_repMonadCoeffsF);
 	    						        	gradeKey.setText(new StringBuffer().append(_repMonadF.getGradeKey()).toString());
 	    						    		break;
-	    			case DivField.REALD:	if (name.getText() != _repMonadD.getName())			_repMonadD.setName(name.getText());
+	    			case REALD:	if (name.getText() != _repMonadD.getName())			_repMonadD.setName(name.getText());
 								    		RealD[] _repMonadCoeffsD = new RealD[_repMonadD.getAlgebra().getGProduct().getBladeCount()];
 								    		for (short k=0; k<_repMonadD.getAlgebra().getGProduct().getBladeCount(); k++)
 								        	{
@@ -380,7 +381,7 @@ import java.util.*;
 								    		_repMonadD.setCoeff(_repMonadCoeffsD);
 								        	gradeKey.setText(new StringBuffer().append(_repMonadD.getGradeKey()).toString());
 								    		break;
-	    			case DivField.COMPLEXF:	if (name.getText() != _repMonadCF.getName())		_repMonadCF.setName(name.getText());
+	    			case COMPLEXF:	if (name.getText() != _repMonadCF.getName())		_repMonadCF.setName(name.getText());
 								    		ComplexF[] _repMonadCoeffsCF = new ComplexF[_repMonadCF.getAlgebra().getGProduct().getBladeCount()];
 								    		for (short i=0; i<_repMonadCF.getAlgebra().getGProduct().getBladeCount(); i++)
 								        	{
@@ -390,7 +391,7 @@ import java.util.*;
 								    		_repMonadCF.setCoeff(_repMonadCoeffsCF);
 								        	gradeKey.setText(new StringBuffer().append(_repMonadCF.getGradeKey()).toString());
 								    		break;
-	    			case DivField.COMPLEXD:	if (name.getText() != _repMonadCD.getName())		_repMonadCD.setName(name.getText());
+	    			case COMPLEXD:	if (name.getText() != _repMonadCD.getName())		_repMonadCD.setName(name.getText());
 								    		ComplexD[] _repMonadCoeffsCD = new ComplexD[_repMonadCD.getAlgebra().getGProduct().getBladeCount()];
 								    		for (short m=0; m<_repMonadCD.getAlgebra().getGProduct().getBladeCount(); m++)
 								        	{
@@ -506,21 +507,21 @@ import java.util.*;
 			
 			switch (_repMode)
 			{
-				case DivField.REALF:	_GUI._FieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldRF));;
+				case REALF:	_GUI._FieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldRF));;
 										float tSpotRF = Float.parseFloat(strB.substring(indexOfR, tBufferLength));
 										_GUI._FieldBar.setWhatFloatR(tSpotRF);
 										break;
-				case DivField.REALD:	_GUI._FieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldRD));;
+				case REALD:	_GUI._FieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldRD));;
 										double tSpotRD = Double.parseDouble(strB.substring(indexOfR, tBufferLength));
 										_GUI._FieldBar.setWhatDoubleR(tSpotRD);
 										break;
-				case DivField.COMPLEXF:	_GUI._FieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldCF));;
+				case COMPLEXF:	_GUI._FieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldCF));;
 										float tSpotCF1 = Float.parseFloat(strB.substring(indexOfR, indexOfI-tI-1));
 										float tSpotCF2 = Float.parseFloat(strB.substring(indexOfI, tBufferLength));
 										_GUI._FieldBar.setWhatFloatR(tSpotCF1);
 										_GUI._FieldBar.setWhatFloatI(tSpotCF2);
 										break;
-				case DivField.COMPLEXD:	_GUI._FieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldCD));;
+				case COMPLEXD:	_GUI._FieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldCD));;
 										double tSpotCD1 = Double.parseDouble(strB.substring(indexOfR, indexOfI-tI-1));
 										double tSpotCD2 = Double.parseDouble(strB.substring(indexOfI, tBufferLength));
 										_GUI._FieldBar.setWhatDoubleR(tSpotCD1);
@@ -583,7 +584,7 @@ import java.util.*;
 	    return _repMonadF;
     }
     
-    public String 		getRepMode()
+    public CladosField		getRepMode()
     {
     	return _repMode;
     }
@@ -602,28 +603,28 @@ import java.util.*;
     		short j=0;
     		switch (_repMode)
     		{	
-	    		case DivField.REALF: 	for (j=0; j<_repMonadF.getAlgebra().getGProduct().getBladeCount(); j++)
+	    		case REALF: 	for (j=0; j<_repMonadF.getAlgebra().getGProduct().getBladeCount(); j++)
 							    		{
 											_jCoeffs.get(j).updateField(_repMonadF.getCoeff(j));	//	fodder for the update
 											_jCoeffs.get(j).displayContents();
 							    		}
 	    								gradeKey.setText(new StringBuffer().append(_repMonadF.getGradeKey()).toString());
 	    								break;
-	    		case DivField.REALD: 	for (j=0; j<_repMonadD.getAlgebra().getGProduct().getBladeCount(); j++)
+	    		case REALD: 	for (j=0; j<_repMonadD.getAlgebra().getGProduct().getBladeCount(); j++)
 							    		{
 											_jCoeffs.get(j).updateField(_repMonadD.getCoeff(j));	//	fodder for the update
 											_jCoeffs.get(j).displayContents();
 							    		}
 										gradeKey.setText(new StringBuffer().append(_repMonadD.getGradeKey()).toString());
 	    								break;
-	    		case DivField.COMPLEXF:	for (j=0; j<_repMonadCF.getAlgebra().getGProduct().getBladeCount(); j++)
+	    		case COMPLEXF:	for (j=0; j<_repMonadCF.getAlgebra().getGProduct().getBladeCount(); j++)
 							    		{
 											_jCoeffs.get(j).updateField(_repMonadCF.getCoeff(j));	//	fodder for the update
 											_jCoeffs.get(j).displayContents();
 							    		}
 										gradeKey.setText(new StringBuffer().append(_repMonadCF.getGradeKey()).toString());
 										break;
-				case DivField.COMPLEXD:	for (j=0; j<_repMonadCD.getAlgebra().getGProduct().getBladeCount(); j++)
+				case COMPLEXD:	for (j=0; j<_repMonadCD.getAlgebra().getGProduct().getBladeCount(); j++)
 							    		{
 											_jCoeffs.get(j).updateField(_repMonadCD.getCoeff(j));	//	fodder for the update
 											_jCoeffs.get(j).displayContents();
@@ -657,22 +658,22 @@ import java.util.*;
 	    StringBuffer tB = new StringBuffer();
 	    switch (_repMode)
 	    {
-	    	case DivField.REALF:	tB.append(_repMonadF.getAlgebra().getFoot().getFootName()+" | ");
+	    	case REALF:	tB.append(_repMonadF.getAlgebra().getFoot().getFootName()+" | ");
 	    							tB.append(_repMonadF.getAlgebra().getAlgebraName()+" | ");
 	    							tB.append(_repMonadF.getAlgebra().getGProduct().getSignature());
 	    							pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
 	    							break;
-	    	case DivField.REALD:	tB.append(_repMonadD.getAlgebra().getFoot().getFootName()+" | ");
+	    	case REALD:	tB.append(_repMonadD.getAlgebra().getFoot().getFootName()+" | ");
 									tB.append(_repMonadD.getAlgebra().getAlgebraName()+" | ");
 									tB.append(_repMonadD.getAlgebra().getGProduct().getSignature());
 									pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
 									break;
-	    	case DivField.COMPLEXF:	tB.append(_repMonadCF.getAlgebra().getFoot().getFootName()+" | ");
+	    	case COMPLEXF:	tB.append(_repMonadCF.getAlgebra().getFoot().getFootName()+" | ");
 									tB.append(_repMonadCF.getAlgebra().getAlgebraName()+" | ");
 									tB.append(_repMonadCF.getAlgebra().getGProduct().getSignature());
 									pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
 									break;
-	    	case DivField.COMPLEXD:	tB.append(_repMonadCD.getAlgebra().getFoot().getFootName()+" | ");
+	    	case COMPLEXD:	tB.append(_repMonadCD.getAlgebra().getFoot().getFootName()+" | ");
 									tB.append(_repMonadCD.getAlgebra().getAlgebraName()+" | ");
 									tB.append(_repMonadCD.getAlgebra().getGProduct().getSignature());
 									pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
@@ -699,7 +700,7 @@ import java.util.*;
     		short[] tSpot;
     		switch (_repMode)
     		{
-    			case DivField.REALF:	for (j=0; j<_repMonadF.getAlgebra().getGProduct().getGradeCount(); j++)
+    			case REALF:	for (j=0; j<_repMonadF.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.CENTER);
 						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
@@ -717,7 +718,7 @@ import java.util.*;
 						        			cn1.gridy=0;
 						        		}
     									break;
-    			case DivField.REALD:	for (j=0; j<_repMonadD.getAlgebra().getGProduct().getGradeCount(); j++)
+    			case REALD:	for (j=0; j<_repMonadD.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.CENTER);
 						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
@@ -735,7 +736,7 @@ import java.util.*;
 						        			cn1.gridy=0;
 						        		}
     									break;
-    			case DivField.COMPLEXF:	for (j=0; j<_repMonadCF.getAlgebra().getGProduct().getGradeCount(); j++)
+    			case COMPLEXF:	for (j=0; j<_repMonadCF.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.CENTER);
 						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
@@ -753,7 +754,7 @@ import java.util.*;
 						        			cn1.gridy=0;
 						        		}
     									break;
-    			case DivField.COMPLEXD:	for (j=0; j<_repMonadCD.getAlgebra().getGProduct().getGradeCount(); j++)
+    			case COMPLEXD:	for (j=0; j<_repMonadCD.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.CENTER);
 						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
@@ -781,7 +782,7 @@ import java.util.*;
     		short[] tSpot;
     		switch (_repMode)
     		{
-    			case DivField.REALF:	for (j=0; j<_repMonadF.getAlgebra().getGProduct().getGradeCount(); j++)
+    			case REALF:	for (j=0; j<_repMonadF.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.RIGHT);
 						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
@@ -799,7 +800,7 @@ import java.util.*;
 						        			cn1.gridy++;
 						        		}
     									break;
-    			case DivField.REALD:	for (j=0; j<_repMonadD.getAlgebra().getGProduct().getGradeCount(); j++)
+    			case REALD:	for (j=0; j<_repMonadD.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.RIGHT);
 						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
@@ -817,7 +818,7 @@ import java.util.*;
 						        			cn1.gridy++;
 						        		}
     									break;
-    			case DivField.COMPLEXF:	for (j=0; j<_repMonadCF.getAlgebra().getGProduct().getGradeCount(); j++)
+    			case COMPLEXF:	for (j=0; j<_repMonadCF.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.RIGHT);
 						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
@@ -835,7 +836,7 @@ import java.util.*;
 						        			cn1.gridy++;
 						        		}
     									break;
-    			case DivField.COMPLEXD:	for (j=0; j<_repMonadCD.getAlgebra().getGProduct().getGradeCount(); j++)
+    			case COMPLEXD:	for (j=0; j<_repMonadCD.getAlgebra().getGProduct().getGradeCount(); j++)
 						        		{
 						        			headLabel = new JLabel(j+"-blades", SwingConstants.RIGHT);
 						        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
@@ -939,7 +940,7 @@ import java.util.*;
     		FieldDisplay tSpot;
     		switch (_repMode)
     		{
-    			case DivField.REALF: 	_jCoeffs=new ArrayList<FieldDisplay>(_repMonadF.getAlgebra().getGProduct().getBladeCount());
+    			case REALF: 	_jCoeffs=new ArrayList<FieldDisplay>(_repMonadF.getAlgebra().getGProduct().getBladeCount());
 						    			for (j=0; j<_repMonadF.getAlgebra().getGProduct().getBladeCount(); j++)
 						    	    	{
 						    	    		tSpot = new FieldDisplay(RealF.copyOf(_repMonadF.getCoeff(j)), this);
@@ -947,7 +948,7 @@ import java.util.*;
 						    	    		_jCoeffs.add(j, tSpot);
 						    	    	}
     									break;
-    			case DivField.REALD:	_jCoeffs=new ArrayList<FieldDisplay>(_repMonadD.getAlgebra().getGProduct().getBladeCount());
+    			case REALD:	_jCoeffs=new ArrayList<FieldDisplay>(_repMonadD.getAlgebra().getGProduct().getBladeCount());
 						    			for (j=0; j<_repMonadD.getAlgebra().getGProduct().getBladeCount(); j++)
 						    	    	{
 						    	    		tSpot = new FieldDisplay(RealD.copyOf(_repMonadD.getCoeff(j)), this);
@@ -955,7 +956,7 @@ import java.util.*;
 						    	    		_jCoeffs.add(j, tSpot);
 						    	    	}
     									break;
-    			case DivField.COMPLEXF: _jCoeffs=new ArrayList<FieldDisplay>(_repMonadCF.getAlgebra().getGProduct().getBladeCount());
+    			case COMPLEXF: _jCoeffs=new ArrayList<FieldDisplay>(_repMonadCF.getAlgebra().getGProduct().getBladeCount());
 						    			for (j=0; j<_repMonadCF.getAlgebra().getGProduct().getBladeCount(); j++)
 						    	    	{
 						    	    		tSpot = new FieldDisplay(ComplexF.copyOf(_repMonadCF.getCoeff(j)), this);
@@ -963,7 +964,7 @@ import java.util.*;
 						    	    		_jCoeffs.add(j, tSpot);
 						    	    	}
     									break;
-    			case DivField.COMPLEXD: _jCoeffs=new ArrayList<FieldDisplay>(_repMonadCD.getAlgebra().getGProduct().getBladeCount());
+    			case COMPLEXD: _jCoeffs=new ArrayList<FieldDisplay>(_repMonadCD.getAlgebra().getGProduct().getBladeCount());
 						    			for (j=0; j<_repMonadCD.getAlgebra().getGProduct().getBladeCount(); j++)
 						    	    	{
 						    	    		tSpot = new FieldDisplay(ComplexD.copyOf(_repMonadCD.getCoeff(j)), this);
@@ -1139,20 +1140,6 @@ import java.util.*;
     	cn0.weightx=0.25;
     	cn0.gridx++;
     	
-    	//pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Alg"))), cn0);
-    	//cn0.gridx++;
-    	//aname.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-    	//pnlMonadReferences.add(aname, cn0);
-    	//cn0.gridx++;
-    	
-    	//pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Sig"))), cn0);
-    	//cn0.gridx++;
-    	//sig.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-    	//pnlMonadReferences.add(sig, cn0);
-
-    	
-    	//cn0.gridx = 0;
-    	//cn0.gridy++;
     	cn0.weightx=0;
     	
     	pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Frame"))), cn0);
@@ -1162,12 +1149,6 @@ import java.util.*;
     	pnlMonadReferences.add(frame, cn0);
     	cn0.weightx=0.25;
     	cn0.gridx++;
-    	
-    	//pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot"))), cn0);
-    	//cn0.gridx++;
-    	//foot.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
-    	//pnlMonadReferences.add(foot, cn0);
-    	//cn0.gridx++;
     	
     	pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Key"))), cn0);
     	cn0.gridx++;
@@ -1195,28 +1176,28 @@ import java.util.*;
     {
     	switch (_repMode)
     	{
-    	case DivField.REALF:	name.setText(_repMonadF.getName());
+    	case REALF:	name.setText(_repMonadF.getName());
 						    	aname.setText(_repMonadF.getAlgebra().getAlgebraName());
 						    	sig.setText(_repMonadF.getAlgebra().getGProduct().getSignature());
 						    	frame.setText(_repMonadF.getFrameName());
 						    	foot.setText(_repMonadF.getAlgebra().getFoot().getFootName());
 						    	gradeKey.setText(new StringBuffer().append(_repMonadF.getGradeKey()).toString());
 						    	break;
-    	case DivField.REALD:	name.setText(_repMonadD.getName());
+    	case REALD:	name.setText(_repMonadD.getName());
 						    	aname.setText(_repMonadD.getAlgebra().getAlgebraName());
 						    	sig.setText(_repMonadD.getAlgebra().getGProduct().getSignature());
 						    	frame.setText(_repMonadD.getFrameName());
 						    	foot.setText(_repMonadD.getAlgebra().getFoot().getFootName());
 						    	gradeKey.setText(new StringBuffer().append(_repMonadD.getGradeKey()).toString());
 						    	break;
-    	case DivField.COMPLEXF:	name.setText(_repMonadCF.getName());
+    	case COMPLEXF:	name.setText(_repMonadCF.getName());
 						    	aname.setText(_repMonadCF.getAlgebra().getAlgebraName());
 						    	sig.setText(_repMonadCF.getAlgebra().getGProduct().getSignature());
 						    	frame.setText(_repMonadCF.getFrameName());
 						    	foot.setText(_repMonadCF.getAlgebra().getFoot().getFootName());
 						    	gradeKey.setText(new StringBuffer().append(_repMonadCF.getGradeKey()).toString());
 						    	break;
-    	case DivField.COMPLEXD:	name.setText(_repMonadCD.getName());
+    	case COMPLEXD:	name.setText(_repMonadCD.getName());
 						    	aname.setText(_repMonadCD.getAlgebra().getAlgebraName());
 						    	sig.setText(_repMonadCD.getAlgebra().getGProduct().getSignature());
 						    	frame.setText(_repMonadCD.getFrameName());

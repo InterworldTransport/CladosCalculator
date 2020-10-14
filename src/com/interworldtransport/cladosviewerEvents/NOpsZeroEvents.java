@@ -23,7 +23,7 @@
  * ------------------------------------------------------------------------ <br>
  */
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosF.DivField;
+
 import com.interworldtransport.cladosG.MonadComplexD;
 import com.interworldtransport.cladosG.MonadComplexF;
 import com.interworldtransport.cladosG.MonadRealD;
@@ -87,13 +87,13 @@ public class NOpsZeroEvents implements ActionListener
     	boolean test = false;
     	switch (tSpot.getRepMode())
     	{
-	    	case DivField.REALF: 	test = MonadRealF.isGZero(tSpot.getMonadRF());
+	    	case REALF: 	test = MonadRealF.isGZero(tSpot.getMonadRF());
 							    	break;
-	    	case DivField.REALD: 	test = MonadRealD.isGZero(tSpot.getMonadRD());
+	    	case REALD: 	test = MonadRealD.isGZero(tSpot.getMonadRD());
 							    	break;
-	    	case DivField.COMPLEXF:	test = MonadComplexF.isGZero(tSpot.getMonadCF());
+	    	case COMPLEXF:	test = MonadComplexF.isGZero(tSpot.getMonadCF());
 							    	break;
-	    	case DivField.COMPLEXD:	test = MonadComplexD.isGZero(tSpot.getMonadCD());
+	    	case COMPLEXD:	test = MonadComplexD.isGZero(tSpot.getMonadCD());
     	}
 	
 		if (test)

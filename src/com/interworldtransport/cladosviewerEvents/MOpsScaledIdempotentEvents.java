@@ -24,6 +24,7 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
+
 import com.interworldtransport.cladosG.MonadComplexD;
 import com.interworldtransport.cladosG.MonadComplexF;
 import com.interworldtransport.cladosG.MonadRealD;
@@ -31,7 +32,6 @@ import com.interworldtransport.cladosG.MonadRealF;
 import com.interworldtransport.cladosGExceptions.*;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
-import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosFExceptions.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -91,13 +91,13 @@ public class MOpsScaledIdempotentEvents implements ActionListener
     	{
 	    	switch (tSpot.getRepMode())
 	    	{
-		    	case DivField.REALF: 	test = MonadRealF.isScaledIdempotent(tSpot.getMonadRF());
+		    	case REALF: 	test = MonadRealF.isScaledIdempotent(tSpot.getMonadRF());
 								    	break;
-		    	case DivField.REALD: 	test = MonadRealD.isScaledIdempotent(tSpot.getMonadRD());
+		    	case REALD: 	test = MonadRealD.isScaledIdempotent(tSpot.getMonadRD());
 								    	break;
-		    	case DivField.COMPLEXF:	test = MonadComplexF.isScaledIdempotent(tSpot.getMonadCF());
+		    	case COMPLEXF:	test = MonadComplexF.isScaledIdempotent(tSpot.getMonadCF());
 								    	break;
-		    	case DivField.COMPLEXD:	test = MonadComplexD.isScaledIdempotent(tSpot.getMonadCD());
+		    	case COMPLEXD:	test = MonadComplexD.isScaledIdempotent(tSpot.getMonadCD());
 	    	}
 	    	if (test)
 				_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is multiple of an idempotent.\n");

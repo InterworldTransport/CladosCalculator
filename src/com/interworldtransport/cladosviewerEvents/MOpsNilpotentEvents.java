@@ -24,7 +24,7 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosF.DivField;
+
 import com.interworldtransport.cladosFExceptions.*;
 import com.interworldtransport.cladosG.MonadComplexD;
 import com.interworldtransport.cladosG.MonadComplexF;
@@ -94,13 +94,13 @@ public class MOpsNilpotentEvents implements ActionListener
     		int pow2Test = (int) Float.parseFloat(_parent._GUI._FieldBar.getRealText());
 	    	switch (tSpot.getRepMode())
 	    	{
-		    	case DivField.REALF: 	test = MonadRealF.isNilpotent(tSpot.getMonadRF(), pow2Test);
+		    	case REALF: 	test = MonadRealF.isNilpotent(tSpot.getMonadRF(), pow2Test);
 								    	break;
-		    	case DivField.REALD: 	test = MonadRealD.isNilpotent(tSpot.getMonadRD(), pow2Test);
+		    	case REALD: 	test = MonadRealD.isNilpotent(tSpot.getMonadRD(), pow2Test);
 								    	break;
-		    	case DivField.COMPLEXF:	test = MonadComplexF.isNilpotent(tSpot.getMonadCF(), pow2Test);
+		    	case COMPLEXF:	test = MonadComplexF.isNilpotent(tSpot.getMonadCF(), pow2Test);
 								    	break;
-		    	case DivField.COMPLEXD:	test = MonadComplexD.isNilpotent(tSpot.getMonadCD(), pow2Test);
+		    	case COMPLEXD:	test = MonadComplexD.isNilpotent(tSpot.getMonadCD(), pow2Test);
 	    	}
 	    	if (test)
 				_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is nilpotent at power="+pow2Test+".\n");

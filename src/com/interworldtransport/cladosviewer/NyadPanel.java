@@ -25,7 +25,8 @@
 
 package com.interworldtransport.cladosviewer ;
 
-import com.interworldtransport.cladosF.DivField;
+import com.interworldtransport.cladosF.CladosField;
+//import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosG.*;
 import com.interworldtransport.cladosGExceptions.*;
 import com.interworldtransport.cladosviewerExceptions.UtilitiesException;
@@ -76,7 +77,7 @@ import java.util.*;
 	private					JLabel					protoXML=new JLabel();
 	private 		final	Dimension 				square = new Dimension(25,25);
 	private					ImageIcon				tabIcon;
-	protected				String					_repMode;
+	protected				CladosField				_repMode;
 	protected				ArrayList<MonadPanel>	monadPanelList; 
     protected				JTabbedPane				monadPanes;
     
@@ -109,7 +110,7 @@ import java.util.*;
    	    if (pN==null)
    	      		throw new UtilitiesException("A Nyad must be passed to this MonadPanel constructor");
    	    _repNyadCD=pN;
-   		_repMode=DivField.COMPLEXD;
+   		_repMode=CladosField.COMPLEXD;
    		 
    		setReferences();
    			 
@@ -173,7 +174,7 @@ import java.util.*;
    	    if (pN==null)
    	      		throw new UtilitiesException("A Nyad must be passed to this MonadPanel constructor");
    	    _repNyadCF=pN;
-   		_repMode=DivField.COMPLEXF;
+   		_repMode=CladosField.COMPLEXF;
    		 
    		setReferences();
    			 
@@ -237,7 +238,7 @@ import java.util.*;
    	    if (pN==null)
    	      		throw new UtilitiesException("A Nyad must be passed to this MonadPanel constructor");
    	    _repNyadD=pN;
-   		_repMode=DivField.REALD;
+   		_repMode=CladosField.REALD;
    		 
    		setReferences();
    			 
@@ -301,7 +302,7 @@ import java.util.*;
 	    if (pN==null)
 	      		throw new UtilitiesException("A Nyad must be passed to this MonadPanel constructor");
 	    _repNyadF=pN;
-		_repMode=DivField.REALF;
+		_repMode=CladosField.REALF;
 		 
 		setReferences();
 			 
@@ -350,13 +351,13 @@ import java.util.*;
     	{
     		switch (_repMode)
     		{
-	    		case DivField.REALF:	if (nyadName.getText() != _repNyadF.getName()) _repNyadF.setName(nyadName.getText());
+	    		case REALF:	if (nyadName.getText() != _repNyadF.getName()) _repNyadF.setName(nyadName.getText());
 	    								break;
-	    		case DivField.REALD:	if (nyadName.getText() != _repNyadD.getName()) _repNyadD.setName(nyadName.getText());
+	    		case REALD:	if (nyadName.getText() != _repNyadD.getName()) _repNyadD.setName(nyadName.getText());
 										break;
-	    		case DivField.COMPLEXF:	if (nyadName.getText() != _repNyadCF.getName()) _repNyadCF.setName(nyadName.getText());
+	    		case COMPLEXF:	if (nyadName.getText() != _repNyadCF.getName()) _repNyadCF.setName(nyadName.getText());
 										break;
-	    		case DivField.COMPLEXD:	if (nyadName.getText() != _repNyadCD.getName()) _repNyadCD.setName(nyadName.getText());
+	    		case COMPLEXD:	if (nyadName.getText() != _repNyadCD.getName()) _repNyadCD.setName(nyadName.getText());
     		}
     		command=".edit.";
     	}
@@ -448,22 +449,22 @@ import java.util.*;
 
 	    switch (pMP.getRepMode())
 	    {
-	    	case DivField.REALF:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
+	    	case REALF:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
 	    												tabIcon, 
 	    												new JScrollPane(pMP),
 	    												_repNyadF.getName()+" | "+pMP.getMonadRF().getName());
 	    							break;
-	    	case DivField.REALD:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
+	    	case REALD:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
 														tabIcon, 
 														new JScrollPane(pMP),
 														_repNyadD.getName()+" | "+pMP.getMonadRD().getName());
 	    							break;
-	    	case DivField.COMPLEXF:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
+	    	case COMPLEXF:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
 														tabIcon, 
 														new JScrollPane(pMP),
 														_repNyadCF.getName()+" | "+pMP.getMonadCF().getName());
 									break;
-	    	case DivField.COMPLEXD:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
+	    	case COMPLEXD:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
 														tabIcon, 
 														new JScrollPane(pMP),
 														_repNyadCD.getName()+" | "+pMP.getMonadCD().getName());			
@@ -555,7 +556,7 @@ import java.util.*;
     {
 	    return monadPanes.getSelectedIndex();
     }
-    public String		getRepMode()
+    public CladosField		getRepMode()
     {
     	return _repMode;
     }
@@ -564,8 +565,6 @@ import java.util.*;
     	if (pnlRefPanel!=null)
     		pnlRefPanel.setBackground(clrBackColor);
     	nyadName.setEditable(false);
-    	//_order.setEditable(false);
-    	//_foot.setEditable(false);
     }
 
     /**
@@ -607,7 +606,7 @@ import java.util.*;
 		{
 			switch (_repMode)
 			{
-				case DivField.REALF:	MonadRealF focusMonadRF=getMonadPanel(getPaneFocus()).getMonadRF();
+				case REALF:	MonadRealF focusMonadRF=getMonadPanel(getPaneFocus()).getMonadRF();
 										buildName=new StringBuffer(focusMonadRF.getName()).append("_c").toString();
 										buildAlgName =new StringBuffer(focusMonadRF.getAlgebra().getAlgebraName()).append("_c").toString();
 										buildFrameName = new StringBuffer(focusMonadRF.getFrameName()).append("_c").toString();
@@ -622,7 +621,7 @@ import java.util.*;
 										_repNyadF.appendMonad(newMonadCopyRF);
 										addMonadPanel(newMonadCopyRF);
 										break;
-				case DivField.REALD:	MonadRealD focusMonadRD=getMonadPanel(getPaneFocus()).getMonadRD();
+				case REALD:	MonadRealD focusMonadRD=getMonadPanel(getPaneFocus()).getMonadRD();
 										buildName=new StringBuffer(focusMonadRD.getName()).append("_c").toString();
 										buildAlgName =new StringBuffer(focusMonadRD.getAlgebra().getAlgebraName()).append("_c").toString();
 										buildFrameName = new StringBuffer(focusMonadRD.getFrameName()).append("_c").toString();
@@ -637,7 +636,7 @@ import java.util.*;
 										_repNyadD.appendMonad(newMonadCopyRD);
 										addMonadPanel(newMonadCopyRD);
 										break;
-				case DivField.COMPLEXF:	MonadComplexF focusMonadCF=getMonadPanel(getPaneFocus()).getMonadCF();
+				case COMPLEXF:	MonadComplexF focusMonadCF=getMonadPanel(getPaneFocus()).getMonadCF();
 										buildName=new StringBuffer(focusMonadCF.getName()).append("_c").toString();
 										buildAlgName =new StringBuffer(focusMonadCF.getAlgebra().getAlgebraName()).append("_c").toString();
 										buildFrameName = new StringBuffer(focusMonadCF.getFrameName()).append("_c").toString();
@@ -652,7 +651,7 @@ import java.util.*;
 										_repNyadCF.appendMonad(newMonadCopyCF);
 										addMonadPanel(newMonadCopyCF);
 										break;
-				case DivField.COMPLEXD:	MonadComplexD focusMonadCD=getMonadPanel(getPaneFocus()).getMonadCD();
+				case COMPLEXD:	MonadComplexD focusMonadCD=getMonadPanel(getPaneFocus()).getMonadCD();
 										buildName=new StringBuffer(focusMonadCD.getName()).append("_c").toString();
 										buildAlgName =new StringBuffer(focusMonadCD.getAlgebra().getAlgebraName()).append("_c").toString();
 										buildFrameName = new StringBuffer(focusMonadCD.getFrameName()).append("_c").toString();
@@ -911,13 +910,13 @@ import java.util.*;
 				int point = monadPanes.getSelectedIndex();
 				switch (_repMode)
 				{
-					case DivField.REALF: 	_repNyadF.removeMonad(point);
+					case REALF: 	_repNyadF.removeMonad(point);
 											break;
-					case DivField.REALD: 	_repNyadD.removeMonad(point);
+					case REALD: 	_repNyadD.removeMonad(point);
 											break;
-					case DivField.COMPLEXF:	_repNyadCF.removeMonad(point);
+					case COMPLEXF:	_repNyadCF.removeMonad(point);
 											break;
-					case DivField.COMPLEXD:	_repNyadCD.removeMonad(point);
+					case COMPLEXD:	_repNyadCD.removeMonad(point);
 				}
 				removeMonadTab(point);
 			} 
@@ -936,22 +935,22 @@ import java.util.*;
     {
     	switch (_repMode)
     	{
-    		case DivField.REALF:	nyadName.setText(_repNyadF.getName());
+    		case REALF:	nyadName.setText(_repNyadF.getName());
     								protoXML.setText(_repNyadF.getProto().toXMLString());
 	    							nyadOrder.setText((new StringBuffer().append(_repNyadF.getMonadList().size())).toString());
 	    							nyadFoot.setText(_repNyadF.getFootPoint().getFootName());
 	    							break;
-    		case DivField.REALD:	nyadName.setText(_repNyadD.getName());
+    		case REALD:	nyadName.setText(_repNyadD.getName());
     								protoXML.setText(_repNyadD.getProto().toXMLString());
 	    							nyadOrder.setText((new StringBuffer().append(_repNyadD.getMonadList().size())).toString());
 	    							nyadFoot.setText(_repNyadD.getFootPoint().getFootName());
 	    							break;
-    		case DivField.COMPLEXF:	nyadName.setText(_repNyadCF.getName());
+    		case COMPLEXF:	nyadName.setText(_repNyadCF.getName());
     								protoXML.setText(_repNyadCF.getProto().toXMLString());
 	    							nyadOrder.setText((new StringBuffer().append(_repNyadCF.getMonadList().size())).toString());
 	    							nyadFoot.setText(_repNyadCF.getFootPoint().getFootName());
 	    							break;
-    		case DivField.COMPLEXD: nyadName.setText(_repNyadCD.getName());
+    		case COMPLEXD: nyadName.setText(_repNyadCD.getName());
     								protoXML.setText(_repNyadCD.getProto().toXMLString());
 	    							nyadOrder.setText((new StringBuffer().append(_repNyadCD.getMonadList().size())).toString());
 	    							nyadFoot.setText(_repNyadCD.getFootPoint().getFootName());

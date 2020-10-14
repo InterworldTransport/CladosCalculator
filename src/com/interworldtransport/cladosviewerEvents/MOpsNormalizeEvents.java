@@ -24,7 +24,6 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosGExceptions.CladosMonadException;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
@@ -92,13 +91,13 @@ public class MOpsNormalizeEvents implements ActionListener
     	{
 	    	switch (tMSpotPnl.getRepMode())
 	    	{
-		    	case DivField.REALF: 	tMSpotPnl.getMonadRF().normalize();
+		    	case REALF: 	tMSpotPnl.getMonadRF().normalize();
 								    	break;
-		    	case DivField.REALD: 	tMSpotPnl.getMonadRD().normalize();
+		    	case REALD: 	tMSpotPnl.getMonadRD().normalize();
 								    	break;
-		    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().normalize();
+		    	case COMPLEXF:	tMSpotPnl.getMonadCF().normalize();
 								    	break;
-		    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().normalize();
+		    	case COMPLEXD:	tMSpotPnl.getMonadCD().normalize();
 	    	}
 	    	tMSpotPnl.setCoefficientDisplay();
 	    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been normalized.\n");

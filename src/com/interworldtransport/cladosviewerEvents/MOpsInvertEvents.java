@@ -25,11 +25,6 @@
 
 package com.interworldtransport.cladosviewerEvents;
 
-import com.interworldtransport.cladosF.DivField;
-import com.interworldtransport.cladosG.MonadComplexD;
-import com.interworldtransport.cladosG.MonadComplexF;
-import com.interworldtransport.cladosG.MonadRealD;
-import com.interworldtransport.cladosG.MonadRealF;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -95,13 +90,13 @@ public class MOpsInvertEvents implements ActionListener
     	
     	switch (tMSpotPnl.getRepMode())
     	{
-	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().invert();
+	    	case REALF: 	tMSpotPnl.getMonadRF().invert();
 							    	break;
-	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().invert();
+	    	case REALD: 	tMSpotPnl.getMonadRD().invert();
 							    	break;
-	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().invert();
+	    	case COMPLEXF:	tMSpotPnl.getMonadCF().invert();
 							    	break;
-	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().invert();
+	    	case COMPLEXD:	tMSpotPnl.getMonadCD().invert();
     	}
     	tMSpotPnl.setCoefficientDisplay();
     	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been inverted.\n");

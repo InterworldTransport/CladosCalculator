@@ -24,7 +24,7 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-import com.interworldtransport.cladosF.DivField;
+
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -94,13 +94,13 @@ public class MOpsGradeSupressEvents implements ActionListener
     		short tGrade = (short) Float.parseFloat(_parent._GUI._FieldBar.getRealText());
         	switch (tMSpotPnl.getRepMode())
         	{
-    	    	case DivField.REALF: 	tMSpotPnl.getMonadRF().gradeSuppress(tGrade);
+    	    	case REALF: 	tMSpotPnl.getMonadRF().gradeSuppress(tGrade);
     							    	break;
-    	    	case DivField.REALD: 	tMSpotPnl.getMonadRD().gradeSuppress(tGrade);
+    	    	case REALD: 	tMSpotPnl.getMonadRD().gradeSuppress(tGrade);
     							    	break;
-    	    	case DivField.COMPLEXF:	tMSpotPnl.getMonadCF().gradeSuppress(tGrade);
+    	    	case COMPLEXF:	tMSpotPnl.getMonadCF().gradeSuppress(tGrade);
     							    	break;
-    	    	case DivField.COMPLEXD:	tMSpotPnl.getMonadCD().gradeSuppress(tGrade);	
+    	    	case COMPLEXD:	tMSpotPnl.getMonadCD().gradeSuppress(tGrade);	
         	}
         	tMSpotPnl.setCoefficientDisplay();
 	    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been cut at "+tGrade+"-findgrade.\n");
