@@ -41,22 +41,24 @@ import com.interworldtransport.cladosviewer.*;
  */
 public class NOpsParentEvents
 {
-	protected NOpsZeroEvents				zero;
-	protected NOpsEqualEvents				equal;
-	protected NOpsRMatchEvents				strgrmatch;
-	protected NOpsRWeakMatchEvents			weakrmatch;
+	protected NOpsZeroEvents			zero;
+	protected NOpsEqualEvents			equal;
+	protected NOpsRMatchEvents			strgrmatch;
+	protected NOpsRWeakMatchEvents		weakrmatch;
 	
-	protected NOpsHasAlgebraMatchEvents		hasalgebra;
-    
-    protected NOpsAddEvents					add;
-    protected NOpsSubtractEvents			sub;
-    protected NOpsLMultEvents				lmult;
-    protected NOpsRMultEvents				rmult;
-    protected NOpsSymmMultEvents			symm;
-    protected NOpsAntiSymmMultEvents		asymm;
+	protected NOpsHasAlgebraMatchEvents	hasalgebra;
+	protected NOpsIsScalarAtEvents		scalarAtAlg;
+	protected NOpsIsPScalarAtEvents		pscalarAtAlg;
+	
+    protected NOpsAddEvents				add;
+    protected NOpsSubtractEvents		sub;
+    protected NOpsLMultEvents			lmult;
+    protected NOpsRMultEvents			rmult;
+    protected NOpsSymmMultEvents		symm;
+    protected NOpsAntiSymmMultEvents	asymm;
 
-    protected ViewerMenu 					_GUIMenu;
-    protected CladosCalculator				_GUI;
+    protected ViewerMenu 				_GUIMenu;
+    protected CladosCalculator			_GUI;
 
 /** 
  * This is the default constructor.  The event structure of the
@@ -75,7 +77,9 @@ public class NOpsParentEvents
 		strgrmatch = new NOpsRMatchEvents(		_GUIMenu.mniisStrgReferenceMatch, this);
 		weakrmatch = new NOpsRWeakMatchEvents(	_GUIMenu.mniisWeakReferenceMatch, this);
 		
-		hasalgebra = new NOpsHasAlgebraMatchEvents(_GUIMenu.mnihasAlgebra, this);
+		hasalgebra = new NOpsHasAlgebraMatchEvents(	_GUIMenu.mnihasAlgebra, this);
+		scalarAtAlg = new NOpsIsScalarAtEvents(		_GUIMenu.mniisScalarAt, this);
+		pscalarAtAlg = new NOpsIsPScalarAtEvents(	_GUIMenu.mniisPScalarAt, this);
 		
 		add = new NOpsAddEvents(				_GUIMenu.mniAdd, this);
 		sub = new NOpsSubtractEvents(			_GUIMenu.mniSubtract, this);

@@ -66,6 +66,8 @@ public class ViewerMenu extends JMenuBar
     
     public	JMenu			mnuOneInputNyadOps;
     public	JMenuItem		mnihasAlgebra;
+    public	JMenuItem		mniisScalarAt;
+    public	JMenuItem		mniisPScalarAt;
     
     public	JMenu			mnuTwoInputNyadOps;
     public	JMenuItem		mniAdd;
@@ -156,6 +158,10 @@ public class ViewerMenu extends JMenuBar
 			mnuNyadOps.add(mnuOneInputNyadOps);
 				mnihasAlgebra=new JMenuItem("has Algebra?");
 				mnuOneInputNyadOps.add(mnihasAlgebra);
+				mniisScalarAt=new JMenuItem("is Scalar At?");
+				mnuOneInputNyadOps.add(mniisScalarAt);
+				mniisPScalarAt=new JMenuItem("is PScalar At?");
+				mnuOneInputNyadOps.add(mniisPScalarAt);
 		    	
 		    mnuTwoInputNyadOps=new JMenu("Two Inputs");
 		    mnuNyadOps.add(mnuTwoInputNyadOps);

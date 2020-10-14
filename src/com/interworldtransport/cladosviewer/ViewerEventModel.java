@@ -45,49 +45,42 @@ public class ViewerEventModel
  * The GUIParentMenu object maintains a reference to the GUI's Menu to which
  * this EventModel applies
  */
-    protected	ViewerMenu		GUIParentMenu;
+    protected	ViewerMenu			GUIParentMenu;
 
 /**
  * The FileEvents object collects all File Event Handlers in one place in case
  * there are actions they all share.  This object is responsible for
  * constructing all File Event Handlers.
  */
-    protected 	FileEvents		FileParts;
+    protected 	FileEvents			FileParts;
 
 /**
  * The NOpsParentEvents object collects all Boolean Operations Event Handlers in one
  * place in case there are actions they all share.  This object is responsible
  * for constructing all related Event Handlers.
  */
-    protected	NOpsParentEvents		NOpsParts;
+    protected	NOpsParentEvents	NOpsParts;
 
 /**
  * The MOpsParentEvents object collects all Simple Operations Event Handlers in one
  * place in case there are actions they all share.  This object is responsible
  * for constructing all related Event Handlers.
  */
-    protected	MOpsParentEvents		MOpsParts;
-
-/**
- * The COpsEvents object collects all Complex Operations Event Handlers in one
- * place in case there are actions they all share.  This object is responsible
- * for constructing all related Event Handlers.
- */
-    //protected	COpsEvents		COpsParts;
+    protected	MOpsParentEvents	MOpsParts;
 
 /**
  * The ToolEvents object collects all Tool Event Handlers in one place in case
  * there are actions they all share.  This object is responsible for
  * constructing all related Event Handlers.
  */
-    protected	ToolsEvents		ToolParts;
+    protected	ToolsEvents			ToolParts;
 
 /**
  * The HelpEvents object collects all Help Event Handlers in one place in case
  * there are actions they all share.  This object is responsible for
  * constructing all Help Event Handlers.
  */
-    protected 	HelpEvents		HelpParts;
+    protected 	HelpEvents			HelpParts;
 
 
     /** 
