@@ -55,8 +55,8 @@ import java.io.*;
  */
 public class CladosCalculator extends JFrame implements ActionListener
 {
+	private static final long 		serialVersionUID = -6389087013344440745L;
 	private	static final Color		_backColor = new Color(255, 255, 222);
-	private static final long 		serialVersionUID = 4368190040198207044L;
 	
 	public static void main(String[] args)
 	{
@@ -110,6 +110,8 @@ public class CladosCalculator extends JFrame implements ActionListener
 	private		JButton				btnIsMultiGrade;
 	private		JButton				btnIsNilpotent;
 	private		JButton				btnIsNyadEqual;
+	private		JButton				btnIsNyadPScalarAt;
+	private		JButton				btnIsNyadScalarAt;
 	private		JButton				btnIsNyadStrgRefMatch;
 	private		JButton				btnIsNyadWeakRefMatch;
 	private		JButton				btnIsScaleIdempotent;
@@ -215,50 +217,42 @@ public class CladosCalculator extends JFrame implements ActionListener
     
     public void actionPerformed(ActionEvent event)
     {
-    	String command = event.getActionCommand();
-    	
-    	if (command.equals("strong ref match"))
-    		_MenuBar.mniisStrgReferenceMatch.doClick();
-    	
-    	if (command.equals("weak ref match"))
-    		_MenuBar.mniisWeakReferenceMatch.doClick();
-    	
-    	if (command.equals("algebra detect"))
-    		_MenuBar.mnihasAlgebra.doClick();
-    	
-    	if (command.equals("equal"))
-    		_MenuBar.mniisEqual.doClick();
-    	
-    	if (command.equals("zero"))
-    		_MenuBar.mniisZero.doClick();
-    	
-    	if (command.equals("nilpotent"))
-    		_MenuBar.mniisNilpotent.doClick();
-    	
-    	if (command.equals("idempotent"))
-    		_MenuBar.mniisIdempotent.doClick();
-    	
-    	if (command.equals("scaled idempotent"))
-    		_MenuBar.mniisScaledIdempotent.doClick();
-    	
-    	if (command.equals("is findgrade"))
-    		_MenuBar.mniisGrade.doClick();
-    	
-    	if (command.equals("is mgrade"))
-    		_MenuBar.mniisMultiGrade.doClick();
-    	
-    	if (command.equals("is findgrade!"))
-    		_MenuBar.mniisSGrade.doClick();
-    	
-    	if (command.equals("has findgrade"))
-    		_MenuBar.mnihasGrade.doClick();
-    	
-    	if (command.equals("magnitude of"))
-    		_MenuBar.mniMagnitudeOf.doClick();
-    	
-    	if (command.equals("sqmagnitude of"))
-    		_MenuBar.mniSQMagnitudeOf.doClick();
-  
+    	switch (event.getActionCommand())
+    	{
+	    	case "strong ref match":	_MenuBar.mniisStrgReferenceMatch.doClick();
+	    								break;
+	    	case "weak ref match":		_MenuBar.mniisWeakReferenceMatch.doClick();
+	    								break;
+	    	case "algebra detect":		_MenuBar.mnihasAlgebra.doClick();
+	    								break;
+	    	case "equal":				_MenuBar.mniisEqual.doClick();
+	    								break;
+	    	case "scalar at":			_MenuBar.mniisScalarAt.doClick();
+	    								break;
+	    	case "pscalar at":			_MenuBar.mniisPScalarAt.doClick();
+	    								break;
+	    	case "zero":				_MenuBar.mniisZero.doClick();
+										break;
+	    	case "nilpotent":   		_MenuBar.mniisNilpotent.doClick();
+	    								break;
+	    	case "idempotent":   		_MenuBar.mniisIdempotent.doClick();
+	    								break;
+	    	case "scaled idempotent": 	_MenuBar.mniisScaledIdempotent.doClick();
+										break;
+    		case "is findgrade":		_MenuBar.mniisGrade.doClick();
+										break;
+    		case "is mgrade":    		_MenuBar.mniisMultiGrade.doClick();
+    									break;
+    		case "is findgrade!":   	_MenuBar.mniisSGrade.doClick();
+        								break;
+    		case "has findgrade":    	_MenuBar.mnihasGrade.doClick();
+    									break;
+    		case "magnitude of":    	_MenuBar.mniMagnitudeOf.doClick();
+    									break;
+    		case "sqmagnitude of":    	_MenuBar.mniSQMagnitudeOf.doClick();
+    									break;
+    		default: 					_StatusBar.setStatusMsg("No detectable command processed.\n");
+    	}
     }
     /**
 	 * This method saves snapshot data to the save file.
@@ -356,8 +350,18 @@ public class CladosCalculator extends JFrame implements ActionListener
 		
 		cn.gridx = 0;
 		cn.gridy = 0;
-		cn.fill=GridBagConstraints.HORIZONTAL;
-		cn.weightx=0;
+		cn.fill=GridBagConstraints.HORIZONTAL;		
+		cn.weightx=1;
+		cn.weighty=1;
+		cn.gridheight=2;
+		cn.gridwidth=2;
+		
+		cn.fill=GridBagConstraints.BOTH;
+    	pnlControlBar.add(new JLabel(new ImageIcon(IniProps.getProperty("Desktop.Image.Header2"))),cn);
+    	cn.gridx = 0;
+    	cn.gridy += 2;
+    	
+    	cn.weightx=0;
 		cn.weighty=0;
 		cn.gridheight=1;
 		cn.gridwidth=1;
@@ -367,7 +371,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	btnIsNyadStrgRefMatch.setActionCommand("strong ref match");
     	btnIsNyadStrgRefMatch.setToolTipText("Strong Reference Match [Nyad]?");
     	btnIsNyadStrgRefMatch.setPreferredSize(square);
-    	btnIsNyadStrgRefMatch.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsNyadStrgRefMatch.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsNyadStrgRefMatch.addActionListener(this);
     	pnlControlBar.add(btnIsNyadStrgRefMatch, cn);
     	cn.gridx++;
@@ -376,7 +380,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	btnIsNyadWeakRefMatch.setActionCommand("weak ref match");
     	btnIsNyadWeakRefMatch.setToolTipText("Weak reference Match [Nyad]?");
     	btnIsNyadWeakRefMatch.setPreferredSize(square);
-    	btnIsNyadWeakRefMatch.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsNyadWeakRefMatch.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsNyadWeakRefMatch.addActionListener(this);
     	pnlControlBar.add(btnIsNyadWeakRefMatch, cn);
     	cn.gridx = 0;
@@ -386,7 +390,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	btnHasNyadAlgebra.setActionCommand("algebra detect");
     	btnHasNyadAlgebra.setToolTipText("Next Nyad Has Algebra?");
     	btnHasNyadAlgebra.setPreferredSize(square);
-    	btnHasNyadAlgebra.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnHasNyadAlgebra.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnHasNyadAlgebra.addActionListener(this);
     	pnlControlBar.add(btnHasNyadAlgebra, cn);
     	cn.gridx++;
@@ -395,9 +399,28 @@ public class CladosCalculator extends JFrame implements ActionListener
     	btnIsNyadEqual.setActionCommand("equal");
     	btnIsNyadEqual.setToolTipText("strong Equality Nyad Test");
     	btnIsNyadEqual.setPreferredSize(square);
-    	btnIsNyadEqual.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsNyadEqual.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsNyadEqual.addActionListener(this);
     	pnlControlBar.add(btnIsNyadEqual, cn);
+    	cn.gridx = 0;
+    	cn.gridy++;
+    	
+    	btnIsNyadScalarAt = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.IsScalarAt")));
+    	btnIsNyadScalarAt.setActionCommand("scalar at");
+    	btnIsNyadScalarAt.setToolTipText("Next Nyad Has Scalar At?");
+    	btnIsNyadScalarAt.setPreferredSize(square);
+    	btnIsNyadScalarAt.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+    	btnIsNyadScalarAt.addActionListener(this);
+    	pnlControlBar.add(btnIsNyadScalarAt, cn);
+    	cn.gridx++;
+    	
+    	btnIsNyadPScalarAt = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.IsPScalarAt")));
+    	btnIsNyadPScalarAt.setActionCommand("pscalar at");
+    	btnIsNyadPScalarAt.setToolTipText("Next Nyad Has PScalar At?");
+    	btnIsNyadPScalarAt.setPreferredSize(square);
+    	btnIsNyadPScalarAt.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+    	btnIsNyadPScalarAt.addActionListener(this);
+    	pnlControlBar.add(btnIsNyadPScalarAt, cn);
     	cn.gridx = 0;
     	cn.gridy++;
 
@@ -406,7 +429,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	btnIsZero.setActionCommand("zero");
     	btnIsZero.setToolTipText("additive Identity (Zero) Monad Test");
     	btnIsZero.setPreferredSize(square);
-    	btnIsZero.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsZero.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsZero.addActionListener(this);
     	pnlControlBar.add(btnIsZero, cn);
     	cn.gridx++;
@@ -415,7 +438,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	btnIsNilpotent.setActionCommand("nilpotent");
     	btnIsNilpotent.setToolTipText("nilpotent Monad Test");
     	btnIsNilpotent.setPreferredSize(square);
-    	btnIsNilpotent.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsNilpotent.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsNilpotent.addActionListener(this);
     	pnlControlBar.add(btnIsNilpotent, cn);
     	cn.gridx = 0;
@@ -426,7 +449,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	btnIsIdempotent.setActionCommand("idempotent");
     	btnIsIdempotent.setToolTipText("idempotent Monad Test");
     	btnIsIdempotent.setPreferredSize(square);
-    	btnIsIdempotent.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsIdempotent.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsIdempotent.addActionListener(this);
     	pnlControlBar.add(btnIsIdempotent, cn);  
     	cn.gridx++;
@@ -435,7 +458,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	btnIsScaleIdempotent.setActionCommand("scaled idempotent");
     	btnIsScaleIdempotent.setToolTipText("multiple of Idempotent Monad Test");
     	btnIsScaleIdempotent.setPreferredSize(square);
-    	btnIsScaleIdempotent.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsScaleIdempotent.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsScaleIdempotent.addActionListener(this);
     	pnlControlBar.add(btnIsScaleIdempotent, cn);
     	cn.gridx = 0;
@@ -446,7 +469,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	btnWhatMagn.setActionCommand("magnitude of");
     	btnWhatMagn.setToolTipText("discover Monad Magnitude");
     	btnWhatMagn.setPreferredSize(square);
-    	btnWhatMagn.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnWhatMagn.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnWhatMagn.addActionListener(this);
     	pnlControlBar.add(btnWhatMagn, cn);
     	cn.gridx++;
@@ -455,7 +478,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	btnWhatSQMagn.setActionCommand("sqmagnitude of");
     	btnWhatSQMagn.setToolTipText("discover Monad Magnitude^2");
     	btnWhatSQMagn.setPreferredSize(square);
-    	btnWhatSQMagn.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnWhatSQMagn.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnWhatSQMagn.addActionListener(this);
     	pnlControlBar.add(btnWhatSQMagn, cn);
     	cn.gridx = 0;
@@ -466,7 +489,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	btnIsGrade.setActionCommand("is findgrade");
     	btnIsGrade.setToolTipText("is Grade() Monad Test");
     	btnIsGrade.setPreferredSize(square);
-    	btnIsGrade.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsGrade.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsGrade.addActionListener(this);
     	pnlControlBar.add(btnIsGrade, cn);
     	cn.gridx++;
@@ -475,7 +498,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	btnIsMultiGrade.setActionCommand("is mgrade");
     	btnIsMultiGrade.setToolTipText("is MultiGrade Monad Test");
     	btnIsMultiGrade.setPreferredSize(square);
-    	btnIsMultiGrade.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnIsMultiGrade.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsMultiGrade.addActionListener(this);
     	pnlControlBar.add(btnIsMultiGrade, cn);
        	cn.gridx = 0;
@@ -485,7 +508,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	btnHasGrade.setActionCommand("has findgrade");
     	btnHasGrade.setToolTipText("Has Grade Monad Test");
     	btnHasGrade.setPreferredSize(square);
-    	btnHasGrade.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnHasGrade.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnHasGrade.addActionListener(this);
     	pnlControlBar.add(btnHasGrade, cn);
     	cn.gridx++;
@@ -494,19 +517,13 @@ public class CladosCalculator extends JFrame implements ActionListener
     	btnWhatGrade.setActionCommand("is findgrade!");
     	btnWhatGrade.setToolTipText("what Unique Grade Monad Test");
     	btnWhatGrade.setPreferredSize(square);
-    	btnWhatGrade.setBorder(BorderFactory.createEtchedBorder(0));
+    	btnWhatGrade.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnWhatGrade.addActionListener(this);
     	pnlControlBar.add(btnWhatGrade, cn);
     	
-    	cn.gridx = 0;
-    	cn.gridy++;
+    	
 
-    	cn.weightx=1;
-		cn.weighty=1;
-		cn.gridheight=2;
-		cn.gridwidth=2;
-		cn.fill=GridBagConstraints.BOTH;
-    	pnlControlBar.add(new JLabel(new ImageIcon(IniProps.getProperty("Desktop.Image.Header2"))),cn);
+    	
     }
     
     private String makeSnapshotContent()

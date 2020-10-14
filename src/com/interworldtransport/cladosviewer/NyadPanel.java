@@ -339,59 +339,45 @@ import java.util.*;
 
     public 	void 		actionPerformed(ActionEvent event)
     {
-    	String command = event.getActionCommand();
-    	
-    	if (command.equals("push"))
-    		push();		//Swaps the currently selected nyad with the one below it
-    	
-    	if (command.equals("pop"))
-    		pop();		//Swaps the currently selected nyad with the one above it
-    	
-    	if (command=="save")
+    	switch (event.getActionCommand())
     	{
-    		switch (_repMode)
-    		{
-	    		case REALF:	if (nyadName.getText() != _repNyadF.getName()) _repNyadF.setName(nyadName.getText());
-	    								break;
-	    		case REALD:	if (nyadName.getText() != _repNyadD.getName()) _repNyadD.setName(nyadName.getText());
-										break;
-	    		case COMPLEXF:	if (nyadName.getText() != _repNyadCF.getName()) _repNyadCF.setName(nyadName.getText());
-										break;
-	    		case COMPLEXD:	if (nyadName.getText() != _repNyadCD.getName()) _repNyadCD.setName(nyadName.getText());
-    		}
-    		command=".edit.";
-    	}
-    	if (command=="abort")
-    	{
-    		setReferences();
-    		command=".edit.";
-    	}
-    	
-    	if (command=="copy")
-    		copyMonadCommand();
-
-    	if (command=="erase")
-    		removeMonadCommand();
-    	
-    	if (command.equals("create"))
-    		CreateDialog.createMonad(_GUI, _repMode);			//Create a new monad for the selected nyad OR a whole new nyad
-    	
-    	if (command=="edit")
-    	{
-    		btnEditMonad.setActionCommand(".edit.");
-    		btnEditMonad.setToolTipText("end edits w/o save");
-    		btnSaveEdits.setEnabled(true);
-        	btnUndoEdits.setEnabled(true);
-    		makeWritable();
-    	}
-    	
-    	if (command==".edit.")
-    	{
-    		btnEditMonad.setActionCommand("edit");
-        	btnEditMonad.setToolTipText("start edits");
-    		btnSaveEdits.setEnabled(false);
-        	btnUndoEdits.setEnabled(false);
-    		makeNotWritable();
+	    	case "copy":	copyMonadCommand();	// It's a little long
+	    					break;
+	    	case "erase":	removeMonadCommand();
+	    	 				break;
+	    	case "create": 	CreateDialog.createMonad(_GUI, _repMode);	//Create a new monad for the selected nyad OR a whole new nyad
+	    					break;
+	    	case "push":    push();		//Swaps the currently selected nyad with the one below it
+	    					break;
+	        case "pop":    	pop();		//Swaps the currently selected nyad with the one above it
+	        				break;
+	        case "save":	setRepName();
+							btnEditMonad.setActionCommand("edit");
+					    	btnEditMonad.setToolTipText("start edits");
+							btnSaveEdits.setEnabled(false);
+					    	btnUndoEdits.setEnabled(false);
+							makeNotWritable();
+							break;
+			case "abort":	setReferences();
+				    		btnEditMonad.setActionCommand("edit");
+				        	btnEditMonad.setToolTipText("start edits");
+				    		btnSaveEdits.setEnabled(false);
+				        	btnUndoEdits.setEnabled(false);
+				    		makeNotWritable();
+				    		break;
+			case "edit":	btnEditMonad.setActionCommand(".edit.");
+				    		btnEditMonad.setToolTipText("end edits w/o save");
+				    		btnSaveEdits.setEnabled(true);
+				        	btnUndoEdits.setEnabled(true);
+				    		makeWritable();
+				    		break;
+			case ".edit.":	btnEditMonad.setActionCommand("edit");
+				        	btnEditMonad.setToolTipText("start edits");
+				    		btnSaveEdits.setEnabled(false);
+				        	btnUndoEdits.setEnabled(false);
+				    		makeNotWritable();
+				    		break;
+			default: 		_GUI._StatusBar.setStatusMsg("No Detectable Command at the Nyad Panel. No action.\n");
     	}
     }
     /**
@@ -772,14 +758,14 @@ import java.util.*;
     	cn0.ipadx=20;
     	pnlRefPanel.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot"))), cn0);
     	cn0.gridx++;
-    	nyadFoot.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	nyadFoot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
     	nyadFoot.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     	pnlRefPanel.add(nyadFoot, cn0);
     	cn0.gridx++;
     	
-    	pnlRefPanel.add(new JLabel("Order ", SwingConstants.RIGHT), cn0);
+    	pnlRefPanel.add(new JLabel("Order=", SwingConstants.RIGHT), cn0);
     	cn0.gridx++;
-    	//_order.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	nyadOrder.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
     	nyadOrder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     	pnlRefPanel.add(nyadOrder, cn0);
     	
@@ -911,11 +897,11 @@ import java.util.*;
 				switch (_repMode)
 				{
 					case REALF: 	_repNyadF.removeMonad(point);
-											break;
+									break;
 					case REALD: 	_repNyadD.removeMonad(point);
-											break;
+									break;
 					case COMPLEXF:	_repNyadCF.removeMonad(point);
-											break;
+									break;
 					case COMPLEXD:	_repNyadCD.removeMonad(point);
 				}
 				removeMonadTab(point);
@@ -930,30 +916,44 @@ import java.util.*;
 			_GUI._GeometryDisplay.removeNyadPanel(0);
 		}
     }
+    
+    private		void		setRepName()
+    {
+    	switch (_repMode)
+		{
+    		case REALF:		if (nyadName.getText() != _repNyadF.getName()) _repNyadF.setName(nyadName.getText());
+    						break;
+    		case REALD:		if (nyadName.getText() != _repNyadD.getName()) _repNyadD.setName(nyadName.getText());
+							break;
+    		case COMPLEXF:	if (nyadName.getText() != _repNyadCF.getName()) _repNyadCF.setName(nyadName.getText());
+							break;
+    		case COMPLEXD:	if (nyadName.getText() != _repNyadCD.getName()) _repNyadCD.setName(nyadName.getText());
+		}
+    }
 
 	private 	void 		setReferences()
     {
     	switch (_repMode)
     	{
     		case REALF:	nyadName.setText(_repNyadF.getName());
-    								protoXML.setText(_repNyadF.getProto().toXMLString());
-	    							nyadOrder.setText((new StringBuffer().append(_repNyadF.getMonadList().size())).toString());
-	    							nyadFoot.setText(_repNyadF.getFootPoint().getFootName());
-	    							break;
+    					protoXML.setText(_repNyadF.getProto().toXMLString());
+	    				nyadOrder.setText((new StringBuffer().append(_repNyadF.getMonadList().size())).toString());
+	    				nyadFoot.setText(_repNyadF.getFootPoint().getFootName());
+	    				break;
     		case REALD:	nyadName.setText(_repNyadD.getName());
-    								protoXML.setText(_repNyadD.getProto().toXMLString());
-	    							nyadOrder.setText((new StringBuffer().append(_repNyadD.getMonadList().size())).toString());
-	    							nyadFoot.setText(_repNyadD.getFootPoint().getFootName());
-	    							break;
+    					protoXML.setText(_repNyadD.getProto().toXMLString());
+	    				nyadOrder.setText((new StringBuffer().append(_repNyadD.getMonadList().size())).toString());
+	    				nyadFoot.setText(_repNyadD.getFootPoint().getFootName());
+	    				break;
     		case COMPLEXF:	nyadName.setText(_repNyadCF.getName());
-    								protoXML.setText(_repNyadCF.getProto().toXMLString());
-	    							nyadOrder.setText((new StringBuffer().append(_repNyadCF.getMonadList().size())).toString());
-	    							nyadFoot.setText(_repNyadCF.getFootPoint().getFootName());
-	    							break;
+    						protoXML.setText(_repNyadCF.getProto().toXMLString());
+	    					nyadOrder.setText((new StringBuffer().append(_repNyadCF.getMonadList().size())).toString());
+	    					nyadFoot.setText(_repNyadCF.getFootPoint().getFootName());
+	    					break;
     		case COMPLEXD: nyadName.setText(_repNyadCD.getName());
-    								protoXML.setText(_repNyadCD.getProto().toXMLString());
-	    							nyadOrder.setText((new StringBuffer().append(_repNyadCD.getMonadList().size())).toString());
-	    							nyadFoot.setText(_repNyadCD.getFootPoint().getFootName());
+    						protoXML.setText(_repNyadCD.getProto().toXMLString());
+	    					nyadOrder.setText((new StringBuffer().append(_repNyadCD.getMonadList().size())).toString());
+	    					nyadFoot.setText(_repNyadCD.getFootPoint().getFootName());
     	}
     }
 }

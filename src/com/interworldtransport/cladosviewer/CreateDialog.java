@@ -268,11 +268,11 @@ public class CreateDialog extends JDialog implements ActionListener
 	    	switch ((_GUI._GeometryDisplay.getNyadPanel(tSpot)).getRepMode())
 	    	{
 	    		case REALF:	copyFootTarget=_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadRF().getFootPoint();
-	    								break;
+	    					break;
 	    		case REALD:	copyFootTarget=_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadRD().getFootPoint();
-										break;
+							break;
 	    		case COMPLEXF:	copyFootTarget=_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadCF().getFootPoint();
-										break;
+								break;
 	    		case COMPLEXD:	copyFootTarget=_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadCD().getFootPoint();
 	    	}
 	    	mainPane.foot.setText(copyFootTarget.getFootName());
@@ -290,24 +290,24 @@ public class CreateDialog extends JDialog implements ActionListener
 	    	switch (tSpotNPanel.getRepMode())
 	    	{
 	    		case REALF:	copyAlgTargetRF=(tSpotNPanel.getMonadPanel(tSpotMonadIndex)).getMonadRF().getAlgebra();
-						    			mainPane.aname.setText(copyAlgTargetRF.getAlgebraName());
-							    		mainPane.foot.setText(copyAlgTargetRF.getFoot().getFootName());
-							    		mainPane.sig.setText(copyAlgTargetRF.getGProduct().getSignature());
-	    								break;
+						   	mainPane.aname.setText(copyAlgTargetRF.getAlgebraName());
+							mainPane.foot.setText(copyAlgTargetRF.getFoot().getFootName());
+							mainPane.sig.setText(copyAlgTargetRF.getGProduct().getSignature());
+							break;
 	    		case REALD:	copyAlgTargetRD=(tSpotNPanel.getMonadPanel(tSpotMonadIndex)).getMonadRD().getAlgebra();
-						    			mainPane.aname.setText(copyAlgTargetRD.getAlgebraName());
-							    		mainPane.foot.setText(copyAlgTargetRD.getFoot().getFootName());
-							    		mainPane.sig.setText(copyAlgTargetRD.getGProduct().getSignature());
-										break;
+						    mainPane.aname.setText(copyAlgTargetRD.getAlgebraName());
+							mainPane.foot.setText(copyAlgTargetRD.getFoot().getFootName());
+							mainPane.sig.setText(copyAlgTargetRD.getGProduct().getSignature());
+							break;
 	    		case COMPLEXF:	copyAlgTargetCF=(tSpotNPanel.getMonadPanel(tSpotMonadIndex)).getMonadCF().getAlgebra();
-						    			mainPane.aname.setText(copyAlgTargetCF.getAlgebraName());
-							    		mainPane.foot.setText(copyAlgTargetCF.getFoot().getFootName());
-							    		mainPane.sig.setText(copyAlgTargetCF.getGProduct().getSignature());
-										break;
+						    	mainPane.aname.setText(copyAlgTargetCF.getAlgebraName());
+							    mainPane.foot.setText(copyAlgTargetCF.getFoot().getFootName());
+							    mainPane.sig.setText(copyAlgTargetCF.getGProduct().getSignature());
+								break;
 	    		case COMPLEXD:	copyAlgTargetCD=(tSpotNPanel.getMonadPanel(tSpotMonadIndex)).getMonadCD().getAlgebra();
-						    			mainPane.aname.setText(copyAlgTargetCD.getAlgebraName());
-							    		mainPane.foot.setText(copyAlgTargetCD.getFoot().getFootName());
-							    		mainPane.sig.setText(copyAlgTargetCD.getGProduct().getSignature());
+						    	mainPane.aname.setText(copyAlgTargetCD.getAlgebraName());
+							    mainPane.foot.setText(copyAlgTargetCD.getFoot().getFootName());
+							    mainPane.sig.setText(copyAlgTargetCD.getGProduct().getSignature());
 	    	}
 	    	return;
     	}
@@ -319,20 +319,20 @@ public class CreateDialog extends JDialog implements ActionListener
 	    		switch (_repMode)
 	    		{
 	    			case REALF:	boolean testRF = appendNyadRF();
-							    			if (!testRF)
-												_GUI._StatusBar.setStatusMsg("\n\nSave new nyadRF failed at createDialog...");
-	    									break;
+							    if (!testRF)
+									_GUI._StatusBar.setStatusMsg("\n\nSave new nyadRF failed at createDialog...");
+	    						break;
 	    			case REALD:	boolean testRD = appendNyadRD();
-							    			if (!testRD)
-												_GUI._StatusBar.setStatusMsg("\n\nSave new nyadRD failed at createDialog...");
-											break;
+							    if (!testRD)
+									_GUI._StatusBar.setStatusMsg("\n\nSave new nyadRD failed at createDialog...");
+								break;
 	    			case COMPLEXF:	boolean testCF = appendNyadCF();
-							    			if (!testCF)
-												_GUI._StatusBar.setStatusMsg("\n\nSave new nyadCF failed at createDialog...");
-											break;
+							    	if (!testCF)
+										_GUI._StatusBar.setStatusMsg("\n\nSave new nyadCF failed at createDialog...");
+									break;
 	    			case COMPLEXD:	boolean testCD = appendNyadCD();
-							    			if (!testCD)
-												_GUI._StatusBar.setStatusMsg("\n\nSave new nyadCD failed at createDialog...");
+							    	if (!testCD)
+										_GUI._StatusBar.setStatusMsg("\n\nSave new nyadCD failed at createDialog...");
 				}
 	    	}
 			catch (UtilitiesException e)
@@ -368,20 +368,20 @@ public class CreateDialog extends JDialog implements ActionListener
     		switch (_GUI._GeometryDisplay.getNyadPanel(tSpot).getRepMode())
     		{
     			case REALF:	boolean testRF = appendMonadRF(	_GUI._GeometryDisplay.getNyadPanel(tSpot), 
-    																	_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadRF());
-    									if (!testRF) _GUI._StatusBar.setStatusMsg("\n\nSave new monadRF on old nyad failed at createDialog...");
-    									break;
+    														_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadRF());
+    						if (!testRF) _GUI._StatusBar.setStatusMsg("\n\nSave new monadRF on old nyad failed at createDialog...");
+    						break;
     			case REALD:	boolean testRD = appendMonadRD(	_GUI._GeometryDisplay.getNyadPanel(tSpot), 
-																		_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadRD());
-    									if (!testRD) _GUI._StatusBar.setStatusMsg("\n\nSave new monadRD on old nyad failed at createDialog...");
-    									break;
+															_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadRD());
+    						if (!testRD) _GUI._StatusBar.setStatusMsg("\n\nSave new monadRD on old nyad failed at createDialog...");
+    						break;
     			case COMPLEXF:	boolean testCF = appendMonadCF(	_GUI._GeometryDisplay.getNyadPanel(tSpot), 
-																		_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadCF());
-    									if (!testCF) _GUI._StatusBar.setStatusMsg("\n\nSave new monadCF on old nyad failed at createDialog...");
-										break;
+																_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadCF());
+    							if (!testCF) _GUI._StatusBar.setStatusMsg("\n\nSave new monadCF on old nyad failed at createDialog...");
+								break;
     			case COMPLEXD:	boolean testCD = appendMonadCD(	_GUI._GeometryDisplay.getNyadPanel(tSpot), 
-    																	_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadCD());
-    									if (!testCD) _GUI._StatusBar.setStatusMsg("\n\nSave new monadCF on old nyad failed at createDialog...");
+    															_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadCD());
+    							if (!testCD) _GUI._StatusBar.setStatusMsg("\n\nSave new monadCF on old nyad failed at createDialog...");
     		}
     		return;
     	}

@@ -50,16 +50,15 @@ import com.interworldtransport.cladosviewerExceptions.*;
  */
 public class FieldDisplay extends JTextArea implements FocusListener
 {
-
-	public static final int 	DOUBLESIZE=16;
-	public static final int 	FLOATSIZE=10;
-	public static final String	IMAGINARY="[I]";
-	public static final String 	REAL="[R]";
-	private static final long 	serialVersionUID = 1L;
+	private static final long 	serialVersionUID = 9025876827548262896L;
+	private static final int 	_FONTSIZE = 	12;
+	private static final int 	_DOUBLESIZE =	16;
+	private static final int 	_FLOATSIZE =	10;
+	private static final String	_IMAGINARY =	"[I]";
+	private static final String _REAL =			"[R]";
 	
-	//private			FieldPanel	_editField;
 	private			MonadPanel	_parent;
-	protected		CladosField	_repMode;
+	private			CladosField	_repMode;
 	/**
 	 * The displayField is a copy of the cladosF magnitude that can be safely displayed
 	 * and manipulated without harming the cladosG object using the original magnitude.
@@ -93,14 +92,14 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	 */
 	public FieldDisplay(ComplexD pField, MonadPanel pParent) throws UtilitiesException
 	{
-		super(2, FieldDisplay.DOUBLESIZE);
+		super(2, FieldDisplay._DOUBLESIZE);
 		_parent=pParent;
 		if (pField == null)
 			throw new UtilitiesException("FieldArea must receive valid DivField on construction.");
 	    
 
 	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+		setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
 		displayFieldCD = pField;
 		_repMode = CladosField.COMPLEXD;
 		addFocusListener(this);
@@ -117,14 +116,14 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	 */
 	public FieldDisplay(ComplexF pField, MonadPanel pParent) throws UtilitiesException
 	{
-		super(2, FieldDisplay.FLOATSIZE);
+		super(2, FieldDisplay._FLOATSIZE);
 		_parent = pParent;
 		if (pField == null)
 			throw new UtilitiesException("FieldArea must receive valid DivField on construction.");
 	    
 
 	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+		setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
 		displayFieldCF = pField;
 		_repMode = CladosField.COMPLEXF;
 		addFocusListener(this);
@@ -141,13 +140,13 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	 */
 	public FieldDisplay(RealD pField, MonadPanel pParent) throws UtilitiesException
 	{
-		super(1, FieldDisplay.DOUBLESIZE);
+		super(1, FieldDisplay._DOUBLESIZE);
 		_parent = pParent;
 		if (pField == null)
 			throw new UtilitiesException("FieldArea must receive valid DivField on construction.");
 	    
 	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+		setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
 		displayFieldRD = pField;
 		_repMode = CladosField.REALD;
 		addFocusListener(this);
@@ -164,13 +163,13 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	 */
 	public FieldDisplay(RealF pField, MonadPanel pParent) throws UtilitiesException
 	{
-		super(1, FieldDisplay.FLOATSIZE);
+		super(1, FieldDisplay._FLOATSIZE);
 		_parent = pParent;
 		if (pField == null)
 			throw new UtilitiesException("FieldArea must receive valid DivField on construction.");
 	    
 	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+		setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
 		displayFieldRF = pField;
 		_repMode = CladosField.REALF;
 		addFocusListener(this);
@@ -178,20 +177,20 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	
 	public void displayContents() //throws BadLocationException
 	{		
-		StringBuffer str = new StringBuffer().append(FieldDisplay.REAL);
+		StringBuffer str = new StringBuffer().append(FieldDisplay._REAL);
 		switch (_repMode)
 		{
 			case REALF:	str.append(displayFieldRF.getReal());
-									setText(str.toString());
-									break;
+						setText(str.toString());
+						break;
 			case REALD:	str.append(displayFieldRD.getReal());
-									setText(str.toString());
-									break;
-			case COMPLEXF:	str.append(displayFieldCF.getReal()).append("\n"+FieldDisplay.IMAGINARY).append(displayFieldCF.getImg());
-									setText(str.toString());
-									break;
-			case COMPLEXD:	str.append(displayFieldCD.getReal()).append("\n"+FieldDisplay.IMAGINARY).append(displayFieldCD.getImg());
-									setText(str.toString());
+						setText(str.toString());
+						break;
+			case COMPLEXF:	str.append(displayFieldCF.getReal()).append("\n"+FieldDisplay._IMAGINARY).append(displayFieldCF.getImg());
+							setText(str.toString());
+							break;
+			case COMPLEXD:	str.append(displayFieldCD.getReal()).append("\n"+FieldDisplay._IMAGINARY).append(displayFieldCD.getImg());
+							setText(str.toString());
 		}
 	}
 	
@@ -203,17 +202,17 @@ public class FieldDisplay extends JTextArea implements FocusListener
 		{
 			switch (_parent.getRepMode())
 			{
-				case REALF: 	displayFieldRF = RealF.copyOf(_parent._GUI._FieldBar._repRealF);
-										displayContents();
-										break;
-				case REALD: 	displayFieldRD = RealD.copyOf(_parent._GUI._FieldBar._repRealD);
-										displayContents();
-										break;
+				case REALF: displayFieldRF = RealF.copyOf(_parent._GUI._FieldBar._repRealF);
+							displayContents();
+							break;
+				case REALD: displayFieldRD = RealD.copyOf(_parent._GUI._FieldBar._repRealD);
+							displayContents();
+							break;
 				case COMPLEXF:	displayFieldCF = ComplexF.copyOf(_parent._GUI._FieldBar._repComplexF);
-										displayContents();
-										break;
+								displayContents();
+								break;
 				case COMPLEXD:	displayFieldCD = ComplexD.copyOf(_parent._GUI._FieldBar._repComplexD);
-										displayContents();
+								displayContents();
 			}
 		}		
 	}
@@ -227,30 +226,30 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	{
 		try 
 		{
-			int tR=FieldDisplay.REAL.length();
-			int tI=FieldDisplay.IMAGINARY.length();
+			int tR=FieldDisplay._REAL.length();
+			int tI=FieldDisplay._IMAGINARY.length();
 			
 			StringBuilder strB = new StringBuilder(getText());
 			int tBufferLength = strB.length();
 			if (tBufferLength == 0 ) return; // Nothing to save, so surrender.
-			int indexOfR = strB.indexOf(FieldDisplay.REAL)+tR;
-			int indexOfI = strB.indexOf(FieldDisplay.IMAGINARY)+tI;
+			int indexOfR = strB.indexOf(FieldDisplay._REAL)+tR;
+			int indexOfI = strB.indexOf(FieldDisplay._IMAGINARY)+tI;
 			
 			switch (_repMode)
 			{
 				case REALF:	float tSpotRF = Float.parseFloat(strB.substring(indexOfR, tBufferLength));
-										displayFieldRF=new RealF(displayFieldRF.getCardinal(), tSpotRF);
-										break;
+							displayFieldRF=new RealF(displayFieldRF.getCardinal(), tSpotRF);
+							break;
 				case REALD:	double tSpotRD = Double.parseDouble(strB.substring(indexOfR, tBufferLength));
-										displayFieldRD=new RealD(displayFieldRD.getCardinal(), tSpotRD);
-										break;
+							displayFieldRD=new RealD(displayFieldRD.getCardinal(), tSpotRD);
+							break;
 				case COMPLEXF:	float tSpotCF1 = Float.parseFloat(strB.substring(indexOfR, indexOfI-tI-1));
-										float tSpotCF2 = Float.parseFloat(strB.substring(indexOfI, tBufferLength));
-										displayFieldCF=new ComplexF(displayFieldCF.getCardinal(), tSpotCF1, tSpotCF2);
-										break;
+								float tSpotCF2 = Float.parseFloat(strB.substring(indexOfI, tBufferLength));
+								displayFieldCF=new ComplexF(displayFieldCF.getCardinal(), tSpotCF1, tSpotCF2);
+								break;
 				case COMPLEXD:	double tSpotCD1 = Double.parseDouble(strB.substring(indexOfR, indexOfI-tI-1));
-										double tSpotCD2 = Double.parseDouble(strB.substring(indexOfI, tBufferLength));
-										displayFieldCD=new ComplexD(displayFieldCD.getCardinal(), tSpotCD1, tSpotCD2);
+								double tSpotCD2 = Double.parseDouble(strB.substring(indexOfI, tBufferLength));
+								displayFieldCD=new ComplexD(displayFieldCD.getCardinal(), tSpotCD1, tSpotCD2);
 			}
 			setFont(new Font(Font.SERIF, Font.PLAIN, 10));
 			displayContents();

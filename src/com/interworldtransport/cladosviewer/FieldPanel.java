@@ -58,10 +58,20 @@ import javax.swing.border.BevelBorder;
 
  public class FieldPanel extends JPanel implements ActionListener, FocusListener
  {
-	private static final long 					serialVersionUID = 1473044880763412386L;
-	public				CladosCalculator		_GUI;
+	private static final long 					serialVersionUID = -6988601261409935965L;
+	private static final int 					FONTSIZE = 			12;
+	private static final int 					_DOUBLESIZE = 		16;
+	private static final int 					_FLOATSIZE =	 	10;
+	private static final String					_IMAGINARY =		"[I]";
+	private static final String 				_REAL =				"[R]";
+	private	static final Color					clrBackColor = 		new Color(230, 255, 255);
+	private	static final Color					clrNullColor = 		new Color(255, 230, 255);
+	private	static final Dimension				squareLarge =		new Dimension(42,42);
+	private	static final Dimension				squareMedium =		new Dimension(21,21);
+	
+	private				CladosCalculator		_GUI;
 	private				CladosField				_repMode;
-	private		final	String[]				_valLabels= {"R", "I"};
+	private		final	String[]				_valLabels= {_REAL, _IMAGINARY};
 	private				JButton					btnClear;
 	private				JButton					btnConjugate;
 	private				JButton					btnInverse;
@@ -69,13 +79,8 @@ import javax.swing.border.BevelBorder;
 	private				JButton					btnMakeDouble;
 	private				JButton					btnMakeFloat;
 	private				JButton					btnMakeReal;
-	private		final	Color					clrBackColor = new Color(230, 255, 255);
-	private		final	Color					clrNullColor = new Color(255, 230, 255);
-   // private				JLabel 					fieldDisplay = new JLabel();
 	private				JPanel					pnlButtons;
 	private				JPanel					pnlDisplays;
-	private		final	Dimension				squareLarge=new Dimension(42,42);
-	private		final	Dimension				squareMedium=new Dimension(21,21);
 	private				ArrayList<JTextField>	valDisplays;
 	protected			ComplexD				_repComplexD;
 	protected			ComplexF				_repComplexF;
@@ -215,26 +220,26 @@ import javax.swing.border.BevelBorder;
 	    		switch (_repMode)
 	    		{
 	    			case REALF:	_repRealF = new RealF(	_repRealF.getCardinal(), 
-	    															Float.parseFloat(getRealText())
-	    															);
-	    									setCoefficientDisplay(_repRealF.conjugate());
-	    									break;
+	    												Float.parseFloat(getRealText())
+	    												);
+	    						setCoefficientDisplay(_repRealF.conjugate());
+	    						break;
 	    			case REALD:	_repRealD = new RealD(	_repRealD.getCardinal(), 
-	    															Double.parseDouble(getRealText())
-	    															);
-											setCoefficientDisplay(_repRealD.conjugate());
-											break;
+	    												Double.parseDouble(getRealText())
+	    												);
+								setCoefficientDisplay(_repRealD.conjugate());
+								break;
 	    			case COMPLEXF:	_repComplexF = new ComplexF(_repComplexF.getCardinal(), 
-	    																Float.parseFloat(getRealText()), 
-	    																Float.parseFloat(getImgText())
-	    																);
-	    									setCoefficientDisplay(_repComplexF.conjugate());
-											break;
+	    														Float.parseFloat(getRealText()), 
+	    														Float.parseFloat(getImgText())
+	    														);
+	    							setCoefficientDisplay(_repComplexF.conjugate());
+									break;
 	    			case COMPLEXD:	_repComplexD = new ComplexD(_repComplexD.getCardinal(), 
-	    																Double.parseDouble(getRealText()), 
-	    																Double.parseDouble(getImgText())
-	    																);
-											setCoefficientDisplay(_repComplexD.conjugate());
+	    														Double.parseDouble(getRealText()), 
+	    														Double.parseDouble(getImgText())
+	    														);
+									setCoefficientDisplay(_repComplexD.conjugate());
 	    		}
     		}
     		catch (NumberFormatException en)
@@ -250,26 +255,26 @@ import javax.swing.border.BevelBorder;
 	    		switch (_repMode)
 	    		{
 	    			case REALF:	_repRealF = new RealF(	_repRealF.getCardinal(),
-	    															Float.parseFloat(getRealText())
-	    															);
-	    									setCoefficientDisplay(_repRealF.invert());
-	    									break;
+	    												Float.parseFloat(getRealText())
+	    												);
+	    						setCoefficientDisplay(_repRealF.invert());
+	    						break;
 	    			case REALD:	_repRealD = new RealD(	_repRealD.getCardinal(),
-	    															Double.parseDouble(getRealText())
-	    															);
-											setCoefficientDisplay(_repRealD.invert());
-											break;
+	    												Double.parseDouble(getRealText())
+	    												);
+								setCoefficientDisplay(_repRealD.invert());
+								break;
 	    			case COMPLEXF:	_repComplexF = new ComplexF(_repComplexF.getCardinal(), 
-	    																Float.parseFloat(getRealText()), 
-	    																Float.parseFloat(getImgText())
-	    																);
-	    									setCoefficientDisplay(_repComplexF.invert());
-											break;
+	    														Float.parseFloat(getRealText()), 
+	    														Float.parseFloat(getImgText())
+	    														);
+	    							setCoefficientDisplay(_repComplexF.invert());
+									break;
 	    			case COMPLEXD:	_repComplexD = new ComplexD(_repComplexD.getCardinal(),  
-	    																Double.parseDouble(getRealText()), 
-	    																Double.parseDouble(getImgText())
-	    																);
-											setCoefficientDisplay(_repComplexD.invert());
+	    														Double.parseDouble(getRealText()), 
+	    														Double.parseDouble(getImgText())
+	    														);
+									setCoefficientDisplay(_repComplexD.invert());
 	    		}
     		}
     		catch (FieldException e)
@@ -371,20 +376,20 @@ import javax.swing.border.BevelBorder;
 		switch (_repMode)
 		{
 			case REALF:	if (_repRealF != null) setRealText(Float.valueOf(_repRealF.getReal()).toString());
-									break;
+						break;
 			case REALD:	if (_repRealD != null) setRealText(Double.valueOf(_repRealD.getReal()).toString());
-									break;
+						break;
 			case COMPLEXF:	if (_repComplexD != null)
-									{
-										setRealText(Float.valueOf(_repComplexF.getReal()).toString());
-										setImgText(Float.valueOf(_repComplexF.getImg()).toString());
-									}
-									break;
+							{
+								setRealText(Float.valueOf(_repComplexF.getReal()).toString());
+								setImgText(Float.valueOf(_repComplexF.getImg()).toString());
+							}
+							break;
 			case COMPLEXD:	if (_repComplexD != null)
-									{
-										setRealText(Double.valueOf(_repComplexD.getReal()).toString());
-										setImgText(Double.valueOf(_repComplexD.getImg()).toString());
-									}
+							{
+								setRealText(Double.valueOf(_repComplexD.getReal()).toString());
+								setImgText(Double.valueOf(_repComplexD.getImg()).toString());
+							}
 		}
 	}
     /**
@@ -405,20 +410,20 @@ import javax.swing.border.BevelBorder;
 			switch (_repMode)
 			{
 				case REALF:	if (_repRealF != null) _repRealF.setReal(Float.parseFloat(getRealText()));
-										break;
+							break;
 				case REALD:	if (_repRealD != null) _repRealD.setReal(Double.parseDouble(getRealText()));
-										break;
+							break;
 				case COMPLEXF:	if (_repComplexF != null) 
-										{
-											_repComplexF.setReal(Float.parseFloat(getRealText()));
-											_repComplexF.setImg(Float.parseFloat(getImgText()));
-										}
-										break;
+								{
+									_repComplexF.setReal(Float.parseFloat(getRealText()));
+									_repComplexF.setImg(Float.parseFloat(getImgText()));
+								}
+								break;
 				case COMPLEXD:	if (_repComplexD != null) 
-										{
-											_repComplexD.setReal(Double.parseDouble(getRealText()));
-											_repComplexD.setImg(Double.parseDouble(getImgText()));
-										}
+								{
+									_repComplexD.setReal(Double.parseDouble(getRealText()));
+									_repComplexD.setImg(Double.parseDouble(getImgText()));
+								}
 			}
 		}
 		catch (NumberFormatException en)
@@ -427,25 +432,25 @@ import javax.swing.border.BevelBorder;
 		}
 
 	}
-	public void	setRealText(String pIn)
-    {
-    	valDisplays.get(0).setText(pIn);
-    }
-	public void	setImgText(String pIn)
-    {
-    	valDisplays.get(1).setText(pIn);
-    }
-    public String	getImgText()
+	public String	getImgText()
     {
     	return valDisplays.get(1).getText();
     }
-    public String	getRealText()
+	public String	getRealText()
     {
     	return valDisplays.get(0).getText();
     }
     public CladosField	getRepMode()
     {
     	return _repMode;
+    }
+    public void	setImgText(String pIn)
+    {
+    	valDisplays.get(1).setText(pIn);
+    }
+    public void	setRealText(String pIn)
+    {
+    	valDisplays.get(0).setText(pIn);
     }
     /**
      * This 'set' function simply sets the displayed number (a double) into the first imaginary display text field.
@@ -623,110 +628,104 @@ import javax.swing.border.BevelBorder;
     	switch (_repMode)
     	{
     		case REALF:	for (short m=0; m<1; m++)
-									{
-							    		pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
-							    		c2.gridy++;
-									}
-    								btnMakeComplex.setEnabled(true);
-    								btnMakeReal.setEnabled(false);
-    								break;
+						{
+							pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
+							c2.gridy++;
+						}
+    					btnMakeComplex.setEnabled(true);
+    					btnMakeReal.setEnabled(false);
+    					break;
     		case REALD:	for (short m=0; m<1; m++)
-									{
-    									pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
-							    		c2.gridy++;
-									}
-									btnMakeComplex.setEnabled(true);
-									btnMakeReal.setEnabled(false);
-									break;
+						{
+    						pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
+							c2.gridy++;
+						}
+						btnMakeComplex.setEnabled(true);
+						btnMakeReal.setEnabled(false);
+						break;
     		case COMPLEXF:	for (short m=0; m<2; m++)
-									{
-    									pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
-							    		c2.gridy++;
-									}
-									btnMakeComplex.setEnabled(false);
-									btnMakeReal.setEnabled(true);
-									break;
+							{
+    							pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
+							  		c2.gridy++;
+							}
+							btnMakeComplex.setEnabled(false);
+							btnMakeReal.setEnabled(true);
+							break;
     		case COMPLEXD:	for (short m=0; m<2; m++)
-									{
-    									pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
-							    		c2.gridy++;
-									}
-									btnMakeComplex.setEnabled(false);
-									btnMakeReal.setEnabled(true);
+							{
+    							pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
+							  		c2.gridy++;
+							}
+							btnMakeComplex.setEnabled(false);
+							btnMakeReal.setEnabled(true);
     	}
 
     	c2.gridy=0;
     	c2.gridx++;
-    	
-    	//fieldDisplay.setColumns(20);
-    	//fieldDisplay.setFont(new Font("Serif", Font.PLAIN, 14));
-    	//fieldDisplay.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-    	//pnlDisplays.add(fieldDisplay, c2);
-		//c2.gridx++;
 		
 		int m;
 		JTextField tSpot;
 		switch (_repMode)
 		{
 			case REALF: 	valDisplays= new ArrayList<JTextField>(1);
-									for (m=0; m<1; m++)
-									{
-										tSpot = new JTextField();
-										tSpot.setColumns(FieldDisplay.FLOATSIZE);
-							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
-							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-							    		tSpot.addFocusListener(this);
-							    		valDisplays.add(m, tSpot);
-							    		pnlDisplays.add(tSpot, c2);
-							    		c2.gridy++;
-									}
-									btnMakeFloat.setEnabled(false);
-									btnMakeDouble.setEnabled(true);
-									break;
+							for (m=0; m<1; m++)
+							{
+								tSpot = new JTextField();
+								tSpot.setColumns(FieldPanel._FLOATSIZE);
+					    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, FONTSIZE));
+					    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+					    		tSpot.addFocusListener(this);
+					    		valDisplays.add(m, tSpot);
+					    		pnlDisplays.add(tSpot, c2);
+					    		c2.gridy++;
+							}
+							btnMakeFloat.setEnabled(false);
+							btnMakeDouble.setEnabled(true);
+							break;
 			case REALD: 	valDisplays= new ArrayList<JTextField>(1);
-									for (m=0; m<1; m++)
-									{
-										tSpot = new JTextField();
-										tSpot.setColumns(FieldDisplay.DOUBLESIZE);
-							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
-							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-							    		tSpot.addFocusListener(this);
-							    		valDisplays.add(m, tSpot);
-							    		pnlDisplays.add(tSpot, c2);
-							    		c2.gridy++;
-									}
-									btnMakeFloat.setEnabled(true);
-									btnMakeDouble.setEnabled(false);
-									break;
+							for (m=0; m<1; m++)
+							{
+								tSpot = new JTextField();
+								tSpot.setColumns(FieldPanel._DOUBLESIZE);
+					    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, FONTSIZE));
+					    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+					    		tSpot.addFocusListener(this);
+					    		valDisplays.add(m, tSpot);
+					    		pnlDisplays.add(tSpot, c2);
+					    		c2.gridy++;
+							}
+							btnMakeFloat.setEnabled(true);
+							btnMakeDouble.setEnabled(false);
+							break;
 			case COMPLEXF:	valDisplays= new ArrayList<JTextField>(2);
-									for (m=0; m<2; m++)
-									{
-										tSpot = new JTextField();
-										tSpot.setColumns(FieldDisplay.FLOATSIZE);
-							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
-							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-							    		tSpot.addFocusListener(this);
-							    		valDisplays.add(m, tSpot);
-							    		pnlDisplays.add(tSpot, c2);
-							    		c2.gridy++;
-									}
-									btnMakeFloat.setEnabled(false);
-									btnMakeDouble.setEnabled(true);
-									break;
+							for (m=0; m<2; m++)
+							{
+								tSpot = new JTextField();
+								tSpot.setColumns(FieldPanel._FLOATSIZE);
+					    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, FONTSIZE));
+					    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+					    		tSpot.addFocusListener(this);
+					    		valDisplays.add(m, tSpot);
+					    		pnlDisplays.add(tSpot, c2);
+					    		c2.gridy++;
+							}
+							btnMakeFloat.setEnabled(false);
+							btnMakeDouble.setEnabled(true);
+							break;
 			case COMPLEXD:	valDisplays= new ArrayList<JTextField>(2);
-									for (m=0; m<2; m++)
-									{
-										tSpot = new JTextField();
-										tSpot.setColumns(FieldDisplay.DOUBLESIZE);
-							    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
-							    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-							    		tSpot.addFocusListener(this);
-							    		valDisplays.add(m, tSpot);
-							    		pnlDisplays.add(tSpot, c2);
-							    		c2.gridy++;
-									}
-									btnMakeFloat.setEnabled(true);
-									btnMakeDouble.setEnabled(false);
+							for (m=0; m<2; m++)
+							{
+								tSpot = new JTextField();
+								tSpot.setColumns(FieldPanel._DOUBLESIZE);
+					    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, FONTSIZE));
+					    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+					    		tSpot.addFocusListener(this);
+					    		valDisplays.add(m, tSpot);
+					    		pnlDisplays.add(tSpot, c2);
+					    		c2.gridy++;
+							}
+							btnMakeFloat.setEnabled(true);
+							btnMakeDouble.setEnabled(false);
 		}
 		
 	}
@@ -741,6 +740,20 @@ import javax.swing.border.BevelBorder;
 	    _repComplexD = null;
 	}
 	
+    protected void 	makeNotWritable()
+    {
+    	//fieldDisplay.setEditable(false);
+    	if (valDisplays != null)
+    		for (JTextField point : valDisplays)
+    			point.setEditable(false);
+    }
+    protected void 	makeWritable()
+    {
+    	//fieldDisplay.setEditable(true);
+    	if (valDisplays != null)
+    		for (JTextField point : valDisplays)
+    			point.setEditable(true);
+    }
     /**
      * This 'set' function simply adjusts the displayed complex number by accepting an input
      * and then pushing those parts to values stored in the panel. 
@@ -815,7 +828,7 @@ import javax.swing.border.BevelBorder;
 		    	setBackground(clrNullColor);
     	}
     }
-    /**
+	/**
      * This 'set' function simply accepts a DivField used as context for the division field being displayed.
      * <p>
      * @param pField
@@ -833,7 +846,7 @@ import javax.swing.border.BevelBorder;
 		    	setBackground(clrNullColor);
     	}
 	}
-    /**
+	/**
      * This 'set' function simply accepts a DivField used as context for the division field being displayed.
      * <p>
      * @param pField
@@ -851,7 +864,7 @@ import javax.swing.border.BevelBorder;
 		    	setBackground(clrNullColor);
     	}
 	}
-	/**
+    /**
      * This 'set' function simply accepts a DivField used as context for the division field being displayed.
      * <p>
      * @param pField
@@ -869,7 +882,7 @@ import javax.swing.border.BevelBorder;
 		    	setBackground(clrNullColor);
     	}
 	}
-	/**
+    /**
      * This 'set' function simply accepts a DivField used as context for the division field being displayed.
      * <p>
      * @param pField
@@ -887,18 +900,4 @@ import javax.swing.border.BevelBorder;
 		    	setBackground(clrNullColor);
     	}
 	}
-    protected void 	makeNotWritable()
-    {
-    	//fieldDisplay.setEditable(false);
-    	if (valDisplays != null)
-    		for (JTextField point : valDisplays)
-    			point.setEditable(false);
-    }
-    protected void 	makeWritable()
-    {
-    	//fieldDisplay.setEditable(true);
-    	if (valDisplays != null)
-    		for (JTextField point : valDisplays)
-    			point.setEditable(true);
-    }
 }
