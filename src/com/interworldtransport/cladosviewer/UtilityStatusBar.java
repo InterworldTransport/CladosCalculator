@@ -43,11 +43,13 @@ import javax.swing.*;
 
  public class UtilityStatusBar extends JPanel implements ActionListener
  {
+	private	static final 	int 			_FONTSIZE =		10;
+    private	static final	Color			_backColor = 	new Color(255, 255, 222);
+    private static final	Dimension 		square = 		new Dimension(25,25);
 	private				CladosCalculator	_GUI;
 	private				JTextArea			stmesgt;
 	private				JButton				clearIt;
-    private		final	Color				_backColor = new Color(255, 255, 222);
-    private 	final	Dimension 			square = new Dimension(25,25);
+
 
 /**
  * The UtilityStatusBar class is intended to be the status bar of the SailAway
@@ -75,7 +77,7 @@ import javax.swing.*;
     	add(clearIt, BorderLayout.LINE_START);
 		
 		stmesgt = new JTextArea(10, 40);
-		stmesgt.setFont(new Font("Serif", Font.PLAIN, 10));
+		stmesgt.setFont(new Font("Serif", Font.PLAIN, _FONTSIZE));
 		stmesgt.setLineWrap(true);
 		stmesgt.setWrapStyleWord(true);
 		add(new JScrollPane(stmesgt), BorderLayout.CENTER);

@@ -702,7 +702,7 @@ import java.util.*;
     			case REALF:	for (j=0; j<_repMonadF.getAlgebra().getGProduct().getGradeCount(); j++)
 						    {
 			    				headLabel = new JLabel(j+"-blades", SwingConstants.CENTER);
-			        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
+			        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, COEFF_SIZE));
 			        			pnlMonadCoeffPanel.add(headLabel, cn1);
 			        			cn1.gridy++;
 			        			
@@ -720,7 +720,7 @@ import java.util.*;
     			case REALD:	for (j=0; j<_repMonadD.getAlgebra().getGProduct().getGradeCount(); j++)
 						    {
 			    				headLabel = new JLabel(j+"-blades", SwingConstants.CENTER);
-			        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
+			        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, COEFF_SIZE));
 			        			pnlMonadCoeffPanel.add(headLabel, cn1);
 			        			cn1.gridy++;
 			        			
@@ -738,7 +738,7 @@ import java.util.*;
     			case COMPLEXF:	for (j=0; j<_repMonadCF.getAlgebra().getGProduct().getGradeCount(); j++)
 						        {
 				    				headLabel = new JLabel(j+"-blades", SwingConstants.CENTER);
-				        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
+				        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, COEFF_SIZE));
 				        			pnlMonadCoeffPanel.add(headLabel, cn1);
 				        			cn1.gridy++;
 				        			
@@ -756,7 +756,7 @@ import java.util.*;
     			case COMPLEXD:	for (j=0; j<_repMonadCD.getAlgebra().getGProduct().getGradeCount(); j++)
 						        {
 				    				headLabel = new JLabel(j+"-blades", SwingConstants.CENTER);
-				        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
+				        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, COEFF_SIZE));
 				        			pnlMonadCoeffPanel.add(headLabel, cn1);
 				        			cn1.gridy++;
 				        			
@@ -784,7 +784,7 @@ import java.util.*;
     			case REALF:	for (j=0; j<_repMonadF.getAlgebra().getGProduct().getGradeCount(); j++)
 			    			{
 			        			headLabel = new JLabel(j+"-blades", SwingConstants.RIGHT);
-			        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
+			        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, COEFF_SIZE));
 			        			pnlMonadCoeffPanel.add(headLabel, cn1);
 			        			cn1.gridx++;
 			        			
@@ -802,7 +802,7 @@ import java.util.*;
     			case REALD:	for (j=0; j<_repMonadD.getAlgebra().getGProduct().getGradeCount(); j++)
 			    			{
 			        			headLabel = new JLabel(j+"-blades", SwingConstants.RIGHT);
-			        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
+			        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, COEFF_SIZE));
 			        			pnlMonadCoeffPanel.add(headLabel, cn1);
 			        			cn1.gridx++;
 			        			
@@ -820,7 +820,7 @@ import java.util.*;
     			case COMPLEXF:	for (j=0; j<_repMonadCF.getAlgebra().getGProduct().getGradeCount(); j++)
 				    			{
 				        			headLabel = new JLabel(j+"-blades", SwingConstants.RIGHT);
-				        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
+				        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, COEFF_SIZE));
 				        			pnlMonadCoeffPanel.add(headLabel, cn1);
 				        			cn1.gridx++;
 				        			
@@ -838,7 +838,7 @@ import java.util.*;
     			case COMPLEXD:	for (j=0; j<_repMonadCD.getAlgebra().getGProduct().getGradeCount(); j++)
 				    			{
 				        			headLabel = new JLabel(j+"-blades", SwingConstants.RIGHT);
-				        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, MonadPanel.COEFF_SIZE));
+				        			headLabel.setFont(new Font(Font.SERIF, Font.PLAIN, COEFF_SIZE));
 				        			pnlMonadCoeffPanel.add(headLabel, cn1);
 				        			cn1.gridx++;
 				        			
@@ -1110,7 +1110,7 @@ import java.util.*;
     	
     	pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Frame"))), cn0);
     	cn0.gridx++;
-    	frame.setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+    	frame.setFont(new Font(Font.SERIF, Font.PLAIN, COEFF_SIZE));
     	pnlMonadReferences.add(frame, cn0);
     	
     	add(pnlMonadReferences,"South");

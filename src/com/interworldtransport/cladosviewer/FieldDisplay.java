@@ -251,12 +251,12 @@ public class FieldDisplay extends JTextArea implements FocusListener
 								double tSpotCD2 = Double.parseDouble(strB.substring(indexOfI, tBufferLength));
 								displayFieldCD=new ComplexD(displayFieldCD.getCardinal(), tSpotCD1, tSpotCD2);
 			}
-			setFont(new Font(Font.SERIF, Font.PLAIN, 10));
+			setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
 			displayContents();
 		} 
 		catch (NumberFormatException e) 
 		{
-			setFont(new Font(Font.SERIF, Font.ITALIC, 10));
+			setFont(new Font(Font.SERIF, Font.ITALIC, _FONTSIZE));
 			throw new UtilitiesException("FieldArea must contain parse-able text. Look for bad lengths or number formats.");
 		}
 		
