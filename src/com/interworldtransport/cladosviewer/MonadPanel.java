@@ -118,199 +118,274 @@ import java.util.*;
   * @throws UtilitiesException
   * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
   */
-   public MonadPanel(CladosCalculator pGUI) throws UtilitiesException
-    {
+   public MonadPanel(CladosCalculator pGUI)
+   {
 	   super();
 	   useFullPanel=false;	// Use this panel in it's small sense
-	   if (pGUI==null)
-		   throw new UtilitiesException("A GUI must be passed to a MonadPanel");
-	   _GUI=pGUI;
-	   
-	   name.setText("tablePlace");
-	   aname.setText(_GUI.IniProps.getProperty("Desktop.Default.AlgebraName"));
-	   frame.setText(_GUI.IniProps.getProperty("Desktop.Default.FrameName"));
-	   foot.setText(_GUI.IniProps.getProperty("Desktop.Default.FootName"));
-	   sig.setText(_GUI.IniProps.getProperty("Desktop.Default.Sig"));	
-	   
-	   setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-	   setBackground(clrBackColor);
-	   setLayout(new BorderLayout());
-	   orient=_GUI.IniProps.getProperty("Desktop.MVRender");
-	   
-	   createMinReferenceLayout();
-    }
+	   try
+	   {
+		   _GUI=pGUI;
+		   
+		   name.setText("tablePlace");
+		   aname.setText(_GUI.IniProps.getProperty("Desktop.Default.AlgebraName"));
+		   frame.setText(_GUI.IniProps.getProperty("Desktop.Default.FrameName"));
+		   foot.setText(_GUI.IniProps.getProperty("Desktop.Default.FootName"));
+		   sig.setText(_GUI.IniProps.getProperty("Desktop.Default.Sig"));	
+		   
+		   setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+		   setBackground(clrBackColor);
+		   setLayout(new BorderLayout());
+		   orient=_GUI.IniProps.getProperty("Desktop.MVRender");
+		   
+		   createMinReferenceLayout();
+	   }
+	   catch (NullPointerException enull)
+	   	{
+	   		add(new JPanel(null, false), "Center");
+	   		if (pGUI != null) 
+		    	{
+		    		_GUI._StatusBar.setStatusMsg("Null Pointer Exception. Something is missing on MPanel construction.\n");
+		    		_GUI._StatusBar.setStatusMsg(enull.getClass()+"\n");
+		    		_GUI._StatusBar.setStatusMsg(enull.getMessage()+"\n");
+		    	}
+	   	}   
+   }
 
    /**
    * The MonadPanel class is intended to hold a single Monad and act as its GUI.
    * This constructor is the base one.
-   * @param pGUI			
-   * 	CladosCalculator
+   * @param pGUI	CladosCalculator
    * This is just a reference to the owner application so error messages can be presented.
-   * @param pM
-   * 	MonadComplexD
+   * @param pM		MonadComplexD
    * This is a reference to the monad to be displayed and manipulated.
    * @throws UtilitiesException
    * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
    */
-     public MonadPanel(		CladosCalculator pGUI,
-     						MonadComplexD pM)
-     			throws 		UtilitiesException			// TODO Stop throwing this one upstream. 
+     public MonadPanel(		CladosCalculator pGUI, MonadComplexD pM)
      {
     	super();
        	useFullPanel=true;
-       	
-       	if (pGUI==null)
-       		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
-       	_GUI=pGUI;
-       	
-       	if (pM==null)
-       		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
-       	_repMonadCD=pM;
-       	_repMode=CladosField.COMPLEXD;
-       	
-       	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
-       	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
-       	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
-    
-        setReferences();
-           		
-        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        setBackground(clrBackColor);
-        setLayout(new BorderLayout());
-          
-        createCoeffLayout();	// TODO Deal with Exception here. Swap in error panel instead.
-        createReferenceLayout();
-        createEditLayout();
-        createManagementLayout();
-     }
-    /**
-        * The MonadPanel class is intended to hold a single Monad and act as its GUI.
-        * This constructor is the base one.
-        * @param pGUI			
-        * 	CladosCalculator
-        * This is just a reference to the owner application so error messages can be presented.
-        * @param pM
-        * 	MonadComplexF
-        * This is a reference to the monad to be displayed and manipulated.
-        * @throws UtilitiesException
-        * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
-        */
-          public MonadPanel(	CladosCalculator pGUI,
-          						MonadComplexF pM)
-          			throws 		UtilitiesException			// TODO Stop throwing this one upstream.
-          {
-   	       	super();
-   	       	useFullPanel=true;
-   	       	
-   	       	if (pGUI==null)
-   	       		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
-   	       	_GUI=pGUI;
-   	       	
-   	       	if (pM==null)
-   	       		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
-   	       	_repMonadCF=pM;
-   	       	_repMode=CladosField.COMPLEXF;
-   	       	
-   	       	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
-   	       	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
-   	       	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
-        
-   	        setReferences();
-   	           		
-   	        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-   	        setBackground(clrBackColor);
-   	        setLayout(new BorderLayout());
-   	          
-   	        createCoeffLayout();	// TODO Deal with Exception here. Swap in error panel instead.
-   	        createReferenceLayout();
-   	        createEditLayout();
-   	        createManagementLayout();
-          }
-       /**
-     * The MonadPanel class is intended to hold a single Monad and act as its GUI.
-     * This constructor is the base one.
-     * @param pGUI			
-     * 	CladosCalculator
-     * This is just a reference to the owner application so error messages can be presented.
-     * @param pM
-     * 	MonadRealD
-     * This is a reference to the monad to be displayed and manipulated.
-     * @throws UtilitiesException
-     * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
-     */
-       public MonadPanel(	CladosCalculator pGUI,
-       						MonadRealD pM)
-       			throws 		UtilitiesException			// TODO Stop throwing this one upstream. 
-       {
-	       	super();
-	       	useFullPanel=true;
-	       	
-	       	if (pGUI==null)
-	       		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
+       	try
+	    {
 	       	_GUI=pGUI;
-	       	
-	       	if (pM==null)
-	       		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
-	       	_repMonadD=pM;
-	       	_repMode=CladosField.REALD;
+	       	_repMonadCD=pM;
+	       	_repMode=CladosField.COMPLEXD;
 	       	
 	       	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
 	       	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
 	       	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
-     
+	    
 	        setReferences();
 	           		
 	        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 	        setBackground(clrBackColor);
-	        setLayout(new BorderLayout());
-	          
-	        createCoeffLayout();	// TODO Deal with Exception here. Swap in error panel instead.
-	        createReferenceLayout();
+	        setLayout(new BorderLayout());          
+	    
+	        this.add(createCoeffLayout(), "Center");
+	    	setCoefficientDisplay();
+	    }
+       	catch (UtilitiesException eu)
+ 	    {
+ 	    	add(new JPanel(null, false), "Center");
+ 	    	if (pGUI != null) 
+ 	    	{
+ 	    		_GUI._StatusBar.setStatusMsg("Utilities Exception. Something is missing on MPanel construction.\n");
+ 	    		_GUI._StatusBar.setStatusMsg(eu.getSourceMessage()+"\n");
+ 	    	}
+ 	    }
+    	catch (NullPointerException enull)
+    	{
+    		add(new JPanel(null, false), "Center");
+    		if (pGUI != null) 
+ 	    	{
+ 	    		_GUI._StatusBar.setStatusMsg("Null Pointer Exception. Something is missing on MPanel construction.\n");
+ 	    		_GUI._StatusBar.setStatusMsg(enull.getClass()+"\n");
+ 	    		_GUI._StatusBar.setStatusMsg(enull.getMessage()+"\n");
+ 	    	}
+    	}
+    	finally
+    	{
+    		createReferenceLayout();
 	        createEditLayout();
 	        createManagementLayout();
+    	}
+     }
+    /**
+        * The MonadPanel class is intended to hold a single Monad and act as its GUI.
+        * This constructor is the base one.
+        * @param pGUI	CladosCalculator
+        * This is just a reference to the owner application so error messages can be presented.
+        * @param pM		MonadComplexF
+        * This is a reference to the monad to be displayed and manipulated.
+        * @throws UtilitiesException
+        * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
+        */
+          public MonadPanel(	CladosCalculator pGUI, MonadComplexF pM)
+          {
+   	       	super();
+   	       	useFullPanel=true;
+   	       	try
+	 	    {
+	   	       	_GUI=pGUI;
+	   	       	_repMonadCF=pM;
+	   	       	_repMode=CladosField.COMPLEXF;
+	   	       	
+	   	       	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
+	   	       	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
+	   	       	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
+	        
+	   	        setReferences();
+	   	           		
+	   	        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+	   	        setBackground(clrBackColor);
+	   	        setLayout(new BorderLayout());
+	   	    
+	 	        this.add(createCoeffLayout(), "Center");
+	 	    	setCoefficientDisplay();
+	 	    }
+   	       	catch (UtilitiesException eu)
+	 	    {
+	 	    	add(new JPanel(null, false), "Center");
+	 	    	if (pGUI != null) 
+	 	    	{
+	 	    		_GUI._StatusBar.setStatusMsg("Utilities Exception. Something is missing on MPanel construction.\n");
+	 	    		_GUI._StatusBar.setStatusMsg(eu.getSourceMessage()+"\n");
+	 	    	}
+	 	    }
+	    	catch (NullPointerException enull)
+	    	{
+	    		add(new JPanel(null, false), "Center");
+	    		if (pGUI != null) 
+	 	    	{
+	 	    		_GUI._StatusBar.setStatusMsg("Null Pointer Exception. Something is missing on MPanel construction.\n");
+	 	    		_GUI._StatusBar.setStatusMsg(enull.getClass()+"\n");
+	 	    		_GUI._StatusBar.setStatusMsg(enull.getMessage()+"\n");
+	 	    	}
+	    	}
+	    	finally
+	    	{
+	    		createReferenceLayout();
+		        createEditLayout();
+		        createManagementLayout();
+	    	}
+          }
+       /**
+     * The MonadPanel class is intended to hold a single Monad and act as its GUI.
+     * This constructor is the base one.
+     * @param pGUI	CladosCalculator
+	 * This is just a reference to the owner application so error messages can be presented.
+     * @param pM	MonadRealD
+     * This is a reference to the monad to be displayed and manipulated.
+     * @throws UtilitiesException
+     * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
+     */
+       public MonadPanel(	CladosCalculator pGUI, MonadRealD pM)
+       {
+	       	super();
+	       	useFullPanel=true;
+	       	try
+	 	    {
+		       	_GUI=pGUI;
+		       	_repMonadD=pM;
+		       	_repMode=CladosField.REALD;
+		       	
+		       	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
+		       	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
+		       	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
+	     
+		        setReferences();
+		           		
+		        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+		        setBackground(clrBackColor);
+		        setLayout(new BorderLayout());
+	          
+	 	        this.add(createCoeffLayout(), "Center");
+	 	    	setCoefficientDisplay();
+	 	    }
+	        catch (UtilitiesException eu)
+	 	    {
+	 	    	add(new JPanel(null, false), "Center");
+	 	    	if (pGUI != null) 
+	 	    	{
+	 	    		_GUI._StatusBar.setStatusMsg("Utilities Exception. Something is missing on MPanel construction.\n");
+	 	    		_GUI._StatusBar.setStatusMsg(eu.getSourceMessage()+"\n");
+	 	    	}
+	 	    }
+	    	catch (NullPointerException enull)
+	    	{
+	    		add(new JPanel(null, false), "Center");
+	    		if (pGUI != null) 
+	 	    	{
+	 	    		_GUI._StatusBar.setStatusMsg("Null Pointer Exception. Something is missing on MPanel construction.\n");
+	 	    		_GUI._StatusBar.setStatusMsg(enull.getClass()+"\n");
+	 	    		_GUI._StatusBar.setStatusMsg(enull.getMessage()+"\n");
+	 	    	}
+	    	}
+	    	finally
+	    	{
+	    		createReferenceLayout();
+		        createEditLayout();
+		        createManagementLayout();
+	    	}
        }
           /**
 		    * The MonadPanel class is intended to hold a single Monad and act as its GUI.
 		    * This constructor is the base one.
-		    * @param pGUI			
-		    * 	CladosCalculator
+		    * @param pGUI	CladosCalculator
 		    * This is just a reference to the owner application so error messages can be presented.
-		    * @param pM
-		    * 	MonadRealF
+		    * @param pM		MonadRealF
 		    * This is a reference to the monad to be displayed and manipulated.
 		    * @throws UtilitiesException
 		    * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
 		    */
-		    public MonadPanel(	CladosCalculator pGUI,
-		    					MonadRealF pM)
-		    		throws 		UtilitiesException			// TODO Stop throwing this one upstream. 
+		    public MonadPanel(	CladosCalculator pGUI, MonadRealF pM)
 		    {
 		    	super();
-		    	useFullPanel=true;
-		    	
-		    	if (pGUI==null)
-		    		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
-		    	_GUI=pGUI;
-		    	
-		    	if (pM==null)
-		    		throw new UtilitiesException("A Monad must be passed to this MonadPanel constructor");
-		    	_repMonadF=pM;
-		    	_repMode=CladosField.REALF;
-		    	
-		    	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
-		    	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
-		    	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
-		   
-		        setReferences();
-		        		
-		        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		        setBackground(clrBackColor);
-		        setLayout(new BorderLayout());
-		       
-		        createCoeffLayout();	// TODO Deal with Exception here. Swap in error panel instead.
-		        createReferenceLayout();
-		        createEditLayout();
-		        createManagementLayout();
+		    	useFullPanel=true;    	
+		    	try
+		 	    {
+			    	_GUI=pGUI;
+			    	_repMonadF=pM;
+			    	_repMode=CladosField.REALF;
+			    	
+			    	orient=_GUI.IniProps.getProperty("Desktop.MVRender");
+			    	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
+			    	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
+			   
+			        setReferences();
+			        		
+			        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			        setBackground(clrBackColor);
+			        setLayout(new BorderLayout());
+			        
+		 	        add(createCoeffLayout(), "Center");
+		 	    	setCoefficientDisplay();
+		 	    }
+		 	    catch (UtilitiesException eu)
+		 	    {
+		 	    	add(new JPanel(null, false), "Center");
+		 	    	if (pGUI != null) 
+		 	    	{
+		 	    		_GUI._StatusBar.setStatusMsg("Utilities Exception. Something is missing on MPanel construction.\n");
+		 	    		_GUI._StatusBar.setStatusMsg(eu.getSourceMessage()+"\n");
+		 	    	}
+		 	    }
+		    	catch (NullPointerException enull)
+		    	{
+		    		add(new JPanel(null, false), "Center");
+		    		if (pGUI != null) 
+		 	    	{
+		 	    		_GUI._StatusBar.setStatusMsg("Null Pointer Exception. Something is missing on MPanel construction.\n");
+		 	    		_GUI._StatusBar.setStatusMsg(enull.getClass()+"\n");
+		 	    		_GUI._StatusBar.setStatusMsg(enull.getMessage()+"\n");
+		 	    	}
+		    	}
+		    	finally
+		    	{
+		    		createReferenceLayout();
+			        createEditLayout();
+			        createManagementLayout();
+		    	}
 		    }
     
     @Override
@@ -643,7 +718,7 @@ import java.util.*;
 		}
     }
 
-    private void 	createCoeffLayout() 
+    private JPanel 	createCoeffLayout() 
     		throws UtilitiesException	
     {		
     	if (_jCoeffs == null)			// First time? Create the ArrayList
@@ -854,8 +929,7 @@ import java.util.*;
 				        		}
     		}
     	}
-    	add(pnlMonadCoeffPanel, "Center");
-    	setCoefficientDisplay();
+    	return pnlMonadCoeffPanel;
     }
     
     private void		createEditLayout()

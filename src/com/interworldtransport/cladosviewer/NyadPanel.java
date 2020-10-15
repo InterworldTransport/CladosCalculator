@@ -137,12 +137,11 @@ import java.util.*;
    				 
    			monadPanes.addTab(	count, 
    						 		tabIcon, 
-   						 		tempPane,
-   						 		_repNyadCD.getName()+" | "+monadPanelList.get(j).getMonadCD().getName()
+   						 		tempPane
    						 		);
    		}
    			 
-   		add(monadPanes, "Center");
+   		add(monadPanes, JTabbedPane.CENTER);
    	 }
     
     /**
@@ -201,12 +200,11 @@ import java.util.*;
    				 
    			monadPanes.addTab(	count, 
    						 		tabIcon, 
-   						 		tempPane,
-   						 		_repNyadCF.getName()+" | "+monadPanelList.get(j).getMonadCF().getName()
+   						 		tempPane
    						 		);
    		}
    			 
-   		add(monadPanes, "Center");
+   		add(monadPanes,  JTabbedPane.CENTER);
    	 }
     
     /**
@@ -265,12 +263,11 @@ import java.util.*;
    				 
    			monadPanes.addTab(	count, 
    						 		tabIcon, 
-   						 		tempPane,
-   						 		_repNyadD.getName()+" | "+monadPanelList.get(j).getMonadRD().getName()
+   						 		tempPane
    						 		);
    		}
    			 
-   		add(monadPanes, "Center");
+   		add(monadPanes,  JTabbedPane.CENTER);
    	 }
     
   /**
@@ -329,12 +326,11 @@ import java.util.*;
 				 
 			monadPanes.addTab(	count, 
 						 		tabIcon, 
-						 		tempPane,
-						 		_repNyadF.getName()+" | "+monadPanelList.get(j).getMonadRF().getName()
+						 		tempPane
 						 		);
 		}
 			 
-		add(monadPanes, "Center");
+		add(monadPanes,  JTabbedPane.CENTER);
 	 }
 
     public 	void 		actionPerformed(ActionEvent event)
@@ -394,7 +390,7 @@ import java.util.*;
      * @throws UtilitiesException
      * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
      */
-    public	void		addMonadPanel(MonadComplexD pM) throws UtilitiesException
+    public	void		addMonadPanel(MonadComplexD pM) //throws UtilitiesException
     {
     	MonadPanel pMP=new MonadPanel(_GUI, pM);
     	addMonadPanel(pMP); 
@@ -413,7 +409,7 @@ import java.util.*;
      * @throws UtilitiesException
      * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
      */
-    public	void		addMonadPanel(MonadComplexF pM) throws UtilitiesException
+    public	void		addMonadPanel(MonadComplexF pM) //throws UtilitiesException
     {
     	MonadPanel pMP=new MonadPanel(_GUI, pM);
     	addMonadPanel(pMP); 
@@ -429,31 +425,30 @@ import java.util.*;
      */
     public	void		addMonadPanel(MonadPanel pMP)
     {
-	    int next=monadPanes.getTabCount();
+    	int next = Integer.valueOf(monadPanes.getTitleAt(monadPanes.getTabCount()-1))+1;
 	    monadPanelList.ensureCapacity(next+1);
 	    monadPanelList.add(pMP);
-
 	    switch (pMP.getRepMode())
 	    {
-	    	case REALF:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
-	    												tabIcon, 
-	    												new JScrollPane(pMP),
-	    												_repNyadF.getName()+" | "+pMP.getMonadRF().getName());
-	    							break;
-	    	case REALD:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
-														tabIcon, 
-														new JScrollPane(pMP),
-														_repNyadD.getName()+" | "+pMP.getMonadRD().getName());
-	    							break;
-	    	case COMPLEXF:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
-														tabIcon, 
-														new JScrollPane(pMP),
-														_repNyadCF.getName()+" | "+pMP.getMonadCF().getName());
-									break;
-	    	case COMPLEXD:	monadPanes.addTab((	new StringBuffer()).append(next).toString(), 
-														tabIcon, 
-														new JScrollPane(pMP),
-														_repNyadCD.getName()+" | "+pMP.getMonadCD().getName());			
+	    	case REALF:		monadPanes.addTab(	(new StringBuffer()).append(next).toString(), 
+	    										tabIcon, 
+	    										new JScrollPane(pMP)
+	    										);
+	    					break;
+	    	case REALD:		monadPanes.addTab(	(new StringBuffer()).append(next).toString(), 
+	    										tabIcon, 
+	    										new JScrollPane(pMP)
+	    										);
+	    					break;
+	    	case COMPLEXF:	monadPanes.addTab(	(new StringBuffer()).append(next).toString(), 
+												tabIcon, 
+												new JScrollPane(pMP)
+												);
+							break;
+	    	case COMPLEXD:	monadPanes.addTab(	(new StringBuffer()).append(next).toString(), 
+												tabIcon, 
+												new JScrollPane(pMP)
+												);			
 	    }
 	    nyadOrder.setText((new StringBuffer()).append(next+1).toString());
     }
@@ -471,7 +466,7 @@ import java.util.*;
      * @throws UtilitiesException
      * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
      */
-    public	void		addMonadPanel(MonadRealD pM) throws UtilitiesException
+    public	void		addMonadPanel(MonadRealD pM) //throws UtilitiesException
     {
     	MonadPanel pMP=new MonadPanel(_GUI, pM);
     	addMonadPanel(pMP); 
@@ -490,7 +485,7 @@ import java.util.*;
      * @throws UtilitiesException
      * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
      */
-    public	void		addMonadPanel(MonadRealF pM) throws UtilitiesException
+    public	void		addMonadPanel(MonadRealF pM) //throws UtilitiesException
     {
     	MonadPanel pMP=new MonadPanel(_GUI, pM);
     	addMonadPanel(pMP); 
@@ -600,7 +595,7 @@ import java.util.*;
 										AlgebraRealF buildAlgRF = new AlgebraRealF(	buildAlgName, 
 																					focusMonadRF.getAlgebra().getFoot(),
 																					focusMonadRF.getAlgebra().getGProduct());
-										MonadRealF newMonadCopyRF=new MonadRealF(		buildName, 
+										MonadRealF newMonadCopyRF=new MonadRealF(	buildName, 
 																					buildAlgRF,
 																					buildFrameName,
 																					focusMonadRF.getCoeff());
@@ -615,7 +610,7 @@ import java.util.*;
 										AlgebraRealD buildAlgRD = new AlgebraRealD(	buildAlgName, 
 																					focusMonadRD.getAlgebra().getFoot(),
 																					focusMonadRD.getAlgebra().getGProduct());
-										MonadRealD newMonadCopyRD=new MonadRealD(		buildName, 
+										MonadRealD newMonadCopyRD=new MonadRealD(	buildName, 
 																					buildAlgRD,
 																					buildFrameName,
 																					focusMonadRD.getCoeff());
@@ -653,17 +648,13 @@ import java.util.*;
 										addMonadPanel(newMonadCopyCD);
 			}
 		}
-		catch (UtilitiesException e)
-		{
-			_GUI._StatusBar.setStatusMsg("\t\tcould not create copy from toolbar.\n");
-		}
 		catch (CladosMonadException e) 
 		{
-			_GUI._StatusBar.setStatusMsg("\t\tcould not create copy because monad was malformed.\n");
+			_GUI._StatusBar.setStatusMsg("-->Could not create copy because monad was malformed.\n");
 		} 
 		catch (CladosNyadException e) 
 		{
-			_GUI._StatusBar.setStatusMsg("\t\tcould not append monad because nyad objected.\n");
+			_GUI._StatusBar.setStatusMsg("-->Could not append monad because nyad objected.\n");
 		}
 		
     }

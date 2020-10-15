@@ -65,7 +65,7 @@ public class ToolsCreate implements ActionListener
     {
     	if (_parent._GUI._GeometryDisplay.getNyadListSize()>0)
     		CreateDialog.createNyad(_parent._GUI, 
-    								_parent._GUI._GeometryDisplay.getNyadPanel(_parent._GUI._GeometryDisplay.getPaneFocus()).getRepMode());
+    								_parent._GUI._GeometryDisplay.getRepMode());
     	else 	
     		CreateDialog.createNyad(_parent._GUI, 
     								_parent._GUI._FieldBar.getRepMode());

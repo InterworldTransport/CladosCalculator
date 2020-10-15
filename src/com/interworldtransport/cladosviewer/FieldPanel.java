@@ -356,6 +356,7 @@ import javax.swing.border.BevelBorder;
 						    		btnMakeReal.setEnabled(true);
 					    			btnMakeComplex.setEnabled(false);
 	    	}
+	    	_GUI._GeometryDisplay.setRepMode(_repMode);
 	    	createDisplaysLayout();
 	    	add(pnlDisplays, BorderLayout.LINE_END);
 

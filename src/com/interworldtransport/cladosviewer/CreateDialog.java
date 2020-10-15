@@ -430,12 +430,6 @@ public class CreateDialog extends JDialog implements ActionListener
     			test = true;
 			}	
 		}
-		catch (UtilitiesException e)
-		{
-			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not create monad copy from Create|Save with general utilities exception\n");
-			_GUI._StatusBar.setStatusMsg(e.getSourceMessage());
-		}
 		catch (BadSignatureException es)
 		{
 			test = false;
@@ -499,12 +493,6 @@ public class CreateDialog extends JDialog implements ActionListener
     			tNSpotP.addMonadPanel(rep);
     			test = true;
 			}	
-		}
-		catch (UtilitiesException e)
-		{
-			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not create monad copy from Create|Save with general utilities exception\n");
-			_GUI._StatusBar.setStatusMsg(e.getSourceMessage());
 		}
 		catch (BadSignatureException es)
 		{
@@ -570,12 +558,6 @@ public class CreateDialog extends JDialog implements ActionListener
     			test = true;
 			}	
 		}
-		catch (UtilitiesException e)
-		{
-			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not create monad copy from Create|Save with general utilities exception\n");
-			_GUI._StatusBar.setStatusMsg(e.getSourceMessage());
-		}
 		catch (BadSignatureException es)
 		{
 			test = false;
@@ -640,12 +622,6 @@ public class CreateDialog extends JDialog implements ActionListener
     			tNSpotP.addMonadPanel(rep);
     			test = true;
 			}	
-		}
-		catch (UtilitiesException e)
-		{
-			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not create monad copy from Create|Save with general utilities exception\n");
-			_GUI._StatusBar.setStatusMsg(e.getSourceMessage());
 		}
 		catch (BadSignatureException es)
 		{

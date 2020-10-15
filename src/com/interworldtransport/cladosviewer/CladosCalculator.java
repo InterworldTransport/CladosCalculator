@@ -350,16 +350,17 @@ public class CladosCalculator extends JFrame implements ActionListener
 		
 		cn.gridx = 0;
 		cn.gridy = 0;
-		cn.fill=GridBagConstraints.HORIZONTAL;		
+		//cn.fill=GridBagConstraints.HORIZONTAL;
+		
 		cn.weightx=1;
 		cn.weighty=1;
 		cn.gridheight=2;
 		cn.gridwidth=2;
-		
 		cn.fill=GridBagConstraints.BOTH;
     	pnlControlBar.add(new JLabel(new ImageIcon(IniProps.getProperty("Desktop.Image.Header2"))),cn);
     	cn.gridx = 0;
     	cn.gridy += 2;
+    	cn.fill=GridBagConstraints.HORIZONTAL;	
     	
     	cn.weightx=0;
 		cn.weighty=0;
@@ -407,7 +408,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	
     	btnIsNyadScalarAt = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.IsScalarAt")));
     	btnIsNyadScalarAt.setActionCommand("scalar at");
-    	btnIsNyadScalarAt.setToolTipText("Next Nyad Has Scalar At?");
+    	btnIsNyadScalarAt.setToolTipText("Next Nyad Is Scalar At?");
     	btnIsNyadScalarAt.setPreferredSize(square);
     	btnIsNyadScalarAt.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsNyadScalarAt.addActionListener(this);
@@ -416,14 +417,22 @@ public class CladosCalculator extends JFrame implements ActionListener
     	
     	btnIsNyadPScalarAt = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.IsPScalarAt")));
     	btnIsNyadPScalarAt.setActionCommand("pscalar at");
-    	btnIsNyadPScalarAt.setToolTipText("Next Nyad Has PScalar At?");
+    	btnIsNyadPScalarAt.setToolTipText("Next Nyad Is PScalar At?");
     	btnIsNyadPScalarAt.setPreferredSize(square);
     	btnIsNyadPScalarAt.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsNyadPScalarAt.addActionListener(this);
     	pnlControlBar.add(btnIsNyadPScalarAt, cn);
     	cn.gridx = 0;
     	cn.gridy++;
-
+    	
+		cn.gridwidth=2;
+		cn.fill=GridBagConstraints.BOTH;
+    	pnlControlBar.add(new JLabel(new ImageIcon(IniProps.getProperty("Desktop.Image.Bar"))),cn);
+    	cn.fill=GridBagConstraints.HORIZONTAL;	
+		cn.gridwidth=1;
+    	cn.gridx = 0;
+    	cn.gridy++;
+    	
     	// button double
     	btnIsZero = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Zero")));
     	btnIsZero.setActionCommand("zero");

@@ -110,7 +110,7 @@ import java.util.*;
     	nyadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
     	nyadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
     	//JScrollPanes are used only when a nyadPanel with nyadPanes.addTab()
-    	add(nyadPanes, "Center");
+    	add(nyadPanes, JTabbedPane.CENTER);
     	
     	nyadPanelList=new ArrayList<NyadPanel>(0);
   	    
@@ -120,22 +120,21 @@ import java.util.*;
     @Override
 	public void actionPerformed(ActionEvent event) 
 	{
-		String command = event.getActionCommand();
-		
-		if (command.equals("push"))
-    		push();		//Swaps the currently selected nyad with the one below it
-    	
-    	if (command.equals("pop"))
-    		pop();		//Swaps the currently selected nyad with the one above it
-		
-    	if (command.equals("copy"))
-	    	copyNyadCommand();			//Clone the selected nyad and place it at the end of the stack
-    	
-    	if (command.equals("erase"))
-    		eraseNyadCommand();			//Remove the selected nyad from the stack
-    	
-    	if (command.equals("create"))
-    		_GUI._EventModel.ToolParts.cr.actionPerformed(event);			//Create a new monad for the selected nyad OR a whole new nyad
+		switch (event.getActionCommand())
+		{
+			case "push": 	push();		//Swaps the currently selected nyad with the one below it
+							break;
+			case "pop":    	pop();		//Swaps the currently selected nyad with the one above it
+							break;
+    		case "copy":	copyNyadCommand();			//Clone the selected nyad and place it at the end of the stack
+    						break;
+	    	case "erase":   eraseNyadCommand();			//Remove the selected nyad from the stack
+	    					break;
+	    	case "create":	CreateDialog.createNyad(_GUI, _repMode);
+	    					//_GUI._EventModel.ToolParts.cr.actionPerformed(event); //Create a new monad for the selected nyad OR a whole new nyad
+	    					break;
+	    	default:		_GUI._StatusBar.setStatusMsg("No detectable command given at ViewerPanel. No action.\n");
+		}		
 	}
     
     public	int			getNyadListSize()
@@ -161,6 +160,11 @@ import java.util.*;
 	    return nyadPanes.getSelectedIndex();
     }
 
+    public CladosField	getRepMode()
+    {
+    	return _repMode;
+    }
+    
     private NyadComplexD buildANyadCD(short pWhich, short monadCount)
     {
     	NyadComplexD aNyad=null;
@@ -366,25 +370,25 @@ import java.util.*;
 		{
 			switch(getNyadPanel(getPaneFocus()).getRepMode())
 			{
-			case REALF:	NyadRealF focusNyadRF=getNyadPanel(getPaneFocus()).getNyadRF();
-									buildName=new StringBuffer(focusNyadRF.getName()).append("_c").toString();
-									NyadRealF newNyadCopyRF=new NyadRealF(buildName, focusNyadRF);
-									addNyad(newNyadCopyRF);
-									break;
-			case REALD:	NyadRealD focusNyadRD=getNyadPanel(getPaneFocus()).getNyadRD();
-									buildName=new StringBuffer(focusNyadRD.getName()).append("_c").toString();
-									NyadRealD newNyadCopyRD=new NyadRealD(buildName, focusNyadRD);
-									addNyad(newNyadCopyRD);
-									break;
+			case REALF:		NyadRealF focusNyadRF=getNyadPanel(getPaneFocus()).getNyadRF();
+							buildName=new StringBuffer(focusNyadRF.getName()).append("_c").toString();
+							NyadRealF newNyadCopyRF=new NyadRealF(buildName, focusNyadRF);
+							addNyad(newNyadCopyRF);
+							break;
+			case REALD:		NyadRealD focusNyadRD=getNyadPanel(getPaneFocus()).getNyadRD();
+							buildName=new StringBuffer(focusNyadRD.getName()).append("_c").toString();
+							NyadRealD newNyadCopyRD=new NyadRealD(buildName, focusNyadRD);
+							addNyad(newNyadCopyRD);
+							break;
 			case COMPLEXF:	NyadComplexF focusNyadCF=getNyadPanel(getPaneFocus()).getNyadCF();
-									buildName=new StringBuffer(focusNyadCF.getName()).append("_c").toString();
-									NyadComplexF newNyadCopyCF=new NyadComplexF(buildName, focusNyadCF);
-									addNyad(newNyadCopyCF);
-									break;
+							buildName=new StringBuffer(focusNyadCF.getName()).append("_c").toString();
+							NyadComplexF newNyadCopyCF=new NyadComplexF(buildName, focusNyadCF);
+							addNyad(newNyadCopyCF);
+							break;
 			case COMPLEXD:	NyadComplexD focusNyadCD=getNyadPanel(getPaneFocus()).getNyadCD();
-									buildName=new StringBuffer(focusNyadCD.getName()).append("_c").toString();
-									NyadComplexD newNyadCopyCD=new NyadComplexD(buildName, focusNyadCD);
-									addNyad(newNyadCopyCD);
+							buildName=new StringBuffer(focusNyadCD.getName()).append("_c").toString();
+							NyadComplexD newNyadCopyCD=new NyadComplexD(buildName, focusNyadCD);
+							addNyad(newNyadCopyCD);
 			}
 		}
 		catch (UtilitiesException e)
@@ -430,105 +434,101 @@ import java.util.*;
     	{
     		switch (_repMode)
     		{
-    			case REALF:	NyadRealF aNyadRF = buildANyadRF(j, intOrd); // the NyadRF bootstrapper
-    						    		try	//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
-    						    		{
-    						    			if(aNyadRF != null)
-    						    			{
-	    						    			nyadPanelList.add(j, new NyadPanel(_GUI, aNyadRF));
-	    						    			nyadPanes.addTab(	new StringBuffer().append(j).toString(), 
-				    												tabIcon, 
-				    												new JScrollPane(nyadPanelList.get(j)),
-				    												aNyadRF.getName()
-				    												);
-    						    			}
-    						    			else _GUI._StatusBar.setStatusMsg("... null NyadRealF for new NyadPanel avoided.\n");
-    						    		}
-    						    		catch (UtilitiesException eutil)
-    						    		{
-    						    			_GUI._StatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
-    						    			_GUI._StatusBar.setStatusMsg(eutil.getStackTrace().toString());
-    						    		} 
-    						    		catch (BadSignatureException e)
-    						    		{
-    						    			_GUI._StatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
-    						    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
-										}
-    									break;
-    			case REALD:	NyadRealD aNyadRD = buildANyadRD(j, intOrd); // the NyadRD bootstrapper
-							    		try	//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
-							    		{
-							    			if(aNyadRD != null)
-							    			{
-								    			nyadPanelList.add(j, new NyadPanel(_GUI, aNyadRD));
-								    			nyadPanes.addTab(	new StringBuffer().append(j).toString(), 
-																	tabIcon, 
-																	new JScrollPane(nyadPanelList.get(j)),
-																	aNyadRD.getName()
-																	);
-							    			}
-							    			else _GUI._StatusBar.setStatusMsg("... null NyadRealD for new NyadPanel avoided.\n");
-							    		}
-							    		catch (UtilitiesException eutil)
-							    		{
-							    			_GUI._StatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
-							    			_GUI._StatusBar.setStatusMsg(eutil.getStackTrace().toString());
-							    		}
-							    		catch (BadSignatureException e)
-    						    		{
-    						    			_GUI._StatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
-    						    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
-										}
-										break;						
+    			case REALF:		NyadRealF aNyadRF = buildANyadRF(j, intOrd); // the NyadRF bootstrapper
+				    			try	//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
+					    		{
+					    			if(aNyadRF != null)
+					    			{
+						    			nyadPanelList.add(j, new NyadPanel(_GUI, aNyadRF));
+						    			nyadPanes.addTab(	new StringBuffer().append(j).toString(), 
+															tabIcon, 
+															new JScrollPane(nyadPanelList.get(j))
+															);
+					    			}
+					    			else _GUI._StatusBar.setStatusMsg("... null NyadRealF for new NyadPanel avoided.\n");
+					    		}
+					    		catch (UtilitiesException eutil)
+					    		{
+					    			_GUI._StatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
+					    			_GUI._StatusBar.setStatusMsg(eutil.getStackTrace().toString());
+					    		} 
+					    		catch (BadSignatureException e)
+					    		{
+					    			_GUI._StatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
+					    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
+								}
+								break;
+    			case REALD:		NyadRealD aNyadRD = buildANyadRD(j, intOrd); // the NyadRD bootstrapper
+				    			try	//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
+					    		{
+					    			if(aNyadRD != null)
+					    			{
+						    			nyadPanelList.add(j, new NyadPanel(_GUI, aNyadRD));
+						    			nyadPanes.addTab(	new StringBuffer().append(j).toString(), 
+															tabIcon, 
+															new JScrollPane(nyadPanelList.get(j))
+															);
+					    			}
+					    			else _GUI._StatusBar.setStatusMsg("... null NyadRealD for new NyadPanel avoided.\n");
+					    		}
+					    		catch (UtilitiesException eutil)
+					    		{
+					    			_GUI._StatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
+					    			_GUI._StatusBar.setStatusMsg(eutil.getStackTrace().toString());
+					    		}
+					    		catch (BadSignatureException e)
+					    		{
+					    			_GUI._StatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
+					    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
+								}
+								break;	 							
     			case COMPLEXF:	NyadComplexF aNyadCF = buildANyadCF(j, intOrd); // the NyadCF bootstrapper
-							    		try	//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
-							    		{
-							    			if(aNyadCF != null)
-							    			{
-								    			nyadPanelList.add(j, new NyadPanel(_GUI, aNyadCF));
-								    			nyadPanes.addTab(	new StringBuffer().append(j).toString(), 
-																	tabIcon, 
-																	new JScrollPane(nyadPanelList.get(j)),
-																	aNyadCF.getName()
-																	);
-							    			}
-							    			else _GUI._StatusBar.setStatusMsg("... null NyadComplexF for new NyadPanel avoided.\n");
-							    		}
-							    		catch (UtilitiesException eutil)
-							    		{
-							    			_GUI._StatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
-							    			_GUI._StatusBar.setStatusMsg(eutil.getStackTrace().toString());
-							    		}
-							    		catch (BadSignatureException e)
-    						    		{
-    						    			_GUI._StatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
-    						    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
-										}
-										break;	
+				    			try	//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
+					    		{
+					    			if(aNyadCF != null)
+					    			{
+						    			nyadPanelList.add(j, new NyadPanel(_GUI, aNyadCF));
+						    			nyadPanes.addTab(	new StringBuffer().append(j).toString(), 
+															tabIcon, 
+															new JScrollPane(nyadPanelList.get(j))
+															);
+					    			}
+					    			else _GUI._StatusBar.setStatusMsg("... null NyadComplexF for new NyadPanel avoided.\n");
+					    		}
+					    		catch (UtilitiesException eutil)
+					    		{
+					    			_GUI._StatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
+					    			_GUI._StatusBar.setStatusMsg(eutil.getStackTrace().toString());
+					    		}
+					    		catch (BadSignatureException e)
+					    		{
+					    			_GUI._StatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
+					    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
+								}
+								break;	
     			case COMPLEXD:	NyadComplexD aNyadCD = buildANyadCD(j, intOrd); // the NyadCD bootstrapper
-							    		try	//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
-							    		{
-							    			if(aNyadCD != null)
-							    			{
-								    			nyadPanelList.add(j, new NyadPanel(_GUI, aNyadCD));
-								    			nyadPanes.addTab(	new StringBuffer().append(j).toString(), 
-																	tabIcon, 
-																	new JScrollPane(nyadPanelList.get(j)),
-																	aNyadCD.getName()
-																	);
-							    			}
-							    			else _GUI._StatusBar.setStatusMsg("... null NyadComplexD for new NyadPanel avoided.\n");
-							    		}
-							    		catch (UtilitiesException eutil)
-							    		{
-							    			_GUI._StatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
-							    			_GUI._StatusBar.setStatusMsg(eutil.getStackTrace().toString());
-							    		}
-							    		catch (BadSignatureException e)
-    						    		{
-    						    			_GUI._StatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
-    						    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
-										}
+				    			try	//Here we finally initiate the NyadPanel because the Nyad is actually filled at this point.
+					    		{
+					    			if(aNyadCD != null)
+					    			{
+						    			nyadPanelList.add(j, new NyadPanel(_GUI, aNyadCD));
+						    			nyadPanes.addTab(	new StringBuffer().append(j).toString(), 
+															tabIcon, 
+															new JScrollPane(nyadPanelList.get(j))
+															);
+					    			}
+					    			else _GUI._StatusBar.setStatusMsg("... null NyadComplexD for new NyadPanel avoided.\n");
+					    		}
+					    		catch (UtilitiesException eutil)
+					    		{
+					    			_GUI._StatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
+					    			_GUI._StatusBar.setStatusMsg(eutil.getStackTrace().toString());
+					    		}
+					    		catch (BadSignatureException e)
+					    		{
+					    			_GUI._StatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
+					    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
+								}
     		}
     		j++;
     	} 	
@@ -612,18 +612,18 @@ import java.util.*;
 			switch (getNyadPanel(point).getRepMode())
 			{
 				case REALF: 	_GUI._FieldBar._repRealF = null;
-										_GUI._FieldBar.setRealText("");
-										break;
+								_GUI._FieldBar.setRealText("");
+								break;
 				case REALD: 	_GUI._FieldBar._repRealD = null;
-										_GUI._FieldBar.setRealText("");
-										break;
+								_GUI._FieldBar.setRealText("");
+								break;
 				case COMPLEXF:	_GUI._FieldBar._repComplexF = null;
-										_GUI._FieldBar.setRealText("");
-										_GUI._FieldBar.setImgText("");
-										break;
+								_GUI._FieldBar.setRealText("");
+								_GUI._FieldBar.setImgText("");
+								break;
 				case COMPLEXD: _GUI._FieldBar._repComplexD = null;
-										_GUI._FieldBar.setRealText("");
-										_GUI._FieldBar.setImgText("");
+								_GUI._FieldBar.setRealText("");
+								_GUI._FieldBar.setImgText("");
 			}
 			removeNyadPanel(point);
 		}
@@ -781,36 +781,32 @@ import java.util.*;
     }
     protected	void		addNyadPanel(NyadPanel newP)
     {
-    	int next=nyadPanes.getTabCount();
-	    String cnt=new StringBuffer().append(next).toString();
-	    nyadPanelList.ensureCapacity(next+1);
+    	int endPlus=0;
+    	if(nyadPanes.getTabCount()>0)
+    		endPlus = Integer.valueOf(nyadPanes.getTitleAt(nyadPanes.getTabCount()-1))+1;
+	    nyadPanelList.ensureCapacity(endPlus+1);
 	    nyadPanelList.add(newP);
-	    
 	    switch (newP.getRepMode())
 	    {
-	    	case REALF: 	nyadPanes.addTab(	cnt, 
-														tabIcon, 
-														new JScrollPane(newP),
-														newP.getNyadRF().getName()
-														);
-	    							break;
-	    	case REALD: 	nyadPanes.addTab(	cnt, 
-														tabIcon, 
-														new JScrollPane(newP),
-														newP.getNyadRD().getName()
-														);
-									break;
-	    	case COMPLEXF: nyadPanes.addTab(	cnt, 
-														tabIcon, 
-														new JScrollPane(newP),
-														newP.getNyadCF().getName()
-														);
-									break;
-	      	case COMPLEXD: nyadPanes.addTab(	cnt, 
-														tabIcon, 
-														new JScrollPane(newP),
-														newP.getNyadCD().getName()
-														);
+	    	case REALF: 	nyadPanes.addTab(	(new StringBuffer().append(endPlus)).toString(), 
+												tabIcon, 
+												new JScrollPane(newP)
+												);
+	    					break;
+	    	case REALD: 	nyadPanes.addTab(	(new StringBuffer().append(endPlus)).toString(), 
+												tabIcon, 
+												new JScrollPane(newP)
+												);
+							break;
+	    	case COMPLEXF: 	nyadPanes.addTab(	(new StringBuffer().append(endPlus)).toString(), 
+												tabIcon, 
+												new JScrollPane(newP)
+												);
+							break;
+	      	case COMPLEXD: 	nyadPanes.addTab(	(new StringBuffer().append(endPlus)).toString(), 
+												tabIcon, 
+												new JScrollPane(newP)
+												);
 	    }
 	    _GUI.pack();
     }
@@ -840,11 +836,11 @@ import java.util.*;
 			    				switch (nyadPanelList.get(j).getRepMode())
 			    				{
 			    					case REALF:	pFieldPanel.setField(nyadPanelList.get(j).getNyadRF().getProto());
-			    											break;
+			    								break;
 			    					case REALD:	pFieldPanel.setField(nyadPanelList.get(j).getNyadRD().getProto());
-															break;
+												break;
 			    					case COMPLEXF:	pFieldPanel.setField(nyadPanelList.get(j).getNyadCF().getProto());
-															break;
+													break;
 			    					case COMPLEXD:	pFieldPanel.setField(nyadPanelList.get(j).getNyadCD().getProto());
 			    				}
 			    				_GUI._FieldBar.makeWritable();
@@ -864,4 +860,9 @@ import java.util.*;
     	}
     	_GUI.pack();
     } 
+	
+	protected void setRepMode(CladosField pIn)
+	{
+		_repMode = pIn;
+	}
 }
