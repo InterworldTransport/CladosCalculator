@@ -445,7 +445,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	
     	btnIsNilpotent = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Nilpotent")));
     	btnIsNilpotent.setActionCommand("nilpotent");
-    	btnIsNilpotent.setToolTipText("nilpotent Monad Test");
+    	btnIsNilpotent.setToolTipText("is nilpotent at power N?");
     	btnIsNilpotent.setPreferredSize(square);
     	btnIsNilpotent.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsNilpotent.addActionListener(this);
@@ -456,7 +456,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	// button double
     	btnIsIdempotent = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Idempotent")));
     	btnIsIdempotent.setActionCommand("idempotent");
-    	btnIsIdempotent.setToolTipText("idempotent Monad Test");
+    	btnIsIdempotent.setToolTipText("is idempotent?");
     	btnIsIdempotent.setPreferredSize(square);
     	btnIsIdempotent.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsIdempotent.addActionListener(this);
@@ -465,7 +465,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	
     	btnIsScaleIdempotent = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.MIdempotent")));
     	btnIsScaleIdempotent.setActionCommand("scaled idempotent");
-    	btnIsScaleIdempotent.setToolTipText("multiple of Idempotent Monad Test");
+    	btnIsScaleIdempotent.setToolTipText("is scaled idempotent?");
     	btnIsScaleIdempotent.setPreferredSize(square);
     	btnIsScaleIdempotent.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsScaleIdempotent.addActionListener(this);
@@ -476,7 +476,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	// button double
     	btnWhatMagn = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Magnitude")));
     	btnWhatMagn.setActionCommand("magnitude of");
-    	btnWhatMagn.setToolTipText("discover Monad Magnitude");
+    	btnWhatMagn.setToolTipText("discover magnitude");
     	btnWhatMagn.setPreferredSize(square);
     	btnWhatMagn.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnWhatMagn.addActionListener(this);
@@ -485,7 +485,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	
     	btnWhatSQMagn = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.SQMagnitude")));
     	btnWhatSQMagn.setActionCommand("sqmagnitude of");
-    	btnWhatSQMagn.setToolTipText("discover Monad Magnitude^2");
+    	btnWhatSQMagn.setToolTipText("discover magnitude^2");
     	btnWhatSQMagn.setPreferredSize(square);
     	btnWhatSQMagn.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnWhatSQMagn.addActionListener(this);
@@ -496,7 +496,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	// button double
     	btnIsGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Grade")));
     	btnIsGrade.setActionCommand("is findgrade");
-    	btnIsGrade.setToolTipText("is Grade() Monad Test");
+    	btnIsGrade.setToolTipText("has this unique grade?");
     	btnIsGrade.setPreferredSize(square);
     	btnIsGrade.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsGrade.addActionListener(this);
@@ -505,7 +505,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	
     	btnIsMultiGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.MultiGrade")));
     	btnIsMultiGrade.setActionCommand("is mgrade");
-    	btnIsMultiGrade.setToolTipText("is MultiGrade Monad Test");
+    	btnIsMultiGrade.setToolTipText("is multigrade?");
     	btnIsMultiGrade.setPreferredSize(square);
     	btnIsMultiGrade.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnIsMultiGrade.addActionListener(this);
@@ -515,7 +515,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	
     	btnHasGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.HasGrade")));
     	btnHasGrade.setActionCommand("has findgrade");
-    	btnHasGrade.setToolTipText("Has Grade Monad Test");
+    	btnHasGrade.setToolTipText("has this grade?");
     	btnHasGrade.setPreferredSize(square);
     	btnHasGrade.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnHasGrade.addActionListener(this);
@@ -524,7 +524,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	
     	btnWhatGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.WhatGrade")));
     	btnWhatGrade.setActionCommand("is findgrade!");
-    	btnWhatGrade.setToolTipText("what Unique Grade Monad Test");
+    	btnWhatGrade.setToolTipText("what unique grade?");
     	btnWhatGrade.setPreferredSize(square);
     	btnWhatGrade.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnWhatGrade.addActionListener(this);
