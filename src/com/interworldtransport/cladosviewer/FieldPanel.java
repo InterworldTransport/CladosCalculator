@@ -219,26 +219,22 @@ import javax.swing.border.BevelBorder;
     		{
 	    		switch (_repMode)
 	    		{
-	    			case REALF:	_repRealF = new RealF(	_repRealF.getCardinal(), 
-	    												Float.parseFloat(getRealText())
-	    												);
-	    						setCoefficientDisplay(_repRealF.conjugate());
-	    						break;
-	    			case REALD:	_repRealD = new RealD(	_repRealD.getCardinal(), 
-	    												Double.parseDouble(getRealText())
-	    												);
-								setCoefficientDisplay(_repRealD.conjugate());
-								break;
-	    			case COMPLEXF:	_repComplexF = new ComplexF(_repComplexF.getCardinal(), 
-	    														Float.parseFloat(getRealText()), 
-	    														Float.parseFloat(getImgText())
-	    														);
+	    			case REALF:		_repRealF = (RealF) CladosField.REALF.createZERO(_repRealF.getCardinal());
+	    							_repRealF.setReal(Float.parseFloat(getRealText()));
+	    							setCoefficientDisplay(_repRealF.conjugate());
+	    							break;
+	    			case REALD:		_repRealD = (RealD) CladosField.REALD.createZERO(_repRealD.getCardinal());
+	    							_repRealD.setReal(Double.parseDouble(getRealText()));
+	    							setCoefficientDisplay(_repRealD.conjugate());
+									break;
+	    			case COMPLEXF:	_repComplexF = (ComplexF) CladosField.COMPLEXF.createZERO(_repComplexF.getCardinal()); 
+	    							_repComplexF.setReal(Float.parseFloat(getRealText()));
+	    							_repComplexF.setImg(Float.parseFloat(getImgText()));
 	    							setCoefficientDisplay(_repComplexF.conjugate());
 									break;
-	    			case COMPLEXD:	_repComplexD = new ComplexD(_repComplexD.getCardinal(), 
-	    														Double.parseDouble(getRealText()), 
-	    														Double.parseDouble(getImgText())
-	    														);
+	    			case COMPLEXD:	_repComplexD = (ComplexD) CladosField.COMPLEXD.createZERO(_repComplexD.getCardinal()); 
+	    							_repComplexD.setReal(Double.parseDouble(getRealText()));
+	    							_repComplexD.setImg(Double.parseDouble(getImgText()));
 									setCoefficientDisplay(_repComplexD.conjugate());
 	    		}
     		}
@@ -254,26 +250,22 @@ import javax.swing.border.BevelBorder;
     		{
 	    		switch (_repMode)
 	    		{
-	    			case REALF:	_repRealF = new RealF(	_repRealF.getCardinal(),
-	    												Float.parseFloat(getRealText())
-	    												);
-	    						setCoefficientDisplay(_repRealF.invert());
-	    						break;
-	    			case REALD:	_repRealD = new RealD(	_repRealD.getCardinal(),
-	    												Double.parseDouble(getRealText())
-	    												);
-								setCoefficientDisplay(_repRealD.invert());
-								break;
-	    			case COMPLEXF:	_repComplexF = new ComplexF(_repComplexF.getCardinal(), 
-	    														Float.parseFloat(getRealText()), 
-	    														Float.parseFloat(getImgText())
-	    														);
+	    			case REALF:		_repRealF = (RealF) CladosField.REALF.createZERO(_repRealF.getCardinal());
+									_repRealF.setReal(Float.parseFloat(getRealText()));
+	    							setCoefficientDisplay(_repRealF.invert());
+	    							break;
+	    			case REALD:		_repRealD = (RealD) CladosField.REALD.createZERO(_repRealD.getCardinal());
+									_repRealD.setReal(Double.parseDouble(getRealText()));
+									setCoefficientDisplay(_repRealD.invert());
+									break;
+	    			case COMPLEXF:	_repComplexF = (ComplexF) CladosField.COMPLEXF.createZERO(_repComplexF.getCardinal()); 
+									_repComplexF.setReal(Float.parseFloat(getRealText()));
+									_repComplexF.setImg(Float.parseFloat(getImgText()));
 	    							setCoefficientDisplay(_repComplexF.invert());
 									break;
-	    			case COMPLEXD:	_repComplexD = new ComplexD(_repComplexD.getCardinal(),  
-	    														Double.parseDouble(getRealText()), 
-	    														Double.parseDouble(getImgText())
-	    														);
+	    			case COMPLEXD:	_repComplexD = (ComplexD) CladosField.COMPLEXD.createZERO(_repComplexD.getCardinal());  
+									_repComplexD.setReal(Double.parseDouble(getRealText()));
+									_repComplexD.setImg(Double.parseDouble(getImgText()));
 									setCoefficientDisplay(_repComplexD.invert());
 	    		}
     		}
