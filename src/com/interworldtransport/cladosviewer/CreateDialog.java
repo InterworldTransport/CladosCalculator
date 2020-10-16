@@ -648,9 +648,8 @@ public class CreateDialog extends JDialog implements ActionListener
 		boolean test=false;
 		if (copyAlgTargetCD != null) // Algebra's foot dominates separately chosen Foot
 		{
-			ComplexD tZero=new ComplexD(copyAlgTargetCF.getFoot().getNumberType(), 0.0D, 0.0D);
 			ComplexD[] tC = new ComplexD[copyAlgTargetCF.getGProduct().getBladeCount()];
-			for (short m=0; m<tC.length; m++)	tC[m]=ComplexD.copyZERO(tZero);
+			for (short m=0; m<tC.length; m++)	tC[m]=(ComplexD) CladosField.COMPLEXD.createZERO(copyAlgTargetCD.getFoot().getNumberType());
 			MonadComplexD rep=new MonadComplexD(mainPane.name.getText(),
 												copyAlgTargetCD,
 												mainPane.frame.getText(),
@@ -666,7 +665,7 @@ public class CreateDialog extends JDialog implements ActionListener
 												mainPane.frame.getText(),
 												copyFootTarget,
 												mainPane.sig.getText(),
-												new ComplexD(copyFootTarget.getNumberType()));
+												(ComplexD) CladosField.COMPLEXD.createZERO(copyFootTarget.getNumberType()));
 			NyadComplexD rep2=new NyadComplexD("New", rep);
     		_GUI._GeometryDisplay.addNyad(rep2);
     		test = true;
@@ -678,7 +677,7 @@ public class CreateDialog extends JDialog implements ActionListener
     											mainPane.frame.getText(),
     											mainPane.foot.getText(),
     											mainPane.sig.getText(),
-    											ComplexD.newZERO(mainPane.aname.getText()));
+    											(ComplexD) CladosField.COMPLEXD.createZERO(mainPane.aname.getText()));
 			NyadComplexD rep2=new NyadComplexD("New", rep);
     		test = true;
     		_GUI._GeometryDisplay.addNyad(rep2);
@@ -690,9 +689,8 @@ public class CreateDialog extends JDialog implements ActionListener
 		boolean test=false;
 		if (copyAlgTargetCF != null) // Algebra's foot dominates separately chosen Foot
 		{
-			ComplexF tZero=new ComplexF(copyAlgTargetCF.getFoot().getNumberType(), 0.0f, 0.0f);
 			ComplexF[] tC = new ComplexF[copyAlgTargetCF.getGProduct().getBladeCount()];
-			for (short m=0; m<tC.length; m++)	tC[m]=ComplexF.copyZERO(tZero);
+			for (short m=0; m<tC.length; m++)	tC[m]=(ComplexF) CladosField.COMPLEXF.createZERO(copyAlgTargetCF.getFoot().getNumberType());
 			MonadComplexF rep=new MonadComplexF(mainPane.name.getText(),
 												copyAlgTargetCF,
 												mainPane.frame.getText(),
@@ -708,7 +706,7 @@ public class CreateDialog extends JDialog implements ActionListener
 												mainPane.frame.getText(),
 												copyFootTarget,
 												mainPane.sig.getText(),
-												new ComplexF(copyFootTarget.getNumberType()));
+												(ComplexF) CladosField.COMPLEXF.createZERO(copyFootTarget.getNumberType()));
 			NyadComplexF rep2=new NyadComplexF("New", rep);
     		_GUI._GeometryDisplay.addNyad(rep2);
     		test = true;
@@ -720,7 +718,7 @@ public class CreateDialog extends JDialog implements ActionListener
     											mainPane.frame.getText(),
     											mainPane.foot.getText(),
     											mainPane.sig.getText(),
-    											ComplexF.newZERO(mainPane.aname.getText()));
+    											(ComplexF) CladosField.COMPLEXF.createZERO(mainPane.aname.getText()));
     		NyadComplexF rep2=new NyadComplexF("New", rep);
     		test = true;
     		_GUI._GeometryDisplay.addNyad(rep2);
@@ -732,9 +730,8 @@ public class CreateDialog extends JDialog implements ActionListener
 		boolean test=false;
 		if (copyAlgTargetRD != null) // Algebra's foot dominates separately chosen Foot
 		{
-			RealD tZero=new RealD(copyAlgTargetRD.getFoot().getNumberType(), 0.0D);
 			RealD[] tC = new RealD[copyAlgTargetRD.getGProduct().getBladeCount()];
-			for (short m=0; m<tC.length; m++)	tC[m]=RealD.copyZERO(tZero);
+			for (short m=0; m<tC.length; m++)	tC[m]=(RealD) CladosField.REALD.createZERO(copyAlgTargetRD.getFoot().getNumberType());
 			MonadRealD rep=new MonadRealD(	mainPane.name.getText(),
 											copyAlgTargetRD,
 											mainPane.frame.getText(),
@@ -750,7 +747,7 @@ public class CreateDialog extends JDialog implements ActionListener
 											mainPane.frame.getText(),
 											copyFootTarget,
 											mainPane.sig.getText(),
-											new RealD(copyFootTarget.getNumberType()));
+											(RealD) CladosField.REALD.createZERO(copyFootTarget.getNumberType()));
 			NyadRealD rep2=new NyadRealD("New", rep);
     		_GUI._GeometryDisplay.addNyad(rep2);
     		test = true;
@@ -762,7 +759,7 @@ public class CreateDialog extends JDialog implements ActionListener
     										mainPane.frame.getText(),
     										mainPane.foot.getText(),
     										mainPane.sig.getText(),
-    										RealD.newZERO(mainPane.aname.getText()));
+    										(RealD) CladosField.REALD.createZERO(mainPane.aname.getText()));
     		NyadRealD rep2=new NyadRealD("New", rep);
     		test = true;
     		_GUI._GeometryDisplay.addNyad(rep2);
@@ -775,9 +772,8 @@ public class CreateDialog extends JDialog implements ActionListener
 		boolean test=false;
 		if (copyAlgTargetRF != null) // Algebra's foot dominates separately chosen Foot
 		{
-			RealF tZero=new RealF(copyAlgTargetRF.getFoot().getNumberType(), 0.0f);
 			RealF[] tC = new RealF[copyAlgTargetRF.getGProduct().getBladeCount()];
-			for (short m=0; m<tC.length; m++)	tC[m]=RealF.copyZERO(tZero);
+			for (short m=0; m<tC.length; m++)	tC[m]=(RealF) CladosField.REALF.createZERO(copyAlgTargetRF.getFoot().getNumberType());
 			MonadRealF rep=new MonadRealF(	mainPane.name.getText(),
 											copyAlgTargetRF,
 											mainPane.frame.getText(),
@@ -793,7 +789,7 @@ public class CreateDialog extends JDialog implements ActionListener
 											mainPane.frame.getText(),
 											copyFootTarget,
 											mainPane.sig.getText(),
-											new RealF(copyFootTarget.getNumberType()));
+											(RealF) CladosField.REALF.createZERO(copyFootTarget.getNumberType()));
 			NyadRealF rep2=new NyadRealF("New", rep);
     		_GUI._GeometryDisplay.addNyad(rep2);
     		test = true;
@@ -805,7 +801,7 @@ public class CreateDialog extends JDialog implements ActionListener
     										mainPane.frame.getText(),
     										mainPane.foot.getText(),
     										mainPane.sig.getText(),
-    										RealF.newZERO(mainPane.aname.getText()));
+    										(RealF) CladosField.REALF.createZERO(mainPane.aname.getText()));
     		NyadRealF rep2=new NyadRealF("New", rep);
     		test = true;
     		_GUI._GeometryDisplay.addNyad(rep2);
