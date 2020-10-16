@@ -40,10 +40,10 @@ import com.interworldtransport.cladosviewer.ViewerMenu;
  */
 public class MOpsParentEvents //implements ActionListener
 {
-    protected 	MOpsFindGradeEvents		findgrade;
-    protected 	MOpsHasGradeEvents		hasgrade;
-    protected 	MOpsMagnitudeEvents		mag;
-    protected 	MOpsSQMagnitudeEvents	sqmag;
+    public	 	MOpsFindGradeEvents		findgrade;
+    public	 	MOpsHasGradeEvents		hasgrade;
+    public	 	MOpsMagnitudeEvents		mag;
+    public	 	MOpsSQMagnitudeEvents	sqmag;
     public	 	MOpsNormalizeEvents		norm;
     public	 	MOpsLocalDualEvents		dualLeft;
     public	 	MOpsLocalDualEvents		dualRight;
@@ -53,11 +53,11 @@ public class MOpsParentEvents //implements ActionListener
     public	 	MOpsGradePartEvents		gradep;
     public	 	MOpsGradeSupressEvents	grades;
     
-	protected 	MOpsGradeEvents				grade;
-    protected 	MOpsMultGradeEvents			mgrade;
-    protected 	MOpsNilpotentEvents			nilp;
-    protected 	MOpsIdempotentEvents		idemp;
-    protected 	MOpsScaledIdempotentEvents	midemp;
+	public	 	MOpsGradeEvents				grade;
+	public	 	MOpsMultGradeEvents			mgrade;
+    public	 	MOpsNilpotentEvents			nilp;
+    public	 	MOpsIdempotentEvents		idemp;
+    public	 	MOpsScaledIdempotentEvents	midemp;
 
     protected 	ViewerMenu 				_GUIMenu;
     protected 	CladosCalculator		_GUI;

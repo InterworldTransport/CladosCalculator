@@ -87,22 +87,25 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	 * This is the ComplexD to be displayed in the text area presented by this panel.
 	 * @param pParent	MonadPanel
 	 * This is a reference to the owning MonadPanel
-	 * @throws UtilitiesException 
-	 * Most likely means no cladosF field is passed to the constructor
 	 */
-	public FieldDisplay(ComplexD pField, MonadPanel pParent) throws UtilitiesException
+	public FieldDisplay(ComplexD pField, MonadPanel pParent) 
 	{
-		super(2, FieldDisplay._DOUBLESIZE);
+		super(2, FieldDisplay._DOUBLESIZE); //two rows, extra wide
 		_parent=pParent;
-		if (pField == null)
-			throw new UtilitiesException("FieldArea must receive valid DivField on construction.");
-	    
-
-	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
-		displayFieldCD = pField;
+		if (pField != null)
+		{
+			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
+			displayFieldCD = pField;
+			addFocusListener(this);
+		}
+		else	
+		{
+			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+			setFont(new Font(Font.SERIF, Font.ITALIC, _FONTSIZE));
+			this.setText("null field");
+		}
 		_repMode = CladosField.COMPLEXD;
-		addFocusListener(this);
 	}
 	/**
 	 * The FieldPanel class is intended to be the contain a cladosF Field in much
@@ -111,22 +114,25 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	 * This is the ComplexF to be displayed in the text area presented by this panel.
 	 * @param pParent	MonadPanel
 	 * This is a reference to the owning MonadPanel
-	 * @throws UtilitiesException 
-	 * Most likely means no cladosF field is passed to the constructor
 	 */
-	public FieldDisplay(ComplexF pField, MonadPanel pParent) throws UtilitiesException
+	public FieldDisplay(ComplexF pField, MonadPanel pParent) 
 	{
-		super(2, FieldDisplay._FLOATSIZE);
+		super(2, FieldDisplay._FLOATSIZE);//two rows, not so wide
 		_parent = pParent;
-		if (pField == null)
-			throw new UtilitiesException("FieldArea must receive valid DivField on construction.");
-	    
-
-	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
-		displayFieldCF = pField;
+		if (pField != null)
+		{
+		    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
+			displayFieldCF = pField;
+			addFocusListener(this);
+		}
+		else	
+		{
+			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+			setFont(new Font(Font.SERIF, Font.ITALIC, _FONTSIZE));
+			this.setText("null field");
+		}
 		_repMode = CladosField.COMPLEXF;
-		addFocusListener(this);
 	}
 	/**
 	 * The FieldPanel class is intended to be the contain a cladosF Field in much
@@ -135,21 +141,25 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	 * This is the RealD to be displayed in the text area presented by this panel.
 	 * @param pParent	MonadPanel
 	 * This is a reference to the owning MonadPanel
-	 * @throws UtilitiesException 
-	 * Most likely means no cladosF field is passed to the constructor
 	 */
-	public FieldDisplay(RealD pField, MonadPanel pParent) throws UtilitiesException
+	public FieldDisplay(RealD pField, MonadPanel pParent) 
 	{
-		super(1, FieldDisplay._DOUBLESIZE);
+		super(1, FieldDisplay._DOUBLESIZE);//one row, extra wide
 		_parent = pParent;
-		if (pField == null)
-			throw new UtilitiesException("FieldArea must receive valid DivField on construction.");
-	    
-	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
-		displayFieldRD = pField;
+		if (pField != null)
+		{
+			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
+			displayFieldRD = pField;
+			addFocusListener(this);
+		}
+		else	
+		{
+			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+			setFont(new Font(Font.SERIF, Font.ITALIC, _FONTSIZE));
+			this.setText("null field");
+		}
 		_repMode = CladosField.REALD;
-		addFocusListener(this);
 	}
 	/**
 	 * The FieldPanel class is intended to be the contain a cladosF Field in much
@@ -158,34 +168,38 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	 * This is the RealF to be displayed in the text area presented by this panel.
 	 * @param pParent	MonadPanel
 	 * This is a reference to the owning MonadPanel
-	 * @throws UtilitiesException 
-	 * Most likely means no cladosF field is passed to the constructor
 	 */
-	public FieldDisplay(RealF pField, MonadPanel pParent) throws UtilitiesException
+	public FieldDisplay(RealF pField, MonadPanel pParent)
 	{
-		super(1, FieldDisplay._FLOATSIZE);
+		super(1, FieldDisplay._FLOATSIZE);//one row, not so wide wide
 		_parent = pParent;
 		if (pField == null)
-			throw new UtilitiesException("FieldArea must receive valid DivField on construction.");
-	    
-	    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
-		displayFieldRF = pField;
+		{
+			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+			setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
+			displayFieldRF = pField;
+			addFocusListener(this);
+		}
+		else	
+		{
+			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+			setFont(new Font(Font.SERIF, Font.ITALIC, _FONTSIZE));
+			this.setText("null field");
+		}	    
 		_repMode = CladosField.REALF;
-		addFocusListener(this);
 	}
 	
-	public void displayContents() //throws BadLocationException
+	public void displayContents() 
 	{		
 		StringBuffer str = new StringBuffer().append(FieldDisplay._REAL);
 		switch (_repMode)
 		{
-			case REALF:	str.append(displayFieldRF.getReal());
-						setText(str.toString());
-						break;
-			case REALD:	str.append(displayFieldRD.getReal());
-						setText(str.toString());
-						break;
+			case REALF:		str.append(displayFieldRF.getReal());
+							setText(str.toString());
+							break;
+			case REALD:		str.append(displayFieldRD.getReal());
+							setText(str.toString());
+							break;
 			case COMPLEXF:	str.append(displayFieldCF.getReal()).append("\n"+FieldDisplay._IMAGINARY).append(displayFieldCF.getImg());
 							setText(str.toString());
 							break;
@@ -197,17 +211,16 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	@Override
 	public void focusGained(FocusEvent e) 
 	{
-		//_parent._GUI._StatusBar.setStatusMsg("Parent Edit mode is "+_parent._editMode+".\n");
 		if (_parent._editMode) // Only do this when parent MonadPanel is in edit mode.
 		{
 			switch (_parent.getRepMode())
 			{
-				case REALF: displayFieldRF = RealF.copyOf(_parent._GUI._FieldBar._repRealF);
-							displayContents();
-							break;
-				case REALD: displayFieldRD = RealD.copyOf(_parent._GUI._FieldBar._repRealD);
-							displayContents();
-							break;
+				case REALF: 	displayFieldRF = RealF.copyOf(_parent._GUI._FieldBar._repRealF);
+								displayContents();
+								break;
+				case REALD: 	displayFieldRD = RealD.copyOf(_parent._GUI._FieldBar._repRealD);
+								displayContents();
+								break;
 				case COMPLEXF:	displayFieldCF = ComplexF.copyOf(_parent._GUI._FieldBar._repComplexF);
 								displayContents();
 								break;
@@ -222,34 +235,31 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	{
 		;		
 	}
-	public void saveContents() throws UtilitiesException
+	public void saveContents() //throws UtilitiesException
 	{
 		try 
 		{
-			int tR=FieldDisplay._REAL.length();
-			int tI=FieldDisplay._IMAGINARY.length();
-			
 			StringBuilder strB = new StringBuilder(getText());
 			int tBufferLength = strB.length();
 			if (tBufferLength == 0 ) return; // Nothing to save, so surrender.
-			int indexOfR = strB.indexOf(FieldDisplay._REAL)+tR;
-			int indexOfI = strB.indexOf(FieldDisplay._IMAGINARY)+tI;
+			int indexOfR = strB.indexOf(_REAL)+_REAL.length();
+			int indexOfI = strB.indexOf(_IMAGINARY)+_IMAGINARY.length();
 			
 			switch (_repMode)
 			{
-				case REALF:	float tSpotRF = Float.parseFloat(strB.substring(indexOfR, tBufferLength));
-							displayFieldRF=new RealF(displayFieldRF.getCardinal(), tSpotRF);
-							break;
-				case REALD:	double tSpotRD = Double.parseDouble(strB.substring(indexOfR, tBufferLength));
-							displayFieldRD=new RealD(displayFieldRD.getCardinal(), tSpotRD);
-							break;
-				case COMPLEXF:	float tSpotCF1 = Float.parseFloat(strB.substring(indexOfR, indexOfI-tI-1));
-								float tSpotCF2 = Float.parseFloat(strB.substring(indexOfI, tBufferLength));
-								displayFieldCF=new ComplexF(displayFieldCF.getCardinal(), tSpotCF1, tSpotCF2);
+				case REALF:		displayFieldRF = (RealF) CladosField.REALF.createZERO(displayFieldRF.getCardinal());
+								displayFieldRF.setReal(Float.parseFloat(strB.substring(indexOfR, tBufferLength)));
 								break;
-				case COMPLEXD:	double tSpotCD1 = Double.parseDouble(strB.substring(indexOfR, indexOfI-tI-1));
-								double tSpotCD2 = Double.parseDouble(strB.substring(indexOfI, tBufferLength));
-								displayFieldCD=new ComplexD(displayFieldCD.getCardinal(), tSpotCD1, tSpotCD2);
+				case REALD:		displayFieldRD = (RealD) CladosField.REALD.createZERO(displayFieldRD.getCardinal());
+								displayFieldRD.setReal(Double.parseDouble(strB.substring(indexOfR, tBufferLength)));
+								break;
+				case COMPLEXF:	displayFieldCF = (ComplexF) CladosField.COMPLEXF.createZERO(displayFieldCF.getCardinal());
+								displayFieldCF.setReal(Float.parseFloat(strB.substring(indexOfR, indexOfI-_IMAGINARY.length()-1)));
+								displayFieldCF.setImg(Float.parseFloat(strB.substring(indexOfI, tBufferLength)));
+								break;
+				case COMPLEXD:	displayFieldCD = (ComplexD) CladosField.COMPLEXD.createZERO(displayFieldCD.getCardinal());
+								displayFieldCD.setReal(Double.parseDouble(strB.substring(indexOfR, indexOfI-_IMAGINARY.length()-1)));
+								displayFieldCD.setImg(Double.parseDouble(strB.substring(indexOfI, tBufferLength)));
 			}
 			setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
 			displayContents();
@@ -257,7 +267,7 @@ public class FieldDisplay extends JTextArea implements FocusListener
 		catch (NumberFormatException e) 
 		{
 			setFont(new Font(Font.SERIF, Font.ITALIC, _FONTSIZE));
-			throw new UtilitiesException("FieldArea must contain parse-able text. Look for bad lengths or number formats.");
+			_parent._GUI._StatusBar.setStatusMsg("FieldArea must contain parse-able text. Look for bad lengths or number formats.\n");
 		}
 		
 	}

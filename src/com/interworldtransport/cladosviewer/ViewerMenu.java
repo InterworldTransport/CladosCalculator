@@ -143,7 +143,7 @@ public class ViewerMenu extends JMenuBar
     	mnuNyadOps=new JMenu("Nyad Ops");
     	add(mnuNyadOps);
     	
-	    	mnuNyadBooleanOps=new JMenu("Boolean");
+	    	mnuNyadBooleanOps=new JMenu("Boolean(this)");
 	    	mnuNyadOps.add(mnuNyadBooleanOps);
 	    	   	mniisStrgReferenceMatch=new JMenuItem("is Strong Reference Match?");
 		    	mnuNyadBooleanOps.add(mniisStrgReferenceMatch);
@@ -154,7 +154,7 @@ public class ViewerMenu extends JMenuBar
 		    	mniisEqual=new JMenuItem("is Equal?");
 		    	mnuNyadBooleanOps.add(mniisEqual);
 		    	
-		    mnuOneInputNyadOps=new JMenu("One Input");
+		    mnuOneInputNyadOps=new JMenu("OneOtherInput(this)");
 			mnuNyadOps.add(mnuOneInputNyadOps);
 				mnihasAlgebra=new JMenuItem("has Algebra?");
 				mnuOneInputNyadOps.add(mnihasAlgebra);
@@ -163,7 +163,7 @@ public class ViewerMenu extends JMenuBar
 				mniisPScalarAt=new JMenuItem("is PScalar At?");
 				mnuOneInputNyadOps.add(mniisPScalarAt);
 		    	
-		    mnuTwoInputNyadOps=new JMenu("Two Inputs");
+		    mnuTwoInputNyadOps=new JMenu("TwoFullInputs");
 		    mnuNyadOps.add(mnuTwoInputNyadOps);
 			   	mniAdd=new JMenuItem("Add");
 			   	mnuTwoInputNyadOps.add(mniAdd);
@@ -181,7 +181,7 @@ public class ViewerMenu extends JMenuBar
 		mnuMonadOps=new JMenu("Monad Ops");
 		add(mnuMonadOps);
 		
-			mnuMonadBooleanOps=new JMenu("Boolean");
+			mnuMonadBooleanOps=new JMenu("Boolean(this)");
 	    	mnuMonadOps.add(mnuMonadBooleanOps);
 		    	mniisGrade=new JMenuItem("is Grade?");
 		    	mnuMonadBooleanOps.add(mniisGrade);
@@ -194,7 +194,7 @@ public class ViewerMenu extends JMenuBar
 		    	mniisScaledIdempotent=new JMenuItem("is Scaled Idempotent?");
 		    	mnuMonadBooleanOps.add(mniisScaledIdempotent);
 	    	
-	    	mnuOneInputMonadOps=new JMenu("One Input");
+	    	mnuOneInputMonadOps=new JMenu("OneOtherInput(this)");
 	    	mnuMonadOps.add(mnuOneInputMonadOps);
 		    	mniisSGrade=new JMenuItem("unique findgrade?");
 		    	mnuOneInputMonadOps.add(mniisSGrade);
@@ -221,7 +221,7 @@ public class ViewerMenu extends JMenuBar
 		    	mniGradeCut=new JMenuItem("findgrade cut");
 		    	mnuOneInputMonadOps.add(mniGradeCut);
 		    	
-	    	mnuTwoInputMonadOps=new JMenu("Two Inputs");
+	    	mnuTwoInputMonadOps=new JMenu("TwoFullInputs");
 	    	mnuMonadOps.add(mnuTwoInputMonadOps);
     		
     	mnuTools=new JMenu("Tools");

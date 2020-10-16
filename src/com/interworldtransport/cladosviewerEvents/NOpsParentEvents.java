@@ -41,24 +41,24 @@ import com.interworldtransport.cladosviewer.*;
  */
 public class NOpsParentEvents
 {
-	protected NOpsZeroEvents			zero;
-	protected NOpsEqualEvents			equal;
-	protected NOpsRMatchEvents			strgrmatch;
-	protected NOpsRWeakMatchEvents		weakrmatch;
+	public 		NOpsZeroEvents				zero;
+	public		NOpsEqualEvents				equal;
+	public 		NOpsRMatchEvents			strgrmatch;
+	public		NOpsRWeakMatchEvents		weakrmatch;
 	
-	protected NOpsHasAlgebraMatchEvents	hasalgebra;
-	protected NOpsIsScalarAtEvents		scalarAtAlg;
-	protected NOpsIsPScalarAtEvents		pscalarAtAlg;
+	public		NOpsHasAlgebraMatchEvents	hasalgebra;
+	public		NOpsIsScalarAtEvents		scalarAtAlg;
+	public		NOpsIsPScalarAtEvents		pscalarAtAlg;
 	
-    protected NOpsAddEvents				add;
-    protected NOpsSubtractEvents		sub;
-    protected NOpsLMultEvents			lmult;
-    protected NOpsRMultEvents			rmult;
-    protected NOpsSymmMultEvents		symm;
-    protected NOpsAntiSymmMultEvents	asymm;
+	public		NOpsAddEvents				add;
+	public		NOpsSubtractEvents			sub;
+	public		NOpsLMultEvents				lmult;
+	public		NOpsRMultEvents				rmult;
+	public		NOpsSymmMultEvents			symm;
+	public		NOpsAntiSymmMultEvents		asymm;
 
-    protected ViewerMenu 				_GUIMenu;
-    protected CladosCalculator			_GUI;
+    protected 	ViewerMenu 					_GUIMenu;
+    protected 	CladosCalculator			_GUI;
 
 /** 
  * This is the default constructor.  The event structure of the

@@ -130,8 +130,7 @@ import java.util.*;
     						break;
 	    	case "erase":   eraseNyadCommand();			//Remove the selected nyad from the stack
 	    					break;
-	    	case "create":	CreateDialog.createNyad(_GUI, _repMode);
-	    					//_GUI._EventModel.ToolParts.cr.actionPerformed(event); //Create a new monad for the selected nyad OR a whole new nyad
+	    	case "create":	CreateDialog.createNyad(_GUI, _repMode); //Create a new monad for the selected nyad OR a whole new nyad
 	    					break;
 	    	default:		_GUI._StatusBar.setStatusMsg("No detectable command given at ViewerPanel. No action.\n");
 		}		

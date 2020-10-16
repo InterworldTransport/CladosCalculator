@@ -219,37 +219,37 @@ public class CladosCalculator extends JFrame implements ActionListener
     {
     	switch (event.getActionCommand())
     	{
-	    	case "strong ref match":	_MenuBar.mniisStrgReferenceMatch.doClick();
+	    	case "strong ref match":	_EventModel.NOpsParts.strgrmatch.actionPerformed(event);
 	    								break;
-	    	case "weak ref match":		_MenuBar.mniisWeakReferenceMatch.doClick();
+	    	case "weak ref match":		_EventModel.NOpsParts.weakrmatch.actionPerformed(event);
 	    								break;
-	    	case "algebra detect":		_MenuBar.mnihasAlgebra.doClick();
+	    	case "algebra detect":		_EventModel.NOpsParts.hasalgebra.actionPerformed(event);
 	    								break;
-	    	case "equal":				_MenuBar.mniisEqual.doClick();
+	    	case "equal":				_EventModel.NOpsParts.equal.actionPerformed(event);
 	    								break;
-	    	case "scalar at":			_MenuBar.mniisScalarAt.doClick();
-	    								break;
-	    	case "pscalar at":			_MenuBar.mniisPScalarAt.doClick();
-	    								break;
-	    	case "zero":				_MenuBar.mniisZero.doClick();
+	    	case "zero":				_EventModel.NOpsParts.zero.actionPerformed(event);
 										break;
-	    	case "nilpotent":   		_MenuBar.mniisNilpotent.doClick();
+	    	case "scalar at":			_EventModel.NOpsParts.scalarAtAlg.actionPerformed(event);
 	    								break;
-	    	case "idempotent":   		_MenuBar.mniisIdempotent.doClick();
+	    	case "pscalar at":			_EventModel.NOpsParts.pscalarAtAlg.actionPerformed(event);
 	    								break;
-	    	case "scaled idempotent": 	_MenuBar.mniisScaledIdempotent.doClick();
+	    	case "nilpotent":   		_EventModel.MOpsParts.nilp.actionPerformed(event);
+	    								break;
+	    	case "idempotent":   		_EventModel.MOpsParts.idemp.actionPerformed(event);
+	    								break;
+	    	case "scaled idempotent": 	_EventModel.MOpsParts.midemp.actionPerformed(event);
 										break;
-    		case "is findgrade":		_MenuBar.mniisGrade.doClick();
+    		case "is findgrade":		_EventModel.MOpsParts.grade.actionPerformed(event);
 										break;
-    		case "is mgrade":    		_MenuBar.mniisMultiGrade.doClick();
+    		case "is mgrade":    		_EventModel.MOpsParts.mgrade.actionPerformed(event);
     									break;
-    		case "is findgrade!":   	_MenuBar.mniisSGrade.doClick();
+    		case "is findgrade!":   	_EventModel.MOpsParts.findgrade.actionPerformed(event);
         								break;
-    		case "has findgrade":    	_MenuBar.mnihasGrade.doClick();
+    		case "has findgrade":    	_EventModel.MOpsParts.hasgrade.actionPerformed(event);
     									break;
-    		case "magnitude of":    	_MenuBar.mniMagnitudeOf.doClick();
+    		case "magnitude of":    	_EventModel.MOpsParts.mag.actionPerformed(event);
     									break;
-    		case "sqmagnitude of":    	_MenuBar.mniSQMagnitudeOf.doClick();
+    		case "sqmagnitude of":    	_EventModel.MOpsParts.sqmag.actionPerformed(event);
     									break;
     		default: 					_StatusBar.setStatusMsg("No detectable command processed.\n");
     	}
