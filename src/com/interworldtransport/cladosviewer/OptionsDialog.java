@@ -40,6 +40,7 @@ import javax.swing.border.*;
  */
 public class OptionsDialog extends JDialog implements ActionListener
 {
+	private static final long 	serialVersionUID = 42502531490581682L;
 	private CladosCalculator	_GUI;
 	private JButton 			closeButton;  
 

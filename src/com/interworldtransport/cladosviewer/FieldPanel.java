@@ -58,12 +58,13 @@ import javax.swing.border.BevelBorder;
 
  public class FieldPanel extends JPanel implements ActionListener, FocusListener
  {
-	private static final long 					serialVersionUID = -6988601261409935965L;
+	private static final long serialVersionUID = -5507085437103006370L;
 	private static final int 					FONTSIZE = 			12;
 	private static final int 					_DOUBLESIZE = 		16;
 	private static final int 					_FLOATSIZE =	 	10;
 	private static final String					_IMAGINARY =		"[I]";
 	private static final String 				_REAL =				"[R]";
+	private static final Font					_PLAINFONT = 		new Font(Font.SERIF, Font.PLAIN, FONTSIZE);
 	private	static final Color					clrBackColor = 		new Color(230, 255, 255);
 	private	static final Color					clrNullColor = 		new Color(255, 230, 255);
 	private	static final Dimension				squareLarge =		new Dimension(42,42);
@@ -79,7 +80,6 @@ import javax.swing.border.BevelBorder;
 	private				JButton					btnMakeDouble;
 	private				JButton					btnMakeFloat;
 	private				JButton					btnMakeReal;
-	private				JPanel					pnlButtons;
 	private				JPanel					pnlDisplays;
 	private				ArrayList<JTextField>	valDisplays;
 	protected			ComplexD				_repComplexD;
@@ -108,11 +108,8 @@ import javax.swing.border.BevelBorder;
     	_repComplexD = pIn;
     	setBackground(clrBackColor);
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		createControlLayout();
-    	add(pnlButtons, BorderLayout.LINE_START);
-    	
-    	createDisplaysLayout();
-    	add(pnlDisplays, BorderLayout.LINE_END);
+    	add(createControlLayout(), BorderLayout.LINE_START);
+    	add(createDisplaysLayout(), BorderLayout.CENTER);
     	setCoefficientDisplay(pIn);
     	_GUI._GeometryDisplay.registerFieldPanel(this);
     }
@@ -137,11 +134,8 @@ import javax.swing.border.BevelBorder;
     	_repComplexF = pIn;
     	setBackground(clrBackColor);
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		createControlLayout();
-    	add(pnlButtons, BorderLayout.LINE_START);
-    	
-    	createDisplaysLayout();
-    	add(pnlDisplays, BorderLayout.LINE_END);
+		add(createControlLayout(), BorderLayout.LINE_START);
+    	add(createDisplaysLayout(), BorderLayout.CENTER);
     	setCoefficientDisplay(pIn);
     	_GUI._GeometryDisplay.registerFieldPanel(this);
     }
@@ -166,11 +160,8 @@ import javax.swing.border.BevelBorder;
     	_repRealD = pIn;
     	setBackground(clrBackColor);
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		createControlLayout();
-    	add(pnlButtons, BorderLayout.LINE_START);
-    	
-    	createDisplaysLayout();
-    	add(pnlDisplays, BorderLayout.LINE_END);
+		add(createControlLayout(), BorderLayout.LINE_START);
+    	add(createDisplaysLayout(), BorderLayout.CENTER);
     	setCoefficientDisplay(pIn);
     	_GUI._GeometryDisplay.registerFieldPanel(this);
     }
@@ -195,166 +186,189 @@ import javax.swing.border.BevelBorder;
     	_repRealF = pIn;
     	setBackground(clrBackColor);
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		createControlLayout();
-    	add(pnlButtons, BorderLayout.LINE_START);
-    	
-    	createDisplaysLayout();
-    	add(pnlDisplays, BorderLayout.LINE_END);
+		add(createControlLayout(), BorderLayout.LINE_START);
+    	add(createDisplaysLayout(), BorderLayout.CENTER);
     	setCoefficientDisplay(pIn);
     	_GUI._GeometryDisplay.registerFieldPanel(this);
     }
     @Override
     public void 	actionPerformed(ActionEvent event)
     {
-    	String command = event.getActionCommand();
-    	if (command.equals("clearIt"))
-    	{	
-    		if (_repMode == CladosField.COMPLEXF | _repMode == CladosField.COMPLEXD)
-    			setImgText("");
-    		setRealText("");
-    	}
-    	else if (command.equals("conjugate"))
+    	switch (event.getActionCommand())
     	{
-    		try
-    		{
-	    		switch (_repMode)
-	    		{
-	    			case REALF:		_repRealF = (RealF) CladosField.REALF.createZERO(_repRealF.getCardinal());
-	    							_repRealF.setReal(Float.parseFloat(getRealText()));
-	    							setCoefficientDisplay(_repRealF.conjugate());
-	    							break;
-	    			case REALD:		_repRealD = (RealD) CladosField.REALD.createZERO(_repRealD.getCardinal());
-	    							_repRealD.setReal(Double.parseDouble(getRealText()));
-	    							setCoefficientDisplay(_repRealD.conjugate());
-									break;
-	    			case COMPLEXF:	_repComplexF = (ComplexF) CladosField.COMPLEXF.createZERO(_repComplexF.getCardinal()); 
-	    							_repComplexF.setReal(Float.parseFloat(getRealText()));
-	    							_repComplexF.setImg(Float.parseFloat(getImgText()));
-	    							setCoefficientDisplay(_repComplexF.conjugate());
-									break;
-	    			case COMPLEXD:	_repComplexD = (ComplexD) CladosField.COMPLEXD.createZERO(_repComplexD.getCardinal()); 
-	    							_repComplexD.setReal(Double.parseDouble(getRealText()));
-	    							_repComplexD.setImg(Double.parseDouble(getImgText()));
-									setCoefficientDisplay(_repComplexD.conjugate());
-	    		}
-    		}
-    		catch (NumberFormatException en)
-    		{
-    			_GUI._StatusBar.setStatusMsg("Number Format Exception prevented inversion.\n");
-    			_GUI._StatusBar.setStatusMsg(en.getMessage());
-    		}
+	    	case "clearIt":		if (_repMode == CladosField.COMPLEXF | _repMode == CladosField.COMPLEXD) setImgText("");
+								setRealText("");
+								break;
+	    	case "conjugate":	try
+					    		{
+						    		switch (_repMode)
+						    		{
+						    			case REALF:		_repRealF = (RealF) CladosField.REALF.createZERO(_repRealF.getCardinal());
+						    							_repRealF.setReal(Float.parseFloat(getRealText()));
+						    							setCoefficientDisplay(_repRealF.conjugate());
+						    							break;
+						    			case REALD:		_repRealD = (RealD) CladosField.REALD.createZERO(_repRealD.getCardinal());
+						    							_repRealD.setReal(Double.parseDouble(getRealText()));
+						    							setCoefficientDisplay(_repRealD.conjugate());
+														break;
+						    			case COMPLEXF:	_repComplexF = (ComplexF) CladosField.COMPLEXF.createZERO(_repComplexF.getCardinal()); 
+						    							_repComplexF.setReal(Float.parseFloat(getRealText()));
+						    							_repComplexF.setImg(Float.parseFloat(getImgText()));
+						    							setCoefficientDisplay(_repComplexF.conjugate());
+														break;
+						    			case COMPLEXD:	_repComplexD = (ComplexD) CladosField.COMPLEXD.createZERO(_repComplexD.getCardinal()); 
+						    							_repComplexD.setReal(Double.parseDouble(getRealText()));
+						    							_repComplexD.setImg(Double.parseDouble(getImgText()));
+														setCoefficientDisplay(_repComplexD.conjugate());
+						    		}
+					    		}
+					    		catch (NumberFormatException en)
+					    		{
+					    			_GUI._StatusBar.setStatusMsg("Number Format Exception prevented inversion.\n");
+					    			_GUI._StatusBar.setStatusMsg(en.getMessage());
+					    		}
+	    						break;
+	    	case "inverse":		try
+					    		{
+						    		switch (_repMode)
+						    		{
+						    			case REALF:		_repRealF = (RealF) CladosField.REALF.createZERO(_repRealF.getCardinal());
+														_repRealF.setReal(Float.parseFloat(getRealText()));
+						    							setCoefficientDisplay(_repRealF.invert());
+						    							break;
+						    			case REALD:		_repRealD = (RealD) CladosField.REALD.createZERO(_repRealD.getCardinal());
+														_repRealD.setReal(Double.parseDouble(getRealText()));
+														setCoefficientDisplay(_repRealD.invert());
+														break;
+						    			case COMPLEXF:	_repComplexF = (ComplexF) CladosField.COMPLEXF.createZERO(_repComplexF.getCardinal()); 
+														_repComplexF.setReal(Float.parseFloat(getRealText()));
+														_repComplexF.setImg(Float.parseFloat(getImgText()));
+						    							setCoefficientDisplay(_repComplexF.invert());
+														break;
+						    			case COMPLEXD:	_repComplexD = (ComplexD) CladosField.COMPLEXD.createZERO(_repComplexD.getCardinal());  
+														_repComplexD.setReal(Double.parseDouble(getRealText()));
+														_repComplexD.setImg(Double.parseDouble(getImgText()));
+														setCoefficientDisplay(_repComplexD.invert());
+						    		}
+					    		}
+					    		catch (FieldException e)
+					    		{
+					    			_GUI._StatusBar.setStatusMsg("Field Exception prevented inversion.\n");
+					    			_GUI._StatusBar.setStatusMsg(e.getSourceMessage()+"\n");
+					    			_GUI._StatusBar.setStatusMsg(e.getSource().getCardinalString()+"\n");
+					    		}
+					    		catch (NumberFormatException en)
+					    		{
+					    			_GUI._StatusBar.setStatusMsg("Number Format Exception prevented inversion.\n");
+					    			_GUI._StatusBar.setStatusMsg(en.getMessage()+"\n");
+					    		}
+	    						break;
+	    	case "makeFloat":	if (_GUI._GeometryDisplay.getNyadListSize() != 0)
+						    	{
+						    		_GUI._StatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
+						    		break;
+						    	}
+						    	valDisplays.clear();
+						    	remove(pnlDisplays);
+						    	if (_repMode == CladosField.REALD)	
+    							{
+    								_repMode = CladosField.REALF;
+    								if (_repRealF == null) 
+    									_repRealF = RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+    							}
+						    	else if (_repMode == CladosField.COMPLEXD)	
+    							{
+					    			_repMode = CladosField.COMPLEXF;
+					    			if (_repComplexF == null) 
+					    				_repComplexF = ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+    							}
+					    		btnMakeDouble.setEnabled(true);
+					    		btnMakeFloat.setEnabled(false);
+					    		repaint();
+					    		_GUI._GeometryDisplay.setRepMode(_repMode);
+						    	add(createDisplaysLayout(), BorderLayout.LINE_END);
+						    	_GUI.pack();
+    							break;
+	    	case "makeDouble":	if (_GUI._GeometryDisplay.getNyadListSize() != 0)
+						    	{
+						    		_GUI._StatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
+						    		break;
+						    	}
+						    	valDisplays.clear();
+						    	remove(pnlDisplays);
+						    	if (_repMode == CladosField.REALF)
+					    		{
+									_repMode = CladosField.REALD;
+									if (_repRealD == null) 
+										_repRealD = RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+								}
+						    	else if (_repMode == CladosField.COMPLEXF)
+					    		{
+					    			_repMode = CladosField.COMPLEXD;
+					    			if (_repComplexD == null) 
+					    				_repComplexD = ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+								}
+					    		btnMakeFloat.setEnabled(true);
+				    			btnMakeDouble.setEnabled(false);
+				    			repaint();
+				    			_GUI._GeometryDisplay.setRepMode(_repMode);
+				    	    	add(createDisplaysLayout(), BorderLayout.LINE_END);
+				    	    	_GUI.pack();
+								break;
+	    	case "makeReal":	if (_GUI._GeometryDisplay.getNyadListSize() != 0)
+						    	{
+						    		_GUI._StatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
+						    		break;
+						    	}
+						    	valDisplays.clear();
+						    	remove(pnlDisplays);
+						    	if (_repMode == CladosField.COMPLEXF)	
+    							{
+					    			_repMode = CladosField.REALF;
+									if (_repRealF == null) 
+										_repRealF = RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+    							}
+						    	else if (_repMode == CladosField.COMPLEXD)	
+					    		{
+									_repMode = CladosField.REALD;
+									if (_repRealD == null) 
+										_repRealD = RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+								}
+					    		btnMakeComplex.setEnabled(true);
+				    			btnMakeReal.setEnabled(false);
+				    			repaint();
+				    			_GUI._GeometryDisplay.setRepMode(_repMode);
+				    	    	add(createDisplaysLayout(), BorderLayout.LINE_END);
+				    	    	_GUI.pack();
+								break;
+	    	case "makeComplex":	if (_GUI._GeometryDisplay.getNyadListSize() != 0)
+						    	{
+						    		_GUI._StatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
+						    		break;
+						    	}
+						    	valDisplays.clear();
+						    	remove(pnlDisplays);
+						    	if (_repMode == CladosField.REALF)	
+    							{
+					    			_repMode = CladosField.COMPLEXF;
+					    			if (_repComplexF == null) 
+					    				_repComplexF = ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+								}
+						    	else if (_repMode == CladosField.REALD)	
+					    		{
+					    			_repMode = CladosField.COMPLEXD;
+					    			if (_repComplexD == null) 
+					    				_repComplexD = ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+								}
+					    		btnMakeReal.setEnabled(true);
+				    			btnMakeComplex.setEnabled(false);
+				    			repaint();
+				    			_GUI._GeometryDisplay.setRepMode(_repMode);
+				    	    	add(createDisplaysLayout(), BorderLayout.LINE_END);
+				    	    	_GUI.pack();
+				    			break;
+			default: 			_GUI._StatusBar.setStatusMsg("No Detectable Command in the FieldBar.\n");
     	}
-    	else if (command.equals("inverse"))
-    	{
-    		try
-    		{
-	    		switch (_repMode)
-	    		{
-	    			case REALF:		_repRealF = (RealF) CladosField.REALF.createZERO(_repRealF.getCardinal());
-									_repRealF.setReal(Float.parseFloat(getRealText()));
-	    							setCoefficientDisplay(_repRealF.invert());
-	    							break;
-	    			case REALD:		_repRealD = (RealD) CladosField.REALD.createZERO(_repRealD.getCardinal());
-									_repRealD.setReal(Double.parseDouble(getRealText()));
-									setCoefficientDisplay(_repRealD.invert());
-									break;
-	    			case COMPLEXF:	_repComplexF = (ComplexF) CladosField.COMPLEXF.createZERO(_repComplexF.getCardinal()); 
-									_repComplexF.setReal(Float.parseFloat(getRealText()));
-									_repComplexF.setImg(Float.parseFloat(getImgText()));
-	    							setCoefficientDisplay(_repComplexF.invert());
-									break;
-	    			case COMPLEXD:	_repComplexD = (ComplexD) CladosField.COMPLEXD.createZERO(_repComplexD.getCardinal());  
-									_repComplexD.setReal(Double.parseDouble(getRealText()));
-									_repComplexD.setImg(Double.parseDouble(getImgText()));
-									setCoefficientDisplay(_repComplexD.invert());
-	    		}
-    		}
-    		catch (FieldException e)
-    		{
-    			_GUI._StatusBar.setStatusMsg("Field Exception prevented inversion.\n");
-    			_GUI._StatusBar.setStatusMsg(e.getSourceMessage()+"\n");
-    			_GUI._StatusBar.setStatusMsg(e.getSource().getCardinalString()+"\n");
-    		}
-    		catch (NumberFormatException en)
-    		{
-    			_GUI._StatusBar.setStatusMsg("Number Format Exception prevented inversion.\n");
-    			_GUI._StatusBar.setStatusMsg(en.getMessage()+"\n");
-    		}
-    	}
-    	else if (_GUI._GeometryDisplay.getNyadListSize() == 0)
-    	{
-	    	valDisplays.clear();
-	    	remove(pnlDisplays);
-	    	switch (command)
-	    	{
-	    		case "makeFloat":	if (_repMode == CladosField.REALD)	
-	    							{
-	    								_repMode = CladosField.REALF;
-	    								if (_repRealF == null) 
-	    									_repRealF = RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
-	    							}
-	    							if (_repMode == CladosField.COMPLEXD)	
-	    							{
-						    			_repMode = CladosField.COMPLEXF;
-						    			if (_repComplexF == null) 
-						    				_repComplexF = ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
-	    							}
-						    		btnMakeDouble.setEnabled(true);
-						    		btnMakeFloat.setEnabled(false);
-						    		repaint();
-	    							break;
-	    		case "makeDouble":	if (_repMode == CladosField.REALF)
-						    		{
-										_repMode = CladosField.REALD;
-										if (_repRealD == null) 
-											_repRealD = RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
-									}
-						    		if (_repMode == CladosField.COMPLEXF)
-						    		{
-						    			_repMode = CladosField.COMPLEXD;
-						    			if (_repComplexD == null) 
-						    				_repComplexD = ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
-									}
-						    		btnMakeFloat.setEnabled(true);
-					    			btnMakeDouble.setEnabled(false);
-									break;
-	    		case "makeReal":	if (_repMode == CladosField.COMPLEXF)	
-	    							{
-						    			_repMode = CladosField.REALF;
-										if (_repRealF == null) 
-											_repRealF = RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
-	    							}
-						    		if (_repMode == CladosField.COMPLEXD)	
-						    		{
-										_repMode = CladosField.REALD;
-										if (_repRealD == null) 
-											_repRealD = RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
-									}
-						    		btnMakeComplex.setEnabled(true);
-					    			btnMakeReal.setEnabled(false);
-									break;
-	    		case "makeComplex":	if (_repMode == CladosField.REALF)	
-	    							{
-						    			_repMode = CladosField.COMPLEXF;
-						    			if (_repComplexF == null) 
-						    				_repComplexF = ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
-									}
-						    		if (_repMode == CladosField.REALD)	
-						    		{
-						    			_repMode = CladosField.COMPLEXD;
-						    			if (_repComplexD == null) 
-						    				_repComplexD = ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
-									}
-						    		btnMakeReal.setEnabled(true);
-					    			btnMakeComplex.setEnabled(false);
-	    	}
-	    	_GUI._GeometryDisplay.setRepMode(_repMode);
-	    	createDisplaysLayout();
-	    	add(pnlDisplays, BorderLayout.LINE_END);
-
-	    	_GUI.pack();
-    	}
-    	else _GUI._StatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");	
     }
   
     /**
@@ -515,9 +529,9 @@ import javax.swing.border.BevelBorder;
 	{
 		setRealText((new StringBuffer(pWhat)).toString());
 	}
-    private void createControlLayout()
+    private JPanel createControlLayout()
 	{
-		pnlButtons = new JPanel();
+		JPanel pnlButtons = new JPanel();
 		pnlButtons.setBackground(clrBackColor);
 		pnlButtons.setLayout(new GridBagLayout());
 		pnlButtons.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -595,10 +609,11 @@ import javax.swing.border.BevelBorder;
     	btnConjugate.setBorder(BorderFactory.createEtchedBorder(0));
     	btnConjugate.addActionListener(this);
     	pnlButtons.add(btnConjugate, c1);
-		
+    	
+    	return pnlButtons;
 	}
 
-	private void createDisplaysLayout()
+	private JPanel createDisplaysLayout()
 	{
 		pnlDisplays = new JPanel();
 		pnlDisplays.setBackground(clrBackColor);
@@ -613,10 +628,6 @@ import javax.swing.border.BevelBorder;
     	c2.gridy = 0;
     	c2.weightx=1;
     	c2.weighty=1;
-    	
-    	
-    	//pnlDisplays.add(new JLabel("name", SwingConstants.CENTER), c2);
-    	//c2.gridx++;
     	
     	switch (_repMode)
     	{
@@ -665,7 +676,7 @@ import javax.swing.border.BevelBorder;
 							{
 								tSpot = new JTextField();
 								tSpot.setColumns(FieldPanel._FLOATSIZE);
-					    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, FONTSIZE));
+					    		tSpot.setFont(_PLAINFONT );
 					    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 					    		tSpot.addFocusListener(this);
 					    		valDisplays.add(m, tSpot);
@@ -680,7 +691,7 @@ import javax.swing.border.BevelBorder;
 							{
 								tSpot = new JTextField();
 								tSpot.setColumns(FieldPanel._DOUBLESIZE);
-					    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, FONTSIZE));
+					    		tSpot.setFont(_PLAINFONT);
 					    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 					    		tSpot.addFocusListener(this);
 					    		valDisplays.add(m, tSpot);
@@ -695,7 +706,7 @@ import javax.swing.border.BevelBorder;
 							{
 								tSpot = new JTextField();
 								tSpot.setColumns(FieldPanel._FLOATSIZE);
-					    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, FONTSIZE));
+					    		tSpot.setFont(_PLAINFONT);
 					    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 					    		tSpot.addFocusListener(this);
 					    		valDisplays.add(m, tSpot);
@@ -710,7 +721,7 @@ import javax.swing.border.BevelBorder;
 							{
 								tSpot = new JTextField();
 								tSpot.setColumns(FieldPanel._DOUBLESIZE);
-					    		tSpot.setFont(new Font(Font.SERIF, Font.PLAIN, FONTSIZE));
+					    		tSpot.setFont(_PLAINFONT);
 					    		tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 					    		tSpot.addFocusListener(this);
 					    		valDisplays.add(m, tSpot);
@@ -720,7 +731,7 @@ import javax.swing.border.BevelBorder;
 							btnMakeFloat.setEnabled(true);
 							btnMakeDouble.setEnabled(false);
 		}
-		
+		return pnlDisplays;
 	}
 	/**
      * This clearing function wipes the slate within the Field panel. No represented Fields should remain.

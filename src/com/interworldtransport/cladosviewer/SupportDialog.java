@@ -38,8 +38,9 @@ import javax.swing.border.*;
  */
 public final class SupportDialog extends JDialog implements ActionListener
 {
-	private 	CladosCalculator	TheGUI;
-	private 	JButton 			closeButton;  // The close button
+	private static final 	long 				serialVersionUID = -3225893667778938123L;
+	private 				CladosCalculator	TheGUI;
+	private 				JButton 			closeButton;
 
 	/**
 	 * The constructor sets up the support/about dialog box and displays it.

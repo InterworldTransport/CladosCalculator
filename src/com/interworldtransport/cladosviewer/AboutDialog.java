@@ -40,8 +40,9 @@ import javax.swing.border.*;
  */
 public final class AboutDialog extends JDialog implements ActionListener
 {
-	private 	CladosCalculator	TheGUI;
-	private 	JButton 			closeButton;
+	private static final 	long 				serialVersionUID = 1L;
+	private 				CladosCalculator	TheGUI;
+	private 				JButton 			closeButton;
 
 /**
  * The constructor sets up the about dialog box and displays it.

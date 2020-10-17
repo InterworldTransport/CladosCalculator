@@ -31,14 +31,12 @@ import java.awt.event.FocusListener;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
-import javax.swing.text.BadLocationException;
 
 import com.interworldtransport.cladosF.CladosField;
 import com.interworldtransport.cladosF.ComplexD;
 import com.interworldtransport.cladosF.ComplexF;
 import com.interworldtransport.cladosF.RealD;
 import com.interworldtransport.cladosF.RealF;
-import com.interworldtransport.cladosviewerExceptions.*;
 
 /** 
  * The FieldArea class extends JTextArea slightly to keep the cladosF object
@@ -50,15 +48,17 @@ import com.interworldtransport.cladosviewerExceptions.*;
  */
 public class FieldDisplay extends JTextArea implements FocusListener
 {
-	private static final long 	serialVersionUID = 9025876827548262896L;
-	private static final int 	_FONTSIZE = 	12;
-	private static final int 	_DOUBLESIZE =	16;
-	private static final int 	_FLOATSIZE =	10;
-	private static final String	_IMAGINARY =	"[I]";
-	private static final String _REAL =			"[R]";
+	private static final long serialVersionUID = 7705233831398982801L;
+	private static final int 	_FONTSIZE 			= 12;
+	private static final int 	_DOUBLESIZE 		= 16;
+	private static final int 	_FLOATSIZE 			= 10;
+	private static final Font	_PLAINFONT			= new Font(Font.SERIF, Font.PLAIN, _FONTSIZE);
+	private static final Font	_ITALICFONT			= new Font(Font.SERIF, Font.ITALIC, _FONTSIZE);
+	private static final String	_IMAGINARY 			= "[I]";
+	private static final String _REAL 				= "[R]";
 	
-	private			MonadPanel	_parent;
-	private			CladosField	_repMode;
+	private		MonadPanel	_parent;
+	private		CladosField	_repMode;
 	/**
 	 * The displayField is a copy of the cladosF magnitude that can be safely displayed
 	 * and manipulated without harming the cladosG object using the original magnitude.
@@ -95,14 +95,15 @@ public class FieldDisplay extends JTextArea implements FocusListener
 		if (pField != null)
 		{
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
+			setFont(_PLAINFONT);
 			displayFieldCD = pField;
 			addFocusListener(this);
 		}
 		else	
 		{
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-			setFont(new Font(Font.SERIF, Font.ITALIC, _FONTSIZE));
+			setFont(_ITALICFONT);
+			_parent._GUI._StatusBar.setStatusMsg("null C|D in FieldDisplay\n");
 			this.setText("null field");
 		}
 		_repMode = CladosField.COMPLEXD;
@@ -122,14 +123,15 @@ public class FieldDisplay extends JTextArea implements FocusListener
 		if (pField != null)
 		{
 		    setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
+			setFont(_PLAINFONT);
 			displayFieldCF = pField;
 			addFocusListener(this);
 		}
 		else	
 		{
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-			setFont(new Font(Font.SERIF, Font.ITALIC, _FONTSIZE));
+			setFont(_ITALICFONT);
+			_parent._GUI._StatusBar.setStatusMsg("null C|F in FieldDisplay\n");
 			this.setText("null field");
 		}
 		_repMode = CladosField.COMPLEXF;
@@ -149,14 +151,15 @@ public class FieldDisplay extends JTextArea implements FocusListener
 		if (pField != null)
 		{
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
+			setFont(_PLAINFONT);
 			displayFieldRD = pField;
 			addFocusListener(this);
 		}
 		else	
 		{
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-			setFont(new Font(Font.SERIF, Font.ITALIC, _FONTSIZE));
+			setFont(_ITALICFONT);
+			_parent._GUI._StatusBar.setStatusMsg("null R|D in FieldDisplay\n");
 			this.setText("null field");
 		}
 		_repMode = CladosField.REALD;
@@ -173,17 +176,18 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	{
 		super(1, FieldDisplay._FLOATSIZE);//one row, not so wide wide
 		_parent = pParent;
-		if (pField == null)
+		if (pField != null)
 		{
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
+			setFont(_PLAINFONT);
 			displayFieldRF = pField;
 			addFocusListener(this);
 		}
 		else	
 		{
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-			setFont(new Font(Font.SERIF, Font.ITALIC, _FONTSIZE));
+			setFont(_ITALICFONT);
+			_parent._GUI._StatusBar.setStatusMsg("null R|F in FieldDisplay\n");
 			this.setText("null field");
 		}	    
 		_repMode = CladosField.REALF;
@@ -261,12 +265,12 @@ public class FieldDisplay extends JTextArea implements FocusListener
 								displayFieldCD.setReal(Double.parseDouble(strB.substring(indexOfR, indexOfI-_IMAGINARY.length()-1)));
 								displayFieldCD.setImg(Double.parseDouble(strB.substring(indexOfI, tBufferLength)));
 			}
-			setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
+			setFont(_PLAINFONT);
 			displayContents();
 		} 
 		catch (NumberFormatException e) 
 		{
-			setFont(new Font(Font.SERIF, Font.ITALIC, _FONTSIZE));
+			setFont(_ITALICFONT);
 			_parent._GUI._StatusBar.setStatusMsg("FieldArea must contain parse-able text. Look for bad lengths or number formats.\n");
 		}
 		
@@ -276,38 +280,38 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	 * @param pField
 	 *  ComplexD
 	 * This is the ComplexD to be displayed in the text area presented by this panel.
-	 * @throws UtilitiesException 
-	 * Most likely means no cladosF field is passed to the constructor
-	 * @throws BadLocationException 
-	 * This exception will get thrown when there is difficulty parsing the text on display
-	 * in this field. The format expected is [R]Double\n[I]Double
 	 */
-	public void updateField(ComplexD pField) throws UtilitiesException, BadLocationException
+	public void updateField(ComplexD pField)
 	{
-		if (pField == null)
-			throw new UtilitiesException("FieldArea must receive valid ComplexD on update.");
-
-		displayFieldCD = ComplexD.copyOf(pField);
-		displayContents();
+		if (pField != null)
+		{
+			displayFieldCD = ComplexD.copyOf(pField);
+			displayContents();
+		}
+		else	
+		{
+			setFont(_ITALICFONT);
+			this.setText("null C|D field");
+		}
 	}
 	/**
 	 * When a new cladosF number is to be displayed, it is passed in through this method.
 	 * @param pField
 	 *  ComplexF
 	 * This is the ComplexF to be displayed in the text area presented by this panel.
-	 * @throws UtilitiesException 
-	 * Most likely means no cladosF field is passed to the constructor
-	 * @throws BadLocationException 
-	 * This exception will get thrown when there is difficulty parsing the text on display
-	 * in this field. The format expected is [R]Float\n[I]Float
 	 */
-	public void updateField(ComplexF pField) throws UtilitiesException, BadLocationException
+	public void updateField(ComplexF pField) 
 	{
-		if (pField == null)
-			throw new UtilitiesException("FieldArea must receive valid ComplexF on update.");
-
-		displayFieldCF = ComplexF.copyOf(pField);
-		displayContents();
+		if (pField != null)
+		{
+			displayFieldCF = ComplexF.copyOf(pField);
+			displayContents();
+		}
+		else	
+		{
+			setFont(_ITALICFONT);
+			this.setText("null C|F field");
+		}
 	}
 	
 	/**
@@ -315,37 +319,37 @@ public class FieldDisplay extends JTextArea implements FocusListener
 	 * @param pField
 	 *  RealD
 	 * This is the RealD to be displayed in the text area presented by this panel.
-	 * @throws UtilitiesException 
-	 * Most likely means no cladosF field is passed to the constructor
-	 * @throws BadLocationException 
-	 * This exception will get thrown when there is difficulty parsing the text on display
-	 * in this field. The format expected is [R]Double
 	 */
-	public void updateField(RealD pField) throws UtilitiesException, BadLocationException
+	public void updateField(RealD pField) 
 	{
-		if (pField == null)
-			throw new UtilitiesException("FieldArea must receive valid RealD on update.");
-
-		displayFieldRD = RealD.copyOf(pField);
-		displayContents();
+		if (pField != null)
+		{
+			displayFieldRD = RealD.copyOf(pField);
+			displayContents();
+		}
+		else	
+		{
+			setFont(_ITALICFONT);
+			this.setText("null R|D field");
+		}
 	}
 	/**
 	 * When a new cladosF number is to be displayed, it is passed in through this method.
 	 * @param pField
 	 *  RealF
 	 * This is the RealF to be displayed in the text area presented by this panel.
-	 * @throws UtilitiesException 
-	 * Most likely means no cladosF field is passed to the constructor
-	 * @throws BadLocationException 
-	 * This exception will get thrown when there is difficulty parsing the text on display
-	 * in this field. The format expected is [R]Float
 	 */
-	public void updateField(RealF pField) throws UtilitiesException, BadLocationException
+	public void updateField(RealF pField) 
 	{
-		if (pField == null)
-			throw new UtilitiesException("FieldArea must receive valid RealF on update.");
-
-		displayFieldRF = RealF.copyOf(pField);
-		displayContents();
+		if (pField != null)
+		{
+			displayFieldRF = RealF.copyOf(pField);
+			displayContents();
+		}
+		else	
+		{
+			setFont(_ITALICFONT);
+			this.setText("null R|F field");
+		}
 	}
 }

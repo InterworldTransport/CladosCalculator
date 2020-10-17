@@ -37,6 +37,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.TitledBorder;
 
 import java.util.*;
 
@@ -104,11 +105,11 @@ import java.util.*;
    	 {
    		super();
    		if (pGUI==null)
-   	      		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
+      		throw new UtilitiesException("A GUI must be passed to a NyadPanel");
    		_GUI=pGUI;
-   		 
-   	    if (pN==null)
-   	      		throw new UtilitiesException("A Nyad must be passed to this MonadPanel constructor");
+	 
+   		if (pN==null)
+      		throw new UtilitiesException("A Nyad must be passed to this NyadPanel constructor");
    	    _repNyadCD=pN;
    		_repMode=CladosField.COMPLEXD;
    		 
@@ -167,11 +168,11 @@ import java.util.*;
    	 {
    		super();
    		if (pGUI==null)
-   	      		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
+      		throw new UtilitiesException("A GUI must be passed to a NyadPanel");
    		_GUI=pGUI;
-   		 
-   	    if (pN==null)
-   	      		throw new UtilitiesException("A Nyad must be passed to this MonadPanel constructor");
+	 
+   		if (pN==null)
+      		throw new UtilitiesException("A Nyad must be passed to this NyadPanel constructor");
    	    _repNyadCF=pN;
    		_repMode=CladosField.COMPLEXF;
    		 
@@ -230,11 +231,11 @@ import java.util.*;
    	 {
    		super();
    		if (pGUI==null)
-   	      		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
+      		throw new UtilitiesException("A GUI must be passed to a NyadPanel");
    		_GUI=pGUI;
-   		 
-   	    if (pN==null)
-   	      		throw new UtilitiesException("A Nyad must be passed to this MonadPanel constructor");
+	 
+   		if (pN==null)
+      		throw new UtilitiesException("A Nyad must be passed to this NyadPanel constructor");
    	    _repNyadD=pN;
    		_repMode=CladosField.REALD;
    		 
@@ -293,11 +294,11 @@ import java.util.*;
 	 {
 		super();
 		if (pGUI==null)
-	      		throw new UtilitiesException("A GUI must be passed to a MonadPanel");
+	      		throw new UtilitiesException("A GUI must be passed to a NyadPanel");
 		_GUI=pGUI;
 		 
 	    if (pN==null)
-	      		throw new UtilitiesException("A Nyad must be passed to this MonadPanel constructor");
+	      		throw new UtilitiesException("A Nyad must be passed to this NyadPanel constructor");
 	    _repNyadF=pN;
 		_repMode=CladosField.REALF;
 		 
@@ -319,7 +320,7 @@ import java.util.*;
 			 
 		for (short j=0; j<_repNyadF.getMonadList().size(); j++)
 		{
-			String count =new StringBuffer().append(j).toString();
+			String count =new StringBuffer().append(j).toString();			
 			monadPanelList.add(j, new MonadPanel(_GUI, _repNyadF.getMonadList(j)));
 			JScrollPane tempPane=new JScrollPane(monadPanelList.get(j));
 			tempPane.setWheelScrollingEnabled(true);
@@ -387,10 +388,8 @@ import java.util.*;
      * @param pM
      * 	MonadComplexD
      * This is the MonadRealF to use to construct a MonadPanel to be appended to this NyadPanel.
-     * @throws UtilitiesException
-     * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
      */
-    public	void		addMonadPanel(MonadComplexD pM) //throws UtilitiesException
+    public	void		addMonadPanel(MonadComplexD pM) 
     {
     	MonadPanel pMP=new MonadPanel(_GUI, pM);
     	addMonadPanel(pMP); 
@@ -406,10 +405,8 @@ import java.util.*;
      * @param pM
      * 	MonadComplexF
      * This is the MonadRealF to use to construct a MonadPanel to be appended to this NyadPanel.
-     * @throws UtilitiesException
-     * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
      */
-    public	void		addMonadPanel(MonadComplexF pM) //throws UtilitiesException
+    public	void		addMonadPanel(MonadComplexF pM) 
     {
     	MonadPanel pMP=new MonadPanel(_GUI, pM);
     	addMonadPanel(pMP); 
@@ -463,10 +460,8 @@ import java.util.*;
      * @param pM
      * 	MonadRealD
      * This is the MonadRealD to use to construct a MonadPanel to be appended to this NyadPanel.
-     * @throws UtilitiesException
-     * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
      */
-    public	void		addMonadPanel(MonadRealD pM) //throws UtilitiesException
+    public	void		addMonadPanel(MonadRealD pM) 
     {
     	MonadPanel pMP=new MonadPanel(_GUI, pM);
     	addMonadPanel(pMP); 
@@ -482,10 +477,8 @@ import java.util.*;
      * @param pM
      * 	MonadRealF
      * This is the MonadRealF to use to construct a MonadPanel to be appended to this NyadPanel.
-     * @throws UtilitiesException
-     * This is the general exception. Could be any miscellaneous issue. Ready the message to see. 
      */
-    public	void		addMonadPanel(MonadRealF pM) //throws UtilitiesException
+    public	void		addMonadPanel(MonadRealF pM)
     {
     	MonadPanel pMP=new MonadPanel(_GUI, pM);
     	addMonadPanel(pMP); 
@@ -722,7 +715,25 @@ import java.util.*;
     	pnlRefPanel=new JPanel();
     	pnlRefPanel.setBackground(clrBackColor);
     	
-    	pnlRefPanel.setBorder(BorderFactory.createTitledBorder("N"));
+    	StringBuffer title = new StringBuffer("on DivField | ");
+    	switch (_repMode)
+    	{
+    		case REALF:		title.append(_repNyadF.getProto().toXMLString());
+    						break;
+    		case REALD:		title.append(_repNyadD.getProto().toXMLString());
+							break;	
+    		case COMPLEXF:	title.append(_repNyadCF.getProto().toXMLString());
+							break;
+    		case COMPLEXD:	title.append(_repNyadCD.getProto().toXMLString());
+    		default: 		title.append("");
+    	}
+    	
+    	TitledBorder tWrap = BorderFactory.createTitledBorder(	BorderFactory.createEtchedBorder(), 
+    															title.toString(), 
+    															TitledBorder.LEFT, 
+    															TitledBorder.DEFAULT_POSITION, 
+    															new Font(Font.SERIF, Font.PLAIN, 10));
+    	pnlRefPanel.setBorder(tWrap);
     	pnlRefPanel.setLayout(new GridBagLayout());
     	
     	GridBagConstraints cn0 = new GridBagConstraints();
@@ -740,10 +751,10 @@ import java.util.*;
     	pnlRefPanel.add(nyadName, cn0);	
     	cn0.gridx++;
     	
-    	protoXML.setFont(new Font(Font.SERIF, Font.PLAIN, 8));
-    	protoXML.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    	pnlRefPanel.add(protoXML, cn0);
-    	cn0.gridx++;
+    	//protoXML.setFont(new Font(Font.SERIF, Font.PLAIN, 8));
+    	//protoXML.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    	//pnlRefPanel.add(protoXML, cn0);
+    	//cn0.gridx++;
     	
     	cn0.weightx=0;
     	cn0.ipadx=20;
