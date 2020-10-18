@@ -274,13 +274,13 @@ import javax.swing.border.BevelBorder;
     							{
     								_repMode = CladosField.REALF;
     								if (_repRealF == null) 
-    									_repRealF = RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+    									_repRealF = RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
     							}
 						    	else if (_repMode == CladosField.COMPLEXD)	
     							{
 					    			_repMode = CladosField.COMPLEXF;
 					    			if (_repComplexF == null) 
-					    				_repComplexF = ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+					    				_repComplexF = ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
     							}
 					    		btnMakeDouble.setEnabled(true);
 					    		btnMakeFloat.setEnabled(false);
@@ -300,13 +300,13 @@ import javax.swing.border.BevelBorder;
 					    		{
 									_repMode = CladosField.REALD;
 									if (_repRealD == null) 
-										_repRealD = RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+										_repRealD = RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
 								}
 						    	else if (_repMode == CladosField.COMPLEXF)
 					    		{
 					    			_repMode = CladosField.COMPLEXD;
 					    			if (_repComplexD == null) 
-					    				_repComplexD = ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+					    				_repComplexD = ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
 								}
 					    		btnMakeFloat.setEnabled(true);
 				    			btnMakeDouble.setEnabled(false);
@@ -326,13 +326,13 @@ import javax.swing.border.BevelBorder;
     							{
 					    			_repMode = CladosField.REALF;
 									if (_repRealF == null) 
-										_repRealF = RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+										_repRealF = RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
     							}
 						    	else if (_repMode == CladosField.COMPLEXD)	
 					    		{
 									_repMode = CladosField.REALD;
 									if (_repRealD == null) 
-										_repRealD = RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+										_repRealD = RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
 								}
 					    		btnMakeComplex.setEnabled(true);
 				    			btnMakeReal.setEnabled(false);
@@ -352,13 +352,13 @@ import javax.swing.border.BevelBorder;
     							{
 					    			_repMode = CladosField.COMPLEXF;
 					    			if (_repComplexF == null) 
-					    				_repComplexF = ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+					    				_repComplexF = ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
 								}
 						    	else if (_repMode == CladosField.REALD)	
 					    		{
 					    			_repMode = CladosField.COMPLEXD;
 					    			if (_repComplexD == null) 
-					    				_repComplexD = ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"));
+					    				_repComplexD = ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
 								}
 					    		btnMakeReal.setEnabled(true);
 				    			btnMakeComplex.setEnabled(false);

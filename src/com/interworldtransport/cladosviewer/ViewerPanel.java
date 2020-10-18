@@ -76,7 +76,7 @@ import java.util.*;
     private	final	Color					clrBackColor=new Color(255, 255, 220);
     private			JPanel					pnlControlBar;
     private final	Dimension 				square = new Dimension(25,25);
-    private			ImageIcon				tabIcon;  
+    private 		ImageIcon				tabIcon;  
     protected		ArrayList<NyadPanel>	nyadPanelList;
     protected		JTabbedPane				nyadPanes;
 
@@ -103,10 +103,12 @@ import java.util.*;
   	    
   	    //Get the nyad tab image for the nyad panes being constructed
     	tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabN"));
+    	//_GUI._StatusBar.setStatusMsg(tabIcon.getIconHeight()+", "+tabIcon.getIconWidth()+" | "+tabIcon.getDescription());
+    	
     	_repMode = validateInitialDivField();
     	
     	//The Viewer contains NyadPanels displayed as a JTabbedPanes containing 
-    	//JScrollPanes containing a NyadPanel each. We initiate the JTabbedPanel here
+    	//JScrollPanes containing a NyadPanel each. We initiate the JTabbedPane here
     	nyadPanes=new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
     	nyadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
     	//JScrollPanes are used only when a nyadPanel with nyadPanes.addTab()
@@ -175,7 +177,7 @@ import java.util.*;
 									    				_GUI.IniProps.getProperty("Desktop.Default.FrameName"),
 									    				_GUI.IniProps.getProperty("Desktop.Default.FootName"),
 									    				_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-									    				ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"))
+									    				ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"))
 		    											);
     		aNyad=new NyadComplexD(cnt, aMonad);
     		// Now bootstrap the others using the first
@@ -199,6 +201,11 @@ import java.util.*;
 			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to bad signature.\n");
 			return null;
 		}
+		catch (GeneratorRangeException e) 
+		{
+			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
+			return null;
+		}
 		catch (CladosMonadException em)
 		{
 			_GUI._StatusBar.setStatusMsg("CladosMonad Exception found when constructing first part of the Viewer Panel.\n");
@@ -208,7 +215,8 @@ import java.util.*;
 		{
 			_GUI._StatusBar.setStatusMsg("CladosNyad Exception found when adding NyadComplexD to the Viewer Panel");
 			return null;
-		}
+		} 
+		
 		
 		return aNyad;
     }
@@ -224,7 +232,7 @@ import java.util.*;
 									    				_GUI.IniProps.getProperty("Desktop.Default.FrameName"),
 									    				_GUI.IniProps.getProperty("Desktop.Default.FootName"),
 									    				_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-									    				ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"))
+									    				ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"))
 		    											);
     		aNyad=new NyadComplexF(cnt, aMonad);
     		// Now bootstrap the others using the first
@@ -246,6 +254,11 @@ import java.util.*;
 		catch (BadSignatureException es)
 		{
 			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to bad signature.\n");
+			return null;
+		}
+		catch (GeneratorRangeException e) 
+		{
+			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
 			return null;
 		}
 		catch (CladosMonadException em)
@@ -273,7 +286,7 @@ import java.util.*;
 							    				_GUI.IniProps.getProperty("Desktop.Default.FrameName"),
 							    				_GUI.IniProps.getProperty("Desktop.Default.FootName"),
 							    				_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-							    				RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"))
+							    				RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"))
     											);
     		aNyad=new NyadRealD(cnt, aMonad);
     		// Now bootstrap the others using the first
@@ -295,6 +308,11 @@ import java.util.*;
 		catch (BadSignatureException es)
 		{
 			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to bad signature.\n");
+			return null;
+		}
+		catch (GeneratorRangeException e) 
+		{
+			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
 			return null;
 		}
 		catch (CladosMonadException em)
@@ -322,7 +340,7 @@ import java.util.*;
 							    				_GUI.IniProps.getProperty("Desktop.Default.FrameName"),
 							    				_GUI.IniProps.getProperty("Desktop.Default.FootName"),
 							    				_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-							    				RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.DivFieldType"))
+							    				RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"))
     											);
     		aNyad=new NyadRealF(cnt, aMonad);
     		// Now bootstrap the others using the first
@@ -344,6 +362,11 @@ import java.util.*;
 		catch (BadSignatureException es)
 		{
 			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to bad signature.\n");
+			return null;
+		}
+		catch (GeneratorRangeException e) 
+		{
+			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
 			return null;
 		}
 		catch (CladosMonadException em)
@@ -439,9 +462,11 @@ import java.util.*;
 					    			if(aNyadRF != null)
 					    			{
 						    			nyadPanelList.add(j, new NyadPanel(_GUI, aNyadRF));
+						    			JScrollPane tempPane=new JScrollPane(nyadPanelList.get(j));
+						       			tempPane.setWheelScrollingEnabled(true);
 						    			nyadPanes.addTab(	new StringBuffer().append(j).toString(), 
 															tabIcon, 
-															new JScrollPane(nyadPanelList.get(j))
+															tempPane
 															);
 					    			}
 					    			else _GUI._StatusBar.setStatusMsg("... null NyadRealF for new NyadPanel avoided.\n");
@@ -463,9 +488,11 @@ import java.util.*;
 					    			if(aNyadRD != null)
 					    			{
 						    			nyadPanelList.add(j, new NyadPanel(_GUI, aNyadRD));
+						    			JScrollPane tempPane=new JScrollPane(nyadPanelList.get(j));
+						       			tempPane.setWheelScrollingEnabled(true);
 						    			nyadPanes.addTab(	new StringBuffer().append(j).toString(), 
 															tabIcon, 
-															new JScrollPane(nyadPanelList.get(j))
+															tempPane
 															);
 					    			}
 					    			else _GUI._StatusBar.setStatusMsg("... null NyadRealD for new NyadPanel avoided.\n");
@@ -487,9 +514,11 @@ import java.util.*;
 					    			if(aNyadCF != null)
 					    			{
 						    			nyadPanelList.add(j, new NyadPanel(_GUI, aNyadCF));
+						    			JScrollPane tempPane=new JScrollPane(nyadPanelList.get(j));
+						       			tempPane.setWheelScrollingEnabled(true);
 						    			nyadPanes.addTab(	new StringBuffer().append(j).toString(), 
 															tabIcon, 
-															new JScrollPane(nyadPanelList.get(j))
+															tempPane
 															);
 					    			}
 					    			else _GUI._StatusBar.setStatusMsg("... null NyadComplexF for new NyadPanel avoided.\n");
@@ -511,9 +540,11 @@ import java.util.*;
 					    			if(aNyadCD != null)
 					    			{
 						    			nyadPanelList.add(j, new NyadPanel(_GUI, aNyadCD));
+						    			JScrollPane tempPane=new JScrollPane(nyadPanelList.get(j));
+						       			tempPane.setWheelScrollingEnabled(true);
 						    			nyadPanes.addTab(	new StringBuffer().append(j).toString(), 
 															tabIcon, 
-															new JScrollPane(nyadPanelList.get(j))
+															tempPane
 															);
 					    			}
 					    			else _GUI._StatusBar.setStatusMsg("... null NyadComplexD for new NyadPanel avoided.\n");

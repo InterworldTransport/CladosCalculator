@@ -65,7 +65,7 @@ import java.util.*;
 	private	static final	Dimension					squareLittle =		new Dimension(25,25);
 	private	static final	Dimension					squareMedium =		new Dimension(28,28);
 	private static final	Font						_PLAINFONT = 		new Font(Font.SERIF, Font.PLAIN, COEFF_SIZE);
-	//private static final	Font						_ITALICFONT = 		new Font(Font.SERIF, Font.ITALIC, COEFF_SIZE);
+	private static final	Font						_ITALICFONT = 		new Font(Font.SERIF, Font.ITALIC, COEFF_SIZE);
 	
 	private					ArrayList<FieldDisplay>		_jCoeffs;
 	private					CladosField					_repMode;
@@ -100,6 +100,7 @@ import java.util.*;
 	protected				boolean						_editMode;
 	public					CladosCalculator			_GUI;
 	
+	protected				JTextField					cardname=new JTextField(16);
 	protected				JTextField					aname=new JTextField(16);
 	protected				JTextField					foot=new JTextField(16);
 	protected				JTextField					frame=new JTextField(16);
@@ -122,6 +123,7 @@ import java.util.*;
 	   setBackground(clrBackColor);
 	   setLayout(new BorderLayout());
 	   name.setText("tablePlace");
+	   cardname.setText(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
 	   aname.setText(_GUI.IniProps.getProperty("Desktop.Default.AlgebraName"));
 	   frame.setText(_GUI.IniProps.getProperty("Desktop.Default.FrameName"));
 	   foot.setText(_GUI.IniProps.getProperty("Desktop.Default.FootName"));
@@ -139,20 +141,28 @@ import java.util.*;
 	   cn0.weightx=0;
 	   cn0.weighty=0;
 	   	
-	   pnlMonadReferences.add(new JLabel("Name", SwingConstants.RIGHT), cn0);
+	   	
+	   pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Cardinal"))), cn0);
 	   cn0.gridx++;
-	   name.setFont(_PLAINFONT);
-	   pnlMonadReferences.add(name, cn0);
-	   cn0.gridx=0;
+	   cardname.setFont(_ITALICFONT);
+	   pnlMonadReferences.add(cardname, cn0);
+	   cn0.gridx = 0;
 	   cn0.gridy++;
 	   	
 	   pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot"))), cn0);
 	   cn0.gridx++;
-	   foot.setFont(_PLAINFONT);
+	   foot.setFont(_ITALICFONT);
 	   pnlMonadReferences.add(foot, cn0);
 	   cn0.gridx=0;
 	   cn0.gridy++;
 	   	
+	   pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Alg"))), cn0);
+	   cn0.gridx++;
+	   aname.setFont(_ITALICFONT);
+	   pnlMonadReferences.add(aname, cn0);
+	   cn0.gridx=0;
+	   cn0.gridy++;
+	   
 	   pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Sig"))), cn0);
 	   cn0.gridx++;
 	   sig.setFont(_PLAINFONT);
@@ -160,17 +170,19 @@ import java.util.*;
 	   cn0.gridx = 0;
 	   cn0.gridy++;
 	   	
-	   pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Alg"))), cn0);
-	   cn0.gridx++;
-	   aname.setFont(_PLAINFONT);
-	   pnlMonadReferences.add(aname, cn0);
-	   cn0.gridx=0;
-	   cn0.gridy++;
-	   	
 	   pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Frame"))), cn0);
 	   cn0.gridx++;
 	   frame.setFont(_PLAINFONT);
 	   pnlMonadReferences.add(frame, cn0);
+	   cn0.gridx=0;
+	   cn0.gridy++;
+	   
+	   pnlMonadReferences.add(new JLabel("Name", SwingConstants.RIGHT), cn0);
+	   cn0.gridx++;
+	   name.setFont(_PLAINFONT);
+	   pnlMonadReferences.add(name, cn0);
+	   cn0.gridx=0;
+	   cn0.gridy++;
 	   	
 	   add(pnlMonadReferences,"South");
    }
@@ -1056,13 +1068,13 @@ import java.util.*;
     	StringBuffer title = new StringBuffer("Cardinal | ");
     	switch (_repMode)
     	{
-    		case REALF:		title.append(_repMonadF.getAlgebra().getFoot().getNumberType().getType());
+    		case REALF:		title.append(_repMonadF.getAlgebra().getFoot().getCardinal().getType());
     						break;
-    		case REALD:		title.append(_repMonadD.getAlgebra().getFoot().getNumberType().getType());
+    		case REALD:		title.append(_repMonadD.getAlgebra().getFoot().getCardinal().getType());
 							break;	
-    		case COMPLEXF:	title.append(_repMonadCF.getAlgebra().getFoot().getNumberType().getType());
+    		case COMPLEXF:	title.append(_repMonadCF.getAlgebra().getFoot().getCardinal().getType());
 							break;
-    		case COMPLEXD:	title.append(_repMonadCD.getAlgebra().getFoot().getNumberType().getType());
+    		case COMPLEXD:	title.append(_repMonadCD.getAlgebra().getFoot().getCardinal().getType());
     	}
     	
     	TitledBorder tWrap = BorderFactory.createTitledBorder(	BorderFactory.createEtchedBorder(), 
