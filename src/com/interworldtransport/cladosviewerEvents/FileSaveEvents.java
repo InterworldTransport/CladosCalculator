@@ -25,6 +25,10 @@
 
 package com.interworldtransport.cladosviewerEvents;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import javax.swing.*;
 
 import com.interworldtransport.cladosviewerExceptions.CantGetSaveException;
@@ -62,15 +66,29 @@ public class FileSaveEvents implements ActionListener
  * This is the actual action to be performed by this member of the File menu.
  */
     public void actionPerformed(ActionEvent evt)
-
     {
-	    try
+	    if (_parent._GUI.IniProps.getProperty("Desktop.Snapshot") != null)	// save to file described in conf setting
 	    {
-	    	_parent._GUI.saveSnapshot(null);
+	    	File fIni=new File(_parent._GUI.IniProps.getProperty("Desktop.Snapshot"));
+	    	if (!(fIni.exists() & fIni.isFile() & fIni.canWrite()))
+	    	{
+	    		_parent.sa.actionPerformed(evt);	// Defer to Save As event
+	    		return;
+	    	}
+	    	try
+	    	{
+	    		FileWriter saveItTo=new FileWriter(fIni, false);
+	    	   	saveItTo.write(_parent.makeSnapshotContent());
+	    	   	saveItTo.write("\r\n");
+	    	   	saveItTo.flush();
+	    	   	saveItTo.close();
+	    	   	_parent._GUI._StatusBar.setStatusMsg("-->Stack Snapshot SAVED.\n");
+	    	}
+	    	catch (IOException e)
+	    	{
+	    	   	_parent._GUI._StatusBar.setStatusMsg("-->Stack Snapshot NOT saved. IO Exception involving Properties target file.\n");
+	    	}
 	    }
-	    catch (CantGetSaveException es)
-	    {
-		    _parent._GUI._StatusBar.setStatusMsg("No Save file Exception prevented snapshot save.\n");
-	    }
+	    else	_parent.sa.actionPerformed(evt);	// Defer to Save As event
     }
  }

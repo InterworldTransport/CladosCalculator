@@ -25,19 +25,7 @@
 package com.interworldtransport.cladosviewer;
 
 import com.interworldtransport.cladosF.CladosFBuilder;
-
-import com.interworldtransport.cladosG.MonadComplexD;
-import com.interworldtransport.cladosG.MonadComplexF;
-import com.interworldtransport.cladosG.MonadRealD;
-import com.interworldtransport.cladosG.MonadRealF;
-
-import com.interworldtransport.cladosG.NyadRealF;
-import com.interworldtransport.cladosG.NyadRealD;
-import com.interworldtransport.cladosG.NyadComplexF;
-import com.interworldtransport.cladosG.NyadComplexD;
-
 import com.interworldtransport.cladosviewerExceptions.CantGetIniException;
-import com.interworldtransport.cladosviewerExceptions.CantGetSaveException;
 
 import java.awt.*;
 import javax.swing.*;
@@ -119,14 +107,13 @@ public class CladosCalculator extends JFrame implements ActionListener
 	private		JButton				btnWhatGrade;
 	private		JButton				btnWhatMagn;
 	private		JButton				btnWhatSQMagn;
-    private		JFileChooser 		fc;
     private		JPanel				pnlControlBar; // global button display for easy menu access
-    private		FileWriter			saveItTo;
+
 	/*
      * This is the properties object containing key/value pairs from the config file
      * and any system settings that might be useful.
      */
-    protected	Properties			IniProps;
+    public		Properties			IniProps;
 
     /**
 	 * This is the main constructor the the Monad Viewer
@@ -208,8 +195,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 	    createTestControls();
 	    cp.add(pnlControlBar,"West");
 	    	
-	    fc = new JFileChooser();
-	    fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+	    
 	    
 	    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 	    setLocation(dim.width/4-this.getSize().width/4, dim.height/4-this.getSize().height/4);
@@ -254,90 +240,11 @@ public class CladosCalculator extends JFrame implements ActionListener
     		default: 					_StatusBar.setStatusMsg("No detectable command processed.\n");
     	}
     }
-    /**
-	 * This method saves snapshot data to the save file.
-	 * @param pType
-	 * 	String
-	 * This string alters the mode of the method allowing the use of a cached save file
-	 * When it is 'null' we except the cached value from the configuration file.
-	 * @throws CantGetSaveException
-	 * This exception gets thrown when IO issues occur blocking access to writes to the save file.
-	 */
-	public void saveSnapshot(String pType)	throws 	CantGetSaveException
-	{
-		// If pType is null we use the configured save file if it is known.
-		
-	    String SaveName=IniProps.getProperty("Desktop.Snapshot");
-	    if (pType==null) 		// switch setting for 'save' with current snapshot target if known
-	    {
-	    	if (saveItTo==null)	// but if it is not known, make one up from conf setting
-	    	{
-	    		File fIni=new File(SaveName);
-	    	    if (!(fIni.exists() & fIni.isFile() & fIni.canWrite()))
-	    	    	throw new CantGetSaveException("No access to snapshot save file.");
-	    	    
-	    	    try
-	    	    {
-	    	    	saveItTo=new FileWriter(fIni, true);
-	    	    	saveItTo.write(makeSnapshotContent());
-	    	    	saveItTo.write("\r\n");
-	    	    	saveItTo.flush();
-	    	    	saveItTo.close();
-		    		_StatusBar.setStatusMsg("\tsnapshot of stack is saved.\n");
-	    	    }
-	    	    catch (IOException e)
-	    	    {
-	    	    	_StatusBar.setStatusMsg("\t\tsnapshot of stack is NOT saved due to IO Exception.\n");
-	    	    }
-	    	}
-	    }
-	    else					//pType isn't null... so let user choose graphically and then save the choice as a property.
-	    {
-	    	int returnVal = fc.showSaveDialog(this);
-	    	if (returnVal == JFileChooser.APPROVE_OPTION) 
-	    	{
-	    		File fIni = fc.getSelectedFile();
-	    		SaveName=fIni.getName();
-	    		if (!(fIni.exists() & fIni.isFile() & fIni.canWrite()))
-		    	    	throw new CantGetSaveException("No access to snapshot save file.");
-	  
-	    		try 
-	    		{
-		    		saveItTo=new FileWriter(fIni, true);
-		    		saveItTo.write(makeSnapshotContent());
-		    		saveItTo.write("\r\n");
-		    		saveItTo.flush();
-		    		saveItTo.close();
-		    		_StatusBar.setStatusMsg("Snapshot of stack is saved.\n");
-		    		
-		    		//Change the Snapshot property so it can be used for 'Save' next
-		    		//time.  No chooser dialog should be needed then.
-		    		IniProps.setProperty("Desktop.Snapshot", SaveName);
-	    		}
-	    		catch (IOException e)
-	    		{
-	    			_StatusBar.setStatusMsg("\t\tsnapshot of stack is NOT saved due to IO Exception.\n");
-	    		}
-	    	} 
-	    }
-	}
-    
+       
     public void terminateModel() 
     {
-		try 
-		{
-			if (saveItTo != null)
-				saveItTo.close();
-		} 
-		catch (IOException e) 
-		{
-			System.out.println("Couldn't close the snapshot save file. Resource leakage is occuring.");
-			e.printStackTrace();
-		}
-		finally
-		{
-			System.exit(0);
-		}
+		_EventModel.FileParts.fc = null;
+		System.exit(0);
     }
 
     private void createTestControls()
@@ -529,66 +436,8 @@ public class CladosCalculator extends JFrame implements ActionListener
     	btnWhatGrade.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
     	btnWhatGrade.addActionListener(this);
     	pnlControlBar.add(btnWhatGrade, cn);
-    	
-    	
-
-    	
     }
     
-    private String makeSnapshotContent()
-	{
-    	if (_GeometryDisplay.getNyadListSize() == 0) return "Nothing in panels to save.";
-    	
-    	// TODO There should be two versions of this. One gives full XML strings. 
-    	// The second does the light weight version.
-    	
-		StringBuffer content=new StringBuffer("<Application Name=\"Clados Calculator\", ");
-		content.append("Licensee=\""+IniProps.getProperty("User.Name")+"\" />\r\n");
-		content.append("<NyadList size=\""+_GeometryDisplay.getNyadListSize()+"\">\r\n");
-
-		for (NyadPanel tempNPN : _GeometryDisplay.getNyadPanels())
-		{
-			switch(tempNPN.getRepMode())
-			{
-				case REALF:	NyadRealF tempNF=tempNPN.getNyadRF();
-							content.append("<Nyad Name=\""+tempNF.getName()+"\", ");
-							content.append("Order=\""+tempNF.getNyadOrder()+"\", ");
-							content.append("Foot=\""+tempNF.getFootPoint().getFootName()+"\">\r\n");
-							content.append("<MonadList>\r\n");
-							for (int m=0; m<tempNF.getNyadOrder(); m++)
-								content.append(MonadRealF.toXMLFullString(tempNF.getMonadList(m)));
-							break;
-				case REALD:	NyadRealD tempND=tempNPN.getNyadRD();
-							content.append("<Nyad Name=\""+tempND.getName()+"\", ");
-							content.append("Order=\""+tempND.getNyadOrder()+"\", ");
-							content.append("Foot=\""+tempND.getFootPoint().getFootName()+"\">\r\n");
-							content.append("<MonadList>\r\n");
-							for (int m=0; m<tempND.getNyadOrder(); m++)
-								content.append(MonadRealD.toXMLFullString(tempND.getMonadList(m)));
-								break;
-				case COMPLEXF:	NyadComplexF tempNCF=tempNPN.getNyadCF();
-								content.append("<Nyad Name=\""+tempNCF.getName()+"\", ");
-								content.append("Order=\""+tempNCF.getNyadOrder()+"\", ");
-								content.append("Foot=\""+tempNCF.getFootPoint().getFootName()+"\">\r\n");
-								content.append("<MonadList>\r\n");
-								for (int m=0; m<tempNCF.getNyadOrder(); m++)
-									content.append(MonadComplexF.toXMLFullString(tempNCF.getMonadList(m)));
-								break;
-				case COMPLEXD:	NyadComplexD tempNCD=tempNPN.getNyadCD();
-								content.append("<Nyad Name=\""+tempNCD.getName()+"\", ");
-								content.append("Order=\""+tempNCD.getNyadOrder()+"\", ");
-								content.append("Foot=\""+tempNCD.getFootPoint().getFootName()+"\">\r\n");
-								content.append("<MonadList>\r\n");
-								for (int m=0; m<tempNCD.getNyadOrder(); m++)
-									content.append(MonadComplexD.toXMLFullString(tempNCD.getMonadList(m)));
-			}
-			content.append("</MonadList>\r\n");
-			content.append("</Nyad>\r\n");
-		}
-		content.append("</NyadList>\r\n");
-		return content.toString();
-	}
-	
 	/**
 	 * This method does the initial file handling for the configuration file.
 	 * It doesn't do anything fancy... just get it and load it into IniProps.
@@ -623,39 +472,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 	    	}
 		}
 
-    /**
-	 * This method does the initial file handling for the snapshot save file.
-	 * It doesn't do much right now except check to see if the file is there.
-	 * @param pSaveName
-	 * 	String
-	 * This is the string holding the path and filename for the cached save file
-	 * The method tries to read it from the configuration file.
-	 * @throws CantGetSaveException
-	 * This exception gets thrown when IO issues occur blocking access to writes to the stated save file.
-	 * There might be a path issue... or a filename issue... or permissions. Who knows?
-	 */
-	protected void getSaveFile(String pSaveName)
-	    throws 	CantGetSaveException
-	{
-	    String SaveName=null;
-	    if (pSaveName==null)
-	    	SaveName=IniProps.getProperty("Desktop.Snapshot");
-	    else
-	    {
-	    	SaveName=pSaveName;
-	    	IniProps.setProperty("Desktop.Snapshot", pSaveName);
-	    }
-	
-	    File fSave=new File(SaveName);
-	    if (!(fSave.exists() & fSave.isFile() & fSave.canWrite()))
-	    	throw new CantGetSaveException("Desktop.Snapshot should be set somewhere in the conf file.\n ...or no access to snapshot save file.");
-	    //System.out.println("Desktop.Snapshot should be set somewhere in the conf file.");
-	        
-	    
-	    // Getting here with no exceptions is the objective. 
-	    // Success implies we have a valid snapshot target
-	    // but there is no need to keep a FileWriter open to it.
-	}
+ 
 	
 	
 } 

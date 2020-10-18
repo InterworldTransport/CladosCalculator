@@ -23,10 +23,13 @@
  * ------------------------------------------------------------------------ <br>
  */
 package com.interworldtransport.cladosviewerEvents;
-import java.awt.event.*;
-import javax.swing.*;
 
-import com.interworldtransport.cladosviewerExceptions.CantGetSaveException;
+import java.awt.event.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import javax.swing.*;
 
 /** 
  *  This class manages events relating to the saving of the current state
@@ -61,15 +64,31 @@ public class FileSaveAsEvents implements ActionListener
  * This is the actual action to be performed by this member of the File menu.
  */
     public void actionPerformed(ActionEvent evt)
-
     {
-	    try
+	    int returnVal = _parent.fc.showSaveDialog(_control);
+	    if (returnVal == JFileChooser.APPROVE_OPTION) 
 	    {
-		    _parent._GUI.saveSnapshot("As");
-	    }
-	    catch (CantGetSaveException es)
-	    {
-		    _parent._GUI._StatusBar.setStatusMsg("No Save As file Exception prevented snapshot save.\n");
-	    }
+	    	File fIni = _parent.fc.getSelectedFile();
+	    	try 
+	    	{
+	    		FileWriter saveItTo=new FileWriter(fIni, false);
+	    		saveItTo.write(_parent.makeSnapshotContent());
+	    		saveItTo.write("\r\n");
+	    		saveItTo.flush();
+	    		saveItTo.close();
+	    		saveItTo = null;
+	    		_parent._GUI._StatusBar.setStatusMsg("-->Stack Snapshot SAVED AS "+fIni.getPath()+"\n");
+	    		_parent._GUI.IniProps.setProperty("Desktop.Snapshot", fIni.getName());
+	    	}
+	    	catch (IOException e)
+	    	{
+	    		_parent._GUI._StatusBar.setStatusMsg("-->Stack Snapshot NOT saved. IO Exception at SaveAs menu.\n");
+	    	}
+	    	finally
+	    	{
+	    		fIni = null;
+	    	}
+	    } 
+	  
     }
  }
