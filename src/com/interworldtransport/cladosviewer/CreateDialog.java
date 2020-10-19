@@ -27,7 +27,6 @@ package com.interworldtransport.cladosviewer;
 import com.interworldtransport.cladosF.CladosField;
 import com.interworldtransport.cladosF.ComplexD;
 import com.interworldtransport.cladosF.ComplexF;
-//import com.interworldtransport.cladosF.DivField;
 import com.interworldtransport.cladosF.RealD;
 import com.interworldtransport.cladosF.RealF;
 import com.interworldtransport.cladosG.*;
@@ -48,8 +47,11 @@ import javax.swing.border.*;
  */
 public class CreateDialog extends JDialog implements ActionListener
 {
-	private static final long serialVersionUID = 9020826163491617137L;
-
+	private static final Font				_ITALICFONT = new Font(Font.SERIF, Font.ITALIC, 10);
+	private	final static Color				_monadColor = new Color(212, 212, 192);
+	private	final static Color				_nyadColor 	= new Color(212, 200, 212);
+	private static final Font				_PLAINFONT 	= new Font(Font.SERIF, Font.PLAIN, 10);
+	private	final static Dimension			square = new Dimension(30,30);
 	/**
 	* This is a factory method for creating a new monad to add to the selected nyad's stack
 	* 
@@ -131,26 +133,18 @@ public class CreateDialog extends JDialog implements ActionListener
     	}
 		return tCD;
 	}
-	
-	private	final static Color				_monadColor = new Color(212, 212, 192);
-	private	final static Color				_nyadColor 	= new Color(212, 200, 212);
-	private static final Font				_PLAINFONT 	= new Font(Font.SERIF, Font.PLAIN, 10);
-	private static final Font				_ITALICFONT = new Font(Font.SERIF, Font.ITALIC, 10);
-	private	final static Dimension			square = new Dimension(30,30);
 	private			CladosCalculator	_GUI;
 	private			CladosField			_repMode;
-	private			JButton				closeButton;
-	
-	private 		AlgebraComplexD		copyAlgTargetCD;
-	private 		AlgebraComplexF		copyAlgTargetCF;
-	private 		AlgebraRealD		copyAlgTargetRD;
-	private 		AlgebraRealF		copyAlgTargetRF;
-	private 		Foot				copyFootTarget;
-
-	private			JButton				getAlgebraButton;
-	private			JButton				getFootButton;
+	private			JButton				btnClose;
+	private			JButton				btnGetAlgebra;
+	private			JButton				btnGetFoot;
+	private			JButton				btnSave;
+	private 		AlgebraComplexD		copiedAlgCD;
+	private 		AlgebraComplexF		copiedAlgCF;
+	private 		AlgebraRealD		copiedAlgRD;
+	private 		AlgebraRealF		copiedAlgRF;
+	private 		Foot				copiedFoot;
 	private			MonadPanel			monadShort;
-	private			JButton				saveButton;
 
 	/**
  	* The constructor sets up the options dialog box and displays it.
@@ -178,9 +172,8 @@ public class CreateDialog extends JDialog implements ActionListener
  	* for which specific ones have been written. Read the contained message.
  	*/
 	private CreateDialog(CladosCalculator mainWindow, boolean makeNyad, CladosField pDivMode)
-	throws 		UtilitiesException, BadSignatureException, CladosMonadException
+			throws 		UtilitiesException, BadSignatureException, CladosMonadException
 	{
-		
 		super(mainWindow, (makeNyad ? "Create Nyad Panel": "Create Monad Panel"), false);
 		_GUI=mainWindow;
 		if (pDivMode == null) throw new UtilitiesException("CladosField undefined at dialog creation");
@@ -197,21 +190,21 @@ public class CreateDialog extends JDialog implements ActionListener
 		dialogGets.setBorder(new EmptyBorder(5, 5, 5, 5));
 		dialogGets.setBackground(makeNyad ? _nyadColor : _monadColor);
 				
-		getFootButton = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot")));
-		getFootButton.setActionCommand("Get Foot");
-		getFootButton.setToolTipText("Reference Foot in selected nyad.");
-		getFootButton.setPreferredSize(square);
-		getFootButton.setBorder(BorderFactory.createEtchedBorder(0));
-		getFootButton.addActionListener(this);
-		dialogGets.add(getFootButton);
+		btnGetFoot = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot")));
+		btnGetFoot.setActionCommand("getfoot");
+		btnGetFoot.setToolTipText("Get Referenced Foot");
+		btnGetFoot.setPreferredSize(square);
+		btnGetFoot.setBorder(BorderFactory.createEtchedBorder(0));
+		btnGetFoot.addActionListener(this);
+		dialogGets.add(btnGetFoot);
 				
-		getAlgebraButton = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Alg")));
-		getAlgebraButton.setActionCommand("Get Algebra");
-		getAlgebraButton.setPreferredSize(square);
-		getAlgebraButton.setToolTipText("Reference Algebra in selected monad.");
-		getAlgebraButton.setBorder(BorderFactory.createEtchedBorder(0));
-		getAlgebraButton.addActionListener(this);
-		dialogGets.add(getAlgebraButton);
+		btnGetAlgebra = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Alg")));
+		btnGetAlgebra.setActionCommand("getalg");
+		btnGetAlgebra.setPreferredSize(square);
+		btnGetAlgebra.setToolTipText("Reference Algebra in selected monad.");
+		btnGetAlgebra.setBorder(BorderFactory.createEtchedBorder(0));
+		btnGetAlgebra.addActionListener(this);
+		dialogGets.add(btnGetAlgebra);
 		primaryStage.add(dialogGets, BorderLayout.PAGE_START); // and put it on stage
 		
 		// Create monad for center panel
@@ -224,22 +217,22 @@ public class CreateDialog extends JDialog implements ActionListener
 		dialogControls.setBorder(new EmptyBorder(5, 5, 5, 5));
 		dialogControls.setBackground(makeNyad ? _nyadColor : _monadColor);
 		
-		saveButton = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Save")));
-		saveButton.setActionCommand(makeNyad ? "Save Nyad": "Save Monad");
-		saveButton.setToolTipText(makeNyad ? 	"Create new nyad. Algebra/Foot or just Foot can be referenced.": 
+		btnSave = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Save")));
+		btnSave.setActionCommand(makeNyad ? "Save Nyad": "Save Monad");
+		btnSave.setToolTipText(makeNyad ? 	"Create new nyad. Algebra/Foot or just Foot can be referenced.": 
 												"Create new monad. Algebra/Foot can be referenced, but nyad Foot better match.");
-		saveButton.setPreferredSize(square);
-		saveButton.setBorder(BorderFactory.createEtchedBorder(0));
-		saveButton.addActionListener(this);
-		dialogControls.add(saveButton);
+		btnSave.setPreferredSize(square);
+		btnSave.setBorder(BorderFactory.createEtchedBorder(0));
+		btnSave.addActionListener(this);
+		dialogControls.add(btnSave);
 		
-		closeButton = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Close")));
-		closeButton.setActionCommand("close");
-		closeButton.setToolTipText("Close the dialog. No further changes.");
-		closeButton.setPreferredSize(square);
-		closeButton.setBorder(BorderFactory.createEtchedBorder(0));
-		closeButton.addActionListener(this);
-		dialogControls.add(closeButton);
+		btnClose = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Close")));
+		btnClose.setActionCommand("close");
+		btnClose.setToolTipText("Close the dialog. No further changes.");
+		btnClose.setPreferredSize(square);
+		btnClose.setBorder(BorderFactory.createEtchedBorder(0));
+		btnClose.addActionListener(this);
+		dialogControls.add(btnClose);
 		primaryStage.add(dialogControls, BorderLayout.PAGE_END);	// and put it on stage
 	
 		// Center the window on the parent window.
@@ -257,65 +250,103 @@ public class CreateDialog extends JDialog implements ActionListener
     	{
     		case "close": 		dispose();
     							break;
-    		//TODO there should be a case for "Release Foot" that is the flip for "Get Foot:
-    		case "Get Foot":	tSpot=_GUI._GeometryDisplay.getPaneFocus();
-					        	if (tSpot<0) return; //No nyad chosen to get Foot
-					        	
+    		case ".getfoot.":	btnGetFoot.setActionCommand("getfoot");
+        						btnGetFoot.setToolTipText("Get Referenced Foot");
+        						copiedFoot=null;
+        						monadShort.foot.setEditable(true);
+        						monadShort.foot.setFont(_ITALICFONT);
+        						
+        						copiedAlgRF=null;
+        						copiedAlgRD=null;
+        						copiedAlgCF=null;
+        						copiedAlgCD=null;
+        						monadShort.aname.setFont(_ITALICFONT);
+        						monadShort.aname.setEditable(true);
+        						monadShort.cardname.setFont(_ITALICFONT);
+        						monadShort.cardname.setEditable(true);
+    							break;
+    		case "getfoot":		if (getNyadPaneFocus()<0) return; //No nyad chosen to get Foot
+					        	btnGetFoot.setActionCommand(".getfoot.");
+					        	btnGetFoot.setToolTipText("Release Referenced Foot");
 					        	switch ((_GUI._GeometryDisplay.getNyadPanel(tSpot)).getRepMode())
 					        	{
-					        		case REALF:		copyFootTarget=_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadRF().getFootPoint();
+					        		case REALF:		copiedFoot=getNyadPanelFocus().getNyadRF().getFootPoint();
 					        						break;
-					        		case REALD:		copyFootTarget=_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadRD().getFootPoint();
+					        		case REALD:		copiedFoot=getNyadPanelFocus().getNyadRD().getFootPoint();
 					    							break;
-					        		case COMPLEXF:	copyFootTarget=_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadCF().getFootPoint();
+					        		case COMPLEXF:	copiedFoot=getNyadPanelFocus().getNyadCF().getFootPoint();
 					    							break;
-					        		case COMPLEXD:	copyFootTarget=_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadCD().getFootPoint();
+					        		case COMPLEXD:	copiedFoot=getNyadPanelFocus().getNyadCD().getFootPoint();
 					        	}
-					        	monadShort.foot.setText(copyFootTarget.getFootName());
-					        	monadShort.cardname.setText(copyFootTarget.getCardinal().getType());
+					        	monadShort.foot.setText(copiedFoot.getFootName());
 					        	monadShort.foot.setFont(_PLAINFONT);
-					        	monadShort.cardname.setFont(_PLAINFONT);
+					        	monadShort.foot.setEditable(false);	
+					        	
+					        	copiedAlgRF=null;
+        						copiedAlgRD=null;
+        						copiedAlgCF=null;
+        						copiedAlgCD=null;
 					        	monadShort.aname.setFont(_ITALICFONT);
-					        	//TODO After getting foot, the foot and card should not be editable.
+					        	monadShort.aname.setEditable(true);					        	
+					        	monadShort.cardname.setEditable(true);
+					        	monadShort.sig.setEditable(true);
     							break;
-    		//TODO there should be a case for "Release Algebra" that is the flip for "Get Algebra:
-    		case "Get Algebra":	tSpot=_GUI._GeometryDisplay.getPaneFocus();
-					        	if (tSpot<0) return; //No nyad chosen to get Foot
-					    		
-					        	NyadPanel tSpotNPanel = _GUI._GeometryDisplay.getNyadPanel(tSpot);
-					        	int tSpotMonadIndex = tSpotNPanel.getPaneFocus();
-					        	if (tSpotMonadIndex<0) return; //No monad in the focus to get its algebra
+    		case ".getalg.":	btnGetAlgebra.setActionCommand("getalg");
+        						btnGetAlgebra.setToolTipText("Get Referenced Algebra");
+        						copiedAlgRF=null;
+        						copiedAlgRD=null;
+        						copiedAlgCF=null;
+        						copiedAlgCD=null;
+        						monadShort.aname.setFont(_ITALICFONT);
+        						monadShort.aname.setEditable(true);
+        						monadShort.cardname.setFont(_ITALICFONT);
+        						monadShort.cardname.setEditable(true);
+        						monadShort.sig.setFont(_ITALICFONT);
+        						monadShort.sig.setEditable(true);
+        						monadShort.foot.setFont(_ITALICFONT);
+    							monadShort.foot.setEditable(true);
+        						break;
+    		case "getalg":		if (getNyadPaneFocus()<0) return; //No nyad chosen to get Foot
+					        	btnGetAlgebra.setActionCommand(".getalg.");
+					        	btnGetAlgebra.setToolTipText("Release Referenced Algebra");
+					        	NyadPanel tSpotNPanel = getNyadPanelFocus();
+					        	int tSpotMonadIndex = getMonadPaneFocus();
+					        	if (getMonadPaneFocus()<0) return; //No monad in the focus to get its algebra
 					        	
 					        	switch (tSpotNPanel.getRepMode())
 					        	{
-					        		case REALF:		copyAlgTargetRF=(tSpotNPanel.getMonadPanel(tSpotMonadIndex)).getMonadRF().getAlgebra();
-					        						monadShort.cardname.setText(copyAlgTargetRF.getFoot().getCardinal().getType());
-					        						monadShort.aname.setText(copyAlgTargetRF.getAlgebraName());
-					    							monadShort.foot.setText(copyAlgTargetRF.getFoot().getFootName());
-					    							monadShort.sig.setText(copyAlgTargetRF.getGProduct().getSignature());
+					        		case REALF:		copiedAlgRF=getMonadPanelFocus().getMonadRF().getAlgebra();
+					        						monadShort.cardname.setText(copiedAlgRF.getFoot().getCardinal().getType());
+					        						monadShort.aname.setText(copiedAlgRF.getAlgebraName());
+					    							monadShort.foot.setText(copiedAlgRF.getFoot().getFootName());
+					    							monadShort.sig.setText(copiedAlgRF.getGProduct().getSignature());
 					    							break;
-					        		case REALD:		copyAlgTargetRD=(tSpotNPanel.getMonadPanel(tSpotMonadIndex)).getMonadRD().getAlgebra();
-					        						monadShort.cardname.setText(copyAlgTargetRD.getFoot().getCardinal().getType());
-					    						    monadShort.aname.setText(copyAlgTargetRD.getAlgebraName());
-					    							monadShort.foot.setText(copyAlgTargetRD.getFoot().getFootName());
-					    							monadShort.sig.setText(copyAlgTargetRD.getGProduct().getSignature());
+					        		case REALD:		copiedAlgRD=getMonadPanelFocus().getMonadRD().getAlgebra();
+					        						monadShort.cardname.setText(copiedAlgRD.getFoot().getCardinal().getType());
+					    						    monadShort.aname.setText(copiedAlgRD.getAlgebraName());
+					    							monadShort.foot.setText(copiedAlgRD.getFoot().getFootName());
+					    							monadShort.sig.setText(copiedAlgRD.getGProduct().getSignature());
 					    							break;
-					        		case COMPLEXF:	copyAlgTargetCF=(tSpotNPanel.getMonadPanel(tSpotMonadIndex)).getMonadCF().getAlgebra();
-					        						monadShort.cardname.setText(copyAlgTargetCF.getFoot().getCardinal().getType());
-					    					    	monadShort.aname.setText(copyAlgTargetCF.getAlgebraName());
-					    						    monadShort.foot.setText(copyAlgTargetCF.getFoot().getFootName());
-					    						    monadShort.sig.setText(copyAlgTargetCF.getGProduct().getSignature());
+					        		case COMPLEXF:	copiedAlgCF=getMonadPanelFocus().getMonadCF().getAlgebra();
+					        						monadShort.cardname.setText(copiedAlgCF.getFoot().getCardinal().getType());
+					    					    	monadShort.aname.setText(copiedAlgCF.getAlgebraName());
+					    						    monadShort.foot.setText(copiedAlgCF.getFoot().getFootName());
+					    						    monadShort.sig.setText(copiedAlgCF.getGProduct().getSignature());
 					    							break;
-					        		case COMPLEXD:	copyAlgTargetCD=(tSpotNPanel.getMonadPanel(tSpotMonadIndex)).getMonadCD().getAlgebra();
-					        						monadShort.cardname.setText(copyAlgTargetCD.getFoot().getCardinal().getType());
-					    					    	monadShort.aname.setText(copyAlgTargetCD.getAlgebraName());
-					    						    monadShort.foot.setText(copyAlgTargetCD.getFoot().getFootName());
-					    						    monadShort.sig.setText(copyAlgTargetCD.getGProduct().getSignature());
+					        		case COMPLEXD:	copiedAlgCD=getMonadPanelFocus().getMonadCD().getAlgebra();
+					        						monadShort.cardname.setText(copiedAlgCD.getFoot().getCardinal().getType());
+					    					    	monadShort.aname.setText(copiedAlgCD.getAlgebraName());
+					    						    monadShort.foot.setText(copiedAlgCD.getFoot().getFootName());
+					    						    monadShort.sig.setText(copiedAlgCD.getGProduct().getSignature());
 					        	}
-					        	monadShort.foot.setFont(_PLAINFONT);
 					        	monadShort.cardname.setFont(_PLAINFONT);
+					        	monadShort.cardname.setEditable(false);
     							monadShort.aname.setFont(_PLAINFONT);
-    							//TODO After getting algebra, the aname, foot, and cardinal should not be editable.
+    							monadShort.aname.setEditable(false);
+    							monadShort.foot.setFont(_PLAINFONT);
+    							monadShort.foot.setEditable(false);
+    							monadShort.sig.setFont(_PLAINFONT);
+    							monadShort.sig.setEditable(false);
     							break;
     		case "Save Nyad":	try
 						    	{
@@ -355,7 +386,7 @@ public class CreateDialog extends JDialog implements ActionListener
 									_GUI._StatusBar.setStatusMsg(en.getSourceMessage());
 								}
     							break;
-    		case "Save Monad":	tSpot=_GUI._GeometryDisplay.getPaneFocus(); //get the focus nyad to use to create this next monad
+    		case "Save Monad":	tSpot=getNyadPaneFocus(); //get the focus nyad to use to create this next monad
 					        	if (tSpot<0) return; //No nyad present for appending this
 					        	switch (_GUI._GeometryDisplay.getNyadPanel(tSpot).getRepMode())
 					        	{
@@ -383,24 +414,24 @@ public class CreateDialog extends JDialog implements ActionListener
 		try
 		{
 			MonadComplexD rep = null;
-			if (copyAlgTargetCD != null)
+			if (copiedAlgCD != null)
 			{
-				if (copyAlgTargetCD.getFoot() != tNSpot.getFootPoint())
+				if (copiedAlgCD.getFoot() != tNSpot.getFootPoint())
 				{
 					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra had different foot from nyad. No monad added.");
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
 				
 				// Check for algebra uniqueness within nyad. If non-unique Nyad becomes weak or frame
-				if(NyadComplexD.hasAlgebra(tNSpot, copyAlgTargetCD))
+				if(NyadComplexD.hasAlgebra(tNSpot, copiedAlgCD))
 					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra already present in nyad. Weakening nyad.");
 				
-				ComplexD[] tC = new ComplexD[copyAlgTargetCD.getGProduct().getBladeCount()];
+				ComplexD[] tC = new ComplexD[copiedAlgCD.getGProduct().getBladeCount()];
 				for (short m=0; m<tC.length; m++)
 					tC[m] = ComplexD.copyZERO(tNSpot.getProto());
 				
 				rep=new MonadComplexD(	monadShort.name.getText(),
-										copyAlgTargetCD,
+										copiedAlgCD,
 										monadShort.frame.getText(),
 										tC);
 				tNSpot.appendMonad(rep);	// TODO Nyad weakness. This might fail because alg uniqueness (Nyad Strong) is enforced right now.
@@ -449,24 +480,24 @@ public class CreateDialog extends JDialog implements ActionListener
 		try
 		{
 			MonadComplexF rep = null;
-			if (copyAlgTargetCF != null)
+			if (copiedAlgCF != null)
 			{
-				if (copyAlgTargetCF.getFoot() != tNSpot.getFootPoint())
+				if (copiedAlgCF.getFoot() != tNSpot.getFootPoint())
 				{
 					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra had different foot from nyad. No monad added.");
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
 				
 				// Check for algebra uniqueness within nyad. If non-unique Nyad becomes weak or frame
-				if(NyadComplexF.hasAlgebra(tNSpot, copyAlgTargetCF))
+				if(NyadComplexF.hasAlgebra(tNSpot, copiedAlgCF))
 					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra already present in nyad. Weakening nyad.");
 				
-				ComplexF[] tC = new ComplexF[copyAlgTargetCF.getGProduct().getBladeCount()];
+				ComplexF[] tC = new ComplexF[copiedAlgCF.getGProduct().getBladeCount()];
 				for (short m=0; m<tC.length; m++)
 					tC[m] = ComplexF.copyZERO(tNSpot.getProto());
 				
 				rep=new MonadComplexF(	monadShort.name.getText(),
-										copyAlgTargetCF,
+										copiedAlgCF,
 										monadShort.frame.getText(),
 										tC);
 				tNSpot.appendMonad(rep);	// TODO Nyad weakness. This might fail because alg uniqueness (Nyad Strong) is enforced right now.
@@ -515,24 +546,24 @@ public class CreateDialog extends JDialog implements ActionListener
 		try
 		{
 			MonadRealD rep = null;
-			if (copyAlgTargetRD != null)
+			if (copiedAlgRD != null)
 			{
-				if (copyAlgTargetRD.getFoot() != tNSpot.getFootPoint())
+				if (copiedAlgRD.getFoot() != tNSpot.getFootPoint())
 				{
 					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra had different foot from nyad. No monad added.");
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
 				
 				// Check for algebra uniqueness within nyad. If non-unique Nyad becomes weak or frame
-				if(NyadRealD.hasAlgebra(tNSpot, copyAlgTargetRD))
+				if(NyadRealD.hasAlgebra(tNSpot, copiedAlgRD))
 					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra already present in nyad. Weakening nyad.");
 				
-				RealD[] tC = new RealD[copyAlgTargetRD.getGProduct().getBladeCount()];
+				RealD[] tC = new RealD[copiedAlgRD.getGProduct().getBladeCount()];
 				for (short m=0; m<tC.length; m++)
 					tC[m]=RealD.copyZERO(tNSpot.getProto());
 				
 				rep=new MonadRealD(		monadShort.name.getText(),
-										copyAlgTargetRD,
+										copiedAlgRD,
 										monadShort.frame.getText(),
 										tC);
 				tNSpot.appendMonad(rep);	// TODO Nyad weakness. This might fail because alg uniqueness (Nyad Strong) is enforced right now.
@@ -575,31 +606,30 @@ public class CreateDialog extends JDialog implements ActionListener
 		}
 		return test;
 	}
-	
 	private boolean appendMonadRF(	NyadPanel tNSpotP, NyadRealF tNSpot)
 	{
 		boolean test = false;
 		try
 		{
 			MonadRealF rep = null;
-			if (copyAlgTargetRF != null)
+			if (copiedAlgRF != null)
 			{
-				if (copyAlgTargetRF.getFoot() != tNSpot.getFootPoint())
+				if (copiedAlgRF.getFoot() != tNSpot.getFootPoint())
 				{
 					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra had different foot from nyad. No monad added.");
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
 				
 				// Check for algebra uniqueness within nyad. If non-unique Nyad becomes weak or frame
-				if(NyadRealF.hasAlgebra(tNSpot, copyAlgTargetRF))
+				if(NyadRealF.hasAlgebra(tNSpot, copiedAlgRF))
 					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra already present in nyad. Weakening nyad.");
 				
-				RealF[] tC = new RealF[copyAlgTargetRF.getGProduct().getBladeCount()];
+				RealF[] tC = new RealF[copiedAlgRF.getGProduct().getBladeCount()];
 				for (short m=0; m<tC.length; m++)
 					tC[m]=RealF.copyZERO(tNSpot.getProto());
 				
 				rep=new MonadRealF(		monadShort.name.getText(),
-										copyAlgTargetRF,
+										copiedAlgRF,
 										monadShort.frame.getText(),
 										tC);
 				tNSpot.appendMonad(rep);	// TODO Nyad weakness. This might fail because alg uniqueness (Nyad Strong) is enforced right now.
@@ -645,26 +675,26 @@ public class CreateDialog extends JDialog implements ActionListener
 	private boolean appendNyadCD() throws UtilitiesException, BadSignatureException, GeneratorRangeException, CladosMonadException, CladosNyadException
 	{
 		boolean test=false;
-		if (copyAlgTargetCD != null) // Algebra's foot dominates separately chosen Foot
+		if (copiedAlgCD != null) // Algebra's foot dominates separately chosen Foot
 		{
-			ComplexD[] tC = new ComplexD[copyAlgTargetCF.getGProduct().getBladeCount()];
-			for (short m=0; m<tC.length; m++)	tC[m]=(ComplexD) CladosField.COMPLEXD.createZERO(copyAlgTargetCD.getFoot().getCardinal());
+			ComplexD[] tC = new ComplexD[copiedAlgCF.getGProduct().getBladeCount()];
+			for (short m=0; m<tC.length; m++)	tC[m]=(ComplexD) CladosField.COMPLEXD.createZERO(copiedAlgCD.getFoot().getCardinal());
 			MonadComplexD rep=new MonadComplexD(monadShort.name.getText(),
-												copyAlgTargetCD,
+												copiedAlgCD,
 												monadShort.frame.getText(),
 												tC);
 			NyadComplexD rep2=new NyadComplexD("New", rep);
 			test = true;
     		_GUI._GeometryDisplay.addNyad(rep2);
 		}
-		else if (copyFootTarget != null)
+		else if (copiedFoot != null)
 		{	
 			MonadComplexD rep=new MonadComplexD(monadShort.name.getText(),
 												monadShort.aname.getText(),
 												monadShort.frame.getText(),
-												copyFootTarget,
+												copiedFoot,
 												monadShort.sig.getText(),
-												(ComplexD) CladosField.COMPLEXD.createZERO(copyFootTarget.getCardinal()));
+												(ComplexD) CladosField.COMPLEXD.createZERO(monadShort.cardname.getText()));
 			NyadComplexD rep2=new NyadComplexD("New", rep);
     		_GUI._GeometryDisplay.addNyad(rep2);
     		test = true;
@@ -686,26 +716,26 @@ public class CreateDialog extends JDialog implements ActionListener
 	private boolean appendNyadCF() throws UtilitiesException, BadSignatureException, GeneratorRangeException, CladosMonadException, CladosNyadException
 	{
 		boolean test=false;
-		if (copyAlgTargetCF != null) // Algebra's foot dominates separately chosen Foot
+		if (copiedAlgCF != null) // Algebra's foot dominates separately chosen Foot
 		{
-			ComplexF[] tC = new ComplexF[copyAlgTargetCF.getGProduct().getBladeCount()];
-			for (short m=0; m<tC.length; m++)	tC[m]=(ComplexF) CladosField.COMPLEXF.createZERO(copyAlgTargetCF.getFoot().getCardinal());
+			ComplexF[] tC = new ComplexF[copiedAlgCF.getGProduct().getBladeCount()];
+			for (short m=0; m<tC.length; m++)	tC[m]=(ComplexF) CladosField.COMPLEXF.createZERO(copiedAlgCF.getFoot().getCardinal());
 			MonadComplexF rep=new MonadComplexF(monadShort.name.getText(),
-												copyAlgTargetCF,
+												copiedAlgCF,
 												monadShort.frame.getText(),
 												tC);
 			NyadComplexF rep2=new NyadComplexF("New", rep);
 			test = true;
     		_GUI._GeometryDisplay.addNyad(rep2);
 		}
-		else if (copyFootTarget != null)
+		else if (copiedFoot != null)
 		{	
 			MonadComplexF rep=new MonadComplexF(monadShort.name.getText(),
 												monadShort.aname.getText(),
 												monadShort.frame.getText(),
-												copyFootTarget,
+												copiedFoot,
 												monadShort.sig.getText(),
-												(ComplexF) CladosField.COMPLEXF.createZERO(copyFootTarget.getCardinal()));
+												(ComplexF) CladosField.COMPLEXF.createZERO(monadShort.cardname.getText()));
 			NyadComplexF rep2=new NyadComplexF("New", rep);
     		_GUI._GeometryDisplay.addNyad(rep2);
     		test = true;
@@ -727,26 +757,26 @@ public class CreateDialog extends JDialog implements ActionListener
 	private boolean appendNyadRD() throws UtilitiesException, BadSignatureException, GeneratorRangeException, CladosMonadException, CladosNyadException
 	{
 		boolean test=false;
-		if (copyAlgTargetRD != null) // Algebra's foot dominates separately chosen Foot
+		if (copiedAlgRD != null) // Algebra's foot dominates separately chosen Foot
 		{
-			RealD[] tC = new RealD[copyAlgTargetRD.getGProduct().getBladeCount()];
-			for (short m=0; m<tC.length; m++)	tC[m]=(RealD) CladosField.REALD.createZERO(copyAlgTargetRD.getFoot().getCardinal());
+			RealD[] tC = new RealD[copiedAlgRD.getGProduct().getBladeCount()];
+			for (short m=0; m<tC.length; m++)	tC[m]=(RealD) CladosField.REALD.createZERO(copiedAlgRD.getFoot().getCardinal());
 			MonadRealD rep=new MonadRealD(	monadShort.name.getText(),
-											copyAlgTargetRD,
+											copiedAlgRD,
 											monadShort.frame.getText(),
 											tC);
 			NyadRealD rep2=new NyadRealD("New", rep);
 			test = true;
     		_GUI._GeometryDisplay.addNyad(rep2);
 		}
-		else if (copyFootTarget != null)
+		else if (copiedFoot != null)
 		{	
 			MonadRealD rep=new MonadRealD(	monadShort.name.getText(),
 											monadShort.aname.getText(),
 											monadShort.frame.getText(),
-											copyFootTarget,
+											copiedFoot,
 											monadShort.sig.getText(),
-											(RealD) CladosField.REALD.createZERO(copyFootTarget.getCardinal()));
+											(RealD) CladosField.REALD.createZERO(monadShort.cardname.getText()));
 			NyadRealD rep2=new NyadRealD("New", rep);
     		_GUI._GeometryDisplay.addNyad(rep2);
     		test = true;
@@ -765,29 +795,30 @@ public class CreateDialog extends JDialog implements ActionListener
 		}
 		return test;
 	}
-    private boolean appendNyadRF() throws UtilitiesException, BadSignatureException, GeneratorRangeException, CladosMonadException, CladosNyadException
+	
+	private boolean appendNyadRF() throws UtilitiesException, BadSignatureException, GeneratorRangeException, CladosMonadException, CladosNyadException
 	{
 		boolean test=false;
-		if (copyAlgTargetRF != null) // Algebra's foot dominates separately chosen Foot
+		if (copiedAlgRF != null) // Algebra's foot dominates separately chosen Foot
 		{
-			RealF[] tC = new RealF[copyAlgTargetRF.getGProduct().getBladeCount()];
-			for (short m=0; m<tC.length; m++)	tC[m]=(RealF) CladosField.REALF.createZERO(copyAlgTargetRF.getFoot().getCardinal());
+			RealF[] tC = new RealF[copiedAlgRF.getGProduct().getBladeCount()];
+			for (short m=0; m<tC.length; m++)	tC[m]=(RealF) CladosField.REALF.createZERO(copiedAlgRF.getFoot().getCardinal());
 			MonadRealF rep=new MonadRealF(	monadShort.name.getText(),
-											copyAlgTargetRF,
+											copiedAlgRF,
 											monadShort.frame.getText(),
 											tC);
 			NyadRealF rep2=new NyadRealF("New", rep);
 			test = true;
     		_GUI._GeometryDisplay.addNyad(rep2);
 		}
-		else if (copyFootTarget != null)
+		else if (copiedFoot != null)
 		{	
 			MonadRealF rep=new MonadRealF(	monadShort.name.getText(),
 											monadShort.aname.getText(),
 											monadShort.frame.getText(),
-											copyFootTarget,
+											copiedFoot,
 											monadShort.sig.getText(),
-											(RealF) CladosField.REALF.createZERO(copyFootTarget.getCardinal()));
+											(RealF) CladosField.REALF.createZERO(monadShort.cardname.getText()));
 			NyadRealF rep2=new NyadRealF("New", rep);
     		_GUI._GeometryDisplay.addNyad(rep2);
     		test = true;
@@ -806,9 +837,21 @@ public class CreateDialog extends JDialog implements ActionListener
 		}
 		return test;
 	}
+	private int getMonadPaneFocus()
+	{
+		return (_GUI._GeometryDisplay.getNyadPanel(getNyadPaneFocus()).getPaneFocus());
+	}
+	private MonadPanel getMonadPanelFocus()
+	{
+		return getNyadPanelFocus().getMonadPanel(getMonadPaneFocus());
+	}
+	private int getNyadPaneFocus()
+	{
+		return _GUI._GeometryDisplay.getPaneFocus();
+	}
+    private NyadPanel getNyadPanelFocus()
+	{
+		return _GUI._GeometryDisplay.getNyadPanel(getNyadPaneFocus());
+	}
     
-    private void getAlgebra()
-    {
-    	
-    }
 }

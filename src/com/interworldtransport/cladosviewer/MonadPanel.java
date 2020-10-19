@@ -141,7 +141,6 @@ import java.util.*;
 	   cn0.weightx=0;
 	   cn0.weighty=0;
 	   	
-	   	
 	   pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Cardinal"))), cn0);
 	   cn0.gridx++;
 	   cardname.setFont(_ITALICFONT);
@@ -165,7 +164,7 @@ import java.util.*;
 	   
 	   pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Sig"))), cn0);
 	   cn0.gridx++;
-	   sig.setFont(_PLAINFONT);
+	   sig.setFont(_ITALICFONT);
 	   pnlMonadReferences.add(sig, cn0);
 	   cn0.gridx = 0;
 	   cn0.gridy++;
