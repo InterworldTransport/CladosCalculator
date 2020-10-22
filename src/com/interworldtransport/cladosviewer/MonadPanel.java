@@ -1066,15 +1066,15 @@ import java.util.*;
     	
     	StringBuffer title = new StringBuffer("Cardinal | ");
     	switch (_repMode)
-    	{
-    		case REALF:		title.append(_repMonadF.getAlgebra().getFoot().getCardinal().getType());
+    	{	// We aren't keeping references to details internal to any Monads, so this is fairly safe.
+    		case REALF:		title.append(_repMonadF.getCoeff((short) 0).getCardinalString());
     						break;
-    		case REALD:		title.append(_repMonadD.getAlgebra().getFoot().getCardinal().getType());
+    		case REALD:		title.append(_repMonadD.getCoeff((short) 0).getCardinalString());
 							break;	
-    		case COMPLEXF:	title.append(_repMonadCF.getAlgebra().getFoot().getCardinal().getType());
+    		case COMPLEXF:	title.append(_repMonadCF.getCoeff((short) 0).getCardinalString());
 							break;
-    		case COMPLEXD:	title.append(_repMonadCD.getAlgebra().getFoot().getCardinal().getType());
-    	}
+    		case COMPLEXD:	title.append(_repMonadCD.getCoeff((short) 0).getCardinalString());
+    	}	// Could use the Algebra's protonumber instead, though.
     	
     	TitledBorder tWrap = BorderFactory.createTitledBorder(	BorderFactory.createEtchedBorder(), 
 																title.toString(), 

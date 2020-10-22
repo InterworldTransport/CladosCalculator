@@ -314,7 +314,7 @@ public class CreateDialog extends JDialog implements ActionListener
 					        	if (getMonadPaneFocus()<0) return; //No monad in the focus to get its algebra
 					        	
 					        	switch (tSpotNPanel.getRepMode())
-					        	{
+					        	{	// TODO Need reference to copied algebra's protonumber
 					        		case REALF:		copiedAlgRF=getMonadPanelFocus().getMonadRF().getAlgebra();
 					        						monadShort.cardname.setText(copiedAlgRF.getFoot().getCardinal().getType());
 					        						monadShort.aname.setText(copiedAlgRF.getAlgebraName());
@@ -676,7 +676,7 @@ public class CreateDialog extends JDialog implements ActionListener
 	{
 		boolean test=false;
 		if (copiedAlgCD != null) // Algebra's foot dominates separately chosen Foot
-		{
+		{// TODO Need reference to copied algebra's protonumber
 			ComplexD[] tC = new ComplexD[copiedAlgCF.getGProduct().getBladeCount()];
 			for (short m=0; m<tC.length; m++)	tC[m]=(ComplexD) CladosField.COMPLEXD.createZERO(copiedAlgCD.getFoot().getCardinal());
 			MonadComplexD rep=new MonadComplexD(monadShort.name.getText(),
@@ -717,7 +717,7 @@ public class CreateDialog extends JDialog implements ActionListener
 	{
 		boolean test=false;
 		if (copiedAlgCF != null) // Algebra's foot dominates separately chosen Foot
-		{
+		{// TODO Need reference to copied algebra's protonumber
 			ComplexF[] tC = new ComplexF[copiedAlgCF.getGProduct().getBladeCount()];
 			for (short m=0; m<tC.length; m++)	tC[m]=(ComplexF) CladosField.COMPLEXF.createZERO(copiedAlgCF.getFoot().getCardinal());
 			MonadComplexF rep=new MonadComplexF(monadShort.name.getText(),
@@ -758,7 +758,7 @@ public class CreateDialog extends JDialog implements ActionListener
 	{
 		boolean test=false;
 		if (copiedAlgRD != null) // Algebra's foot dominates separately chosen Foot
-		{
+		{// TODO Need reference to copied algebra's protonumber
 			RealD[] tC = new RealD[copiedAlgRD.getGProduct().getBladeCount()];
 			for (short m=0; m<tC.length; m++)	tC[m]=(RealD) CladosField.REALD.createZERO(copiedAlgRD.getFoot().getCardinal());
 			MonadRealD rep=new MonadRealD(	monadShort.name.getText(),
@@ -800,7 +800,7 @@ public class CreateDialog extends JDialog implements ActionListener
 	{
 		boolean test=false;
 		if (copiedAlgRF != null) // Algebra's foot dominates separately chosen Foot
-		{
+		{// TODO Need reference to copied algebra's protonumber
 			RealF[] tC = new RealF[copiedAlgRF.getGProduct().getBladeCount()];
 			for (short m=0; m<tC.length; m++)	tC[m]=(RealF) CladosField.REALF.createZERO(copiedAlgRF.getFoot().getCardinal());
 			MonadRealF rep=new MonadRealF(	monadShort.name.getText(),
