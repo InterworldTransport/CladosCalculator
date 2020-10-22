@@ -52,8 +52,6 @@ import java.util.*;
 
  public class NyadPanel extends JPanel implements ActionListener
 {
-
-	private static final long 						serialVersionUID = -1379147617356173590L;
 	public					CladosCalculator		_GUI;
 	private					NyadComplexD			_repNyadCD;
 	private					NyadComplexF			_repNyadCF;
@@ -75,7 +73,7 @@ import java.util.*;
 	private					JPanel 					pnlControlPanel;
 	private					JPanel 					pnlControlPanel2;
 	private					JPanel 					pnlRefPanel;
-	private					JLabel					protoXML=new JLabel();
+	//private					JLabel					protoXML=new JLabel();
 	private 		final	Dimension 				square = new Dimension(25,25);
 	private					ImageIcon				tabIcon;
 	protected				CladosField				_repMode;
@@ -719,21 +717,8 @@ import java.util.*;
     	pnlRefPanel=new JPanel();
     	pnlRefPanel.setBackground(clrBackColor);
     	
-    	StringBuffer title = new StringBuffer("on DivField | ");
-    	switch (_repMode)
-    	{
-    		case REALF:		title.append(_repNyadF.getProto().toXMLString());
-    						break;
-    		case REALD:		title.append(_repNyadD.getProto().toXMLString());
-							break;	
-    		case COMPLEXF:	title.append(_repNyadCF.getProto().toXMLString());
-							break;
-    		case COMPLEXD:	title.append(_repNyadCD.getProto().toXMLString());
-    		default: 		title.append("");
-    	}
-    	
     	TitledBorder tWrap = BorderFactory.createTitledBorder(	BorderFactory.createEtchedBorder(), 
-    															title.toString(), 
+    															new StringBuffer("DivField | "+_repMode).toString(), 
     															TitledBorder.LEFT, 
     															TitledBorder.DEFAULT_POSITION, 
     															new Font(Font.SERIF, Font.PLAIN, 10));
@@ -754,11 +739,6 @@ import java.util.*;
     	cn0.weightx=1;
     	pnlRefPanel.add(nyadName, cn0);	
     	cn0.gridx++;
-    	
-    	//protoXML.setFont(new Font(Font.SERIF, Font.PLAIN, 8));
-    	//protoXML.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    	//pnlRefPanel.add(protoXML, cn0);
-    	//cn0.gridx++;
     	
     	cn0.weightx=0;
     	cn0.ipadx=20;
@@ -942,22 +922,18 @@ import java.util.*;
     	switch (_repMode)
     	{
     		case REALF:	nyadName.setText(_repNyadF.getName());
-    					protoXML.setText(_repNyadF.getProto().toXMLString());
 	    				nyadOrder.setText((new StringBuffer().append(_repNyadF.getMonadList().size())).toString());
 	    				nyadFoot.setText(_repNyadF.getFootPoint().getFootName());
 	    				break;
     		case REALD:	nyadName.setText(_repNyadD.getName());
-    					protoXML.setText(_repNyadD.getProto().toXMLString());
 	    				nyadOrder.setText((new StringBuffer().append(_repNyadD.getMonadList().size())).toString());
 	    				nyadFoot.setText(_repNyadD.getFootPoint().getFootName());
 	    				break;
     		case COMPLEXF:	nyadName.setText(_repNyadCF.getName());
-    						protoXML.setText(_repNyadCF.getProto().toXMLString());
 	    					nyadOrder.setText((new StringBuffer().append(_repNyadCF.getMonadList().size())).toString());
 	    					nyadFoot.setText(_repNyadCF.getFootPoint().getFootName());
 	    					break;
     		case COMPLEXD: nyadName.setText(_repNyadCD.getName());
-    						protoXML.setText(_repNyadCD.getProto().toXMLString());
 	    					nyadOrder.setText((new StringBuffer().append(_repNyadCD.getMonadList().size())).toString());
 	    					nyadFoot.setText(_repNyadCD.getFootPoint().getFootName());
     	}

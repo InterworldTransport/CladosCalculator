@@ -25,16 +25,23 @@
 
 package com.interworldtransport.cladosviewerEvents;
 
+import com.interworldtransport.cladosF.CladosField;
 import com.interworldtransport.cladosF.RealF;
 import com.interworldtransport.cladosF.RealD;
 import com.interworldtransport.cladosF.ComplexF;
-import com.interworldtransport.cladosF.CladosField;
 import com.interworldtransport.cladosF.ComplexD;
 import com.interworldtransport.cladosFExceptions.FieldBinaryException;
+
 import com.interworldtransport.cladosG.MonadRealF;
 import com.interworldtransport.cladosG.MonadRealD;
 import com.interworldtransport.cladosG.MonadComplexF;
 import com.interworldtransport.cladosG.MonadComplexD;
+
+import com.interworldtransport.cladosG.AlgebraRealF;
+import com.interworldtransport.cladosG.AlgebraRealD;
+import com.interworldtransport.cladosG.AlgebraComplexF;
+import com.interworldtransport.cladosG.AlgebraComplexD;
+
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -100,21 +107,21 @@ public class MOpsScaleEvents implements ActionListener
 		    switch(tMSpotPnl.getRepMode())
 	    	{
 	    		case REALF:		MonadRealF tMonadRF = tMSpotPnl.getMonadRF();
-	    						RealF tFieldRF = (RealF) CladosField.REALF.createZERO(tNSpotPnl.getNyadRF().getProto().getCardinal());
+	    						RealF tFieldRF = (RealF) CladosField.REALF.createZERO(AlgebraRealF.shareCardinal(tMonadRF.getAlgebra()));
 				    			tFieldRF.setReal(Float.parseFloat(_parent._GUI._FieldBar.getRealText()));
 								tMonadRF.scale(tFieldRF);
 								_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by ");
 								_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+"\n");
 								break;
 	    		case REALD:		MonadRealD tMonadRD = tMSpotPnl.getMonadRD();
-								RealD tFieldRD = (RealD) CladosField.REALD.createZERO(tNSpotPnl.getNyadRD().getProto().getCardinal());
+								RealD tFieldRD = (RealD) CladosField.REALD.createZERO(AlgebraRealD.shareCardinal(tMonadRD.getAlgebra()));
 								tFieldRD.setReal(Double.parseDouble(_parent._GUI._FieldBar.getRealText()));
 								tMonadRD.scale(tFieldRD);
 								_parent._GUI._StatusBar.setStatusMsg("\tmonad has been rescaled by ");
 								_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getRealText()+"\n");
 								break;
 	    		case COMPLEXF:	MonadComplexF tMonadCF = tMSpotPnl.getMonadCF();
-	    						ComplexF tFieldCF = (ComplexF) CladosField.COMPLEXF.createZERO(tNSpotPnl.getNyadCF().getProto().getCardinal());
+	    						ComplexF tFieldCF = (ComplexF) CladosField.COMPLEXF.createZERO(AlgebraComplexF.shareCardinal(tMonadCF.getAlgebra()));
 	    						tFieldCF.setReal(Float.parseFloat(_parent._GUI._FieldBar.getRealText()));
 	    						tFieldCF.setImg(Float.parseFloat(_parent._GUI._FieldBar.getImgText()));
 								tMonadCF.scale(tFieldCF);
@@ -123,7 +130,7 @@ public class MOpsScaleEvents implements ActionListener
 								_parent._GUI._StatusBar.setStatusMsg(_parent._GUI._FieldBar.getImgText()+")\n");
 								break;
 	    		case COMPLEXD:	MonadComplexD tMonadCD = tMSpotPnl.getMonadCD();
-					    		ComplexD tFieldCD = (ComplexD) CladosField.COMPLEXD.createZERO(tNSpotPnl.getNyadCD().getProto().getCardinal());
+					    		ComplexD tFieldCD = (ComplexD) CladosField.COMPLEXD.createZERO(AlgebraComplexD.shareCardinal(tMonadCD.getAlgebra()));
 					    		tFieldCD.setReal(Double.parseDouble(_parent._GUI._FieldBar.getRealText()));
 					    		tFieldCD.setImg(Double.parseDouble(_parent._GUI._FieldBar.getImgText()));
 								tMonadCD.scale(tFieldCD);

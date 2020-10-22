@@ -25,6 +25,10 @@
 package com.interworldtransport.cladosviewer;
 
 import com.interworldtransport.cladosF.CladosFBuilder;
+import com.interworldtransport.cladosG.AlgebraComplexD;
+import com.interworldtransport.cladosG.AlgebraComplexF;
+import com.interworldtransport.cladosG.AlgebraRealD;
+import com.interworldtransport.cladosG.AlgebraRealF;
 import com.interworldtransport.cladosviewerExceptions.CantGetIniException;
 
 import java.awt.*;
@@ -166,19 +170,31 @@ public class CladosCalculator extends JFrame implements ActionListener
     	if (indxNPanelSelected>=0) 
     	{
     		NyadPanel tSpot = _GeometryDisplay.getNyadPanel(indxNPanelSelected);
-    		switch (_GeometryDisplay.getNyadPanel(indxNPanelSelected).getRepMode())
+    		int indexedMonad = tSpot.getPaneFocus();
+    		if (indexedMonad>=0)
     		{
-    			case REALF:	_FieldBar=new FieldPanel(this, tSpot.getNyadRF().getProto());
-    						cp.add(_FieldBar, "North");
-    						break;
-    			case REALD:	_FieldBar=new FieldPanel(this, tSpot.getNyadRD().getProto());
-							cp.add(_FieldBar, "North");
-							break;
-    			case COMPLEXF:	_FieldBar=new FieldPanel(this, tSpot.getNyadCF().getProto());
-								cp.add(_FieldBar, "North");
-								break;
-				case COMPLEXD:	_FieldBar=new FieldPanel(this, tSpot.getNyadCD().getProto());
-								cp.add(_FieldBar, "North");
+	    		switch (_GeometryDisplay.getNyadPanel(indxNPanelSelected).getRepMode())
+	    		{
+	    			case REALF:		AlgebraRealF tSpotRF = tSpot.getNyadRF().getMonadList(indexedMonad).getAlgebra();
+	    							_FieldBar=new FieldPanel(	this, AlgebraRealF.shareProtoNumber(tSpotRF));
+		    						cp.add(_FieldBar, "North");
+		    						tSpotRF=null;
+		    						break;
+	    			case REALD:		AlgebraRealD tSpotRD = tSpot.getNyadRD().getMonadList(indexedMonad).getAlgebra();
+	    							_FieldBar=new FieldPanel(	this, AlgebraRealD.shareProtoNumber(tSpotRD));
+									cp.add(_FieldBar, "North");
+									tSpotRD=null;
+									break;
+	    			case COMPLEXF:	AlgebraComplexF tSpotCF = tSpot.getNyadCF().getMonadList(indexedMonad).getAlgebra();
+	    							_FieldBar=new FieldPanel(	this, AlgebraComplexF.shareProtoNumber(tSpotCF));
+									cp.add(_FieldBar, "North");
+									tSpotCF=null;
+									break;
+					case COMPLEXD:	AlgebraComplexD tSpotCD = tSpot.getNyadCD().getMonadList(indexedMonad).getAlgebra();
+									_FieldBar=new FieldPanel(	this, AlgebraComplexD.shareProtoNumber(tSpotCD));
+									cp.add(_FieldBar, "North");
+									tSpotCD=null;
+	    		}
     		}
     		tSpot = null;
     	}

@@ -35,7 +35,10 @@ import com.interworldtransport.cladosG.MonadRealF;
 import com.interworldtransport.cladosG.MonadRealD;
 import com.interworldtransport.cladosG.MonadComplexF;
 import com.interworldtransport.cladosG.MonadComplexD;
-
+import com.interworldtransport.cladosG.AlgebraComplexD;
+import com.interworldtransport.cladosG.AlgebraComplexF;
+import com.interworldtransport.cladosG.AlgebraRealD;
+import com.interworldtransport.cladosG.AlgebraRealF;
 import com.interworldtransport.cladosG.NyadRealF;
 import com.interworldtransport.cladosG.NyadRealD;
 import com.interworldtransport.cladosG.NyadComplexF;
@@ -188,10 +191,9 @@ import java.util.*;
     			String nextAlgebraName =	(new StringBuffer(aMonad.getAlgebra().getAlgebraName()).append(m)).toString();
     			String nextFrameName=		(new StringBuffer(aMonad.getFrameName()).append(m)).toString();
     			
-    			aNyad.createMonad(	nextMonadName, 
-    								nextAlgebraName, 
-    								nextFrameName, 
-    								_GUI.IniProps.getProperty("Desktop.Default.Sig")
+    			aNyad.createMonad(	nextMonadName, nextAlgebraName, nextFrameName, 
+    								_GUI.IniProps.getProperty("Desktop.Default.Sig"),
+    								_GUI.IniProps.getProperty("Desktop.Default.Cardinal")
     								);
     			m++;
     		}
@@ -243,11 +245,10 @@ import java.util.*;
     			String nextAlgebraName =	(new StringBuffer(aMonad.getAlgebra().getAlgebraName()).append(m)).toString();
     			String nextFrameName=		(new StringBuffer(aMonad.getFrameName()).append(m)).toString();
     			
-    			aNyad.createMonad(	nextMonadName, 
-    								nextAlgebraName, 
-    								nextFrameName, 
-    								_GUI.IniProps.getProperty("Desktop.Default.Sig")
-    								);
+    			aNyad.createMonad(	nextMonadName, nextAlgebraName, nextFrameName, 
+									_GUI.IniProps.getProperty("Desktop.Default.Sig"),
+									_GUI.IniProps.getProperty("Desktop.Default.Cardinal")
+									);
     			m++;
     		}
 		}
@@ -297,11 +298,10 @@ import java.util.*;
     			String nextAlgebraName =	(new StringBuffer(aMonad.getAlgebra().getAlgebraName()).append(m)).toString();
     			String nextFrameName=		(new StringBuffer(aMonad.getFrameName()).append(m)).toString();
     			
-    			aNyad.createMonad(	nextMonadName, 
-    								nextAlgebraName, 
-    								nextFrameName, 
-    								_GUI.IniProps.getProperty("Desktop.Default.Sig")
-    								);
+    			aNyad.createMonad(	nextMonadName, nextAlgebraName, nextFrameName, 
+									_GUI.IniProps.getProperty("Desktop.Default.Sig"),
+									_GUI.IniProps.getProperty("Desktop.Default.Cardinal")
+									);
     			m++;
     		}
 		}
@@ -351,11 +351,10 @@ import java.util.*;
     			String nextAlgebraName =	(new StringBuffer(aMonad.getAlgebra().getAlgebraName()).append(m)).toString();
     			String nextFrameName=		(new StringBuffer(aMonad.getFrameName()).append(m)).toString();
     			
-    			aNyad.createMonad(	nextMonadName, 
-    								nextAlgebraName, 
-    								nextFrameName, 
-    								_GUI.IniProps.getProperty("Desktop.Default.Sig")
-    								);
+    			aNyad.createMonad(	nextMonadName, nextAlgebraName, nextFrameName, 
+									_GUI.IniProps.getProperty("Desktop.Default.Sig"),
+									_GUI.IniProps.getProperty("Desktop.Default.Cardinal")
+									);
     			m++;
     		}
 		}
@@ -845,9 +844,7 @@ import java.util.*;
      * This is a big deal. By registering the FieldPanel with the ViewerPanel, change events on monad and nyad
      * panels can register their proto numbers with the field panel. This goes on behind the scenes allowing
      * the UI to adjust cladosF references on the app's FieldBar so the user need only pay attention to the 
-     * numbers displayed. The string for the DivFieldType IS displayed, though. In a physical simulation, this is a 
-     * terrible idea, but on a calculator where the user cannot reference objects when pointing to a DivField
-     * they want to re-use, it must be done.
+     * numbers displayed. The string for the Cardinal IS displayed on a monad, though, and not the Field Bar. 
      * @param pFieldPanel	FieldPanel
      * In the owning app, this is the FieldBar object that allows for top-level numeric input on the calculator.
      * The Field Panel offered is registered with this Viewer Panel so change events can be routed.
@@ -862,18 +859,33 @@ import java.util.*;
 			            {	//_GUI._StatusBar.setStatusMsg("ChangeEvent for "+e.getSource().getClass().getName()+".\n");
 			    			if (nyadPanes.getTabCount()>0)
 			    			{
-			    				int j = nyadPanes.getSelectedIndex();
-			    				switch (nyadPanelList.get(j).getRepMode())
+			    				if (nyadPanes.getSelectedIndex()>=0)
 			    				{
-			    					case REALF:	pFieldPanel.setField(nyadPanelList.get(j).getNyadRF().getProto());
-			    								break;
-			    					case REALD:	pFieldPanel.setField(nyadPanelList.get(j).getNyadRD().getProto());
-												break;
-			    					case COMPLEXF:	pFieldPanel.setField(nyadPanelList.get(j).getNyadCF().getProto());
-													break;
-			    					case COMPLEXD:	pFieldPanel.setField(nyadPanelList.get(j).getNyadCD().getProto());
+				    				if (nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getTabCount()>0)
+				    				{
+				    					int j = nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getSelectedIndex();
+				    					MonadPanel tSpot = nyadPanelList.get(nyadPanes.getSelectedIndex()).getMonadPanel(j);
+				    					switch (tSpot.getRepMode())
+					    				{
+					    					case REALF:		pFieldPanel.setField(AlgebraRealF.shareProtoNumber(tSpot.getMonadRF().getAlgebra()));
+					    									break;
+					    					case REALD:		pFieldPanel.setField(AlgebraRealD.shareProtoNumber(tSpot.getMonadRD().getAlgebra()));
+															break;
+					    					case COMPLEXF:	pFieldPanel.setField(AlgebraComplexF.shareProtoNumber(tSpot.getMonadCF().getAlgebra()));
+															break;
+					    					case COMPLEXD:	pFieldPanel.setField(AlgebraComplexD.shareProtoNumber(tSpot.getMonadCD().getAlgebra()));
+					    				}
+					    				_GUI._FieldBar.makeWritable();
+				    					
+				    					
+				    				}
+			    					
 			    				}
-			    				_GUI._FieldBar.makeWritable();
+			    				
+			    				
+			    				
+			    				
+			    				
 			    			}
 			    			else
 			    				pFieldPanel.clearFieldType();
