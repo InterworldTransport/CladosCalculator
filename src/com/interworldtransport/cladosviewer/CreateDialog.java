@@ -215,7 +215,7 @@ public class CreateDialog extends JDialog implements ActionListener
 		primaryStage.add(dialogGets, BorderLayout.PAGE_START); // and put it on stage
 		
 		// Create monad for center panel
-		monadShort = new MonadPanel(_GUI);
+		monadShort = new MonadPanel(_GUI, makeNyad);
 		monadShort.makeWritable();
 		primaryStage.add(new JScrollPane(monadShort), BorderLayout.CENTER); // and put it on stage
 		
@@ -227,7 +227,7 @@ public class CreateDialog extends JDialog implements ActionListener
 		btnSave = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Save")));
 		btnSave.setActionCommand(makeNyad ? "Save Nyad": "Save Monad");
 		btnSave.setToolTipText(makeNyad ? 	"Create new nyad. Algebra/Foot or just Foot can be referenced.": 
-												"Create new monad. Algebra/Foot can be referenced, but nyad Foot better match.");
+											"Create new monad. Algebra/Foot can be referenced, but nyad Foot better match.");
 		btnSave.setPreferredSize(square);
 		btnSave.setBorder(BorderFactory.createEtchedBorder(0));
 		btnSave.addActionListener(this);
@@ -445,7 +445,7 @@ public class CreateDialog extends JDialog implements ActionListener
 				tNSpotP.addMonadPanel(rep);
 				test = true;
 			}
-			else //Testing foot doesn't matter. Nyad already has unique one.
+			else 
 			{
     			tNSpot.createMonad(	monadShort.name.getText(), 
     								monadShort.aname.getText(), 
@@ -513,7 +513,7 @@ public class CreateDialog extends JDialog implements ActionListener
 				tNSpotP.addMonadPanel(rep);
 				test = true;
 			}
-			else //Testing foot doesn't matter. Nyad already has unique one.
+			else 
 			{
     			tNSpot.createMonad(	monadShort.name.getText(), 
     								monadShort.aname.getText(), 
@@ -581,7 +581,7 @@ public class CreateDialog extends JDialog implements ActionListener
 				tNSpotP.addMonadPanel(rep);
 				test = true;
 			}
-			else //Testing foot doesn't matter. Nyad already has unique one.
+			else 
 			{
     			tNSpot.createMonad(	monadShort.name.getText(), 
     								monadShort.aname.getText(), 
@@ -649,12 +649,8 @@ public class CreateDialog extends JDialog implements ActionListener
 				tNSpotP.addMonadPanel(rep);
 				test = true;
 			}
-			else //Testing foot doesn't matter. Nyad already has unique one.
+			else 
 			{
-				//TODO Nope. Relying on the Nyad to create a Monad CAN work if you want to re-use a cardinal.
-				//Cardinals were once unique to a Foot, thus a nyad. Now they are unique to algebras and NOT nyads.
-				//Nyads should probably drop all references to a proto number.
-				
     			tNSpot.createMonad(	monadShort.name.getText(), 
     								monadShort.aname.getText(), 
     								monadShort.frame.getText(), 
@@ -695,7 +691,7 @@ public class CreateDialog extends JDialog implements ActionListener
 	{
 		boolean test=false;
 		if (copiedAlgCD != null) // Algebra's foot dominates separately chosen Foot
-		{// TODO Need reference to copied algebra's protonumber
+		{
 			ComplexD[] tC = new ComplexD[copiedAlgCF.getGProduct().getBladeCount()];
 			for (short m=0; m<tC.length; m++)	tC[m]=(ComplexD) CladosField.COMPLEXD.createZERO(AlgebraComplexD.shareCardinal(copiedAlgCD));
 			MonadComplexD rep=new MonadComplexD(monadShort.name.getText(),
@@ -736,7 +732,7 @@ public class CreateDialog extends JDialog implements ActionListener
 	{
 		boolean test=false;
 		if (copiedAlgCF != null) // Algebra's foot dominates separately chosen Foot
-		{// TODO Need reference to copied algebra's protonumber
+		{
 			ComplexF[] tC = new ComplexF[copiedAlgCF.getGProduct().getBladeCount()];
 			for (short m=0; m<tC.length; m++)	tC[m]=(ComplexF) CladosField.COMPLEXF.createZERO(AlgebraComplexF.shareCardinal(copiedAlgCF));
 			MonadComplexF rep=new MonadComplexF(monadShort.name.getText(),
@@ -777,7 +773,7 @@ public class CreateDialog extends JDialog implements ActionListener
 	{
 		boolean test=false;
 		if (copiedAlgRD != null) // Algebra's foot dominates separately chosen Foot
-		{// TODO Need reference to copied algebra's protonumber
+		{
 			RealD[] tC = new RealD[copiedAlgRD.getGProduct().getBladeCount()];
 			for (short m=0; m<tC.length; m++)	tC[m]=(RealD) CladosField.REALD.createZERO(AlgebraRealD.shareCardinal(copiedAlgRD));
 			MonadRealD rep=new MonadRealD(	monadShort.name.getText(),
@@ -819,7 +815,7 @@ public class CreateDialog extends JDialog implements ActionListener
 	{
 		boolean test=false;
 		if (copiedAlgRF != null) // Algebra's foot dominates separately chosen Foot
-		{// TODO Need reference to copied algebra's protonumber
+		{
 			RealF[] tC = new RealF[copiedAlgRF.getGProduct().getBladeCount()];
 			for (short m=0; m<tC.length; m++)	tC[m]=(RealF) CladosField.REALF.createZERO(AlgebraRealF.shareCardinal(copiedAlgRF));
 			MonadRealF rep=new MonadRealF(	monadShort.name.getText(),

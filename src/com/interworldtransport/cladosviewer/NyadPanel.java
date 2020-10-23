@@ -582,10 +582,9 @@ import java.util.*;
 										buildName=new StringBuffer(focusMonadRF.getName()).append("_c").toString();
 										buildAlgName =new StringBuffer(focusMonadRF.getAlgebra().getAlgebraName()).append("_c").toString();
 										buildFrameName = new StringBuffer(focusMonadRF.getFrameName()).append("_c").toString();
-										// TODO Don't like referencing Monad's scalar coefficient as protonumber in a new algebra.
 										AlgebraRealF buildAlgRF = new AlgebraRealF(	buildAlgName, 
 																					focusMonadRF.getAlgebra().getFoot(),
-																					focusMonadRF.getCoeff((short) 0).getCardinal(),
+																					AlgebraRealF.shareCardinal(focusMonadRF.getAlgebra()),
 																					focusMonadRF.getAlgebra().getGProduct());
 										MonadRealF newMonadCopyRF=new MonadRealF(	buildName, 
 																					buildAlgRF,
@@ -598,10 +597,9 @@ import java.util.*;
 										buildName=new StringBuffer(focusMonadRD.getName()).append("_c").toString();
 										buildAlgName =new StringBuffer(focusMonadRD.getAlgebra().getAlgebraName()).append("_c").toString();
 										buildFrameName = new StringBuffer(focusMonadRD.getFrameName()).append("_c").toString();
-										// TODO Don't like referencing Monad's scalar coefficient as protonumber in a new algebra.
 										AlgebraRealD buildAlgRD = new AlgebraRealD(	buildAlgName, 
 																					focusMonadRD.getAlgebra().getFoot(),
-																					focusMonadRD.getCoeff((short) 0).getCardinal(),
+																					AlgebraRealD.shareCardinal(focusMonadRD.getAlgebra()),
 																					focusMonadRD.getAlgebra().getGProduct());
 										MonadRealD newMonadCopyRD=new MonadRealD(	buildName, 
 																					buildAlgRD,
@@ -614,10 +612,9 @@ import java.util.*;
 										buildName=new StringBuffer(focusMonadCF.getName()).append("_c").toString();
 										buildAlgName =new StringBuffer(focusMonadCF.getAlgebra().getAlgebraName()).append("_c").toString();
 										buildFrameName = new StringBuffer(focusMonadCF.getFrameName()).append("_c").toString();
-										// TODO Don't like referencing Monad's scalar coefficient as protonumber in a new algebra.
 										AlgebraComplexF buildAlgCF = new AlgebraComplexF(	buildAlgName, 
 																							focusMonadCF.getAlgebra().getFoot(),
-																							focusMonadCF.getCoeff((short) 0).getCardinal(),
+																							AlgebraComplexF.shareCardinal(focusMonadCF.getAlgebra()),
 																							focusMonadCF.getAlgebra().getGProduct());
 										MonadComplexF newMonadCopyCF=new MonadComplexF(		buildName, 
 																							buildAlgCF,
@@ -630,10 +627,9 @@ import java.util.*;
 										buildName=new StringBuffer(focusMonadCD.getName()).append("_c").toString();
 										buildAlgName =new StringBuffer(focusMonadCD.getAlgebra().getAlgebraName()).append("_c").toString();
 										buildFrameName = new StringBuffer(focusMonadCD.getFrameName()).append("_c").toString();
-										// TODO Don't like referencing Monad's scalar coefficient as protonumber in a new algebra.
 										AlgebraComplexD buildAlgCD = new AlgebraComplexD(	buildAlgName, 
 																							focusMonadCD.getAlgebra().getFoot(),
-																							focusMonadCD.getCoeff((short) 0).getCardinal(),
+																							AlgebraComplexD.shareCardinal(focusMonadCD.getAlgebra()),
 																							focusMonadCD.getAlgebra().getGProduct());
 										MonadComplexD newMonadCopyCD=new MonadComplexD(		buildName, 
 																							buildAlgCD,

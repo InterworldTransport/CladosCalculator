@@ -97,6 +97,15 @@ import java.util.*;
 	 * until after a generator signature is given.
 	 */
 	private					boolean						useFullPanel;
+	/*
+	 * This boolean is for tracking whether the panel knows its monad is an
+	 * element in a nyad. This panel is embedded in the nyad create dialog to 
+	 * provide information on the first monad to create for a new nyad. 
+	 * If the monad being created is the second one, though, the create dialog
+	 * should not ask for or display a Foot. It should force reuse of the 
+	 * nyad's existing Foot.
+	 */
+	private					boolean						nyadNotKnown;
 	protected				boolean						_editMode;
 	public					CladosCalculator			_GUI;
 	
@@ -113,8 +122,11 @@ import java.util.*;
   * in order to offer its parts for display and manipulation in a 'Create' dialog.
   * 
   * @param pGUI				CladosCalculator
+  * @param noNyad			boolean
+  * 	False when the calling object is embedding new monad in a known nyad. 
+  * 	True when this is to be the first monad in a new nyad.
   */
-   public MonadPanel(CladosCalculator pGUI)
+   public MonadPanel(CladosCalculator pGUI, boolean noNyad)
    {
 	   super();
 	   _GUI=pGUI;
@@ -122,7 +134,7 @@ import java.util.*;
 	   setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 	   setBackground(clrBackColor);
 	   setLayout(new BorderLayout());
-	   name.setText("tablePlace");
+	   name.setText(_GUI.IniProps.getProperty("Desktop.Default.BaseName"));	
 	   cardname.setText(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
 	   aname.setText(_GUI.IniProps.getProperty("Desktop.Default.AlgebraName"));
 	   frame.setText(_GUI.IniProps.getProperty("Desktop.Default.FrameName"));
@@ -130,6 +142,8 @@ import java.util.*;
 	   sig.setText(_GUI.IniProps.getProperty("Desktop.Default.Sig"));
 	   
 	   useFullPanel=false;	// Use this panel in it's small sense
+	   nyadNotKnown=noNyad;
+	   
 	   pnlMonadReferences=new JPanel();
 	   pnlMonadReferences.setBackground(clrBackColor);
 	   pnlMonadReferences.setLayout(new GridBagLayout());
@@ -148,12 +162,15 @@ import java.util.*;
 	   cn0.gridx = 0;
 	   cn0.gridy++;
 	   	
-	   pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot"))), cn0);
-	   cn0.gridx++;
-	   foot.setFont(_ITALICFONT);
-	   pnlMonadReferences.add(foot, cn0);
-	   cn0.gridx=0;
-	   cn0.gridy++;
+	   if (nyadNotKnown)
+	   {
+		   pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot"))), cn0);
+		   cn0.gridx++;
+		   foot.setFont(_ITALICFONT);
+		   pnlMonadReferences.add(foot, cn0);
+		   cn0.gridx=0;
+		   cn0.gridy++;
+	   }
 	   	
 	   pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Alg"))), cn0);
 	   cn0.gridx++;
