@@ -27,10 +27,19 @@ package com.interworldtransport.cladosviewer;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Set;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
 
 /**  com.interworldtransport.cladosviewer.OptionsDialog
  * The Optons Dialog window is supposed to show a window that would allow a user
@@ -38,11 +47,56 @@ import javax.swing.border.*;
  * @version 0.85,
  * @author Dr Alfred W Differ
  */
-public class OptionsDialog extends JDialog implements ActionListener
+public class OptionsDialog extends JDialog implements ActionListener, TableModelListener
 {
-	private static final long 	serialVersionUID = 42502531490581682L;
-	private CladosCalculator	_GUI;
-	private JButton 			closeButton;  
+	private class 			MyTableModel 		extends AbstractTableModel 
+	{
+		private 			String[] 			columnNames = {"Key", "Value"};
+		private				Object[][]			data;
+
+		public int getColumnCount() 
+		{
+			return columnNames.length;
+	    }
+	    public String getColumnName(int col) 
+	    {
+	        return columnNames[col];
+	    }
+	    public int getRowCount() 
+	    {
+	        return data.length;
+	    }    
+	    public Object getValueAt(int row, int col) 
+	    {
+	        return data[row][col];
+	    }
+	    /*
+	     * Don't need to implement this method unless your table's
+	     * editable.
+	     */
+	    public boolean isCellEditable(int row, int col) 
+	    {
+	        if (col == 1) return true;
+	        return false;
+	    }	    
+	    /*
+	     * Don't need to implement this method unless your table's
+	     * data can change.
+	     */
+	    public void setValueAt(Object value, int row, int col) 
+	    {
+	        data[row][col] = value;
+	        fireTableCellUpdated(row, col);
+	    }
+	}
+	
+	private	static final 	Color				_backColor 		= new Color(255, 255, 222);
+	private	static final	Color				_tblBackColor 	= new Color(212, 212, 192);
+	private 				CladosCalculator	_GUI; 
+	private 				JButton 			btnClose;
+	private 				JButton				btnReload;
+	private 				JButton 			btnSave;
+	private 				JPanel				mainPane		= new JPanel(new BorderLayout());
 
 /**
  * The constructor sets up the options dialog box and displays it.
@@ -53,73 +107,168 @@ public class OptionsDialog extends JDialog implements ActionListener
  */
     public OptionsDialog(CladosCalculator mainWindow)
     {
-		super(mainWindow, "Options Panel for Clados Calculator", true); 
+		super(mainWindow, "Preferences Dialog", true); 
 		_GUI=mainWindow;
-	
-		JPanel mainPane = new JPanel(new BorderLayout());
 		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		mainPane.setBackground(_backColor);
 		setContentPane(mainPane);
-	
-		// Create content text area
-	
-		JTextArea contentArea = new JTextArea();
-		contentArea.setBackground(Color.WHITE);
-		contentArea.setBorder(new EmptyBorder(10, 10, 10, 10));
-		contentArea.setLineWrap(true);
-		contentArea.setWrapStyleWord(true);
-		contentArea.setEditable(true);
-		contentArea.setText(constructContent());
-		mainPane.add(new JScrollPane(contentArea), "Center");
-	
-		// Create close button panel
-	
-		JPanel closeButtonPane = new JPanel(new FlowLayout());
-		closeButtonPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		mainPane.add(closeButtonPane, "South");
-	
-		// Create close button
-	
-		closeButton = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Close")));
-		closeButton.setActionCommand("close");
-		closeButton.setToolTipText("Close the dialog. No further changes.");
-		closeButton.setPreferredSize(new Dimension(30,30));
-		closeButton.setBorder(BorderFactory.createEtchedBorder(0));
-		closeButton.addActionListener(this);
-		closeButtonPane.add(closeButton);
-	
-		// Set the size of the window
-	
-		setSize(500, 800);
-	
-		// Center the window on the parent window.
-	
+		createControlButtons();
+		addPropTable();
+		setSize(600, 600);	
+
 		Point parentLocation = mainWindow.getLocation();
 		int Xloc = (int) parentLocation.getX() + ((mainWindow.getWidth() - 300) / 2);
 		int Yloc = (int) parentLocation.getY(); //+ ((mainWindow.getHeight() - 400) / 2);
 		setLocation(Xloc, Yloc);
-	
-		// Display window
 		setVisible(true);
     }
-
-    public void actionPerformed(ActionEvent event)
+    @Override
+    public void actionPerformed(ActionEvent event) 
     {
-		dispose();
+    	switch (event.getActionCommand())
+    	{
+    		case "reload":	
+    			reloadAll();
+    			break;
+    		case "close":	
+    			dispose();
+    			break;
+    		case "save":	
+    			saveAll();
+    			dispose();
+    	}
     }
     
-    private String constructContent()
+    @Override
+	public void tableChanged(TableModelEvent e) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+    
+    private void addPropTable()
     {
-    	StringBuffer contentBuffer=new StringBuffer();
-    	Set<Object> testSet = _GUI.IniProps.keySet();
-
     	
-    	for ( Object key : testSet)
+    	MyTableModel test = new MyTableModel();
+    	JTable propTable = new JTable(test);
+    	propTable.setBackground(_tblBackColor);
+    	
+		Object[] testSet = _GUI.IniProps.stringPropertyNames().toArray();
+		test.data = new String [testSet.length][2];
+		for (int j=0; j<test.getRowCount(); j++)
+		{	//setValueAt(Object value, int row, int col)
+			test.setValueAt(testSet[j], j, 0);
+			test.setValueAt( _GUI.IniProps.get(testSet[j]), j, 1);
+		}
+		
+		mainPane.add(new JScrollPane(propTable), "Center");
+		propTable.setFillsViewportHeight(true);    
+		propTable.setAutoCreateRowSorter(true);
+		propTable.getModel().addTableModelListener(this);
+    }
+    
+    private void createControlButtons()
+    {	// Create button panel
+    	JPanel controlPanel = new JPanel(new FlowLayout());
+    	controlPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+    	controlPanel.setBackground(_backColor);
+    	mainPane.add(controlPanel, "South");
+    	
+    	// Create buttons
+		btnReload = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Edit")));
+		btnReload.setActionCommand("reload");
+		btnReload.setToolTipText("Reload properties");
+		btnReload.setPreferredSize(new Dimension(30,30));
+		btnReload.setBorder(BorderFactory.createEtchedBorder(0));
+		btnReload.addActionListener(this);
+		controlPanel.add(btnReload);	
+    		
+		btnSave = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Save")));
+		btnSave.setActionCommand("save");
+		btnSave.setToolTipText("Save any changes, then close.");
+		btnSave.setPreferredSize(new Dimension(30,30));
+		btnSave.setBorder(BorderFactory.createEtchedBorder(0));
+		btnSave.addActionListener(this);
+		controlPanel.add(btnSave);
+	
+		btnClose = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Close")));
+		btnClose.setActionCommand("close");
+		btnClose.setToolTipText("Close the dialog. No further changes.");
+		btnClose.setPreferredSize(new Dimension(30,30));
+		btnClose.setBorder(BorderFactory.createEtchedBorder(0));
+		btnClose.addActionListener(this);
+		controlPanel.add(btnClose);	
+    }
+    
+    private void reloadAll()
+    {
+    	File fIni=new File(_GUI.IniProps.getProperty("Desktop.PropertiesFile"));
+    	if (!(fIni.exists() & fIni.isFile() & fIni.canWrite())) _GUI.appStatusBar.setStatusMsg("The configuration file is not valid.");
+		
+    	try (	FileInputStream tempSpot=new FileInputStream(fIni);
+	    		BufferedInputStream tSpot = new BufferedInputStream(tempSpot))
     	{
-    		contentBuffer.append((String)key);
-    		contentBuffer.append(" | ");
-    		contentBuffer.append(_GUI.IniProps.get(key));
-    		contentBuffer.append("\n");
+    		_GUI.IniProps=new Properties(System.getProperties());
+    		_GUI.IniProps.loadFromXML(tSpot); // This loads an XML formatted key/pair properties file.
+    		addPropTable();
+    		tSpot.close();
+    		tempSpot.close();
     	}
-    	return contentBuffer.toString();
+    	catch(IOException e)
+    	{
+    		_GUI.appStatusBar.setStatusMsg("IO Problem:  Incomplete Access to associated INI files.");
+    	}
+    }
+    
+    private void saveAll()
+    {
+    	if (_GUI.IniProps.getProperty("Desktop.PropertiesFile") != null)	// save to file described in conf setting
+	    {
+	    	File fIni=new File(_GUI.IniProps.getProperty("Desktop.PropertiesFile"));
+	    	if (!(fIni.exists() & fIni.isFile() & fIni.canWrite()))
+	    	{
+	    		saveAsAll();	// Defer to Save As
+	    		return;
+	    	}
+	    	try(	FileOutputStream tempSpot=new FileOutputStream(fIni);
+		    		BufferedOutputStream tSpot = new BufferedOutputStream(tempSpot))
+	    	{
+	    	   	_GUI.IniProps.storeToXML(tSpot, "Saved From Clados Calculator Properties Dialog");
+	    	   	_GUI.appStatusBar.setStatusMsg("-->Options SAVED.\n");
+	    	}
+	    	catch (IOException e)
+	    	{
+	    	   	_GUI.appStatusBar.setStatusMsg("-->Options NOT saved. IO Exception involving Properties target file.\n");
+	    	}
+	    	finally
+ 	    	{
+ 	    		fIni = null;
+ 	    	}
+	    }
+	    else	saveAsAll();	// Defer to Save As
+    }
+	private void saveAsAll()
+    {
+    	JFileChooser fc = new JFileChooser();
+	    fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+    	int returnVal = fc.showSaveDialog(btnSave);
+ 	    if (returnVal == JFileChooser.APPROVE_OPTION) 
+ 	    {
+ 	    	File fIni = fc.getSelectedFile();
+ 	    	try (	FileOutputStream tempSpot=new FileOutputStream(fIni);
+		    		BufferedOutputStream tSpot = new BufferedOutputStream(tempSpot))
+ 	    	{
+	    	   	_GUI.IniProps.storeToXML(tSpot, "Saved From Clados Calculator Properties Dialog");
+	    	   	_GUI.appStatusBar.setStatusMsg("-->Options SAVED AS.\n");
+	    	}
+	    	catch (IOException e)
+	    	{
+	    	   	_GUI.appStatusBar.setStatusMsg("-->Options NOT saved. IO Exception involving Properties target file.\n");
+	    	}
+ 	    	finally
+ 	    	{
+ 	    		fIni = null;
+ 	    	}
+ 	    } 
     }
 }
