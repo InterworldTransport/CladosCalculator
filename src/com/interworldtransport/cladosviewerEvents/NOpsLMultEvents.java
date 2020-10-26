@@ -65,20 +65,20 @@ public class NOpsLMultEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	int indxNydPnlSlctd = _parent._GUI._GeometryDisplay.getPaneFocus();
-    	if (indxNydPnlSlctd<0 | indxNydPnlSlctd == _parent._GUI._GeometryDisplay.getNyadListSize()-1) 
+    	int indxNydPnlSlctd = _parent._GUI.appGeometryView.getPaneFocus();
+    	if (indxNydPnlSlctd<0 | indxNydPnlSlctd == _parent._GUI.appGeometryView.getNyadListSize()-1) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus... or the last one is.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus... or the last one is.\n");
     		return;	
     	}
     	
-    	NyadPanel tSpot = _parent._GUI._GeometryDisplay.getNyadPanel(indxNydPnlSlctd);
-    	NyadPanel tSpotPlus = _parent._GUI._GeometryDisplay.getNyadPanel(indxNydPnlSlctd+1);
+    	NyadPanel tSpot = _parent._GUI.appGeometryView.getNyadPanel(indxNydPnlSlctd);
+    	NyadPanel tSpotPlus = _parent._GUI.appGeometryView.getNyadPanel(indxNydPnlSlctd+1);
     	
     	int indxMndPnlSlctd = tSpot.getPaneFocus();
     	if (indxMndPnlSlctd<0 | indxNydPnlSlctd > tSpotPlus.getMonadListSize()) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nMultiplication needs two monads at the same index in a nyad. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nMultiplication needs two monads at the same index in a nyad. Nothing done.\n");
     		return;
     	}
     	
@@ -101,11 +101,11 @@ public class NOpsLMultEvents implements ActionListener
     	}
     	catch (FieldBinaryException eb)
 		{
-			_parent._GUI._StatusBar.setStatusMsg("\nField Binary error between second and first monads. Nothing done.\n");
+			_parent._GUI.appStatusBar.setStatusMsg("\nField Binary error between second and first monads. Nothing done.\n");
 		}
 		catch (CladosMonadException e)
 		{
-			_parent._GUI._StatusBar.setStatusMsg("\nReference Match error between second and first monads. Nothing done.\n");
+			_parent._GUI.appStatusBar.setStatusMsg("\nReference Match error between second and first monads. Nothing done.\n");
 		}
     }
  }

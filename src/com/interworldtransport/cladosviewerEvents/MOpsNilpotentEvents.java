@@ -72,18 +72,18 @@ public class MOpsNilpotentEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
     		return;	
     	}
     	    	
-    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	NyadPanel panelNyadSelected=_parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
     	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNilpotent Test needs one monad in focus. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nNilpotent Test needs one monad in focus. Nothing done.\n");
     		return;
     	}
     	
@@ -91,7 +91,7 @@ public class MOpsNilpotentEvents implements ActionListener
     	boolean test = false;
     	try
     	{
-    		int pow2Test = (int) Float.parseFloat(_parent._GUI._FieldBar.getRealText());
+    		int pow2Test = (int) Float.parseFloat(_parent._GUI.appFieldBar.getRealText());
 	    	switch (tSpot.getRepMode())
 	    	{
 		    	case REALF: 	test = MonadRealF.isNilpotent(tSpot.getMonadRF(), pow2Test);
@@ -103,31 +103,31 @@ public class MOpsNilpotentEvents implements ActionListener
 		    	case COMPLEXD:	test = MonadComplexD.isNilpotent(tSpot.getMonadCD(), pow2Test);
 	    	}
 	    	if (test)
-				_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is nilpotent at power="+pow2Test+".\n");
+				_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is nilpotent at power="+pow2Test+".\n");
 	    	else
-	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is NOT nilpotent at power="+pow2Test+".\n");
+	    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is NOT nilpotent at power="+pow2Test+".\n");
     	}
     	catch (NullPointerException eNull)	// Catch the empty text 'real number' text field on the FieldBar.
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nPower Nilpotent Test must have a real # in the FieldBar. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nPower Nilpotent Test must have a real # in the FieldBar. Nothing done.\n");
     		return;
     	}
     	catch (NumberFormatException eFormat)	// Catch the non-parse-able text 'real number' text field on the FieldBar.
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nPower Nilpotent Test must have a parse-able real # in the FieldBar. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nPower Nilpotent Test must have a parse-able real # in the FieldBar. Nothing done.\n");
     		return;
     	}
 		catch (CladosMonadException e)
 		{
-			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad created a CladosMonadException.\n");
-			_parent._GUI._StatusBar.setStatusMsg(e.getSourceMessage());
-			_parent._GUI._StatusBar.setStatusMsg("\n\n");
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad created a CladosMonadException.\n");
+			_parent._GUI.appStatusBar.setStatusMsg(e.getSourceMessage());
+			_parent._GUI.appStatusBar.setStatusMsg("\n\n");
 		}
 		catch (FieldBinaryException eb)
 		{
-			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad created a FieldBinaryException.\n");
-			_parent._GUI._StatusBar.setStatusMsg(eb.getSourceMessage());
-			_parent._GUI._StatusBar.setStatusMsg("\n\n");
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad created a FieldBinaryException.\n");
+			_parent._GUI.appStatusBar.setStatusMsg(eb.getSourceMessage());
+			_parent._GUI.appStatusBar.setStatusMsg("\n\n");
 		}
     }
  }

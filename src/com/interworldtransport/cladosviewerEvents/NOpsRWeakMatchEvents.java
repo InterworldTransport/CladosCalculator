@@ -68,18 +68,18 @@ public class NOpsRWeakMatchEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	int tNyadIndex=_parent._GUI._GeometryDisplay.getPaneFocus();
-    	if (tNyadIndex<0 | tNyadIndex>=_parent._GUI._GeometryDisplay.getNyadListSize()-1) 
+    	int tNyadIndex=_parent._GUI.appGeometryView.getPaneFocus();
+    	if (tNyadIndex<0 | tNyadIndex>=_parent._GUI.appGeometryView.getNyadListSize()-1) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("No nyad in the focus... or the last one is.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("No nyad in the focus... or the last one is.\n");
     		return;	
     	}
     	
-    	NyadPanel panelNyadSelected = _parent._GUI._GeometryDisplay.getNyadPanel(tNyadIndex);
-    	NyadPanel panelNyadNext = _parent._GUI._GeometryDisplay.getNyadPanel(tNyadIndex+1);
+    	NyadPanel panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex);
+    	NyadPanel panelNyadNext = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex+1);
     	if (panelNyadSelected.getRepMode() != panelNyadNext.getRepMode())
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("Nyads using different DivFields.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("Nyads using different DivFields.\n");
     		return;	
     	}
     	boolean test = false;
@@ -94,8 +94,8 @@ public class NOpsRWeakMatchEvents implements ActionListener
     		case COMPLEXD: test = NyadComplexD.isWeakReferenceMatch(panelNyadSelected.getNyadCD(), panelNyadNext.getNyadCD());
     	}
     	if (test)
-			_parent._GUI._StatusBar.setStatusMsg("-->Selected nyad and the next are WEAK REF MATCHED.\n");
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected nyad and the next are WEAK REF MATCHED.\n");
 		else
-			_parent._GUI._StatusBar.setStatusMsg("-->Selected nyad and the next are NOT weak ref matched.\n");
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected nyad and the next are NOT weak ref matched.\n");
     }
  }

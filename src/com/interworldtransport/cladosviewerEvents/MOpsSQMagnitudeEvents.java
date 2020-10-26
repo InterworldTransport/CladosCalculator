@@ -70,19 +70,19 @@ public class MOpsSQMagnitudeEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
     		return;	
     	}
     	
-    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	NyadPanel tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
     	
     	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nSQ Magnitude Discovery needs one monad in focus. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nSQ Magnitude Discovery needs one monad in focus. Nothing done.\n");
     		return;
     	}
     	
@@ -92,25 +92,25 @@ public class MOpsSQMagnitudeEvents implements ActionListener
     		switch (tMSpotPnl.getRepMode())
         	{
 		    	case REALF: 	RealF scaleRF = tMSpotPnl.getMonadRF().sqMagnitude();
-							    		_parent._GUI._FieldBar.setWhatFloatR(scaleRF.getModulus());
+							    		_parent._GUI.appFieldBar.setWhatFloatR(scaleRF.getModulus());
 								    	break;
 		    	case REALD: 	RealD scaleRD = tMSpotPnl.getMonadRD().sqMagnitude();
-							    		_parent._GUI._FieldBar.setWhatDoubleR(scaleRD.getModulus());
+							    		_parent._GUI.appFieldBar.setWhatDoubleR(scaleRD.getModulus());
 								    	break;
 		    	case COMPLEXF:	ComplexF scaleCF = tMSpotPnl.getMonadCF().sqMagnitude();
-							    		_parent._GUI._FieldBar.setWhatFloatR(scaleCF.getModulus());
-							    		_parent._GUI._FieldBar.setWhatFloatI(0.0F);
+							    		_parent._GUI.appFieldBar.setWhatFloatR(scaleCF.getModulus());
+							    		_parent._GUI.appFieldBar.setWhatFloatI(0.0F);
 								    	break;
 		    	case COMPLEXD:	ComplexD scaleCD = tMSpotPnl.getMonadCD().sqMagnitude();
-							    		_parent._GUI._FieldBar.setWhatDoubleR(scaleCD.getModulus());
-							    		_parent._GUI._FieldBar.setWhatDoubleI(0.0D);
+							    		_parent._GUI.appFieldBar.setWhatDoubleR(scaleCD.getModulus());
+							    		_parent._GUI.appFieldBar.setWhatDoubleI(0.0D);
         	}
-    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad SQmagnitude has been computed.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad SQmagnitude has been computed.\n");
     	} 
     	catch (CladosMonadException e) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad SQmagnitude has NOT been computed due to a Clados Monad Exception.\n");
-    		_parent._GUI._StatusBar.setStatusMsg(e.getSourceMessage());
+    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad SQmagnitude has NOT been computed due to a Clados Monad Exception.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg(e.getSourceMessage());
     	}
     }
  }

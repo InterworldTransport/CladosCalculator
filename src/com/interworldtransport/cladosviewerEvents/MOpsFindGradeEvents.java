@@ -72,18 +72,18 @@ public class MOpsFindGradeEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
     		return;	
     	}
     	
-    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	NyadPanel panelNyadSelected=_parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
     	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nGrade Test needs one monad in focus. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nGrade Test needs one monad in focus. Nothing done.\n");
     		return;
     	}
     	
@@ -103,16 +103,16 @@ public class MOpsFindGradeEvents implements ActionListener
     	
     	if (logGradeKey < 0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nDivField not recognized by action handler.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nDivField not recognized by action handler.\n");
     		return;
     	}
     	
     	if (logGradeKey != Math.floor(logGradeKey))
-    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad IS NOT a single findgrade.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad IS NOT a single findgrade.\n");
     	else
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad IS single findgrade.\n");
-    		_parent._GUI._FieldBar.setWhatDoubleR(logGradeKey);
+    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad IS single findgrade.\n");
+    		_parent._GUI.appFieldBar.setWhatDoubleR(logGradeKey);
     	}
     }
  }

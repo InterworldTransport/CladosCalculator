@@ -82,11 +82,11 @@ public class FileSaveEvents implements ActionListener
 	    	   	saveItTo.write("\r\n");
 	    	   	saveItTo.flush();
 	    	   	saveItTo.close();
-	    	   	_parent._GUI._StatusBar.setStatusMsg("-->Stack Snapshot SAVED.\n");
+	    	   	_parent._GUI.appStatusBar.setStatusMsg("-->Stack Snapshot SAVED.\n");
 	    	}
 	    	catch (IOException e)
 	    	{
-	    	   	_parent._GUI._StatusBar.setStatusMsg("-->Stack Snapshot NOT saved. IO Exception involving Properties target file.\n");
+	    	   	_parent._GUI.appStatusBar.setStatusMsg("-->Stack Snapshot NOT saved. IO Exception involving Properties target file.\n");
 	    	}
 	    }
 	    else	_parent.sa.actionPerformed(evt);	// Defer to Save As event

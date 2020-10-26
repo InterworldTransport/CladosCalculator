@@ -130,7 +130,7 @@ import java.util.*;
    {
 	   super();
 	   _GUI=pGUI;
-	   _repMode=_GUI._FieldBar.getRepMode();
+	   _repMode=_GUI.appFieldBar.getRepMode();
 	   setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 	   setBackground(clrBackColor);
 	   setLayout(new BorderLayout());
@@ -255,9 +255,9 @@ import java.util.*;
     		add(new JPanel(null, false), "Center");
     		if (pGUI != null) 
  	    	{
- 	    		_GUI._StatusBar.setStatusMsg("Null Pointer Exception. Something is missing on MPanel construction.\n");
- 	    		_GUI._StatusBar.setStatusMsg(enull.getClass()+"\n");
- 	    		_GUI._StatusBar.setStatusMsg(enull.getMessage()+"\n");
+ 	    		_GUI.appStatusBar.setStatusMsg("Null Pointer Exception. Something is missing on MPanel construction.\n");
+ 	    		_GUI.appStatusBar.setStatusMsg(enull.getClass()+"\n");
+ 	    		_GUI.appStatusBar.setStatusMsg(enull.getMessage()+"\n");
  	    	}
     	}
     	finally
@@ -319,9 +319,9 @@ import java.util.*;
 	    		add(new JPanel(null, false), "Center");
 	    		if (pGUI != null) 
 	 	    	{
-	 	    		_GUI._StatusBar.setStatusMsg("Null Pointer Exception. Something is missing on MPanel construction.\n");
-	 	    		_GUI._StatusBar.setStatusMsg(enull.getClass()+"\n");
-	 	    		_GUI._StatusBar.setStatusMsg(enull.getMessage()+"\n");
+	 	    		_GUI.appStatusBar.setStatusMsg("Null Pointer Exception. Something is missing on MPanel construction.\n");
+	 	    		_GUI.appStatusBar.setStatusMsg(enull.getClass()+"\n");
+	 	    		_GUI.appStatusBar.setStatusMsg(enull.getMessage()+"\n");
 	 	    	}
 	    	}
 	    	finally
@@ -383,9 +383,9 @@ import java.util.*;
 	    		add(new JPanel(null, false), "Center");
 	    		if (pGUI != null) 
 	 	    	{
-	 	    		_GUI._StatusBar.setStatusMsg("Null Pointer Exception. Something is missing on MPanel construction.\n");
-	 	    		_GUI._StatusBar.setStatusMsg(enull.getClass()+"\n");
-	 	    		_GUI._StatusBar.setStatusMsg(enull.getMessage()+"\n");
+	 	    		_GUI.appStatusBar.setStatusMsg("Null Pointer Exception. Something is missing on MPanel construction.\n");
+	 	    		_GUI.appStatusBar.setStatusMsg(enull.getClass()+"\n");
+	 	    		_GUI.appStatusBar.setStatusMsg(enull.getMessage()+"\n");
 	 	    	}
 	    	}
 	    	finally
@@ -447,9 +447,9 @@ import java.util.*;
 		    		add(new JPanel(null, false), "Center");
 		    		if (pGUI != null) 
 		 	    	{
-		 	    		_GUI._StatusBar.setStatusMsg("Null Pointer Exception. Something is missing on MPanel construction.\n");
-		 	    		_GUI._StatusBar.setStatusMsg(enull.getClass()+"\n");
-		 	    		_GUI._StatusBar.setStatusMsg(enull.getMessage()+"\n");
+		 	    		_GUI.appStatusBar.setStatusMsg("Null Pointer Exception. Something is missing on MPanel construction.\n");
+		 	    		_GUI.appStatusBar.setStatusMsg(enull.getClass()+"\n");
+		 	    		_GUI.appStatusBar.setStatusMsg(enull.getMessage()+"\n");
 		 	    	}
 		    	}
 		    	finally
@@ -465,21 +465,21 @@ import java.util.*;
     {
     	switch (event.getActionCommand())
     	{
-	    	case "findgrade crop":	_GUI._EventModel.MOpsParts.gradep.actionPerformed(event);
+	    	case "findgrade crop":	_GUI.appEventModel.MOpsParts.gradep.actionPerformed(event);
 	    							break;
-	    	case "findgrade cut":	_GUI._EventModel.MOpsParts.grades.actionPerformed(event);
+	    	case "findgrade cut":	_GUI.appEventModel.MOpsParts.grades.actionPerformed(event);
 	    							break;
-	    	case "scale":			_GUI._EventModel.MOpsParts.scale.actionPerformed(event);
+	    	case "scale":			_GUI.appEventModel.MOpsParts.scale.actionPerformed(event);
 									break;
-	    	case "normalize":		_GUI._EventModel.MOpsParts.norm.actionPerformed(event);
+	    	case "normalize":		_GUI.appEventModel.MOpsParts.norm.actionPerformed(event);
 									break;
-	    	case "invert":			_GUI._EventModel.MOpsParts.invt.actionPerformed(event);
+	    	case "invert":			_GUI.appEventModel.MOpsParts.invt.actionPerformed(event);
 									break;
-	    	case "reverse":			_GUI._EventModel.MOpsParts.rev.actionPerformed(event);
+	    	case "reverse":			_GUI.appEventModel.MOpsParts.rev.actionPerformed(event);
 									break;
-	    	case "<dual":			_GUI._EventModel.MOpsParts.dualRight.actionPerformed(event);
+	    	case "<dual":			_GUI.appEventModel.MOpsParts.dualRight.actionPerformed(event);
 									break;
-	    	case "dual>":			_GUI._EventModel.MOpsParts.dualLeft.actionPerformed(event);
+	    	case "dual>":			_GUI.appEventModel.MOpsParts.dualLeft.actionPerformed(event);
 									break;
 	    	case "flip": 			if (btnChangeOrient.getIcon().equals(iconHorizontal))
 							    	{
@@ -527,7 +527,7 @@ import java.util.*;
 						        	btnRestore.setEnabled(true);
 						    		makeWritable();
 						    		break;
-	    	default: 				_GUI._StatusBar.setStatusMsg("No Detectable Command at the Monad Panel. No action.\n");
+	    	default: 				_GUI.appStatusBar.setStatusMsg("No Detectable Command at the Monad Panel. No action.\n");
     	}
     }
     /**
@@ -552,25 +552,25 @@ import java.util.*;
 			
 			switch (_repMode)
 			{
-				case REALF:	_GUI._FieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldRF));;
+				case REALF:	_GUI.appFieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldRF));;
 							float tSpotRF = Float.parseFloat(strB.substring(indexOfR, tBufferLength));
-							_GUI._FieldBar.setWhatFloatR(tSpotRF);
+							_GUI.appFieldBar.setWhatFloatR(tSpotRF);
 							break;
-				case REALD:	_GUI._FieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldRD));;
+				case REALD:	_GUI.appFieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldRD));;
 							double tSpotRD = Double.parseDouble(strB.substring(indexOfR, tBufferLength));
-							_GUI._FieldBar.setWhatDoubleR(tSpotRD);
+							_GUI.appFieldBar.setWhatDoubleR(tSpotRD);
 							break;
-				case COMPLEXF:	_GUI._FieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldCF));;
+				case COMPLEXF:	_GUI.appFieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldCF));;
 								float tSpotCF1 = Float.parseFloat(strB.substring(indexOfR, indexOfI-tI-1));
 								float tSpotCF2 = Float.parseFloat(strB.substring(indexOfI, tBufferLength));
-								_GUI._FieldBar.setWhatFloatR(tSpotCF1);
-								_GUI._FieldBar.setWhatFloatI(tSpotCF2);
+								_GUI.appFieldBar.setWhatFloatR(tSpotCF1);
+								_GUI.appFieldBar.setWhatFloatI(tSpotCF2);
 								break;
-				case COMPLEXD:	_GUI._FieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldCD));;
+				case COMPLEXD:	_GUI.appFieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldCD));;
 								double tSpotCD1 = Double.parseDouble(strB.substring(indexOfR, indexOfI-tI-1));
 								double tSpotCD2 = Double.parseDouble(strB.substring(indexOfI, tBufferLength));
-								_GUI._FieldBar.setWhatDoubleR(tSpotCD1);
-								_GUI._FieldBar.setWhatDoubleI(tSpotCD2);
+								_GUI.appFieldBar.setWhatDoubleR(tSpotCD1);
+								_GUI.appFieldBar.setWhatDoubleI(tSpotCD2);
 			}
     	}
     }
@@ -1204,8 +1204,8 @@ import java.util.*;
 		}
     	catch (CladosMonadException e) 
     	{
-			_GUI._StatusBar.setStatusMsg("Could not set at least one of the edited coefficients.\n");
-			_GUI._StatusBar.setStatusMsg(e.getSourceMessage()+"\n");
+			_GUI.appStatusBar.setStatusMsg("Could not set at least one of the edited coefficients.\n");
+			_GUI.appStatusBar.setStatusMsg(e.getSourceMessage()+"\n");
 		}     		
     }
     

@@ -72,18 +72,18 @@ public class MOpsGradeSupressEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
     		return;	
     	}
     	
-    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	NyadPanel tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
     	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nGradeSuppress Operation must have a monad in focus. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nGradeSuppress Operation must have a monad in focus. Nothing done.\n");
     		return;
     	}
     	
@@ -91,7 +91,7 @@ public class MOpsGradeSupressEvents implements ActionListener
     	
     	try
     	{
-    		short tGrade = (short) Float.parseFloat(_parent._GUI._FieldBar.getRealText());
+    		short tGrade = (short) Float.parseFloat(_parent._GUI.appFieldBar.getRealText());
         	switch (tMSpotPnl.getRepMode())
         	{
     	    	case REALF: 	tMSpotPnl.getMonadRF().gradeSuppress(tGrade);
@@ -103,16 +103,16 @@ public class MOpsGradeSupressEvents implements ActionListener
     	    	case COMPLEXD:	tMSpotPnl.getMonadCD().gradeSuppress(tGrade);	
         	}
         	tMSpotPnl.setCoefficientDisplay();
-	    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been cut at "+tGrade+"-findgrade.\n");
+	    	_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been cut at "+tGrade+"-findgrade.\n");
     	}
     	catch (NullPointerException eNull)
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nGradeSuppress Operation must have a real # in the FieldBar. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nGradeSuppress Operation must have a real # in the FieldBar. Nothing done.\n");
     		return;
     	}
     	catch (NumberFormatException eFormat)
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nGradeSuppress Operation must have a parse-able real # in the FieldBar. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nGradeSuppress Operation must have a parse-able real # in the FieldBar. Nothing done.\n");
     		return;
     	}
     }

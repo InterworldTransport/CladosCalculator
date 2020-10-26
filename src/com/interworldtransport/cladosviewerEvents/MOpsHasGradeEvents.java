@@ -72,18 +72,18 @@ public class MOpsHasGradeEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
     		return;	
     	}
     	
-    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	NyadPanel panelNyadSelected=_parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
     	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nHas Grade Test needs one monad in focus. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nHas Grade Test needs one monad in focus. Nothing done.\n");
     		return;
     	}
     	
@@ -92,17 +92,17 @@ public class MOpsHasGradeEvents implements ActionListener
     	int grade2Test = 0;
     	try
     	{
-    		grade2Test = (int) Float.parseFloat(_parent._GUI._FieldBar.getRealText());
+    		grade2Test = (int) Float.parseFloat(_parent._GUI.appFieldBar.getRealText());
     		if (grade2Test < 0) return;
     	}
     	catch (NullPointerException eNull)	// Catch the empty text 'real number' text field on the FieldBar.
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nHas Grade Test must have a real # in the FieldBar. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nHas Grade Test must have a real # in the FieldBar. Nothing done.\n");
     		return;
     	}
     	catch (NumberFormatException eFormat)	// Catch the non-parse-able text 'real number' text field on the FieldBar.
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nHas Grade Test must have a parse-able real # in the FieldBar. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nHas Grade Test must have a parse-able real # in the FieldBar. Nothing done.\n");
     		return;
     	}
     	
@@ -142,15 +142,15 @@ public class MOpsHasGradeEvents implements ActionListener
     	}
     	// At this point, reducedMaxGrade will either BE grade2Test or smaller.
     	if (reducedMaxGrade < grade2Test)
-    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad does NOT not have findgrade "+grade2Test+".\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad does NOT not have findgrade "+grade2Test+".\n");
     	else 
     		if (grade2Test > 0)			// We know reducedMasGrade == grade2Test
-    			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad HAS findgrade "+grade2Test+".\n");
+    			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad HAS findgrade "+grade2Test+".\n");
 	    	else 
 	    		if (tempGradeKey == 1)	// We know grade2Test == 0 and reducedMasGrade == grade2Test
-		    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad HAS scalar findgrade... possibly zero.\n");
+		    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad HAS scalar findgrade... possibly zero.\n");
 		    	else 					// We know tempGradeKey > 1 and reducedMasGrade == grade2Test
-		    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad does NOT have scalar findgrade.\n");
+		    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad does NOT have scalar findgrade.\n");
     				// This last phrase works because monads with higher findgrade blades don't have scalar parts if
     				// the scalar coeff is zero. The only time a zero scalar coefficient is acceptable is when no higher
     				// blade is contained in the monad.

@@ -275,7 +275,7 @@ public class CreateDialog extends JDialog implements ActionListener
     		case "getfoot":		if (getNyadPaneFocus()<0) return; //No nyad chosen to get Foot
 					        	btnGetFoot.setActionCommand(".getfoot.");
 					        	btnGetFoot.setToolTipText("Release Referenced Foot");
-					        	switch ((_GUI._GeometryDisplay.getNyadPanel(tSpot)).getRepMode())
+					        	switch ((_GUI.appGeometryView.getNyadPanel(tSpot)).getRepMode())
 					        	{
 					        		case REALF:		copiedFoot=getNyadPanelFocus().getNyadRF().getFootPoint();
 					        						break;
@@ -359,59 +359,59 @@ public class CreateDialog extends JDialog implements ActionListener
 						    	{
 						    		switch (_repMode)
 						    		{
-						    			case REALF:		if (!appendNyadRF()) _GUI._StatusBar.setStatusMsg("\n\nSave new nyadRF failed at createDialog...");
+						    			case REALF:		if (!appendNyadRF()) _GUI.appStatusBar.setStatusMsg("\n\nSave new nyadRF failed at createDialog...");
 							    						break;
-						    			case REALD:		if (!appendNyadRD()) _GUI._StatusBar.setStatusMsg("\n\nSave new nyadRD failed at createDialog...");
+						    			case REALD:		if (!appendNyadRD()) _GUI.appStatusBar.setStatusMsg("\n\nSave new nyadRD failed at createDialog...");
 														break;
-						    			case COMPLEXF:	if (!appendNyadCF()) _GUI._StatusBar.setStatusMsg("\n\nSave new nyadCF failed at createDialog...");
+						    			case COMPLEXF:	if (!appendNyadCF()) _GUI.appStatusBar.setStatusMsg("\n\nSave new nyadCF failed at createDialog...");
 														break;
-						    			case COMPLEXD:	if (!appendNyadCD()) _GUI._StatusBar.setStatusMsg("\n\nSave new nyadCD failed at createDialog...");
+						    			case COMPLEXD:	if (!appendNyadCD()) _GUI.appStatusBar.setStatusMsg("\n\nSave new nyadCD failed at createDialog...");
 									}
 						    	}
 								catch (UtilitiesException e)
 								{
-									_GUI._StatusBar.setStatusMsg("Could not create nyad from Create|Save with general utilities exception\n");
-									_GUI._StatusBar.setStatusMsg(e.getSourceMessage());
+									_GUI.appStatusBar.setStatusMsg("Could not create nyad from Create|Save with general utilities exception\n");
+									_GUI.appStatusBar.setStatusMsg(e.getSourceMessage());
 								}
 								catch (BadSignatureException es)
 								{
-									_GUI._StatusBar.setStatusMsg("Could not create nyad from Create|Save with bad signature\n");
-									_GUI._StatusBar.setStatusMsg(es.getSourceMessage());
+									_GUI.appStatusBar.setStatusMsg("Could not create nyad from Create|Save with bad signature\n");
+									_GUI.appStatusBar.setStatusMsg(es.getSourceMessage());
 								}
 					    		catch (GeneratorRangeException e) 
 					    		{
-					    			_GUI._StatusBar.setStatusMsg("Could not create a nyad due to unsupported signature size.\n");
+					    			_GUI.appStatusBar.setStatusMsg("Could not create a nyad due to unsupported signature size.\n");
 					    		}
 								catch (CladosMonadException em)
 								{
-									_GUI._StatusBar.setStatusMsg("Could not create nyad from Create|Save with general monad error\n");
-									_GUI._StatusBar.setStatusMsg(em.getSourceMessage());
+									_GUI.appStatusBar.setStatusMsg("Could not create nyad from Create|Save with general monad error\n");
+									_GUI.appStatusBar.setStatusMsg(em.getSourceMessage());
 								}
 					    		catch (CladosNyadException en)
 								{
-									_GUI._StatusBar.setStatusMsg("Could not create nyad from Create|Save with general monad error\n");
-									_GUI._StatusBar.setStatusMsg(en.getSourceMessage());
+									_GUI.appStatusBar.setStatusMsg("Could not create nyad from Create|Save with general monad error\n");
+									_GUI.appStatusBar.setStatusMsg(en.getSourceMessage());
 								}
     							break;
     		case "Save Monad":	tSpot=getNyadPaneFocus(); //get the focus nyad to use to create this next monad
 					        	if (tSpot<0) return; //No nyad present for appending this
-					        	switch (_GUI._GeometryDisplay.getNyadPanel(tSpot).getRepMode())
+					        	switch (_GUI.appGeometryView.getNyadPanel(tSpot).getRepMode())
 					        	{
-					        		case REALF:		boolean testRF = appendMonadRF(	_GUI._GeometryDisplay.getNyadPanel(tSpot), 
-					        														_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadRF());
-					    	    					if (!testRF) _GUI._StatusBar.setStatusMsg("\n\nSave new monadRF on old nyad failed at createDialog...");
+					        		case REALF:		boolean testRF = appendMonadRF(	_GUI.appGeometryView.getNyadPanel(tSpot), 
+					        														_GUI.appGeometryView.getNyadPanel(tSpot).getNyadRF());
+					    	    					if (!testRF) _GUI.appStatusBar.setStatusMsg("\n\nSave new monadRF on old nyad failed at createDialog...");
 					    	    					break;
-					        		case REALD:		boolean testRD = appendMonadRD(	_GUI._GeometryDisplay.getNyadPanel(tSpot), 
-					    															_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadRD());
-					    	    					if (!testRD) _GUI._StatusBar.setStatusMsg("\n\nSave new monadRD on old nyad failed at createDialog...");
+					        		case REALD:		boolean testRD = appendMonadRD(	_GUI.appGeometryView.getNyadPanel(tSpot), 
+					    															_GUI.appGeometryView.getNyadPanel(tSpot).getNyadRD());
+					    	    					if (!testRD) _GUI.appStatusBar.setStatusMsg("\n\nSave new monadRD on old nyad failed at createDialog...");
 					    	    					break;
-					        		case COMPLEXF:	boolean testCF = appendMonadCF(	_GUI._GeometryDisplay.getNyadPanel(tSpot), 
-					    															_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadCF());
-					        						if (!testCF) _GUI._StatusBar.setStatusMsg("\n\nSave new monadCF on old nyad failed at createDialog...");
+					        		case COMPLEXF:	boolean testCF = appendMonadCF(	_GUI.appGeometryView.getNyadPanel(tSpot), 
+					    															_GUI.appGeometryView.getNyadPanel(tSpot).getNyadCF());
+					        						if (!testCF) _GUI.appStatusBar.setStatusMsg("\n\nSave new monadCF on old nyad failed at createDialog...");
 					    							break;
-					        		case COMPLEXD:	boolean testCD = appendMonadCD(	_GUI._GeometryDisplay.getNyadPanel(tSpot), 
-					        														_GUI._GeometryDisplay.getNyadPanel(tSpot).getNyadCD());
-					        						if (!testCD) _GUI._StatusBar.setStatusMsg("\n\nSave new monadCF on old nyad failed at createDialog...");
+					        		case COMPLEXD:	boolean testCD = appendMonadCD(	_GUI.appGeometryView.getNyadPanel(tSpot), 
+					        														_GUI.appGeometryView.getNyadPanel(tSpot).getNyadCD());
+					        						if (!testCD) _GUI.appStatusBar.setStatusMsg("\n\nSave new monadCF on old nyad failed at createDialog...");
 					        	}
     	}
     }
@@ -425,7 +425,7 @@ public class CreateDialog extends JDialog implements ActionListener
 			{
 				if (copiedAlgCD.getFoot() != tNSpot.getFootPoint())
 				{
-					_GUI._StatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
+					_GUI.appStatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
 				
@@ -457,25 +457,25 @@ public class CreateDialog extends JDialog implements ActionListener
 		catch (BadSignatureException es)
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not create monad copy from Create|Save with bad signature\n");
-			_GUI._StatusBar.setStatusMsg(es.getSourceMessage());
+			_GUI.appStatusBar.setStatusMsg("Could not create monad copy from Create|Save with bad signature\n");
+			_GUI.appStatusBar.setStatusMsg(es.getSourceMessage());
 		}
 		catch (GeneratorRangeException e) 
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
+			_GUI.appStatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
 		}
 		catch (CladosMonadException em)
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not create monad copy from Create|Save with general error\n");
-			_GUI._StatusBar.setStatusMsg(em.getSourceMessage());
+			_GUI.appStatusBar.setStatusMsg("Could not create monad copy from Create|Save with general error\n");
+			_GUI.appStatusBar.setStatusMsg(em.getSourceMessage());
 		}
 		catch (CladosNyadException en)
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not append monad | "+en.getMessage());	
-			_GUI._StatusBar.setStatusMsg(en.getSourceMessage());
+			_GUI.appStatusBar.setStatusMsg("Could not append monad | "+en.getMessage());	
+			_GUI.appStatusBar.setStatusMsg(en.getSourceMessage());
 		}
 		return test;
 	}
@@ -489,7 +489,7 @@ public class CreateDialog extends JDialog implements ActionListener
 			{
 				if (copiedAlgCF.getFoot() != tNSpot.getFootPoint())
 				{
-					_GUI._StatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
+					_GUI.appStatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
 				
@@ -521,25 +521,25 @@ public class CreateDialog extends JDialog implements ActionListener
 		catch (BadSignatureException es)
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not create monad copy from Create|Save with bad signature\n");
-			_GUI._StatusBar.setStatusMsg(es.getSourceMessage());
+			_GUI.appStatusBar.setStatusMsg("Could not create monad copy from Create|Save with bad signature\n");
+			_GUI.appStatusBar.setStatusMsg(es.getSourceMessage());
 		}
 		catch (GeneratorRangeException e) 
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
+			_GUI.appStatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
 		}
 		catch (CladosMonadException em)
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not create monad copy from Create|Save with general error\n");
-			_GUI._StatusBar.setStatusMsg(em.getSourceMessage());
+			_GUI.appStatusBar.setStatusMsg("Could not create monad copy from Create|Save with general error\n");
+			_GUI.appStatusBar.setStatusMsg(em.getSourceMessage());
 		}
 		catch (CladosNyadException en)
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not append monad | "+en.getMessage());	
-			_GUI._StatusBar.setStatusMsg(en.getSourceMessage());
+			_GUI.appStatusBar.setStatusMsg("Could not append monad | "+en.getMessage());	
+			_GUI.appStatusBar.setStatusMsg(en.getSourceMessage());
 		}
 		return test;
 	}
@@ -553,7 +553,7 @@ public class CreateDialog extends JDialog implements ActionListener
 			{
 				if (copiedAlgRD.getFoot() != tNSpot.getFootPoint())
 				{
-					_GUI._StatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
+					_GUI.appStatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
 				
@@ -585,25 +585,25 @@ public class CreateDialog extends JDialog implements ActionListener
 		catch (BadSignatureException es)
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not create monad copy from Create|Save with bad signature\n");
-			_GUI._StatusBar.setStatusMsg(es.getSourceMessage());
+			_GUI.appStatusBar.setStatusMsg("Could not create monad copy from Create|Save with bad signature\n");
+			_GUI.appStatusBar.setStatusMsg(es.getSourceMessage());
 		}
 		catch (GeneratorRangeException e) 
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
+			_GUI.appStatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
 		}
 		catch (CladosMonadException em)
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not create monad copy from Create|Save with general error\n");
-			_GUI._StatusBar.setStatusMsg(em.getSourceMessage());
+			_GUI.appStatusBar.setStatusMsg("Could not create monad copy from Create|Save with general error\n");
+			_GUI.appStatusBar.setStatusMsg(em.getSourceMessage());
 		}
 		catch (CladosNyadException en)
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not append monad | "+en.getMessage());	
-			_GUI._StatusBar.setStatusMsg(en.getSourceMessage());
+			_GUI.appStatusBar.setStatusMsg("Could not append monad | "+en.getMessage());	
+			_GUI.appStatusBar.setStatusMsg(en.getSourceMessage());
 		}
 		return test;
 	}
@@ -617,7 +617,7 @@ public class CreateDialog extends JDialog implements ActionListener
 			{
 				if (copiedAlgRF.getFoot() != tNSpot.getFootPoint())
 				{
-					_GUI._StatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
+					_GUI.appStatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
 				
@@ -649,25 +649,25 @@ public class CreateDialog extends JDialog implements ActionListener
 		catch (BadSignatureException es)
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not create monad copy from Create|Save with bad signature\n");
-			_GUI._StatusBar.setStatusMsg(es.getSourceMessage());
+			_GUI.appStatusBar.setStatusMsg("Could not create monad copy from Create|Save with bad signature\n");
+			_GUI.appStatusBar.setStatusMsg(es.getSourceMessage());
 		}
 		catch (GeneratorRangeException e) 
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
+			_GUI.appStatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
 		}
 		catch (CladosMonadException em)
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not create monad copy from Create|Save with general error\n");
-			_GUI._StatusBar.setStatusMsg(em.getSourceMessage());
+			_GUI.appStatusBar.setStatusMsg("Could not create monad copy from Create|Save with general error\n");
+			_GUI.appStatusBar.setStatusMsg(em.getSourceMessage());
 		}
 		catch (CladosNyadException en)
 		{
 			test = false;
-			_GUI._StatusBar.setStatusMsg("Could not append monad | "+en.getMessage());
-			_GUI._StatusBar.setStatusMsg(en.getSourceMessage());
+			_GUI.appStatusBar.setStatusMsg("Could not append monad | "+en.getMessage());
+			_GUI.appStatusBar.setStatusMsg(en.getSourceMessage());
 		}
 		return test;
 	}
@@ -684,7 +684,7 @@ public class CreateDialog extends JDialog implements ActionListener
 												tC);
 			NyadComplexD rep2=new NyadComplexD("New", rep);
 			test = true;
-    		_GUI._GeometryDisplay.addNyad(rep2);
+    		_GUI.appGeometryView.addNyad(rep2);
 		}
 		else if (copiedFoot != null)
 		{	
@@ -695,7 +695,7 @@ public class CreateDialog extends JDialog implements ActionListener
 												monadShort.sig.getText(),
 												(ComplexD) CladosField.COMPLEXD.createZERO(monadShort.cardname.getText()));
 			NyadComplexD rep2=new NyadComplexD("New", rep);
-    		_GUI._GeometryDisplay.addNyad(rep2);
+    		_GUI.appGeometryView.addNyad(rep2);
     		test = true;
 		}
 		else
@@ -708,7 +708,7 @@ public class CreateDialog extends JDialog implements ActionListener
     											(ComplexD) CladosField.COMPLEXD.createZERO(monadShort.cardname.getText()));
 			NyadComplexD rep2=new NyadComplexD("New", rep);
     		test = true;
-    		_GUI._GeometryDisplay.addNyad(rep2);
+    		_GUI.appGeometryView.addNyad(rep2);
 		}
 		return test;
 	}
@@ -725,7 +725,7 @@ public class CreateDialog extends JDialog implements ActionListener
 												tC);
 			NyadComplexF rep2=new NyadComplexF("New", rep);
 			test = true;
-    		_GUI._GeometryDisplay.addNyad(rep2);
+    		_GUI.appGeometryView.addNyad(rep2);
 		}
 		else if (copiedFoot != null)
 		{	
@@ -736,7 +736,7 @@ public class CreateDialog extends JDialog implements ActionListener
 												monadShort.sig.getText(),
 												(ComplexF) CladosField.COMPLEXF.createZERO(monadShort.cardname.getText()));
 			NyadComplexF rep2=new NyadComplexF("New", rep);
-    		_GUI._GeometryDisplay.addNyad(rep2);
+    		_GUI.appGeometryView.addNyad(rep2);
     		test = true;
 		}
 		else
@@ -749,7 +749,7 @@ public class CreateDialog extends JDialog implements ActionListener
     											(ComplexF) CladosField.COMPLEXF.createZERO(monadShort.cardname.getText()));
     		NyadComplexF rep2=new NyadComplexF("New", rep);
     		test = true;
-    		_GUI._GeometryDisplay.addNyad(rep2);
+    		_GUI.appGeometryView.addNyad(rep2);
 		}
 		return test;
 	}
@@ -766,7 +766,7 @@ public class CreateDialog extends JDialog implements ActionListener
 											tC);
 			NyadRealD rep2=new NyadRealD("New", rep);
 			test = true;
-    		_GUI._GeometryDisplay.addNyad(rep2);
+    		_GUI.appGeometryView.addNyad(rep2);
 		}
 		else if (copiedFoot != null)
 		{	
@@ -777,7 +777,7 @@ public class CreateDialog extends JDialog implements ActionListener
 											monadShort.sig.getText(),
 											(RealD) CladosField.REALD.createZERO(monadShort.cardname.getText()));
 			NyadRealD rep2=new NyadRealD("New", rep);
-    		_GUI._GeometryDisplay.addNyad(rep2);
+    		_GUI.appGeometryView.addNyad(rep2);
     		test = true;
 		}
 		else
@@ -790,7 +790,7 @@ public class CreateDialog extends JDialog implements ActionListener
     										(RealD) CladosField.REALD.createZERO(monadShort.cardname.getText()));
     		NyadRealD rep2=new NyadRealD("New", rep);
     		test = true;
-    		_GUI._GeometryDisplay.addNyad(rep2);
+    		_GUI.appGeometryView.addNyad(rep2);
 		}
 		return test;
 	}
@@ -808,7 +808,7 @@ public class CreateDialog extends JDialog implements ActionListener
 											tC);
 			NyadRealF rep2=new NyadRealF("New", rep);
 			test = true;
-    		_GUI._GeometryDisplay.addNyad(rep2);
+    		_GUI.appGeometryView.addNyad(rep2);
 		}
 		else if (copiedFoot != null)
 		{	
@@ -819,7 +819,7 @@ public class CreateDialog extends JDialog implements ActionListener
 											monadShort.sig.getText(),
 											(RealF) CladosField.REALF.createZERO(monadShort.cardname.getText()));
 			NyadRealF rep2=new NyadRealF("New", rep);
-    		_GUI._GeometryDisplay.addNyad(rep2);
+    		_GUI.appGeometryView.addNyad(rep2);
     		test = true;
 		}
 		else
@@ -832,13 +832,13 @@ public class CreateDialog extends JDialog implements ActionListener
     										(RealF) CladosField.REALF.createZERO(monadShort.cardname.getText()));
     		NyadRealF rep2=new NyadRealF("New", rep);
     		test = true;
-    		_GUI._GeometryDisplay.addNyad(rep2);
+    		_GUI.appGeometryView.addNyad(rep2);
 		}
 		return test;
 	}
 	private int getMonadPaneFocus()
 	{
-		return (_GUI._GeometryDisplay.getNyadPanel(getNyadPaneFocus()).getPaneFocus());
+		return (_GUI.appGeometryView.getNyadPanel(getNyadPaneFocus()).getPaneFocus());
 	}
 	private MonadPanel getMonadPanelFocus()
 	{
@@ -846,11 +846,11 @@ public class CreateDialog extends JDialog implements ActionListener
 	}
 	private int getNyadPaneFocus()
 	{
-		return _GUI._GeometryDisplay.getPaneFocus();
+		return _GUI.appGeometryView.getPaneFocus();
 	}
     private NyadPanel getNyadPanelFocus()
 	{
-		return _GUI._GeometryDisplay.getNyadPanel(getNyadPaneFocus());
+		return _GUI.appGeometryView.getNyadPanel(getNyadPaneFocus());
 	}
     
 }

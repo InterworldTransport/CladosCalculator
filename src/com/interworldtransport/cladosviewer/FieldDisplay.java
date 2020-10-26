@@ -103,7 +103,7 @@ public class FieldDisplay extends JTextArea implements FocusListener
 		{
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 			setFont(_ITALICFONT);
-			_parent._GUI._StatusBar.setStatusMsg("null C|D in FieldDisplay\n");
+			_parent._GUI.appStatusBar.setStatusMsg("null C|D in FieldDisplay\n");
 			this.setText("null field");
 		}
 		_repMode = CladosField.COMPLEXD;
@@ -131,7 +131,7 @@ public class FieldDisplay extends JTextArea implements FocusListener
 		{
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 			setFont(_ITALICFONT);
-			_parent._GUI._StatusBar.setStatusMsg("null C|F in FieldDisplay\n");
+			_parent._GUI.appStatusBar.setStatusMsg("null C|F in FieldDisplay\n");
 			this.setText("null field");
 		}
 		_repMode = CladosField.COMPLEXF;
@@ -159,7 +159,7 @@ public class FieldDisplay extends JTextArea implements FocusListener
 		{
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 			setFont(_ITALICFONT);
-			_parent._GUI._StatusBar.setStatusMsg("null R|D in FieldDisplay\n");
+			_parent._GUI.appStatusBar.setStatusMsg("null R|D in FieldDisplay\n");
 			this.setText("null field");
 		}
 		_repMode = CladosField.REALD;
@@ -187,7 +187,7 @@ public class FieldDisplay extends JTextArea implements FocusListener
 		{
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 			setFont(_ITALICFONT);
-			_parent._GUI._StatusBar.setStatusMsg("null R|F in FieldDisplay\n");
+			_parent._GUI.appStatusBar.setStatusMsg("null R|F in FieldDisplay\n");
 			this.setText("null field");
 		}	    
 		_repMode = CladosField.REALF;
@@ -219,16 +219,16 @@ public class FieldDisplay extends JTextArea implements FocusListener
 		{
 			switch (_parent.getRepMode())
 			{
-				case REALF: 	displayFieldRF = RealF.copyOf(_parent._GUI._FieldBar._repRealF);
+				case REALF: 	displayFieldRF = RealF.copyOf(_parent._GUI.appFieldBar._repRealF);
 								displayContents();
 								break;
-				case REALD: 	displayFieldRD = RealD.copyOf(_parent._GUI._FieldBar._repRealD);
+				case REALD: 	displayFieldRD = RealD.copyOf(_parent._GUI.appFieldBar._repRealD);
 								displayContents();
 								break;
-				case COMPLEXF:	displayFieldCF = ComplexF.copyOf(_parent._GUI._FieldBar._repComplexF);
+				case COMPLEXF:	displayFieldCF = ComplexF.copyOf(_parent._GUI.appFieldBar._repComplexF);
 								displayContents();
 								break;
-				case COMPLEXD:	displayFieldCD = ComplexD.copyOf(_parent._GUI._FieldBar._repComplexD);
+				case COMPLEXD:	displayFieldCD = ComplexD.copyOf(_parent._GUI.appFieldBar._repComplexD);
 								displayContents();
 			}
 		}		
@@ -271,7 +271,7 @@ public class FieldDisplay extends JTextArea implements FocusListener
 		catch (NumberFormatException e) 
 		{
 			setFont(_ITALICFONT);
-			_parent._GUI._StatusBar.setStatusMsg("FieldArea must contain parse-able text. Look for bad lengths or number formats.\n");
+			_parent._GUI.appStatusBar.setStatusMsg("FieldArea must contain parse-able text. Look for bad lengths or number formats.\n");
 		}
 		
 	}

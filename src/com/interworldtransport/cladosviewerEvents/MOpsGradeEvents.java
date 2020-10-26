@@ -71,18 +71,18 @@ public class MOpsGradeEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
     		return;	
     	}
     	
-    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	NyadPanel panelNyadSelected=_parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
     	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nGrade Test needs one monad in focus. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nGrade Test needs one monad in focus. Nothing done.\n");
     		return;
     	}
     	
@@ -90,7 +90,7 @@ public class MOpsGradeEvents implements ActionListener
     	{
     		// Production of the findgrade to be tested could fail hard at parseFloat(...getRealText())
     		// Hence the need for a try/catch phrase around all this
-    		int grade2Test = (int) Float.parseFloat(_parent._GUI._FieldBar.getRealText());
+    		int grade2Test = (int) Float.parseFloat(_parent._GUI.appFieldBar.getRealText());
 	    	MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
 	    	boolean test = false;
         	switch (tSpot.getRepMode())
@@ -104,18 +104,18 @@ public class MOpsGradeEvents implements ActionListener
 		    	case COMPLEXD:	test = MonadComplexD.isGrade(tSpot.getMonadCD(), grade2Test);
         	}
         	if (test)
-	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is a pure "+grade2Test+"-findgrade.\n");
+	    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is a pure "+grade2Test+"-findgrade.\n");
 	    	else
-	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is NOT a pure "+grade2Test+"-findgrade.\n");
+	    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is NOT a pure "+grade2Test+"-findgrade.\n");
     	}
     	catch (NullPointerException eNull)	// Catch the empty text 'real number' text field on the FieldBar.
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nGrade Test must have a real # in the FieldBar. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nGrade Test must have a real # in the FieldBar. Nothing done.\n");
     		return;
     	}
     	catch (NumberFormatException eFormat)	// Catch the non-parse-able text 'real number' text field on the FieldBar.
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nGrade Test must have a parse-able real # in the FieldBar. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nGrade Test must have a parse-able real # in the FieldBar. Nothing done.\n");
     		return;
     	}
     }

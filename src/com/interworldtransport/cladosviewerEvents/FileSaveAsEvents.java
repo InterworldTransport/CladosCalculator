@@ -77,12 +77,12 @@ public class FileSaveAsEvents implements ActionListener
 	    		saveItTo.flush();
 	    		saveItTo.close();
 	    		saveItTo = null;
-	    		_parent._GUI._StatusBar.setStatusMsg("-->Stack Snapshot SAVED AS "+fIni.getPath()+"\n");
+	    		_parent._GUI.appStatusBar.setStatusMsg("-->Stack Snapshot SAVED AS "+fIni.getPath()+"\n");
 	    		_parent._GUI.IniProps.setProperty("Desktop.Snapshot", fIni.getName());
 	    	}
 	    	catch (IOException e)
 	    	{
-	    		_parent._GUI._StatusBar.setStatusMsg("-->Stack Snapshot NOT saved. IO Exception at SaveAs menu.\n");
+	    		_parent._GUI.appStatusBar.setStatusMsg("-->Stack Snapshot NOT saved. IO Exception at SaveAs menu.\n");
 	    	}
 	    	finally
 	    	{

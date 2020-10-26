@@ -41,8 +41,6 @@ import javax.swing.*;
 
 public class ViewerMenu extends JMenuBar
 {
-	private static final long serialVersionUID = 7342710714923838976L;
-
 	public 	CladosCalculator		_parentGUI;
 
 /**
@@ -109,7 +107,8 @@ public class ViewerMenu extends JMenuBar
  */
     public	JMenu			mnuTools;
     public	JMenuItem		mniOptions;
-    public	JMenuItem		mniCreate;
+    public	JMenuItem		mniCreateNyad;
+    public	JMenuItem		mniCreateMonad;
 
 /**
  * The Help Parent Menu for the application.
@@ -142,7 +141,8 @@ public class ViewerMenu extends JMenuBar
 	    	
     	mnuNyadOps=new JMenu("Nyad Ops");
     	add(mnuNyadOps);
-    	
+	    	mniCreateNyad=new JMenuItem("create nyad");
+	    	mnuNyadOps.add(mniCreateNyad);
 	    	mnuNyadBooleanOps=new JMenu("Boolean(this)");
 	    	mnuNyadOps.add(mnuNyadBooleanOps);
 	    	   	mniisStrgReferenceMatch=new JMenuItem("is Strong Reference Match?");
@@ -180,7 +180,8 @@ public class ViewerMenu extends JMenuBar
 		
 		mnuMonadOps=new JMenu("Monad Ops");
 		add(mnuMonadOps);
-		
+			mniCreateMonad=new JMenuItem("create monad");
+			mnuMonadOps.add(mniCreateMonad);
 			mnuMonadBooleanOps=new JMenu("Boolean(this)");
 	    	mnuMonadOps.add(mnuMonadBooleanOps);
 		    	mniisGrade=new JMenuItem("is Grade?");
@@ -226,8 +227,6 @@ public class ViewerMenu extends JMenuBar
     		
     	mnuTools=new JMenu("Tools");
     	add(mnuTools);
-	    	mniCreate=new JMenuItem("create");
-	    	mnuTools.add(mniCreate);
 	    	mniOptions=new JMenuItem("options");
 	    	mnuTools.add(mniOptions);
     	
@@ -237,7 +236,5 @@ public class ViewerMenu extends JMenuBar
 	    	mnuHelp.add(mniSupport);
 	    	mniAbout=new JMenuItem("about");
 	    	mnuHelp.add(mniAbout);
-    	//Help Menu items added
     }
-    
 }

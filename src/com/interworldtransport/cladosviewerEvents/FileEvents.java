@@ -92,13 +92,13 @@ public class FileEvents implements ActionListener
     
     public String makeSnapshotContent()
 	{
-    	if (_GUI._GeometryDisplay.getNyadListSize() == 0) return "Nothing in panels to save.";
+    	if (_GUI.appGeometryView.getNyadListSize() == 0) return "Nothing in panels to save.";
     	
     	StringBuffer content=new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n");
-    	content.append("<NyadList size=\""+_GUI._GeometryDisplay.getNyadListSize()+"\">\r\n");
+    	content.append("<NyadList size=\""+_GUI.appGeometryView.getNyadListSize()+"\">\r\n");
     	switch (_GUI.IniProps.getProperty("Desktop.Snapshot.FullXML"))
     	{
-	    	case "true":	for (NyadPanel tempNPN : _GUI._GeometryDisplay.getNyadPanels())
+	    	case "true":	for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels())
 							{
 								switch(tempNPN.getRepMode())
 								{
@@ -138,7 +138,7 @@ public class FileEvents implements ActionListener
 								content.append("\t</Nyad>\r\n");
 							}
 	    					break;
-	    	case "false":	for (NyadPanel tempNPN : _GUI._GeometryDisplay.getNyadPanels())
+	    	case "false":	for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels())
 							{
 								switch(tempNPN.getRepMode())
 								{

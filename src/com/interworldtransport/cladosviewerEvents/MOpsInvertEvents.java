@@ -71,18 +71,18 @@ public class MOpsInvertEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
     		return;	
     	}
     	
-    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	NyadPanel tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
     	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nInvert Operation must have a monad in focus. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nInvert Operation must have a monad in focus. Nothing done.\n");
     		return;
     	}
     	
@@ -99,6 +99,6 @@ public class MOpsInvertEvents implements ActionListener
 	    	case COMPLEXD:	tMSpotPnl.getMonadCD().invert();
     	}
     	tMSpotPnl.setCoefficientDisplay();
-    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been inverted.\n");
+    	_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been inverted.\n");
     }
  }

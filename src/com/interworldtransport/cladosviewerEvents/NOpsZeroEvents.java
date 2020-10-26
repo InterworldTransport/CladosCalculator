@@ -68,18 +68,18 @@ public class NOpsZeroEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
     		return;	
     	}
     	
-    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	NyadPanel panelNyadSelected=_parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
     	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nZero Test needs one monad in focus. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nZero Test needs one monad in focus. Nothing done.\n");
     		return;
     	}
     	
@@ -97,8 +97,8 @@ public class NOpsZeroEvents implements ActionListener
     	}
 	
 		if (test)
-			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is ZERO.\n");
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is ZERO.\n");
 		else
-			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is NOT zero.\n");
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is NOT zero.\n");
     }
  }

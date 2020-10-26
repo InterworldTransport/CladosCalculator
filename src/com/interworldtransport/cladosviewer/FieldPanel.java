@@ -111,7 +111,7 @@ import javax.swing.border.BevelBorder;
     	add(createControlLayout(), BorderLayout.LINE_START);
     	add(createDisplaysLayout(), BorderLayout.CENTER);
     	setCoefficientDisplay(pIn);
-    	_GUI._GeometryDisplay.registerFieldPanel(this);
+    	_GUI.appGeometryView.registerFieldPanel(this);
     }
     /**
      * The FieldPanel class is intended to be contain a cladosF Field in much
@@ -137,7 +137,7 @@ import javax.swing.border.BevelBorder;
 		add(createControlLayout(), BorderLayout.LINE_START);
     	add(createDisplaysLayout(), BorderLayout.CENTER);
     	setCoefficientDisplay(pIn);
-    	_GUI._GeometryDisplay.registerFieldPanel(this);
+    	_GUI.appGeometryView.registerFieldPanel(this);
     }
     /**
      * The FieldPanel class is intended to be contain a cladosF Field in much
@@ -163,7 +163,7 @@ import javax.swing.border.BevelBorder;
 		add(createControlLayout(), BorderLayout.LINE_START);
     	add(createDisplaysLayout(), BorderLayout.CENTER);
     	setCoefficientDisplay(pIn);
-    	_GUI._GeometryDisplay.registerFieldPanel(this);
+    	_GUI.appGeometryView.registerFieldPanel(this);
     }
     /**
      * The FieldPanel class is intended to be contain a cladosF Field in much
@@ -189,7 +189,7 @@ import javax.swing.border.BevelBorder;
 		add(createControlLayout(), BorderLayout.LINE_START);
     	add(createDisplaysLayout(), BorderLayout.CENTER);
     	setCoefficientDisplay(pIn);
-    	_GUI._GeometryDisplay.registerFieldPanel(this);
+    	_GUI.appGeometryView.registerFieldPanel(this);
     }
     @Override
     public void 	actionPerformed(ActionEvent event)
@@ -224,8 +224,8 @@ import javax.swing.border.BevelBorder;
 					    		}
 					    		catch (NumberFormatException en)
 					    		{
-					    			_GUI._StatusBar.setStatusMsg("Number Format Exception prevented inversion.\n");
-					    			_GUI._StatusBar.setStatusMsg(en.getMessage());
+					    			_GUI.appStatusBar.setStatusMsg("Number Format Exception prevented inversion.\n");
+					    			_GUI.appStatusBar.setStatusMsg(en.getMessage());
 					    		}
 	    						break;
 	    	case "inverse":		try
@@ -253,19 +253,19 @@ import javax.swing.border.BevelBorder;
 					    		}
 					    		catch (FieldException e)
 					    		{
-					    			_GUI._StatusBar.setStatusMsg("Field Exception prevented inversion.\n");
-					    			_GUI._StatusBar.setStatusMsg(e.getSourceMessage()+"\n");
-					    			_GUI._StatusBar.setStatusMsg(e.getSource().getCardinalString()+"\n");
+					    			_GUI.appStatusBar.setStatusMsg("Field Exception prevented inversion.\n");
+					    			_GUI.appStatusBar.setStatusMsg(e.getSourceMessage()+"\n");
+					    			_GUI.appStatusBar.setStatusMsg(e.getSource().getCardinalString()+"\n");
 					    		}
 					    		catch (NumberFormatException en)
 					    		{
-					    			_GUI._StatusBar.setStatusMsg("Number Format Exception prevented inversion.\n");
-					    			_GUI._StatusBar.setStatusMsg(en.getMessage()+"\n");
+					    			_GUI.appStatusBar.setStatusMsg("Number Format Exception prevented inversion.\n");
+					    			_GUI.appStatusBar.setStatusMsg(en.getMessage()+"\n");
 					    		}
 	    						break;
-	    	case "makeFloat":	if (_GUI._GeometryDisplay.getNyadListSize() != 0)
+	    	case "makeFloat":	if (_GUI.appGeometryView.getNyadListSize() != 0)
 						    	{
-						    		_GUI._StatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
+						    		_GUI.appStatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
 						    		break;
 						    	}
 						    	valDisplays.clear();
@@ -285,13 +285,13 @@ import javax.swing.border.BevelBorder;
 					    		btnMakeDouble.setEnabled(true);
 					    		btnMakeFloat.setEnabled(false);
 					    		repaint();
-					    		_GUI._GeometryDisplay.setRepMode(_repMode);
+					    		_GUI.appGeometryView.setRepMode(_repMode);
 						    	add(createDisplaysLayout(), BorderLayout.LINE_END);
 						    	_GUI.pack();
     							break;
-	    	case "makeDouble":	if (_GUI._GeometryDisplay.getNyadListSize() != 0)
+	    	case "makeDouble":	if (_GUI.appGeometryView.getNyadListSize() != 0)
 						    	{
-						    		_GUI._StatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
+						    		_GUI.appStatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
 						    		break;
 						    	}
 						    	valDisplays.clear();
@@ -311,13 +311,13 @@ import javax.swing.border.BevelBorder;
 					    		btnMakeFloat.setEnabled(true);
 				    			btnMakeDouble.setEnabled(false);
 				    			repaint();
-				    			_GUI._GeometryDisplay.setRepMode(_repMode);
+				    			_GUI.appGeometryView.setRepMode(_repMode);
 				    	    	add(createDisplaysLayout(), BorderLayout.LINE_END);
 				    	    	_GUI.pack();
 								break;
-	    	case "makeReal":	if (_GUI._GeometryDisplay.getNyadListSize() != 0)
+	    	case "makeReal":	if (_GUI.appGeometryView.getNyadListSize() != 0)
 						    	{
-						    		_GUI._StatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
+						    		_GUI.appStatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
 						    		break;
 						    	}
 						    	valDisplays.clear();
@@ -337,13 +337,13 @@ import javax.swing.border.BevelBorder;
 					    		btnMakeComplex.setEnabled(true);
 				    			btnMakeReal.setEnabled(false);
 				    			repaint();
-				    			_GUI._GeometryDisplay.setRepMode(_repMode);
+				    			_GUI.appGeometryView.setRepMode(_repMode);
 				    	    	add(createDisplaysLayout(), BorderLayout.LINE_END);
 				    	    	_GUI.pack();
 								break;
-	    	case "makeComplex":	if (_GUI._GeometryDisplay.getNyadListSize() != 0)
+	    	case "makeComplex":	if (_GUI.appGeometryView.getNyadListSize() != 0)
 						    	{
-						    		_GUI._StatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
+						    		_GUI.appStatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
 						    		break;
 						    	}
 						    	valDisplays.clear();
@@ -363,11 +363,11 @@ import javax.swing.border.BevelBorder;
 					    		btnMakeReal.setEnabled(true);
 				    			btnMakeComplex.setEnabled(false);
 				    			repaint();
-				    			_GUI._GeometryDisplay.setRepMode(_repMode);
+				    			_GUI.appGeometryView.setRepMode(_repMode);
 				    	    	add(createDisplaysLayout(), BorderLayout.LINE_END);
 				    	    	_GUI.pack();
 				    			break;
-			default: 			_GUI._StatusBar.setStatusMsg("No Detectable Command in the FieldBar.\n");
+			default: 			_GUI.appStatusBar.setStatusMsg("No Detectable Command in the FieldBar.\n");
     	}
     }
   
@@ -435,7 +435,7 @@ import javax.swing.border.BevelBorder;
 		}
 		catch (NumberFormatException en)
 		{
-			_GUI._StatusBar.setStatusMsg("Couldn't parse FieldBar, so doing nothing to set the Div Field it represents.");
+			_GUI.appStatusBar.setStatusMsg("Couldn't parse FieldBar, so doing nothing to set the Div Field it represents.");
 		}
 
 	}

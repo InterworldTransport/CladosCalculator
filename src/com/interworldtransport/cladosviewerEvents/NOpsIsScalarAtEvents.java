@@ -77,26 +77,26 @@ public class NOpsIsScalarAtEvents implements ActionListener
     @Override
     public void actionPerformed(ActionEvent evt)
     {
-    	int tNyadIndex=_parent._GUI._GeometryDisplay.getPaneFocus();
-    	if (tNyadIndex<0 | tNyadIndex>=_parent._GUI._GeometryDisplay.getNyadListSize()-1) 
+    	int tNyadIndex=_parent._GUI.appGeometryView.getPaneFocus();
+    	if (tNyadIndex<0 | tNyadIndex>=_parent._GUI.appGeometryView.getNyadListSize()-1) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("No nyad in the focus... or the last one is.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("No nyad in the focus... or the last one is.\n");
     		return;	
     	}
     	
-    	NyadPanel panelNyadSelected = _parent._GUI._GeometryDisplay.getNyadPanel(tNyadIndex);
+    	NyadPanel panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex);
     	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nHas Algebra Test must have a monad in focus. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nHas Algebra Test must have a monad in focus. Nothing done.\n");
     		return;
     	}
     	
-    	NyadPanel panelNyadNext = _parent._GUI._GeometryDisplay.getNyadPanel(tNyadIndex+1);
+    	NyadPanel panelNyadNext = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex+1);
     	
     	if (panelNyadSelected.getRepMode() != panelNyadNext.getRepMode())
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("Nyads using different DivFields.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("Nyads using different DivFields.\n");
     		return;	
     	}
     	
@@ -116,9 +116,9 @@ public class NOpsIsScalarAtEvents implements ActionListener
     														panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadCD().getAlgebra());
     	}
     	if (test)
-			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad's algebra IS SCALAR in the next nyad.\n");
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad's algebra IS SCALAR in the next nyad.\n");
 		else
-			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad's algebra IS NOT PURELY SCALAR in the next nyad.\n");
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad's algebra IS NOT PURELY SCALAR in the next nyad.\n");
     }
 
 

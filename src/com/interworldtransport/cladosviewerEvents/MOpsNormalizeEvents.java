@@ -71,18 +71,18 @@ public class MOpsNormalizeEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
     		return;	
     	}
     	
-    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	NyadPanel tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
     	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNormalize Operation must have a monad in focus. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nNormalize Operation must have a monad in focus. Nothing done.\n");
     		return;
     	}
     	
@@ -100,11 +100,11 @@ public class MOpsNormalizeEvents implements ActionListener
 		    	case COMPLEXD:	tMSpotPnl.getMonadCD().normalize();
 	    	}
 	    	tMSpotPnl.setCoefficientDisplay();
-	    	_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been normalized.\n");
+	    	_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been normalized.\n");
     	}
     	catch (CladosMonadException e)	// Normalization can fail if the monad does not have an inverse.
 		{
-			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has NOT been normalized.\n");
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has NOT been normalized.\n");
 		}
     }
  }

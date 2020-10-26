@@ -63,12 +63,12 @@ public class ToolsCreate implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	if (_parent._GUI._GeometryDisplay.getNyadListSize()>0)
+    	if (_parent._GUI.appGeometryView.getNyadListSize()>0)
     		CreateDialog.createNyad(_parent._GUI, 
-    								_parent._GUI._GeometryDisplay.getRepMode());
+    								_parent._GUI.appGeometryView.getRepMode());
     	else 	
     		CreateDialog.createNyad(_parent._GUI, 
-    								_parent._GUI._FieldBar.getRepMode());
+    								_parent._GUI.appFieldBar.getRepMode());
     	
     	// If no CreateDialog is instantiated, nothing will appear to happen.
     	// If one is, then there will be a link to the parent GUI to report errors.

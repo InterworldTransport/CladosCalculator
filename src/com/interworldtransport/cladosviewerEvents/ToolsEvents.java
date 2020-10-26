@@ -58,7 +58,7 @@ public class ToolsEvents implements ActionListener
     {
     	_GUIMenu=pTheGUIMenu;
 		_GUI=_GUIMenu._parentGUI;
-		cr = new ToolsCreate(	_GUIMenu.mniCreate, this);
+		cr = new ToolsCreate(	_GUIMenu.mniCreateNyad, this);
 		op = new ToolsOptions(	_GUIMenu.mniOptions, this);
     }
 

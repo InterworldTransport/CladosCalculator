@@ -70,18 +70,18 @@ public class MOpsIdempotentEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
     		return;	
     	}
     	    	
-    	NyadPanel panelNyadSelected=_parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	NyadPanel panelNyadSelected=_parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
     	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nIdempotent Test needs one monad in focus. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nIdempotent Test needs one monad in focus. Nothing done.\n");
     		return;
     	}
     	
@@ -100,21 +100,21 @@ public class MOpsIdempotentEvents implements ActionListener
 		    	case COMPLEXD:	test = MonadComplexD.isIdempotent(tSpot.getMonadCD());
 	    	}
 	    	if (test)
-				_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is idempotent.\n");
+				_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is idempotent.\n");
 	    	else
-	    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad is NOT idempotent.\n");
+	    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is NOT idempotent.\n");
     	}
 		catch (CladosMonadException e)
 		{
-			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad created a CladosMonadException.\n");
-			_parent._GUI._StatusBar.setStatusMsg(e.getSourceMessage());
-			_parent._GUI._StatusBar.setStatusMsg("\n\n");
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad created a CladosMonadException.\n");
+			_parent._GUI.appStatusBar.setStatusMsg(e.getSourceMessage());
+			_parent._GUI.appStatusBar.setStatusMsg("\n\n");
 		}
 		catch (FieldBinaryException eb)
 		{
-			_parent._GUI._StatusBar.setStatusMsg("-->Selected monad created a FieldBinaryException.\n");
-			_parent._GUI._StatusBar.setStatusMsg(eb.getSourceMessage());
-			_parent._GUI._StatusBar.setStatusMsg("\n\n");
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad created a FieldBinaryException.\n");
+			_parent._GUI.appStatusBar.setStatusMsg(eb.getSourceMessage());
+			_parent._GUI.appStatusBar.setStatusMsg("\n\n");
 		}
     }
  }

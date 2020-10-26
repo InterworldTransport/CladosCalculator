@@ -137,7 +137,7 @@ import java.util.*;
 	    					break;
 	    	case "create":	CreateDialog.createNyad(_GUI, _repMode); //Create a new monad for the selected nyad OR a whole new nyad
 	    					break;
-	    	default:		_GUI._StatusBar.setStatusMsg("No detectable command given at ViewerPanel. No action.\n");
+	    	default:		_GUI.appStatusBar.setStatusMsg("No detectable command given at ViewerPanel. No action.\n");
 		}		
 	}
     
@@ -200,22 +200,22 @@ import java.util.*;
 		}
 		catch (BadSignatureException es)
 		{
-			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to bad signature.\n");
+			_GUI.appStatusBar.setStatusMsg("... cannot construct a monad due to bad signature.\n");
 			return null;
 		}
 		catch (GeneratorRangeException e) 
 		{
-			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
+			_GUI.appStatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
 			return null;
 		}
 		catch (CladosMonadException em)
 		{
-			_GUI._StatusBar.setStatusMsg("CladosMonad Exception found when constructing first part of the Viewer Panel.\n");
+			_GUI.appStatusBar.setStatusMsg("CladosMonad Exception found when constructing first part of the Viewer Panel.\n");
 			return null;
 		} 
 		catch (CladosNyadException en)
 		{
-			_GUI._StatusBar.setStatusMsg("CladosNyad Exception found when adding NyadComplexD to the Viewer Panel");
+			_GUI.appStatusBar.setStatusMsg("CladosNyad Exception found when adding NyadComplexD to the Viewer Panel");
 			return null;
 		} 
 		
@@ -254,22 +254,22 @@ import java.util.*;
 		}
 		catch (BadSignatureException es)
 		{
-			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to bad signature.\n");
+			_GUI.appStatusBar.setStatusMsg("... cannot construct a monad due to bad signature.\n");
 			return null;
 		}
 		catch (GeneratorRangeException e) 
 		{
-			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
+			_GUI.appStatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
 			return null;
 		}
 		catch (CladosMonadException em)
 		{
-			_GUI._StatusBar.setStatusMsg("CladosMonad Exception found when constructing first part of the Viewer Panel.\n");
+			_GUI.appStatusBar.setStatusMsg("CladosMonad Exception found when constructing first part of the Viewer Panel.\n");
 			return null;
 		} 
 		catch (CladosNyadException en)
 		{
-			_GUI._StatusBar.setStatusMsg("CladosNyad Exception found when adding NyadComplexF to the Viewer Panel");
+			_GUI.appStatusBar.setStatusMsg("CladosNyad Exception found when adding NyadComplexF to the Viewer Panel");
 			return null;
 		}
 		
@@ -307,22 +307,22 @@ import java.util.*;
 		}
 		catch (BadSignatureException es)
 		{
-			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to bad signature.\n");
+			_GUI.appStatusBar.setStatusMsg("... cannot construct a monad due to bad signature.\n");
 			return null;
 		}
 		catch (GeneratorRangeException e) 
 		{
-			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
+			_GUI.appStatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
 			return null;
 		}
 		catch (CladosMonadException em)
 		{
-			_GUI._StatusBar.setStatusMsg("CladosMonad Exception found when constructing first part of the Viewer Panel.\n");
+			_GUI.appStatusBar.setStatusMsg("CladosMonad Exception found when constructing first part of the Viewer Panel.\n");
 			return null;
 		} 
 		catch (CladosNyadException en)
 		{
-			_GUI._StatusBar.setStatusMsg("CladosNyad Exception found when adding NyadRealD to the Viewer Panel");
+			_GUI.appStatusBar.setStatusMsg("CladosNyad Exception found when adding NyadRealD to the Viewer Panel");
 			return null;
 		}
 		
@@ -360,22 +360,22 @@ import java.util.*;
 		}
 		catch (BadSignatureException es)
 		{
-			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to bad signature.\n");
+			_GUI.appStatusBar.setStatusMsg("... cannot construct a monad due to bad signature.\n");
 			return null;
 		}
 		catch (GeneratorRangeException e) 
 		{
-			_GUI._StatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
+			_GUI.appStatusBar.setStatusMsg("... cannot construct a monad due to unsupported signature size.\n");
 			return null;
 		}
 		catch (CladosMonadException em)
 		{
-			_GUI._StatusBar.setStatusMsg("CladosMonad Exception found when constructing first part of the Viewer Panel.\n");
+			_GUI.appStatusBar.setStatusMsg("CladosMonad Exception found when constructing first part of the Viewer Panel.\n");
 			return null;
 		} 
 		catch (CladosNyadException en)
 		{
-			_GUI._StatusBar.setStatusMsg("CladosNyad Exception found when adding NyadRealF to the Viewer Panel");
+			_GUI.appStatusBar.setStatusMsg("CladosNyad Exception found when adding NyadRealF to the Viewer Panel");
 			return null;
 		}
 		
@@ -418,15 +418,15 @@ import java.util.*;
 		}
 		catch (UtilitiesException e)
 		{
-			_GUI._StatusBar.setStatusMsg("\t\tcould not create copy from toolbar.\n");
+			_GUI.appStatusBar.setStatusMsg("\t\tcould not create copy from toolbar.\n");
 		}
 		catch (BadSignatureException es)
 		{
-			_GUI._StatusBar.setStatusMsg("\t\tcould not create copy from toolbar due to signature issue.\n");
+			_GUI.appStatusBar.setStatusMsg("\t\tcould not create copy from toolbar due to signature issue.\n");
 		} 
 		catch (CladosNyadException e) 
 		{
-			_GUI._StatusBar.setStatusMsg("\t\tcould not create copy from toolbar because nyad was malformed.\n");
+			_GUI.appStatusBar.setStatusMsg("\t\tcould not create copy from toolbar because nyad was malformed.\n");
 		}
 		
     }
@@ -472,17 +472,17 @@ import java.util.*;
 															tempPane
 															);
 					    			}
-					    			else _GUI._StatusBar.setStatusMsg("... null NyadRealF for new NyadPanel avoided.\n");
+					    			else _GUI.appStatusBar.setStatusMsg("... null NyadRealF for new NyadPanel avoided.\n");
 					    		}
 					    		catch (UtilitiesException eutil)
 					    		{
-					    			_GUI._StatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
-					    			_GUI._StatusBar.setStatusMsg(eutil.getStackTrace().toString());
+					    			_GUI.appStatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
+					    			_GUI.appStatusBar.setStatusMsg(eutil.getStackTrace().toString());
 					    		} 
 					    		catch (BadSignatureException e)
 					    		{
-					    			_GUI._StatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
-					    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
+					    			_GUI.appStatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
+					    			_GUI.appStatusBar.setStatusMsg(e.getStackTrace().toString());
 								}
 								break;
     			case REALD:		NyadRealD aNyadRD = buildANyadRD(j, intOrd); // the NyadRD bootstrapper
@@ -498,17 +498,17 @@ import java.util.*;
 															tempPane
 															);
 					    			}
-					    			else _GUI._StatusBar.setStatusMsg("... null NyadRealD for new NyadPanel avoided.\n");
+					    			else _GUI.appStatusBar.setStatusMsg("... null NyadRealD for new NyadPanel avoided.\n");
 					    		}
 					    		catch (UtilitiesException eutil)
 					    		{
-					    			_GUI._StatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
-					    			_GUI._StatusBar.setStatusMsg(eutil.getStackTrace().toString());
+					    			_GUI.appStatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
+					    			_GUI.appStatusBar.setStatusMsg(eutil.getStackTrace().toString());
 					    		}
 					    		catch (BadSignatureException e)
 					    		{
-					    			_GUI._StatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
-					    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
+					    			_GUI.appStatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
+					    			_GUI.appStatusBar.setStatusMsg(e.getStackTrace().toString());
 								}
 								break;	 							
     			case COMPLEXF:	NyadComplexF aNyadCF = buildANyadCF(j, intOrd); // the NyadCF bootstrapper
@@ -524,17 +524,17 @@ import java.util.*;
 															tempPane
 															);
 					    			}
-					    			else _GUI._StatusBar.setStatusMsg("... null NyadComplexF for new NyadPanel avoided.\n");
+					    			else _GUI.appStatusBar.setStatusMsg("... null NyadComplexF for new NyadPanel avoided.\n");
 					    		}
 					    		catch (UtilitiesException eutil)
 					    		{
-					    			_GUI._StatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
-					    			_GUI._StatusBar.setStatusMsg(eutil.getStackTrace().toString());
+					    			_GUI.appStatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
+					    			_GUI.appStatusBar.setStatusMsg(eutil.getStackTrace().toString());
 					    		}
 					    		catch (BadSignatureException e)
 					    		{
-					    			_GUI._StatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
-					    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
+					    			_GUI.appStatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
+					    			_GUI.appStatusBar.setStatusMsg(e.getStackTrace().toString());
 								}
 								break;	
     			case COMPLEXD:	NyadComplexD aNyadCD = buildANyadCD(j, intOrd); // the NyadCD bootstrapper
@@ -550,17 +550,17 @@ import java.util.*;
 															tempPane
 															);
 					    			}
-					    			else _GUI._StatusBar.setStatusMsg("... null NyadComplexD for new NyadPanel avoided.\n");
+					    			else _GUI.appStatusBar.setStatusMsg("... null NyadComplexD for new NyadPanel avoided.\n");
 					    		}
 					    		catch (UtilitiesException eutil)
 					    		{
-					    			_GUI._StatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
-					    			_GUI._StatusBar.setStatusMsg(eutil.getStackTrace().toString());
+					    			_GUI.appStatusBar.setStatusMsg("... cannot create the new NyadPanel\n");
+					    			_GUI.appStatusBar.setStatusMsg(eutil.getStackTrace().toString());
 					    		}
 					    		catch (BadSignatureException e)
 					    		{
-					    			_GUI._StatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
-					    			_GUI._StatusBar.setStatusMsg(e.getStackTrace().toString());
+					    			_GUI.appStatusBar.setStatusMsg("... NyadPanel constructor encountered a BadSignatureException.\n");
+					    			_GUI.appStatusBar.setStatusMsg(e.getStackTrace().toString());
 								}
     		}
     		j++;
@@ -644,25 +644,25 @@ import java.util.*;
 			int point = nyadPanes.getSelectedIndex();
 			switch (getNyadPanel(point).getRepMode())
 			{
-				case REALF: 	_GUI._FieldBar._repRealF = null;
-								_GUI._FieldBar.setRealText("");
+				case REALF: 	_GUI.appFieldBar._repRealF = null;
+								_GUI.appFieldBar.setRealText("");
 								break;
-				case REALD: 	_GUI._FieldBar._repRealD = null;
-								_GUI._FieldBar.setRealText("");
+				case REALD: 	_GUI.appFieldBar._repRealD = null;
+								_GUI.appFieldBar.setRealText("");
 								break;
-				case COMPLEXF:	_GUI._FieldBar._repComplexF = null;
-								_GUI._FieldBar.setRealText("");
-								_GUI._FieldBar.setImgText("");
+				case COMPLEXF:	_GUI.appFieldBar._repComplexF = null;
+								_GUI.appFieldBar.setRealText("");
+								_GUI.appFieldBar.setImgText("");
 								break;
-				case COMPLEXD: _GUI._FieldBar._repComplexD = null;
-								_GUI._FieldBar.setRealText("");
-								_GUI._FieldBar.setImgText("");
+				case COMPLEXD: _GUI.appFieldBar._repComplexD = null;
+								_GUI.appFieldBar.setRealText("");
+								_GUI.appFieldBar.setImgText("");
 			}
 			removeNyadPanel(point);
 		}
 		else
 		{
-			_GUI._FieldBar.makeNotWritable();
+			_GUI.appFieldBar.makeNotWritable();
 		}
 	}
     
@@ -737,13 +737,13 @@ import java.util.*;
     	}
     	catch (NullPointerException eNull)
     	{
-    		_GUI._StatusBar.setStatusMsg("\nDesktop.Default.DivField from the configuration file appears to be null.\n");
-    		_GUI._StatusBar.setStatusMsg("No nyad will be initialized.\n");
+    		_GUI.appStatusBar.setStatusMsg("\nDesktop.Default.DivField from the configuration file appears to be null.\n");
+    		_GUI.appStatusBar.setStatusMsg("No nyad will be initialized.\n");
     	}
     	catch (NumberFormatException eFormat)
     	{
-    		_GUI._StatusBar.setStatusMsg("\nDesktop.Default.DivField from the configuration file appears to be non-parse-able.\n");
-    		_GUI._StatusBar.setStatusMsg("No nyad will be initialized.\n");
+    		_GUI.appStatusBar.setStatusMsg("\nDesktop.Default.DivField from the configuration file appears to be non-parse-able.\n");
+    		_GUI.appStatusBar.setStatusMsg("No nyad will be initialized.\n");
     	}
     	return null;
     }
@@ -758,12 +758,12 @@ import java.util.*;
     	}
     	catch (NullPointerException eNull)
     	{
-    		_GUI._StatusBar.setStatusMsg("\nDesktop.Default.Count from the configuration file appears to be null. Set to Zero.\n");
+    		_GUI.appStatusBar.setStatusMsg("\nDesktop.Default.Count from the configuration file appears to be null. Set to Zero.\n");
     		nyadPanelList=new ArrayList<NyadPanel>(0);
     	}
     	catch (NumberFormatException eFormat)
     	{
-    		_GUI._StatusBar.setStatusMsg("\nDesktop.Default.Count from the configuration file appears to be non-parse-able. Set to Zero.\n");
+    		_GUI.appStatusBar.setStatusMsg("\nDesktop.Default.Count from the configuration file appears to be non-parse-able. Set to Zero.\n");
     		nyadPanelList=new ArrayList<NyadPanel>(0);
     	}
     	return nCount;
@@ -778,11 +778,11 @@ import java.util.*;
     	}
     	catch (NullPointerException eNull)
     	{
-    		_GUI._StatusBar.setStatusMsg("\nDesktop.Default.Order from the configuration file appears to be null. Set to ONE.\n");
+    		_GUI.appStatusBar.setStatusMsg("\nDesktop.Default.Order from the configuration file appears to be null. Set to ONE.\n");
     	}
     	catch (NumberFormatException eFormat)
     	{
-    		_GUI._StatusBar.setStatusMsg("\nDesktop.Default.Order from the configuration file appears to be non-parse-able. Set to ONE.\n");
+    		_GUI.appStatusBar.setStatusMsg("\nDesktop.Default.Order from the configuration file appears to be non-parse-able. Set to ONE.\n");
     	}
     	return nOrd;
     }
@@ -879,7 +879,7 @@ import java.util.*;
 															break;
 					    					case COMPLEXD:	pFieldPanel.setField(AlgebraComplexD.shareProtoNumber(tSpot.getMonadCD().getAlgebra()));
 					    				}
-					    				_GUI._FieldBar.makeWritable();
+					    				_GUI.appFieldBar.makeWritable();
 				    					
 				    					
 				    				}

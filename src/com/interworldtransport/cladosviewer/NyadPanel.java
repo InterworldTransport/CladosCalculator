@@ -372,7 +372,7 @@ import java.util.*;
 				        	btnUndoEdits.setEnabled(false);
 				    		makeNotWritable();
 				    		break;
-			default: 		_GUI._StatusBar.setStatusMsg("No Detectable Command at the Nyad Panel. No action.\n");
+			default: 		_GUI.appStatusBar.setStatusMsg("No Detectable Command at the Nyad Panel. No action.\n");
     	}
     }
     /**
@@ -605,11 +605,11 @@ import java.util.*;
 		}
 		catch (CladosMonadException e) 
 		{
-			_GUI._StatusBar.setStatusMsg("-->Could not create copy because monad was malformed.\n");
+			_GUI.appStatusBar.setStatusMsg("-->Could not create copy because monad was malformed.\n");
 		} 
 		catch (CladosNyadException e) 
 		{
-			_GUI._StatusBar.setStatusMsg("-->Could not append monad because nyad objected.\n");
+			_GUI.appStatusBar.setStatusMsg("-->Could not append monad because nyad objected.\n");
 		}
 		
     }
@@ -865,12 +865,12 @@ import java.util.*;
 			} 
 			catch (CladosNyadException e) 
 			{
-				_GUI._StatusBar.setStatusMsg("Could not remove the monad. "+e.getSourceMessage()+"\n");
+				_GUI.appStatusBar.setStatusMsg("Could not remove the monad. "+e.getSourceMessage()+"\n");
 			}
 		}
 		else	// The only way to get here is if the monad to be removed is the last one in the nyad.
 		{		// That causes the entire nyad to be removed.
-			_GUI._GeometryDisplay.removeNyadPanel(0);
+			_GUI.appGeometryView.removeNyadPanel(0);
 		}
     }
     /**

@@ -72,18 +72,18 @@ public class MOpsLocalDualEvents implements ActionListener
     {
     	String command = evt.getActionCommand();
     	
-    	int indexNyadPanelSelected = _parent._GUI._GeometryDisplay.getPaneFocus();
+    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
     		return;	
     	}
     	
-    	NyadPanel tNSpotPnl = _parent._GUI._GeometryDisplay.getNyadPanel(indexNyadPanelSelected);
+    	NyadPanel tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
     	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI._StatusBar.setStatusMsg("\nDual Operation must have a monad in focus. Nothing done.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("\nDual Operation must have a monad in focus. Nothing done.\n");
     		return;
     	}
     	
@@ -102,7 +102,7 @@ public class MOpsLocalDualEvents implements ActionListener
     							    	break;
     	    	case COMPLEXD:	tMSpotPnl.getMonadCD().dualLeft();
         	}
-    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the left.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the left.\n");
     	}
     	if (command.equals("<dual"))
     	{
@@ -117,7 +117,7 @@ public class MOpsLocalDualEvents implements ActionListener
     	    	case COMPLEXD:	tMSpotPnl.getMonadCD().dualRight();
     							    	break;
         	}
-    		_parent._GUI._StatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the right.\n");
+    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the right.\n");
     	}
     	tMSpotPnl.setCoefficientDisplay();
     }
