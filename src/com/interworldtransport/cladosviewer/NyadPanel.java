@@ -67,13 +67,13 @@ import java.util.*;
 	private					JButton					btnUndoEdits;
 	private			final	Color					clrBackColor = new Color(212, 200, 212);
 	private			final	Color					clrUnlockColor = new Color(255, 192, 192);
+	private					JLabel					nyadAlgOrder=new JLabel();
 	private					JLabel					nyadFoot=new JLabel();
 	private					JTextField				nyadName=new JTextField(20);
 	private					JLabel					nyadOrder=new JLabel();
 	private					JPanel 					pnlControlPanel;
 	private					JPanel 					pnlControlPanel2;
 	private					JPanel 					pnlRefPanel;
-	//private					JLabel					protoXML=new JLabel();
 	private 		final	Dimension 				square = new Dimension(25,25);
 	private					ImageIcon				tabIcon;
 	protected				CladosField				_repMode;
@@ -423,29 +423,8 @@ import java.util.*;
     	int next = Integer.valueOf(monadPanes.getTitleAt(monadPanes.getTabCount()-1))+1;
 	    monadPanelList.ensureCapacity(next+1);
 	    monadPanelList.add(pMP);
-	    switch (pMP.getRepMode())
-	    {
-	    	case REALF:		monadPanes.addTab(	(new StringBuffer()).append(next).toString(), 
-	    										tabIcon, 
-	    										new JScrollPane(pMP)
-	    										);
-	    					break;
-	    	case REALD:		monadPanes.addTab(	(new StringBuffer()).append(next).toString(), 
-	    										tabIcon, 
-	    										new JScrollPane(pMP)
-	    										);
-	    					break;
-	    	case COMPLEXF:	monadPanes.addTab(	(new StringBuffer()).append(next).toString(), 
-												tabIcon, 
-												new JScrollPane(pMP)
-												);
-							break;
-	    	case COMPLEXD:	monadPanes.addTab(	(new StringBuffer()).append(next).toString(), 
-												tabIcon, 
-												new JScrollPane(pMP)
-												);			
-	    }
-	    nyadOrder.setText((new StringBuffer()).append(next+1).toString());
+	    monadPanes.addTab(	(new StringBuffer()).append(next).toString(), tabIcon, new JScrollPane(pMP)	);
+	    setReferences();
     }
     /**
      * This method supports adding a monad panel to the nyad's list of monads.
@@ -528,11 +507,11 @@ import java.util.*;
     {
 	    return monadPanes.getSelectedIndex();
     }
-    public CladosField		getRepMode()
+    public CladosField	getRepMode()
     {
     	return _repMode;
     }
-    public 	void 		makeNotWritable()
+    private 	void 	makeNotWritable()
     {
     	if (pnlRefPanel!=null)
     		pnlRefPanel.setBackground(clrBackColor);
@@ -542,30 +521,11 @@ import java.util.*;
     /**
      * This method adjusts the JTextArea elements contained on the panel to allow for edits.
      */
-    public 	void 		makeWritable()
+    private 	void 	makeWritable()
     {
     	if (pnlRefPanel!=null)
     		pnlRefPanel.setBackground(clrUnlockColor);
     	nyadName.setEditable(true);
-    }
-    
-    /**
-     * This method removes the Monad Panel at the integer index indicated.
-     * @param pInd
-     *  int
-     * This the index of the monad panel to remove.
-     * No checks are made right now for out-of-bounds conditions.
-     * This should be fixed.
-     */
-    public	void		removeMonadTab(int pInd)
-    {
-    	if(pInd>monadPanelList.size()) return;	//Index out of bounds. Don't try
-    	if(pInd>monadPanes.getTabCount()) return; //Index out of bounds on the panes. Don't try.
-    	
-    	int newOrder=monadPanes.getTabCount()-1;
-	    monadPanes.remove(pInd);
-	    monadPanelList.remove(pInd);
-	    nyadOrder.setText(new StringBuffer().append(newOrder).toString());
     }
     
     private void		copyMonadCommand()
@@ -578,65 +538,69 @@ import java.util.*;
 		{
 			switch (_repMode)
 			{
-				case REALF:	MonadRealF focusMonadRF=getMonadPanel(getPaneFocus()).getMonadRF();
-										buildName=new StringBuffer(focusMonadRF.getName()).append("_c").toString();
-										buildAlgName =new StringBuffer(focusMonadRF.getAlgebra().getAlgebraName()).append("_c").toString();
-										buildFrameName = new StringBuffer(focusMonadRF.getFrameName()).append("_c").toString();
-										AlgebraRealF buildAlgRF = new AlgebraRealF(	buildAlgName, 
-																					focusMonadRF.getAlgebra().getFoot(),
-																					AlgebraRealF.shareCardinal(focusMonadRF.getAlgebra()),
-																					focusMonadRF.getAlgebra().getGProduct());
-										MonadRealF newMonadCopyRF=new MonadRealF(	buildName, 
-																					buildAlgRF,
-																					buildFrameName,
-																					focusMonadRF.getCoeff());
-										_repNyadF.appendMonad(newMonadCopyRF);
-										addMonadPanel(newMonadCopyRF);
-										break;
-				case REALD:	MonadRealD focusMonadRD=getMonadPanel(getPaneFocus()).getMonadRD();
-										buildName=new StringBuffer(focusMonadRD.getName()).append("_c").toString();
-										buildAlgName =new StringBuffer(focusMonadRD.getAlgebra().getAlgebraName()).append("_c").toString();
-										buildFrameName = new StringBuffer(focusMonadRD.getFrameName()).append("_c").toString();
-										AlgebraRealD buildAlgRD = new AlgebraRealD(	buildAlgName, 
-																					focusMonadRD.getAlgebra().getFoot(),
-																					AlgebraRealD.shareCardinal(focusMonadRD.getAlgebra()),
-																					focusMonadRD.getAlgebra().getGProduct());
-										MonadRealD newMonadCopyRD=new MonadRealD(	buildName, 
-																					buildAlgRD,
-																					buildFrameName,
-																					focusMonadRD.getCoeff());
-										_repNyadD.appendMonad(newMonadCopyRD);
-										addMonadPanel(newMonadCopyRD);
-										break;
-				case COMPLEXF:	MonadComplexF focusMonadCF=getMonadPanel(getPaneFocus()).getMonadCF();
-										buildName=new StringBuffer(focusMonadCF.getName()).append("_c").toString();
-										buildAlgName =new StringBuffer(focusMonadCF.getAlgebra().getAlgebraName()).append("_c").toString();
-										buildFrameName = new StringBuffer(focusMonadCF.getFrameName()).append("_c").toString();
-										AlgebraComplexF buildAlgCF = new AlgebraComplexF(	buildAlgName, 
-																							focusMonadCF.getAlgebra().getFoot(),
-																							AlgebraComplexF.shareCardinal(focusMonadCF.getAlgebra()),
-																							focusMonadCF.getAlgebra().getGProduct());
-										MonadComplexF newMonadCopyCF=new MonadComplexF(		buildName, 
-																							buildAlgCF,
-																							buildFrameName,
-																							focusMonadCF.getCoeff());
-										_repNyadCF.appendMonad(newMonadCopyCF);
-										addMonadPanel(newMonadCopyCF);
-										break;
-				case COMPLEXD:	MonadComplexD focusMonadCD=getMonadPanel(getPaneFocus()).getMonadCD();
-										buildName=new StringBuffer(focusMonadCD.getName()).append("_c").toString();
-										buildAlgName =new StringBuffer(focusMonadCD.getAlgebra().getAlgebraName()).append("_c").toString();
-										buildFrameName = new StringBuffer(focusMonadCD.getFrameName()).append("_c").toString();
-										AlgebraComplexD buildAlgCD = new AlgebraComplexD(	buildAlgName, 
-																							focusMonadCD.getAlgebra().getFoot(),
-																							AlgebraComplexD.shareCardinal(focusMonadCD.getAlgebra()),
-																							focusMonadCD.getAlgebra().getGProduct());
-										MonadComplexD newMonadCopyCD=new MonadComplexD(		buildName, 
-																							buildAlgCD,
-																							buildFrameName,
-																							focusMonadCD.getCoeff());
-										_repNyadCD.appendMonad(newMonadCopyCD);
-										addMonadPanel(newMonadCopyCD);
+				case REALF:	MonadRealF 	
+					focusMonadRF=getMonadPanel(getPaneFocus()).getMonadRF();
+					buildName=new StringBuffer(focusMonadRF.getName()).append("_c").toString();
+					buildAlgName =new StringBuffer(focusMonadRF.getAlgebra().getAlgebraName()).append("_c").toString();
+					buildFrameName = new StringBuffer(focusMonadRF.getFrameName()).append("_c").toString();
+					AlgebraRealF buildAlgRF = new AlgebraRealF(	buildAlgName, 
+																focusMonadRF.getAlgebra().getFoot(),
+																AlgebraRealF.shareCardinal(focusMonadRF.getAlgebra()),
+																focusMonadRF.getAlgebra().getGProduct());
+					MonadRealF newMonadCopyRF=new MonadRealF(	buildName, 
+																buildAlgRF,
+																buildFrameName,
+																focusMonadRF.getCoeff());
+					_repNyadF.appendMonad(newMonadCopyRF);
+					addMonadPanel(newMonadCopyRF);
+					break;
+				case REALD:	MonadRealD 	
+					focusMonadRD=getMonadPanel(getPaneFocus()).getMonadRD();
+					buildName=new StringBuffer(focusMonadRD.getName()).append("_c").toString();
+					buildAlgName =new StringBuffer(focusMonadRD.getAlgebra().getAlgebraName()).append("_c").toString();
+					buildFrameName = new StringBuffer(focusMonadRD.getFrameName()).append("_c").toString();
+					AlgebraRealD buildAlgRD = new AlgebraRealD(	buildAlgName, 
+																focusMonadRD.getAlgebra().getFoot(),
+																AlgebraRealD.shareCardinal(focusMonadRD.getAlgebra()),
+																focusMonadRD.getAlgebra().getGProduct());
+					MonadRealD newMonadCopyRD=new MonadRealD(	buildName, 
+																buildAlgRD,
+																buildFrameName,
+																focusMonadRD.getCoeff());
+					_repNyadD.appendMonad(newMonadCopyRD);
+					addMonadPanel(newMonadCopyRD);
+					break;
+				case COMPLEXF:	MonadComplexF 
+					focusMonadCF=getMonadPanel(getPaneFocus()).getMonadCF();
+					buildName=new StringBuffer(focusMonadCF.getName()).append("_c").toString();
+					buildAlgName =new StringBuffer(focusMonadCF.getAlgebra().getAlgebraName()).append("_c").toString();
+					buildFrameName = new StringBuffer(focusMonadCF.getFrameName()).append("_c").toString();
+					AlgebraComplexF buildAlgCF = new AlgebraComplexF(	buildAlgName, 
+																		focusMonadCF.getAlgebra().getFoot(),
+																		AlgebraComplexF.shareCardinal(focusMonadCF.getAlgebra()),
+																		focusMonadCF.getAlgebra().getGProduct());
+					MonadComplexF newMonadCopyCF=new MonadComplexF(		buildName, 
+																		buildAlgCF,
+																		buildFrameName,
+																		focusMonadCF.getCoeff());
+					_repNyadCF.appendMonad(newMonadCopyCF);
+					addMonadPanel(newMonadCopyCF);
+					break;
+				case COMPLEXD:	MonadComplexD 
+					focusMonadCD=getMonadPanel(getPaneFocus()).getMonadCD();
+					buildName=new StringBuffer(focusMonadCD.getName()).append("_c").toString();
+					buildAlgName =new StringBuffer(focusMonadCD.getAlgebra().getAlgebraName()).append("_c").toString();
+					buildFrameName = new StringBuffer(focusMonadCD.getFrameName()).append("_c").toString();
+					AlgebraComplexD buildAlgCD = new AlgebraComplexD(	buildAlgName, 
+																		focusMonadCD.getAlgebra().getFoot(),
+																		AlgebraComplexD.shareCardinal(focusMonadCD.getAlgebra()),
+																		focusMonadCD.getAlgebra().getGProduct());
+					MonadComplexD newMonadCopyCD=new MonadComplexD(		buildName, 
+																		buildAlgCD,
+																		buildFrameName,
+																		focusMonadCD.getCoeff());
+					_repNyadCD.appendMonad(newMonadCopyCD);
+					addMonadPanel(newMonadCopyCD);
 			}
 		}
 		catch (CladosMonadException e) 
@@ -745,11 +709,17 @@ import java.util.*;
     	pnlRefPanel.add(nyadFoot, cn0);
     	cn0.gridx++;
     	
-    	pnlRefPanel.add(new JLabel("Order=", SwingConstants.RIGHT), cn0);
+    	pnlRefPanel.add(new JLabel("Order ", SwingConstants.RIGHT), cn0);
     	cn0.gridx++;
     	nyadOrder.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
     	nyadOrder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     	pnlRefPanel.add(nyadOrder, cn0);
+    	
+    	pnlRefPanel.add(new JLabel("Algebras ", SwingConstants.RIGHT), cn0);
+    	cn0.gridx++;
+    	nyadAlgOrder.setFont(new Font(Font.SERIF, Font.PLAIN, 14));
+    	nyadAlgOrder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    	pnlRefPanel.add(nyadAlgOrder, cn0);
     	
     	add(pnlRefPanel, "South");
     }
@@ -869,6 +839,7 @@ import java.util.*;
 		    revalidate();
 	    }
     }
+    
     private void		removeMonadCommand()
     {
     	if (monadPanes.getTabCount()>1)
@@ -878,13 +849,17 @@ import java.util.*;
 				int point = monadPanes.getSelectedIndex();
 				switch (_repMode)
 				{
-					case REALF: 	_repNyadF.removeMonad(point);
-									break;
-					case REALD: 	_repNyadD.removeMonad(point);
-									break;
-					case COMPLEXF:	_repNyadCF.removeMonad(point);
-									break;
-					case COMPLEXD:	_repNyadCD.removeMonad(point);
+					case REALF: 	
+						_repNyadF.removeMonad(point);
+						break;
+					case REALD: 	
+						_repNyadD.removeMonad(point);
+						break;
+					case COMPLEXF:	
+						_repNyadCF.removeMonad(point);
+						break;
+					case COMPLEXD:	
+						_repNyadCD.removeMonad(point);
 				}
 				removeMonadTab(point);
 			} 
@@ -898,40 +873,69 @@ import java.util.*;
 			_GUI._GeometryDisplay.removeNyadPanel(0);
 		}
     }
-    
-    private		void		setRepName()
+    /**
+     * This method removes the Monad Panel at the integer index indicated.
+     * @param pInd
+     *  int
+     * This the index of the monad panel to remove.
+     * No checks are made right now for out-of-bounds conditions.
+     * This should be fixed.
+     */
+    private	void		removeMonadTab(int pInd)
     {
-    	switch (_repMode)
-		{
-    		case REALF:		if (nyadName.getText() != _repNyadF.getName()) _repNyadF.setName(nyadName.getText());
-    						break;
-    		case REALD:		if (nyadName.getText() != _repNyadD.getName()) _repNyadD.setName(nyadName.getText());
-							break;
-    		case COMPLEXF:	if (nyadName.getText() != _repNyadCF.getName()) _repNyadCF.setName(nyadName.getText());
-							break;
-    		case COMPLEXD:	if (nyadName.getText() != _repNyadCD.getName()) _repNyadCD.setName(nyadName.getText());
-		}
-    }
+    	if(pInd>monadPanelList.size()) return;	//Index out of bounds. Don't try
+    	if(pInd>monadPanes.getTabCount()) return; //Index out of bounds on the panes. Don't try.
 
-	private 	void 		setReferences()
+	    monadPanes.remove(pInd);
+	    monadPanelList.remove(pInd);
+	    setReferences();
+    }
+    
+    private 	void 		setReferences()
     {
     	switch (_repMode)
     	{
-    		case REALF:	nyadName.setText(_repNyadF.getName());
-	    				nyadOrder.setText((new StringBuffer().append(_repNyadF.getMonadList().size())).toString());
-	    				nyadFoot.setText(_repNyadF.getFootPoint().getFootName());
-	    				break;
-    		case REALD:	nyadName.setText(_repNyadD.getName());
-	    				nyadOrder.setText((new StringBuffer().append(_repNyadD.getMonadList().size())).toString());
-	    				nyadFoot.setText(_repNyadD.getFootPoint().getFootName());
-	    				break;
-    		case COMPLEXF:	nyadName.setText(_repNyadCF.getName());
-	    					nyadOrder.setText((new StringBuffer().append(_repNyadCF.getMonadList().size())).toString());
-	    					nyadFoot.setText(_repNyadCF.getFootPoint().getFootName());
-	    					break;
-    		case COMPLEXD: nyadName.setText(_repNyadCD.getName());
-	    					nyadOrder.setText((new StringBuffer().append(_repNyadCD.getMonadList().size())).toString());
-	    					nyadFoot.setText(_repNyadCD.getFootPoint().getFootName());
+    		case REALF:	
+    			nyadName.setText(_repNyadF.getName());
+	    		nyadOrder.setText((new StringBuffer().append(_repNyadF.getMonadList().size())).toString());
+	    		nyadAlgOrder.setText((new StringBuffer().append(_repNyadF.getAlgebraList().size())).toString());
+	    		nyadFoot.setText(_repNyadF.getFootPoint().getFootName());
+	    		break;
+    		case REALD:	
+    			nyadName.setText(_repNyadD.getName());
+	    		nyadOrder.setText((new StringBuffer().append(_repNyadD.getMonadList().size())).toString());
+	    		nyadAlgOrder.setText((new StringBuffer().append(_repNyadD.getAlgebraList().size())).toString());
+	    		nyadFoot.setText(_repNyadD.getFootPoint().getFootName());
+	    		break;
+    		case COMPLEXF:	
+    			nyadName.setText(_repNyadCF.getName());
+	    		nyadOrder.setText((new StringBuffer().append(_repNyadCF.getMonadList().size())).toString());
+	    		nyadAlgOrder.setText((new StringBuffer().append(_repNyadCF.getAlgebraList().size())).toString());
+	    		nyadFoot.setText(_repNyadCF.getFootPoint().getFootName());
+	    		break;
+    		case COMPLEXD: 
+    			nyadName.setText(_repNyadCD.getName());
+	    		nyadOrder.setText((new StringBuffer().append(_repNyadCD.getMonadList().size())).toString());
+	    		nyadAlgOrder.setText((new StringBuffer().append(_repNyadCD.getAlgebraList().size())).toString());
+	    		nyadFoot.setText(_repNyadCD.getFootPoint().getFootName());
     	}
+    }
+
+	private		void		setRepName()
+    {
+    	switch (_repMode)
+		{
+    		case REALF:		
+    			if (nyadName.getText() != _repNyadF.getName()) _repNyadF.setName(nyadName.getText());
+    			break;
+    		case REALD:		
+    			if (nyadName.getText() != _repNyadD.getName()) _repNyadD.setName(nyadName.getText());
+				break;
+    		case COMPLEXF:	
+    			if (nyadName.getText() != _repNyadCF.getName()) _repNyadCF.setName(nyadName.getText());
+				break;
+    		case COMPLEXD:	
+    			if (nyadName.getText() != _repNyadCD.getName()) _repNyadCD.setName(nyadName.getText());
+		}
     }
 }

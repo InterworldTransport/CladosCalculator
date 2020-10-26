@@ -689,25 +689,29 @@ import java.util.*;
 	    StringBuffer tB = new StringBuffer();
 	    switch (_repMode)
 	    {
-	    	case REALF:		tB.append(_repMonadF.getAlgebra().getFoot().getFootName()+" | ");
-		    				tB.append(_repMonadF.getAlgebra().getAlgebraName()+" | ");
-		    				tB.append(_repMonadF.getAlgebra().getGProduct().getSignature());
-		    				pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
-		    				break;
-	    	case REALD:		tB.append(_repMonadD.getAlgebra().getFoot().getFootName()+" | ");
-							tB.append(_repMonadD.getAlgebra().getAlgebraName()+" | ");
-							tB.append(_repMonadD.getAlgebra().getGProduct().getSignature());
-							pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
-							break;
-	    	case COMPLEXF:	tB.append(_repMonadCF.getAlgebra().getFoot().getFootName()+" | ");
-							tB.append(_repMonadCF.getAlgebra().getAlgebraName()+" | ");
-							tB.append(_repMonadCF.getAlgebra().getGProduct().getSignature());
-							pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
-							break;
-	    	case COMPLEXD:	tB.append(_repMonadCD.getAlgebra().getFoot().getFootName()+" | ");
-							tB.append(_repMonadCD.getAlgebra().getAlgebraName()+" | ");
-							tB.append(_repMonadCD.getAlgebra().getGProduct().getSignature());
-							pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
+	    	case REALF:		
+	    		tB.append(_repMonadF.getAlgebra().getFoot().getFootName()+" | ");
+		    	tB.append(_repMonadF.getAlgebra().getAlgebraName()+"/"+_repMonadF.getAlgebra().shareCardinal().getType()+" | ");
+		    	tB.append(_repMonadF.getAlgebra().getGProduct().getSignature());
+		    	pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
+		    	break;
+	    	case REALD:		
+	    		tB.append(_repMonadD.getAlgebra().getFoot().getFootName()+" | ");
+				tB.append(_repMonadD.getAlgebra().getAlgebraName()+"/"+_repMonadD.getAlgebra().shareCardinal().getType()+" | ");
+				tB.append(_repMonadD.getAlgebra().getGProduct().getSignature());
+				pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
+				break;
+	    	case COMPLEXF:	
+	    		tB.append(_repMonadCF.getAlgebra().getFoot().getFootName()+" | ");
+				tB.append(_repMonadCF.getAlgebra().getAlgebraName()+"/"+_repMonadCF.getAlgebra().shareCardinal().getType()+" | ");
+				tB.append(_repMonadCF.getAlgebra().getGProduct().getSignature());
+				pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
+				break;
+	    	case COMPLEXD:	
+	    		tB.append(_repMonadCD.getAlgebra().getFoot().getFootName()+" | ");
+	    		tB.append(_repMonadCD.getAlgebra().getAlgebraName()+"/"+_repMonadCD.getAlgebra().shareCardinal().getType()+" | ");
+				tB.append(_repMonadCD.getAlgebra().getGProduct().getSignature());
+				pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
 	    }
 	   
 	    pnlMonadCoeffPanel.setBackground(clrBackColor);

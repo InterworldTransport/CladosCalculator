@@ -425,13 +425,9 @@ public class CreateDialog extends JDialog implements ActionListener
 			{
 				if (copiedAlgCD.getFoot() != tNSpot.getFootPoint())
 				{
-					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra had different foot from nyad. No monad added.");
+					_GUI._StatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
-				
-				// Check for algebra uniqueness within nyad. If non-unique Nyad becomes weak or frame
-				if(NyadComplexD.hasAlgebra(tNSpot, copiedAlgCD))
-					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra already present in nyad. Weakening nyad.");
 				
 				ComplexD[] tC = new ComplexD[copiedAlgCD.getGProduct().getBladeCount()];
 				for (short m=0; m<tC.length; m++)
@@ -441,7 +437,7 @@ public class CreateDialog extends JDialog implements ActionListener
 										copiedAlgCD,
 										monadShort.frame.getText(),
 										tC);
-				tNSpot.appendMonad(rep);	// TODO Nyad weakness. This might fail because alg uniqueness (Nyad Strong) is enforced right now.
+				tNSpot.appendMonad(rep);
 				tNSpotP.addMonadPanel(rep);
 				test = true;
 			}
@@ -493,13 +489,9 @@ public class CreateDialog extends JDialog implements ActionListener
 			{
 				if (copiedAlgCF.getFoot() != tNSpot.getFootPoint())
 				{
-					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra had different foot from nyad. No monad added.");
+					_GUI._StatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
-				
-				// Check for algebra uniqueness within nyad. If non-unique Nyad becomes weak or frame
-				if(NyadComplexF.hasAlgebra(tNSpot, copiedAlgCF))
-					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra already present in nyad. Weakening nyad.");
 				
 				ComplexF[] tC = new ComplexF[copiedAlgCF.getGProduct().getBladeCount()];
 				for (short m=0; m<tC.length; m++)
@@ -509,7 +501,7 @@ public class CreateDialog extends JDialog implements ActionListener
 										copiedAlgCF,
 										monadShort.frame.getText(),
 										tC);
-				tNSpot.appendMonad(rep);	// TODO Nyad weakness. This might fail because alg uniqueness (Nyad Strong) is enforced right now.
+				tNSpot.appendMonad(rep);	
 				tNSpotP.addMonadPanel(rep);
 				test = true;
 			}
@@ -561,13 +553,9 @@ public class CreateDialog extends JDialog implements ActionListener
 			{
 				if (copiedAlgRD.getFoot() != tNSpot.getFootPoint())
 				{
-					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra had different foot from nyad. No monad added.");
+					_GUI._StatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
-				
-				// Check for algebra uniqueness within nyad. If non-unique Nyad becomes weak or frame
-				if(NyadRealD.hasAlgebra(tNSpot, copiedAlgRD))
-					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra already present in nyad. Weakening nyad.");
 				
 				RealD[] tC = new RealD[copiedAlgRD.getGProduct().getBladeCount()];
 				for (short m=0; m<tC.length; m++)
@@ -577,7 +565,7 @@ public class CreateDialog extends JDialog implements ActionListener
 										copiedAlgRD,
 										monadShort.frame.getText(),
 										tC);
-				tNSpot.appendMonad(rep);	// TODO Nyad weakness. This might fail because alg uniqueness (Nyad Strong) is enforced right now.
+				tNSpot.appendMonad(rep);
 				tNSpotP.addMonadPanel(rep);
 				test = true;
 			}
@@ -629,13 +617,9 @@ public class CreateDialog extends JDialog implements ActionListener
 			{
 				if (copiedAlgRF.getFoot() != tNSpot.getFootPoint())
 				{
-					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra had different foot from nyad. No monad added.");
+					_GUI._StatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
-				
-				// Check for algebra uniqueness within nyad. If non-unique Nyad becomes weak or frame
-				if(NyadRealF.hasAlgebra(tNSpot, copiedAlgRF))
-					_GUI._StatusBar.setStatusMsg("\t\tchosen algebra already present in nyad. Weakening nyad.");
 				
 				RealF[] tC = new RealF[copiedAlgRF.getGProduct().getBladeCount()];
 				for (short m=0; m<tC.length; m++)
@@ -645,7 +629,7 @@ public class CreateDialog extends JDialog implements ActionListener
 										copiedAlgRF,
 										monadShort.frame.getText(),
 										tC);
-				tNSpot.appendMonad(rep);	// TODO Nyad weakness. This might fail because alg uniqueness (Nyad Strong) is enforced right now.
+				tNSpot.appendMonad(rep);
 				tNSpotP.addMonadPanel(rep);
 				test = true;
 			}

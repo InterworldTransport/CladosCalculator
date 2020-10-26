@@ -391,25 +391,29 @@ import java.util.*;
 		{
 			switch(getNyadPanel(getPaneFocus()).getRepMode())
 			{
-			case REALF:		NyadRealF focusNyadRF=getNyadPanel(getPaneFocus()).getNyadRF();
-							buildName=new StringBuffer(focusNyadRF.getName()).append("_c").toString();
-							NyadRealF newNyadCopyRF=new NyadRealF(buildName, focusNyadRF);
-							addNyad(newNyadCopyRF);
-							break;
-			case REALD:		NyadRealD focusNyadRD=getNyadPanel(getPaneFocus()).getNyadRD();
-							buildName=new StringBuffer(focusNyadRD.getName()).append("_c").toString();
-							NyadRealD newNyadCopyRD=new NyadRealD(buildName, focusNyadRD);
-							addNyad(newNyadCopyRD);
-							break;
-			case COMPLEXF:	NyadComplexF focusNyadCF=getNyadPanel(getPaneFocus()).getNyadCF();
-							buildName=new StringBuffer(focusNyadCF.getName()).append("_c").toString();
-							NyadComplexF newNyadCopyCF=new NyadComplexF(buildName, focusNyadCF);
-							addNyad(newNyadCopyCF);
-							break;
-			case COMPLEXD:	NyadComplexD focusNyadCD=getNyadPanel(getPaneFocus()).getNyadCD();
-							buildName=new StringBuffer(focusNyadCD.getName()).append("_c").toString();
-							NyadComplexD newNyadCopyCD=new NyadComplexD(buildName, focusNyadCD);
-							addNyad(newNyadCopyCD);
+				case REALF:		
+					NyadRealF focusNyadRF=getNyadPanel(getPaneFocus()).getNyadRF();
+					buildName=new StringBuffer(focusNyadRF.getName()).append("_c").toString();
+					NyadRealF newNyadCopyRF=new NyadRealF(buildName, focusNyadRF);
+					addNyad(newNyadCopyRF);
+					break;
+				case REALD:		
+					NyadRealD focusNyadRD=getNyadPanel(getPaneFocus()).getNyadRD();
+					buildName=new StringBuffer(focusNyadRD.getName()).append("_c").toString();
+					NyadRealD newNyadCopyRD=new NyadRealD(buildName, focusNyadRD);
+					addNyad(newNyadCopyRD);
+					break;
+				case COMPLEXF:	
+					NyadComplexF focusNyadCF=getNyadPanel(getPaneFocus()).getNyadCF();
+					buildName=new StringBuffer(focusNyadCF.getName()).append("_c").toString();
+					NyadComplexF newNyadCopyCF=new NyadComplexF(buildName, focusNyadCF);
+					addNyad(newNyadCopyCF);
+					break;
+				case COMPLEXD:	
+					NyadComplexD focusNyadCD=getNyadPanel(getPaneFocus()).getNyadCD();
+					buildName=new StringBuffer(focusNyadCD.getName()).append("_c").toString();
+					NyadComplexD newNyadCopyCD=new NyadComplexD(buildName, focusNyadCD);
+					addNyad(newNyadCopyCD);
 			}
 		}
 		catch (UtilitiesException e)
