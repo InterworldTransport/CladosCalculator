@@ -53,47 +53,40 @@ public class CladosCalculator extends JFrame implements ActionListener
 	public static void main(String[] args)
 	{
 		//default string entries in case someone starts this without any arg's at all
-		 String TitleName="Clados Calculator Utility";
-		 String ConfName="conf/CladosCalculator.conf";
+		String TitleName="Clados Calculator Utility";
+		String ConfName="conf/CladosCalculator.xml";
 	
-		 if (args.length%2==1)
-		 {
-			  System.out.println("Usage: CladosCalculator [-t TitleString -c ConfigFile] ");
-			  System.exit(0);
-		 }
-	
-		 for (int i=0; i<args.length; i=i+2)
-		 {
-			  if (args[i].equals("-t")) TitleName=args[i+1];
-			  if (args[i].equals("-c")) ConfName=args[i+1];
-		 }
-		 
-		
-		 JFrame fr = new CladosCalculator(TitleName, ConfName);
-		 fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		 fr.pack();
-		 fr.setVisible(true);
+		for (int i=0; i<args.length; i=i+2)
+		{
+			if (args[i].equals("-t")) TitleName=args[i+1];
+			if (args[i].equals("-c")) ConfName=args[i+1];
+		}	 
+		//System.out.println(TitleName+" | "+ConfName);
+		JFrame fr = new CladosCalculator(TitleName, ConfName);
+		fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fr.pack();
+		fr.setVisible(true);
 	}
 	/**
 	 * The EventModel for the application.
 	 */
-    public		ViewerEventModel	_EventModel;
+    public		ViewerEventModel	appEventModel;
 	/**
 	 * The Field Display Panel for the application.
 	 * Located at the top of the GUI and intended for numeric inputs.
 	 */
-	public		FieldPanel			_FieldBar; 
+	public		FieldPanel			appFieldBar; 
 	/**
 	 * The Center Display Panel for the application.
 	 * Located in the center of the GUI and intended for display panels.
 	 */
-	public		ViewerPanel			_GeometryDisplay;
-	
+	public		ViewerPanel			appGeometryView;
 	/**
 	 * The Status Display Panel for the application.
 	 * Located at the bottom of the GUI and intended for status information.
 	 */
-	public		UtilityStatusBar	_StatusBar;
+	public		UtilityStatusBar	appStatusBar;
+	
 	private		ViewerMenu			_MenuBar;
 	private		JButton				btnHasGrade;
 	private		JButton				btnHasNyadAlgebra;
@@ -155,53 +148,57 @@ public class CladosCalculator extends JFrame implements ActionListener
 	    	
 	    _MenuBar=new ViewerMenu(this);
 	    setJMenuBar(_MenuBar);						//The Menu Bar is an element of the parent class JFrame
-	    _EventModel=new ViewerEventModel(_MenuBar);	//EventModel relies on existance of _MenuBar
+	    appEventModel=new ViewerEventModel(_MenuBar);	//EventModel relies on existance of _MenuBar
 	    	
-	    _StatusBar=new UtilityStatusBar(this);		//Next up because errors have to be reported somewhere.
-	    cp.add(_StatusBar, "South");
+	    appStatusBar=new UtilityStatusBar(this);		//Next up because errors have to be reported somewhere.
+	    cp.add(appStatusBar, "South");
 	    	
 
 	    	
-	    _GeometryDisplay=new ViewerPanel(this);		//ViewerPanel next to display stuff from nyads and monads
-	    _GeometryDisplay.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-	    cp.add(_GeometryDisplay, "Center");
+	    appGeometryView=new ViewerPanel(this);		//ViewerPanel next to display stuff from nyads and monads
+	    appGeometryView.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+	    cp.add(appGeometryView, "Center");
 	    											//FieldBar MUST follow ViewerPanel to make use of protonumbers
-	    int indxNPanelSelected = _GeometryDisplay.getPaneFocus();
+	    int indxNPanelSelected = appGeometryView.getPaneFocus();
     	if (indxNPanelSelected>=0) 
     	{
-    		NyadPanel tSpot = _GeometryDisplay.getNyadPanel(indxNPanelSelected);
+    		NyadPanel tSpot = appGeometryView.getNyadPanel(indxNPanelSelected);
     		int indexedMonad = tSpot.getPaneFocus();
     		if (indexedMonad>=0)
     		{
-	    		switch (_GeometryDisplay.getNyadPanel(indxNPanelSelected).getRepMode())
+	    		switch (appGeometryView.getNyadPanel(indxNPanelSelected).getRepMode())
 	    		{
-	    			case REALF:		AlgebraRealF tSpotRF = tSpot.getNyadRF().getMonadList(indexedMonad).getAlgebra();
-	    							_FieldBar=new FieldPanel(	this, AlgebraRealF.shareProtoNumber(tSpotRF));
-		    						cp.add(_FieldBar, "North");
-		    						tSpotRF=null;
-		    						break;
-	    			case REALD:		AlgebraRealD tSpotRD = tSpot.getNyadRD().getMonadList(indexedMonad).getAlgebra();
-	    							_FieldBar=new FieldPanel(	this, AlgebraRealD.shareProtoNumber(tSpotRD));
-									cp.add(_FieldBar, "North");
-									tSpotRD=null;
-									break;
-	    			case COMPLEXF:	AlgebraComplexF tSpotCF = tSpot.getNyadCF().getMonadList(indexedMonad).getAlgebra();
-	    							_FieldBar=new FieldPanel(	this, AlgebraComplexF.shareProtoNumber(tSpotCF));
-									cp.add(_FieldBar, "North");
-									tSpotCF=null;
-									break;
-					case COMPLEXD:	AlgebraComplexD tSpotCD = tSpot.getNyadCD().getMonadList(indexedMonad).getAlgebra();
-									_FieldBar=new FieldPanel(	this, AlgebraComplexD.shareProtoNumber(tSpotCD));
-									cp.add(_FieldBar, "North");
-									tSpotCD=null;
+	    			case REALF:		
+	    				AlgebraRealF tSpotRF = tSpot.getNyadRF().getMonadList(indexedMonad).getAlgebra();
+	    				appFieldBar=new FieldPanel(	this, AlgebraRealF.shareProtoNumber(tSpotRF));
+		    			cp.add(appFieldBar, "North");
+		    			tSpotRF=null;
+		    			break;
+	    			case REALD:		
+	    				AlgebraRealD tSpotRD = tSpot.getNyadRD().getMonadList(indexedMonad).getAlgebra();
+	    				appFieldBar=new FieldPanel(	this, AlgebraRealD.shareProtoNumber(tSpotRD));
+						cp.add(appFieldBar, "North");
+						tSpotRD=null;
+						break;
+	    			case COMPLEXF:
+	    				AlgebraComplexF tSpotCF = tSpot.getNyadCF().getMonadList(indexedMonad).getAlgebra();
+	    				appFieldBar=new FieldPanel(	this, AlgebraComplexF.shareProtoNumber(tSpotCF));
+						cp.add(appFieldBar, "North");
+						tSpotCF=null;
+						break;
+					case COMPLEXD:	
+						AlgebraComplexD tSpotCD = tSpot.getNyadCD().getMonadList(indexedMonad).getAlgebra();
+						appFieldBar=new FieldPanel(	this, AlgebraComplexD.shareProtoNumber(tSpotCD));
+						cp.add(appFieldBar, "North");
+						tSpotCD=null;
 	    		}
     		}
     		tSpot = null;
     	}
     	else	// This catches the possibility that no NyadPanel was created upon initialization
     	{
-    		_FieldBar=new FieldPanel(this, CladosFBuilder.createRealFZERO("PlaceHolder"));
-			cp.add(_FieldBar, "North");
+    		appFieldBar=new FieldPanel(this, CladosFBuilder.createRealFZERO("PlaceHolder"));
+			cp.add(appFieldBar, "North");
     	}
 	    
 	    pnlControlBar=new JPanel();
@@ -221,45 +218,45 @@ public class CladosCalculator extends JFrame implements ActionListener
     {
     	switch (event.getActionCommand())
     	{
-	    	case "strong ref match":	_EventModel.NOpsParts.strgrmatch.actionPerformed(event);
+	    	case "strong ref match":	appEventModel.NOpsParts.strgrmatch.actionPerformed(event);
 	    								break;
-	    	case "weak ref match":		_EventModel.NOpsParts.weakrmatch.actionPerformed(event);
+	    	case "weak ref match":		appEventModel.NOpsParts.weakrmatch.actionPerformed(event);
 	    								break;
-	    	case "algebra detect":		_EventModel.NOpsParts.hasalgebra.actionPerformed(event);
+	    	case "algebra detect":		appEventModel.NOpsParts.hasalgebra.actionPerformed(event);
 	    								break;
-	    	case "equal":				_EventModel.NOpsParts.equal.actionPerformed(event);
+	    	case "equal":				appEventModel.NOpsParts.equal.actionPerformed(event);
 	    								break;
-	    	case "zero":				_EventModel.NOpsParts.zero.actionPerformed(event);
+	    	case "zero":				appEventModel.NOpsParts.zero.actionPerformed(event);
 										break;
-	    	case "scalar at":			_EventModel.NOpsParts.scalarAtAlg.actionPerformed(event);
+	    	case "scalar at":			appEventModel.NOpsParts.scalarAtAlg.actionPerformed(event);
 	    								break;
-	    	case "pscalar at":			_EventModel.NOpsParts.pscalarAtAlg.actionPerformed(event);
+	    	case "pscalar at":			appEventModel.NOpsParts.pscalarAtAlg.actionPerformed(event);
 	    								break;
-	    	case "nilpotent":   		_EventModel.MOpsParts.nilp.actionPerformed(event);
+	    	case "nilpotent":   		appEventModel.MOpsParts.nilp.actionPerformed(event);
 	    								break;
-	    	case "idempotent":   		_EventModel.MOpsParts.idemp.actionPerformed(event);
+	    	case "idempotent":   		appEventModel.MOpsParts.idemp.actionPerformed(event);
 	    								break;
-	    	case "scaled idempotent": 	_EventModel.MOpsParts.midemp.actionPerformed(event);
+	    	case "scaled idempotent": 	appEventModel.MOpsParts.midemp.actionPerformed(event);
 										break;
-    		case "is findgrade":		_EventModel.MOpsParts.grade.actionPerformed(event);
+    		case "is findgrade":		appEventModel.MOpsParts.grade.actionPerformed(event);
 										break;
-    		case "is mgrade":    		_EventModel.MOpsParts.mgrade.actionPerformed(event);
+    		case "is mgrade":    		appEventModel.MOpsParts.mgrade.actionPerformed(event);
     									break;
-    		case "is findgrade!":   	_EventModel.MOpsParts.findgrade.actionPerformed(event);
+    		case "is findgrade!":   	appEventModel.MOpsParts.findgrade.actionPerformed(event);
         								break;
-    		case "has findgrade":    	_EventModel.MOpsParts.hasgrade.actionPerformed(event);
+    		case "has findgrade":    	appEventModel.MOpsParts.hasgrade.actionPerformed(event);
     									break;
-    		case "magnitude of":    	_EventModel.MOpsParts.mag.actionPerformed(event);
+    		case "magnitude of":    	appEventModel.MOpsParts.mag.actionPerformed(event);
     									break;
-    		case "sqmagnitude of":    	_EventModel.MOpsParts.sqmag.actionPerformed(event);
+    		case "sqmagnitude of":    	appEventModel.MOpsParts.sqmag.actionPerformed(event);
     									break;
-    		default: 					_StatusBar.setStatusMsg("No detectable command processed.\n");
+    		default: 					appStatusBar.setStatusMsg("No detectable command processed.\n");
     	}
     }
        
     public void terminateModel() 
     {
-		_EventModel.FileParts.fc = null;
+		appEventModel.FileParts.fc = null;
 		System.exit(0);
     }
 
@@ -465,19 +462,17 @@ public class CladosCalculator extends JFrame implements ActionListener
 	 */
 	    protected void getConfigProps(String pConfName) throws CantGetIniException
 		{
-	    	if (pConfName == null)
-	    		throw new CantGetIniException("The configuration file is not provided.");
+	    	if (pConfName == null) throw new CantGetIniException("The configuration file is not provided.");
 	    		
 	    	File fIni=new File(pConfName);
-	    	if (!(fIni.exists() & fIni.isFile() & fIni.canWrite()))
-    	    	throw new CantGetIniException("The configuration file is not valid.");
+	    	if (!(fIni.exists() & fIni.isFile() & fIni.canWrite())) throw new CantGetIniException("The configuration file is not valid.");
     		
 	    	try (	FileInputStream tempSpot=new FileInputStream(fIni);
 		    		BufferedInputStream tSpot = new BufferedInputStream(tempSpot))
 	    	{
 	    		IniProps=new Properties(System.getProperties());
-	    		IniProps.load(tSpot);
-	    		
+	    		//IniProps.load(tSpot); // This loads the standard key/pair properties file format.
+	    		IniProps.loadFromXML(tSpot); // This loads an XML formatted key/pair properties file.
 	    		tSpot.close();
 	    		tempSpot.close();
 	    	}
