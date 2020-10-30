@@ -117,7 +117,7 @@ import java.util.*;
    		setBackground(clrBackColor);
    		setLayout(new BorderLayout());
 
-   		tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabM"));
+   		tabIcon = new ImageIcon(this.getClass().getResource("/icons/M.png"));
    			 
    		createEditLayout();
    		createStackLayout();
@@ -180,7 +180,7 @@ import java.util.*;
    		setBackground(clrBackColor);
    		setLayout(new BorderLayout());
 
-   		tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabM"));
+   		tabIcon = new ImageIcon(this.getClass().getResource("/icons/M.png"));
    			 
    		createEditLayout();
    		createStackLayout();
@@ -243,7 +243,7 @@ import java.util.*;
    		setBackground(clrBackColor);
    		setLayout(new BorderLayout());
 
-   		tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabM"));
+   		tabIcon = new ImageIcon(this.getClass().getResource("/icons/M.png"));
    			 
    		createEditLayout();
    		createStackLayout();
@@ -306,7 +306,7 @@ import java.util.*;
 		setBackground(clrBackColor);
 		setLayout(new BorderLayout());
 
-		tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabM"));
+		tabIcon = new ImageIcon(this.getClass().getResource("/icons/M.png"));
 			 
 		createEditLayout();
 		createStackLayout();
@@ -629,20 +629,20 @@ import java.util.*;
     	cn.anchor=GridBagConstraints.NORTH;
     	makeNotWritable();
     	
-   	 	btnSaveEdits=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Save")));
+    	btnSaveEdits = new JButton(new ImageIcon(this.getClass().getResource("/icons/save.png")));
    	 	btnSaveEdits.setActionCommand("save");
    	 	btnSaveEdits.setToolTipText("save edits to nyad");
    	 	btnSaveEdits.setBorder(BorderFactory.createEtchedBorder(0));
    	 	btnSaveEdits.setEnabled(false);
 	 	btnSaveEdits.setPreferredSize(square);
    	 	
-   	 	btnEditMonad=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Edit")));
+   	 	btnEditMonad=new JButton(new ImageIcon(this.getClass().getResource("/icons/edit.png")));
     	btnEditMonad.setActionCommand("edit");
     	btnEditMonad.setToolTipText("start edits on nyad");
     	btnEditMonad.setBorder(BorderFactory.createEtchedBorder(0));
 	 	btnEditMonad.setPreferredSize(square);
 	 	
-	 	btnUndoEdits=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Restore")));
+	 	btnUndoEdits=new JButton(new ImageIcon(this.getClass().getResource("/icons/restore.png")));
     	btnUndoEdits.setActionCommand("abort");
     	btnUndoEdits.setToolTipText("abandon edits to nyad");
     	btnUndoEdits.setBorder(BorderFactory.createEtchedBorder(0));
@@ -742,7 +742,7 @@ import java.util.*;
 		cn.weighty=0;
 		cn.gridheight=1;
 		cn.gridwidth=1;
-    	btnSwapBelow=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Push")));
+    	btnSwapBelow=new JButton(new ImageIcon(this.getClass().getResource("/icons/push.png")));
     	btnSwapBelow.setActionCommand("push");
     	btnSwapBelow.setToolTipText("push monad down on stack");
     	btnSwapBelow.setPreferredSize(square);
@@ -751,7 +751,7 @@ import java.util.*;
     	pnlControlPanel2.add(btnSwapBelow, cn);
     	cn.gridy++;
     	
-    	btnSwapAbove=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Pop")));
+    	btnSwapAbove=new JButton(new ImageIcon(this.getClass().getResource("/icons/pop.png")));
     	btnSwapAbove.setActionCommand("pop");
     	btnSwapAbove.setToolTipText("pop monad up on stack");
     	btnSwapAbove.setPreferredSize(square);
@@ -760,7 +760,7 @@ import java.util.*;
     	pnlControlPanel2.add(btnSwapAbove, cn);
 		cn.gridy++;
     	
-		btnCopyMonad=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Copy")));
+		btnCopyMonad=new JButton(new ImageIcon(this.getClass().getResource("/icons/copy.png")));
    	 	btnCopyMonad.setActionCommand("copy");
    	 	btnCopyMonad.setToolTipText("copy monad to end of stack");
    	 	btnCopyMonad.setPreferredSize(square);
@@ -769,7 +769,7 @@ import java.util.*;
    	 	pnlControlPanel2.add(btnCopyMonad, cn);
     	cn.gridy++;
     	
-    	btnRemoveMonad=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Remove")));
+    	btnRemoveMonad=new JButton(new ImageIcon(this.getClass().getResource("/icons/remove.png")));
    	 	btnRemoveMonad.setActionCommand("erase");
    	 	btnRemoveMonad.setToolTipText("remove monad from stack");
    	 	btnRemoveMonad.setPreferredSize(square);
@@ -778,7 +778,7 @@ import java.util.*;
     	pnlControlPanel2.add(btnRemoveMonad, cn);
     	cn.gridy++;
     	
-    	btnNewMonad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Create")));
+    	btnNewMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/create.png")));
     	btnNewMonad.setActionCommand("create");
     	btnNewMonad.setToolTipText("create new monad");
     	btnNewMonad.setPreferredSize(square);

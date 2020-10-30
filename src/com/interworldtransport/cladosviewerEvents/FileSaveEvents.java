@@ -67,9 +67,9 @@ public class FileSaveEvents implements ActionListener
  */
     public void actionPerformed(ActionEvent evt)
     {
-	    if (_parent._GUI.IniProps.getProperty("Desktop.Snapshot") != null)	// save to file described in conf setting
+	    if (_parent._GUI.IniProps.getProperty("Desktop.File.Snapshot") != null)	// save to file described in conf setting
 	    {
-	    	File fIni=new File(_parent._GUI.IniProps.getProperty("Desktop.Snapshot"));
+	    	File fIni=new File(_parent._GUI.IniProps.getProperty("Desktop.File.Snapshot"));
 	    	if (!(fIni.exists() & fIni.isFile() & fIni.canWrite()))
 	    	{
 	    		_parent.sa.actionPerformed(evt);	// Defer to Save As event

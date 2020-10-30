@@ -105,7 +105,7 @@ import java.util.*;
   	    createStackLayout();
   	    
   	    //Get the nyad tab image for the nyad panes being constructed
-    	tabIcon = new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.TabN"));
+    	tabIcon = new ImageIcon(this.getClass().getResource("/icons/N.png"));
     	//_GUI._StatusBar.setStatusMsg(tabIcon.getIconHeight()+", "+tabIcon.getIconWidth()+" | "+tabIcon.getDescription());
     	
     	_repMode = validateInitialDivField();
@@ -586,7 +586,7 @@ import java.util.*;
 		cn.weighty=0;
 		cn.gridheight=1;
 		cn.gridwidth=1;
-    	btnSwapBelow=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Push")));
+    	btnSwapBelow=new JButton(new ImageIcon(this.getClass().getResource("/icons/push.png")));
     	btnSwapBelow.setActionCommand("push");
     	btnSwapBelow.setToolTipText("push nyad down on stack");
     	btnSwapBelow.setPreferredSize(square);
@@ -595,7 +595,7 @@ import java.util.*;
     	pnlControlBar.add(btnSwapBelow, cn);
     	cn.gridy++;
     	
-    	btnSwapAbove=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Pop")));
+    	btnSwapAbove=new JButton(new ImageIcon(this.getClass().getResource("/icons/pop.png")));
     	btnSwapAbove.setActionCommand("pop");
     	btnSwapAbove.setToolTipText("pop nyad up on stack");
     	btnSwapAbove.setPreferredSize(square);
@@ -604,7 +604,7 @@ import java.util.*;
     	pnlControlBar.add(btnSwapAbove, cn);
 		cn.gridy++;
     	
-    	btnCopyNyad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Copy")));
+    	btnCopyNyad = new JButton(new ImageIcon(this.getClass().getResource("/icons/copy.png")));
     	btnCopyNyad.setActionCommand("copy");
     	btnCopyNyad.setToolTipText("copy nyad to end of stack");
     	btnCopyNyad.setPreferredSize(square);
@@ -613,7 +613,7 @@ import java.util.*;
     	pnlControlBar.add(btnCopyNyad, cn);
     	cn.gridy++;
     	
-    	btnRemoveNyad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Remove")));
+    	btnRemoveNyad = new JButton(new ImageIcon(this.getClass().getResource("/icons/remove.png")));
     	btnRemoveNyad.setActionCommand("erase");
     	btnRemoveNyad.setToolTipText("remove nyad from stack");
     	btnRemoveNyad.setPreferredSize(square);
@@ -622,7 +622,7 @@ import java.util.*;
     	pnlControlBar.add(btnRemoveNyad, cn);
     	cn.gridy++;
     	
-    	btnNewNyad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Create")));
+    	btnNewNyad = new JButton(new ImageIcon(this.getClass().getResource("/icons/create.png")));
     	btnNewNyad.setActionCommand("create");
     	btnNewNyad.setToolTipText("create new nyad");
     	btnNewNyad.setPreferredSize(square);
@@ -880,16 +880,8 @@ import java.util.*;
 					    					case COMPLEXD:	pFieldPanel.setField(AlgebraComplexD.shareProtoNumber(tSpot.getMonadCD().getAlgebra()));
 					    				}
 					    				_GUI.appFieldBar.makeWritable();
-				    					
-				    					
 				    				}
-			    					
 			    				}
-			    				
-			    				
-			    				
-			    				
-			    				
 			    			}
 			    			else
 			    				pFieldPanel.clearFieldType();

@@ -224,7 +224,7 @@ public class CreateDialog extends JDialog implements ActionListener
 		dialogControls.setBorder(new EmptyBorder(5, 5, 5, 5));
 		dialogControls.setBackground(makeNyad ? _nyadColor : _monadColor);
 		
-		btnSave = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Save")));
+		btnSave = new JButton(new ImageIcon(this.getClass().getResource("/icons/save.png")));
 		btnSave.setActionCommand(makeNyad ? "Save Nyad": "Save Monad");
 		btnSave.setToolTipText(makeNyad ? 	"Create new nyad. Algebra/Foot or just Foot can be referenced.": 
 											"Create new monad. Algebra/Foot can be referenced, but nyad Foot better match.");
@@ -233,7 +233,7 @@ public class CreateDialog extends JDialog implements ActionListener
 		btnSave.addActionListener(this);
 		dialogControls.add(btnSave);
 		
-		btnClose = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Close")));
+		btnClose = new JButton( new ImageIcon(this.getClass().getResource("/icons/close.png")));
 		btnClose.setActionCommand("close");
 		btnClose.setToolTipText("Close the dialog. No further changes.");
 		btnClose.setPreferredSize(square);

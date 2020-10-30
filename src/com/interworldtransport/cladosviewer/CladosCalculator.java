@@ -32,11 +32,15 @@ import com.interworldtransport.cladosG.AlgebraRealF;
 import com.interworldtransport.cladosviewerExceptions.CantGetIniException;
 
 import java.awt.*;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.util.*;
 import java.io.*;
+import java.net.URL;
 /**
  * The MonadViewer class will display Nyads and Monads and allow the user to
  * manipulate them via methods similar to old four-function calculators
@@ -61,7 +65,6 @@ public class CladosCalculator extends JFrame implements ActionListener
 			if (args[i].equals("-t")) TitleName=args[i+1];
 			if (args[i].equals("-c")) ConfName=args[i+1];
 		}	 
-		//System.out.println(TitleName+" | "+ConfName);
 		JFrame fr = new CladosCalculator(TitleName, ConfName);
 		fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		fr.pack();
@@ -150,7 +153,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 	    setJMenuBar(_MenuBar);						//The Menu Bar is an element of the parent class JFrame
 	    appEventModel=new ViewerEventModel(_MenuBar);	//EventModel relies on existance of _MenuBar
 	    	
-	    appStatusBar=new UtilityStatusBar(this);		//Next up because errors have to be reported somewhere.
+	    appStatusBar=new UtilityStatusBar();		//Next up because errors have to be reported somewhere.
 	    cp.add(appStatusBar, "South");
 	    	
 
@@ -277,7 +280,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 		cn.gridheight=2;
 		cn.gridwidth=2;
 		cn.fill=GridBagConstraints.BOTH;
-    	pnlControlBar.add(new JLabel(new ImageIcon(IniProps.getProperty("Desktop.Image.Header2"))),cn);
+		pnlControlBar.add(new JLabel(new ImageIcon(this.getClass().getResource("/icons/clados_56.png"))),cn);
     	cn.gridx = 0;
     	cn.gridy += 2;
     	cn.fill=GridBagConstraints.HORIZONTAL;	
@@ -288,7 +291,7 @@ public class CladosCalculator extends JFrame implements ActionListener
 		cn.gridwidth=1;
 
     	// button double
-    	btnIsNyadStrgRefMatch = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.RefMatch")));
+    	btnIsNyadStrgRefMatch = new JButton(new ImageIcon(this.getClass().getResource("/icons/match.png")));
     	btnIsNyadStrgRefMatch.setActionCommand("strong ref match");
     	btnIsNyadStrgRefMatch.setToolTipText("Strong Reference Match [Nyad]?");
     	btnIsNyadStrgRefMatch.setPreferredSize(square);
@@ -297,7 +300,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	pnlControlBar.add(btnIsNyadStrgRefMatch, cn);
     	cn.gridx++;
     	
-    	btnIsNyadWeakRefMatch = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.WeakRefMatch")));
+    	btnIsNyadWeakRefMatch = new JButton(new ImageIcon(this.getClass().getResource("/icons/matchweak.png")));
     	btnIsNyadWeakRefMatch.setActionCommand("weak ref match");
     	btnIsNyadWeakRefMatch.setToolTipText("Weak reference Match [Nyad]?");
     	btnIsNyadWeakRefMatch.setPreferredSize(square);
@@ -307,7 +310,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	cn.gridx = 0;
     	cn.gridy++;
     	
-    	btnHasNyadAlgebra = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.HasAlgebra")));
+    	btnHasNyadAlgebra = new JButton(new ImageIcon(this.getClass().getResource("/icons/hasAlgebra.png")));
     	btnHasNyadAlgebra.setActionCommand("algebra detect");
     	btnHasNyadAlgebra.setToolTipText("Next Nyad Has Algebra?");
     	btnHasNyadAlgebra.setPreferredSize(square);
@@ -316,7 +319,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	pnlControlBar.add(btnHasNyadAlgebra, cn);
     	cn.gridx++;
     	
-    	btnIsNyadEqual = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Equal")));
+    	btnIsNyadEqual = new JButton(new ImageIcon(this.getClass().getResource("/icons/equal.png")));
     	btnIsNyadEqual.setActionCommand("equal");
     	btnIsNyadEqual.setToolTipText("strong Equality Nyad Test");
     	btnIsNyadEqual.setPreferredSize(square);
@@ -326,7 +329,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	cn.gridx = 0;
     	cn.gridy++;
     	
-    	btnIsNyadScalarAt = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.IsScalarAt")));
+    	btnIsNyadScalarAt = new JButton(new ImageIcon(this.getClass().getResource("/icons/isScalarAt.png")));
     	btnIsNyadScalarAt.setActionCommand("scalar at");
     	btnIsNyadScalarAt.setToolTipText("Next Nyad Is Scalar At?");
     	btnIsNyadScalarAt.setPreferredSize(square);
@@ -335,7 +338,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	pnlControlBar.add(btnIsNyadScalarAt, cn);
     	cn.gridx++;
     	
-    	btnIsNyadPScalarAt = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.IsPScalarAt")));
+    	btnIsNyadPScalarAt = new JButton(new ImageIcon(this.getClass().getResource("/icons/isPScalarAt.png")));
     	btnIsNyadPScalarAt.setActionCommand("pscalar at");
     	btnIsNyadPScalarAt.setToolTipText("Next Nyad Is PScalar At?");
     	btnIsNyadPScalarAt.setPreferredSize(square);
@@ -347,14 +350,14 @@ public class CladosCalculator extends JFrame implements ActionListener
     	
 		cn.gridwidth=2;
 		cn.fill=GridBagConstraints.BOTH;
-    	pnlControlBar.add(new JLabel(new ImageIcon(IniProps.getProperty("Desktop.Image.Bar"))),cn);
+    	pnlControlBar.add(new JLabel(new ImageIcon(this.getClass().getResource("/icons/bar.png"))),cn);
     	cn.fill=GridBagConstraints.HORIZONTAL;	
 		cn.gridwidth=1;
     	cn.gridx = 0;
     	cn.gridy++;
     	
     	// button double
-    	btnIsZero = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Zero")));
+    	btnIsZero = new JButton(new ImageIcon(this.getClass().getResource("/icons/zero.png")));
     	btnIsZero.setActionCommand("zero");
     	btnIsZero.setToolTipText("additive Identity (Zero) Monad Test");
     	btnIsZero.setPreferredSize(square);
@@ -363,7 +366,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	pnlControlBar.add(btnIsZero, cn);
     	cn.gridx++;
     	
-    	btnIsNilpotent = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Nilpotent")));
+    	btnIsNilpotent = new JButton(new ImageIcon(this.getClass().getResource("/icons/nilp.png")));
     	btnIsNilpotent.setActionCommand("nilpotent");
     	btnIsNilpotent.setToolTipText("is nilpotent at power N?");
     	btnIsNilpotent.setPreferredSize(square);
@@ -374,7 +377,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	cn.gridy++;
     	
     	// button double
-    	btnIsIdempotent = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Idempotent")));
+    	btnIsIdempotent = new JButton(new ImageIcon(this.getClass().getResource("/icons/idmp.png")));
     	btnIsIdempotent.setActionCommand("idempotent");
     	btnIsIdempotent.setToolTipText("is idempotent?");
     	btnIsIdempotent.setPreferredSize(square);
@@ -383,7 +386,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	pnlControlBar.add(btnIsIdempotent, cn);  
     	cn.gridx++;
     	
-    	btnIsScaleIdempotent = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.MIdempotent")));
+    	btnIsScaleIdempotent = new JButton(new ImageIcon(this.getClass().getResource("/icons/midmp.png")));
     	btnIsScaleIdempotent.setActionCommand("scaled idempotent");
     	btnIsScaleIdempotent.setToolTipText("is scaled idempotent?");
     	btnIsScaleIdempotent.setPreferredSize(square);
@@ -394,7 +397,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	cn.gridy++;
     	   	
     	// button double
-    	btnWhatMagn = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Magnitude")));
+    	btnWhatMagn = new JButton(new ImageIcon(this.getClass().getResource("/icons/magn.png")));
     	btnWhatMagn.setActionCommand("magnitude of");
     	btnWhatMagn.setToolTipText("discover magnitude");
     	btnWhatMagn.setPreferredSize(square);
@@ -403,7 +406,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	pnlControlBar.add(btnWhatMagn, cn);
     	cn.gridx++;
     	
-    	btnWhatSQMagn = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.SQMagnitude")));
+    	btnWhatSQMagn = new JButton(new ImageIcon(this.getClass().getResource("/icons/sqmagn.png")));
     	btnWhatSQMagn.setActionCommand("sqmagnitude of");
     	btnWhatSQMagn.setToolTipText("discover magnitude^2");
     	btnWhatSQMagn.setPreferredSize(square);
@@ -414,7 +417,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	cn.gridy++;
 
     	// button double
-    	btnIsGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.Grade")));
+    	btnIsGrade = new JButton(new ImageIcon(this.getClass().getResource("/icons/grade.png")));
     	btnIsGrade.setActionCommand("is findgrade");
     	btnIsGrade.setToolTipText("has this unique grade?");
     	btnIsGrade.setPreferredSize(square);
@@ -423,7 +426,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	pnlControlBar.add(btnIsGrade, cn);
     	cn.gridx++;
     	
-    	btnIsMultiGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.MultiGrade")));
+    	btnIsMultiGrade = new JButton(new ImageIcon(this.getClass().getResource("/icons/mgrade.png")));
     	btnIsMultiGrade.setActionCommand("is mgrade");
     	btnIsMultiGrade.setToolTipText("is multigrade?");
     	btnIsMultiGrade.setPreferredSize(square);
@@ -433,7 +436,7 @@ public class CladosCalculator extends JFrame implements ActionListener
        	cn.gridx = 0;
     	cn.gridy++;
     	
-    	btnHasGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.HasGrade")));
+    	btnHasGrade = new JButton(new ImageIcon(this.getClass().getResource("/icons/hasgrade.png")));
     	btnHasGrade.setActionCommand("has findgrade");
     	btnHasGrade.setToolTipText("has this grade?");
     	btnHasGrade.setPreferredSize(square);
@@ -442,7 +445,7 @@ public class CladosCalculator extends JFrame implements ActionListener
     	pnlControlBar.add(btnHasGrade, cn);
     	cn.gridx++;
     	
-    	btnWhatGrade = new JButton(new ImageIcon(IniProps.getProperty("Desktop.Image.WhatGrade")));
+    	btnWhatGrade = new JButton(new ImageIcon(this.getClass().getResource("/icons/whatgrade.png")));
     	btnWhatGrade.setActionCommand("is findgrade!");
     	btnWhatGrade.setToolTipText("what unique grade?");
     	btnWhatGrade.setPreferredSize(square);

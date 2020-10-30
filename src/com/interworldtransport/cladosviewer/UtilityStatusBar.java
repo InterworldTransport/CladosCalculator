@@ -47,7 +47,6 @@ import javax.swing.*;
 	private	static final 	int 				_FONTSIZE 			= 10;
     private	static final	Color				_backColor 			= new Color(255, 255, 222);
     private static final	Dimension 			square 				= new Dimension(25,25);
-	private					CladosCalculator	_GUI;
 	private					JTextArea			stmesgt;
 	private					JButton				clearIt;
 
@@ -56,21 +55,17 @@ import javax.swing.*;
  * application.  There is nothing really special about this class.  It can and
  * used to be defined and built within the SailAway application.  For the sake
  * of maintenance, it has been moved to its own class and file.
- * @param pParent	CladosCalculator
- * This reference points back at the parent of the UtilityBar so it may reference
- * properties known by the parent.
  */
-    public UtilityStatusBar(CladosCalculator pParent)
+    public UtilityStatusBar()
     {
     	super();
-    	_GUI = pParent;
     	setBackground(_backColor);
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEtchedBorder());
 		
-		clearIt=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Remove")));
-		clearIt.setActionCommand("push");
-		clearIt.setToolTipText("push nyad down on stack");
+		clearIt=new JButton(new ImageIcon(this.getClass().getResource("/icons/remove.png")));
+		clearIt.setActionCommand("clear");
+		clearIt.setToolTipText("clear the message stack");
 		clearIt.setPreferredSize(square);
 		clearIt.setBorder(BorderFactory.createEtchedBorder(0));
 		clearIt.addActionListener(this);

@@ -96,7 +96,7 @@ public class FileEvents implements ActionListener
     	
     	StringBuffer content=new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n");
     	content.append("<NyadList size=\""+_GUI.appGeometryView.getNyadListSize()+"\">\r\n");
-    	switch (_GUI.IniProps.getProperty("Desktop.Snapshot.FullXML"))
+    	switch (_GUI.IniProps.getProperty("Desktop.File.Snapshot.FullXML"))
     	{
 	    	case "true":	for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels())
 							{

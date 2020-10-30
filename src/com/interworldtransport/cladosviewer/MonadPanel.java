@@ -224,10 +224,10 @@ import java.util.*;
 	       	btnChangeOrient = new JButton();
 	    	btnChangeOrient.setPreferredSize(squareLittle);
 	    	btnChangeOrient.setBorder(BorderFactory.createEtchedBorder(0));
-	    	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
-	    	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
+	    	iconHorizontal=new ImageIcon(this.getClass().getResource("/icons/horiz.png"));
+	    	iconVertical=new ImageIcon(this.getClass().getResource("/icons/vert.png"));
 	    	
-	    	switch (_GUI.IniProps.getProperty("Desktop.MVRender"))
+	    	switch (_GUI.IniProps.getProperty("Desktop.Default.Orient"))
 	    	{
 	    		case "Vertical":	btnChangeOrient.setIcon(iconVertical);
 		    						btnChangeOrient.setToolTipText("Monad grades as columns");
@@ -288,10 +288,10 @@ import java.util.*;
 	   	       	btnChangeOrient = new JButton();
 		    	btnChangeOrient.setPreferredSize(squareLittle);
 		    	btnChangeOrient.setBorder(BorderFactory.createEtchedBorder(0));
-		    	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
-		    	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
+		    	iconHorizontal=new ImageIcon(this.getClass().getResource("/icons/horiz.png"));
+		    	iconVertical=new ImageIcon(this.getClass().getResource("/icons/vert.png"));
 		    	
-		    	switch (_GUI.IniProps.getProperty("Desktop.MVRender"))
+		    	switch (_GUI.IniProps.getProperty("Desktop.Default.Orient"))
 		    	{
 		    		case "Vertical":	btnChangeOrient.setIcon(iconVertical);
 			    						btnChangeOrient.setToolTipText("Monad grades as columns");
@@ -352,10 +352,10 @@ import java.util.*;
 		       	btnChangeOrient = new JButton();
 		    	btnChangeOrient.setPreferredSize(squareLittle);
 		    	btnChangeOrient.setBorder(BorderFactory.createEtchedBorder(0));
-		    	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
-		    	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
+		    	iconHorizontal=new ImageIcon(this.getClass().getResource("/icons/horiz.png"));
+		    	iconVertical=new ImageIcon(this.getClass().getResource("/icons/vert.png"));
 		    	
-		    	switch (_GUI.IniProps.getProperty("Desktop.MVRender"))
+		    	switch (_GUI.IniProps.getProperty("Desktop.Default.Orient"))
 		    	{
 		    		case "Vertical":	btnChangeOrient.setIcon(iconVertical);
 			    						btnChangeOrient.setToolTipText("Monad grades as columns");
@@ -416,10 +416,10 @@ import java.util.*;
 			    	btnChangeOrient = new JButton();
 			    	btnChangeOrient.setPreferredSize(squareLittle);
 			    	btnChangeOrient.setBorder(BorderFactory.createEtchedBorder(0));
-			    	iconHorizontal=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Horiz"));
-			    	iconVertical=new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Vert"));
+			    	iconHorizontal=new ImageIcon(this.getClass().getResource("/icons/horiz.png"));
+			    	iconVertical=new ImageIcon(this.getClass().getResource("/icons/vert.png"));
 			    	
-			    	switch (_GUI.IniProps.getProperty("Desktop.MVRender"))
+			    	switch (_GUI.IniProps.getProperty("Desktop.Default.Orient"))
 			    	{
 			    		case "Vertical":	btnChangeOrient.setIcon(iconVertical);
 				    						btnChangeOrient.setToolTipText("Monad grades as columns");
@@ -909,7 +909,7 @@ import java.util.*;
     	cn.weighty=0;
     	cn.gridwidth=2;
     	
-    	btnEdit=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Edit")));
+    	btnEdit=new JButton(new ImageIcon(this.getClass().getResource("/icons/edit.png")));
     	btnEdit.setActionCommand("edit");
     	btnEdit.setToolTipText("start edits");
 	 	btnEdit.setPreferredSize(squareLittle);
@@ -918,7 +918,7 @@ import java.util.*;
     	pnlMonadEditControls.add(btnEdit, cn);
     	cn.gridy++;
     	
-    	btnSync=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Save")));
+    	btnSync=new JButton(new ImageIcon(this.getClass().getResource("/icons/save.png")));
     	btnSync.setActionCommand("save");
     	btnSync.setToolTipText("save edits");
 	 	btnSync.setEnabled(false);
@@ -928,7 +928,7 @@ import java.util.*;
     	pnlMonadEditControls.add(btnSync, cn);
     	cn.gridy++;
     	
-    	btnRestore=new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Restore")));
+    	btnRestore=new JButton(new ImageIcon(this.getClass().getResource("/icons/restore.png")));
     	btnRestore.setActionCommand("abort");
     	btnRestore.setToolTipText("abandon edits");
     	btnRestore.setEnabled(false);
@@ -1003,7 +1003,7 @@ import java.util.*;
     	cn.weighty=0;
     	cn.gridwidth=2;
     	
-    	btnScaleMonad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Scale")));
+    	btnScaleMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/scale.png")));
     	btnScaleMonad.setActionCommand("scale");
     	btnScaleMonad.setToolTipText("scale() the monad");
     	btnScaleMonad.setPreferredSize(squareMedium);
@@ -1012,7 +1012,7 @@ import java.util.*;
     	pnlMonadAlterControls.add(btnScaleMonad, cn);
     	cn.gridy++;
     	
-    	btnNormalizeMonad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Norm")));
+    	btnNormalizeMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/norm.png")));
     	btnNormalizeMonad.setActionCommand("normalize");
     	btnNormalizeMonad.setToolTipText("normalize THIS Monad");
     	btnNormalizeMonad.setPreferredSize(squareMedium);
@@ -1021,7 +1021,7 @@ import java.util.*;
     	pnlMonadAlterControls.add(btnNormalizeMonad, cn);
     	cn.gridy++;
     	
-    	btnInvertMonad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Invert")));
+    	btnInvertMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/invert.png")));
     	btnInvertMonad.setActionCommand("invert");
     	btnInvertMonad.setToolTipText("invert [+/-] generators");
     	btnInvertMonad.setPreferredSize(squareMedium);
@@ -1030,7 +1030,7 @@ import java.util.*;
     	pnlMonadAlterControls.add(btnInvertMonad, cn);
     	cn.gridy++;
     	
-    	btnReverseMonad = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Reverse")));
+    	btnReverseMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/reverse.png")));
     	btnReverseMonad.setActionCommand("reverse");
     	btnReverseMonad.setToolTipText("reverse [ab->ba] blades");
     	btnReverseMonad.setPreferredSize(squareMedium);
@@ -1039,7 +1039,7 @@ import java.util.*;
     	pnlMonadAlterControls.add(btnReverseMonad, cn);
     	cn.gridy++;
     	
-    	btnDualLeft = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.DualLeft")));
+    	btnDualLeft = new JButton(new ImageIcon(this.getClass().getResource("/icons/dualleft.png")));
     	btnDualLeft.setActionCommand("dual>");
     	btnDualLeft.setToolTipText("left Dual of the monad using algebra's PS");
     	btnDualLeft.setPreferredSize(squareMedium);
@@ -1048,7 +1048,7 @@ import java.util.*;
     	pnlMonadAlterControls.add(btnDualLeft, cn);
     	cn.gridy++;
     	
-    	btnDualRight = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.DualRight")));
+    	btnDualRight = new JButton(new ImageIcon(this.getClass().getResource("/icons/dualright.png")));
     	btnDualRight.setActionCommand("<dual");
     	btnDualRight.setToolTipText("right Dual of the monad using algebra's PS");
     	btnDualRight.setPreferredSize(squareMedium);
@@ -1057,7 +1057,7 @@ import java.util.*;
     	pnlMonadAlterControls.add(btnDualRight, cn);	
     	cn.gridy++;
     	
-    	btnGradeCrop = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.GradeCrop")));
+    	btnGradeCrop = new JButton(new ImageIcon(this.getClass().getResource("/icons/gradecrop.png")));
     	btnGradeCrop.setActionCommand("findgrade crop");
     	btnGradeCrop.setToolTipText("crop around findgrade()");
     	btnGradeCrop.setPreferredSize(squareMedium);
@@ -1066,7 +1066,7 @@ import java.util.*;
     	pnlMonadAlterControls.add(btnGradeCrop, cn);
     	cn.gridy++;
     	
-    	btnGradeCut = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.GradeCut")));
+    	btnGradeCut = new JButton(new ImageIcon(this.getClass().getResource("/icons/gradecut.png")));
     	btnGradeCut.setActionCommand("findgrade cut");
     	btnGradeCut.setToolTipText("cut this findgrade()");
     	btnGradeCut.setPreferredSize(squareMedium);

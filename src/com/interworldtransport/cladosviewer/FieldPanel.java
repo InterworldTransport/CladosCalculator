@@ -224,7 +224,7 @@ import javax.swing.border.BevelBorder;
 					    		}
 					    		catch (NumberFormatException en)
 					    		{
-					    			_GUI.appStatusBar.setStatusMsg("Number Format Exception prevented inversion.\n");
+					    			_GUI.appStatusBar.setStatusMsg("Number Format Exception prevented conjugation.\n");
 					    			_GUI.appStatusBar.setStatusMsg(en.getMessage());
 					    		}
 	    						break;
@@ -546,7 +546,7 @@ import javax.swing.border.BevelBorder;
     	c1.weightx=0;
     	c1.weighty=0;
     	
-    	btnMakeReal = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Real")));
+    	btnMakeReal = new JButton(new ImageIcon(this.getClass().getResource("/icons/real.png")));
     	btnMakeReal.setActionCommand("makeReal");
     	btnMakeReal.setToolTipText("use real numbers");
     	btnMakeReal.setPreferredSize(squareMedium);
@@ -555,7 +555,7 @@ import javax.swing.border.BevelBorder;
     	pnlButtons.add(btnMakeReal, c1);
     	c1.gridy++;
     	
-    	btnMakeComplex = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Complex")));
+    	btnMakeComplex = new JButton(new ImageIcon(this.getClass().getResource("/icons/complex.png")));
     	btnMakeComplex.setActionCommand("makeComplex");
     	btnMakeComplex.setToolTipText("use complex numbers");
     	btnMakeComplex.setPreferredSize(squareMedium);
@@ -565,7 +565,7 @@ import javax.swing.border.BevelBorder;
     	c1.gridy = 0;
     	c1.gridx++;
 
-    	btnMakeFloat = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Float")));
+    	btnMakeFloat = new JButton(new ImageIcon(this.getClass().getResource("/icons/float.png")));
     	btnMakeFloat.setActionCommand("makeFloat");
     	btnMakeFloat.setToolTipText("use floating precision");
     	btnMakeFloat.setPreferredSize(squareMedium);
@@ -574,7 +574,7 @@ import javax.swing.border.BevelBorder;
     	pnlButtons.add(btnMakeFloat, c1);
     	c1.gridy++;
     	
-    	btnMakeDouble = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Double")));
+    	btnMakeDouble = new JButton(new ImageIcon(this.getClass().getResource("/icons/double.png")));
     	btnMakeDouble.setActionCommand("makeDouble");
     	btnMakeDouble.setToolTipText("use double precision");
     	btnMakeDouble.setPreferredSize(squareMedium);
@@ -587,7 +587,7 @@ import javax.swing.border.BevelBorder;
 		c1.gridheight=2;
 		c1.gridwidth=2;
 		
-		btnClear = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.ClearIt")));
+		btnClear = new JButton(new ImageIcon(this.getClass().getResource("/icons/clearIt.png")));
     	btnClear.setActionCommand("clearIt");
     	btnClear.setPreferredSize(squareLarge);
     	btnClear.setBorder(BorderFactory.createEtchedBorder(0));
@@ -595,7 +595,7 @@ import javax.swing.border.BevelBorder;
     	pnlButtons.add(btnClear, c1);
     	c1.gridx += 2;
     	
-    	btnInverse = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Inverse")));
+    	btnInverse = new JButton(new ImageIcon(this.getClass().getResource("/icons/inverse.png")));
     	btnInverse.setActionCommand("inverse");
     	btnInverse.setPreferredSize(squareLarge);
     	btnInverse.setBorder(BorderFactory.createEtchedBorder(0));
@@ -603,7 +603,7 @@ import javax.swing.border.BevelBorder;
     	pnlButtons.add(btnInverse, c1);
     	c1.gridx += 2;
     	
-    	btnConjugate = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Conjugate")));
+    	btnConjugate = new JButton(new ImageIcon(this.getClass().getResource("/icons/conjugate.png")));
     	btnConjugate.setActionCommand("conjugate");
     	btnConjugate.setPreferredSize(squareLarge);
     	btnConjugate.setBorder(BorderFactory.createEtchedBorder(0));

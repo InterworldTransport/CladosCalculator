@@ -76,7 +76,7 @@ public final class SupportDialog extends JDialog implements ActionListener
 		mainPane.add(closeButtonPane, "South");
 	
 		// Create close button
-		btnClose = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Close")));
+		btnClose = new JButton( new ImageIcon(this.getClass().getResource("/icons/close.png")));
 		btnClose.setActionCommand("close");
 		btnClose.setToolTipText("Close the dialog.");
 		btnClose.setPreferredSize(new Dimension(30,30));

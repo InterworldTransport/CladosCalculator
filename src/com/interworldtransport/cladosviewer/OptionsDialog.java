@@ -115,7 +115,7 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 		setContentPane(mainPane);
 		createControlButtons();
 		addPropTable();
-		setSize(600, 600);	
+		setSize(400, 500);	
 
 		Point parentLocation = mainWindow.getLocation();
 		int Xloc = (int) parentLocation.getX() + ((mainWindow.getWidth() - 300) / 2);
@@ -171,7 +171,7 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
     	mainPane.add(controlPanel, "South");
     	
     	// Create buttons
-		btnSave = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Save")));
+    	btnSave = new JButton( new ImageIcon(this.getClass().getResource("/icons/save.png")));
 		btnSave.setActionCommand("save");
 		btnSave.setToolTipText("Save any changes, then close.");
 		btnSave.setPreferredSize(new Dimension(30,30));
@@ -179,7 +179,7 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 		btnSave.addActionListener(this);
 		controlPanel.add(btnSave);
 	
-		btnClose = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Close")));
+		btnClose = new JButton( new ImageIcon(this.getClass().getResource("/icons/close.png")));
 		btnClose.setActionCommand("close");
 		btnClose.setToolTipText("Close the dialog. No further changes.");
 		btnClose.setPreferredSize(new Dimension(30,30));
@@ -190,7 +190,7 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 
     private void saveAll(Properties pIn)
     {
-    	File fIni=new File(_GUI.IniProps.getProperty("Desktop.PropertiesFile"));
+    	File fIni=new File(_GUI.IniProps.getProperty("Desktop.File.Properties"));
     	if (!	(fIni.exists() & fIni.isFile() & fIni.canWrite())	)
     	{
     		JFileChooser fc = new JFileChooser();
