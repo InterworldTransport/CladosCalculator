@@ -40,9 +40,10 @@ import javax.swing.border.*;
  */
 public final class AboutDialog extends JDialog implements ActionListener
 {
-	private static final 	long 				serialVersionUID = 1L;
-	private 				CladosCalculator	TheGUI;
-	private 				JButton 			closeButton;
+	private	static final 	Color				_backColor 		= new Color(255, 255, 222);
+	private	static final	Color				_tblBackColor 	= new Color(212, 212, 192);
+	private 				JButton 			btnClose;
+	private 				CladosCalculator	_GUI;
 
 /**
  * The constructor sets up the about dialog box and displays it.
@@ -54,16 +55,18 @@ public final class AboutDialog extends JDialog implements ActionListener
     public AboutDialog(CladosCalculator mainWindow)
     {
 		super(mainWindow, "About Clados Calculator Utility", true); //Use parent's constructor
-		TheGUI=mainWindow;
+		_GUI=mainWindow;
 		
 		JPanel mainPane = new JPanel(new BorderLayout());
 		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		mainPane.setBackground(_backColor);
 		setContentPane(mainPane);
 		
 		//Create Logo panel
 		
 		JPanel topspot=new JPanel();
-		String logoFile=TheGUI.IniProps.getProperty("Desktop.Image.Header");
+		topspot.setBackground(_backColor);
+		String logoFile=_GUI.IniProps.getProperty("Desktop.Image.Header");
 		ImageIcon temp = new ImageIcon(logoFile);
 		topspot.add(new JLabel(temp));
 		mainPane.add(topspot, "North");
@@ -71,7 +74,7 @@ public final class AboutDialog extends JDialog implements ActionListener
 		// Create content text area
 		constructContent();
 		JTextArea contentArea = new JTextArea(constructContent());
-		contentArea.setBackground(Color.lightGray);
+		contentArea.setBackground(_tblBackColor);
 		contentArea.setBorder(new EmptyBorder(2, 2, 2, 2));
 		contentArea.setLineWrap(true);
 		contentArea.setWrapStyleWord(true);
@@ -81,35 +84,38 @@ public final class AboutDialog extends JDialog implements ActionListener
 		// Create close button panel
 	
 		JPanel closeButtonPane = new JPanel(new FlowLayout());
+		closeButtonPane.setBackground(_backColor);
 		closeButtonPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		mainPane.add(closeButtonPane, "South");
 	
 		// Create close button
 	
-		closeButton = new JButton("Close");
-		closeButton.addActionListener(this);
-		closeButtonPane.add(closeButton);
+		btnClose = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Close")));
+		btnClose.setActionCommand("close");
+		btnClose.setToolTipText("Close the dialog.");
+		btnClose.setPreferredSize(new Dimension(30,30));
+		btnClose.setBorder(BorderFactory.createEtchedBorder(0));
+		btnClose.addActionListener(this);
+		closeButtonPane.add(btnClose);
 	
-		// Set the size of the window
-	
-		setSize(500, 700);
-	
-		// Center the window on the parent window.
-	
+		setSize(500, 700);	
 		Point parentLocation = mainWindow.getLocation();
 		int Xloc = (int) parentLocation.getX() + ((mainWindow.getWidth() - 300) / 2);
 		int Yloc = (int) parentLocation.getY(); //+ ((mainWindow.getHeight() - 400) / 2);
 		setLocation(Xloc, Yloc);
-	
-		// Display window
 		setVisible(true);
     }
     
+    public void actionPerformed(ActionEvent event)
+    {
+		dispose();	// Any action is enough to close the window.
+    }
+
     private String constructContent()
     {
-    	String tempVersion = TheGUI.IniProps.getProperty("Desktop.Version");
-    	String tempUserName = TheGUI.IniProps.getProperty("User.Name");
-    	String tempInstitution = TheGUI.IniProps.getProperty("User.Institution");
+    	String tempVersion = _GUI.IniProps.getProperty("Desktop.Version");
+    	String tempUserName = _GUI.IniProps.getProperty("User.Name");
+    	String tempInstitution = _GUI.IniProps.getProperty("User.Institution");
 
     	StringBuffer content = new StringBuffer();
 
@@ -120,7 +126,7 @@ public final class AboutDialog extends JDialog implements ActionListener
     	content.append("Copyright 2020 Alfred Differ");
     	content.append("\n\n");
 
-    	content.append("Web Site: https://github.com/InterworldTransport/CladosViewer\n\n");
+    	content.append("Web Site: https://github.com/InterworldTransport/CladosCalculator\n\n");
 
     	content.append("Developers:\n");
     	content.append("  Dr. Alfred Differ - Physics, Java\n");
@@ -149,10 +155,5 @@ public final class AboutDialog extends JDialog implements ActionListener
     	content.append("along with this program.  If not, see <https://www.gnu.org/licenses/>.\n");
     	
     	return content.toString();
-    }
-
-    public void actionPerformed(ActionEvent event)
-    {
-		dispose();	// Any action is enough to close the window.
     }
 }

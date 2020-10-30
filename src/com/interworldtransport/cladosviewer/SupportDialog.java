@@ -38,9 +38,10 @@ import javax.swing.border.*;
  */
 public final class SupportDialog extends JDialog implements ActionListener
 {
-	private static final 	long 				serialVersionUID = -3225893667778938123L;
-	private 				CladosCalculator	TheGUI;
-	private 				JButton 			closeButton;
+	private	static final 	Color				_backColor 		= new Color(255, 255, 222);
+	private	static final	Color				_tblBackColor 	= new Color(212, 212, 192);
+	private 				CladosCalculator	_GUI;
+	private 				JButton 			btnClose;
 
 	/**
 	 * The constructor sets up the support/about dialog box and displays it.
@@ -52,16 +53,16 @@ public final class SupportDialog extends JDialog implements ActionListener
     public SupportDialog(CladosCalculator mainWindow)
     {
 		super(mainWindow, "Support for Clados Calculator Utility", true); //Use parent's constructor
-		TheGUI=mainWindow;
+		_GUI=mainWindow;
 	
 		JPanel mainPane = new JPanel(new BorderLayout());
 		mainPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		mainPane.setBackground(_backColor);
 		setContentPane(mainPane);
 	
 		// Create content text area
-		
 		JTextArea contentArea = new JTextArea(constructContent());
-		contentArea.setBackground(Color.lightGray);
+		contentArea.setBackground(_tblBackColor);
 		contentArea.setBorder(new EmptyBorder(2, 2, 2, 2));
 		contentArea.setLineWrap(true);
 		contentArea.setWrapStyleWord(true);
@@ -69,46 +70,39 @@ public final class SupportDialog extends JDialog implements ActionListener
 		mainPane.add(new JScrollPane(contentArea), "Center");
 	
 		// Create close button panel
-	
 		JPanel closeButtonPane = new JPanel(new FlowLayout());
+		closeButtonPane.setBackground(_backColor);
 		closeButtonPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		mainPane.add(closeButtonPane, "South");
 	
 		// Create close button
+		btnClose = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Close")));
+		btnClose.setActionCommand("close");
+		btnClose.setToolTipText("Close the dialog.");
+		btnClose.setPreferredSize(new Dimension(30,30));
+		btnClose.setBorder(BorderFactory.createEtchedBorder(0));
+		btnClose.addActionListener(this);
+		closeButtonPane.add(btnClose);
 	
-		closeButton = new JButton("Close");
-		closeButton.addActionListener(this);
-		closeButtonPane.add(closeButton);
-	
-		setSize(300, 400);
-	
-		// Center the window on the parent window.
-	
+		setSize(400, 300);
 		Point parentLocation = mainWindow.getLocation();
 		int Xloc = (int) parentLocation.getX() + ((mainWindow.getWidth() - 300) / 2);
 		int Yloc = (int) parentLocation.getY();// + ((mainWindow.getHeight() - 400) / 2);
 		setLocation(Xloc, Yloc);
-	
-		// Display window
-	
 		setVisible(true);
     }
     
     private String constructContent()
     {
-    	String tempVersion = TheGUI.IniProps.getProperty("Desktop.Version");
-    	
     	StringBuffer content = new StringBuffer();
-	
 		content.append("Clados Calculator ");
-		content.append(tempVersion);
-		content.append("\n\n");
-		content.append("Web Site: https://github.com/InterworldTransport/CladosViewer\n\n");
+		content.append(_GUI.IniProps.getProperty("Desktop.Version")+"\n\n");
+		content.append("https://github.com/InterworldTransport/CladosViewer\n\n");
 	
 		content.append("For support issues that would help us make a better viewer please visit ");
 		content.append("the GitHub home page.  From this page you should be able to find the Viewer's ");
 		content.append("associated docs and support features. Please list your support issues there.\n\n");
-		content.append("For complex support or licensing issues, please contact Dr Alfred Differ at adiffer@gmail.com");
+		content.append("For complex support or licensing issues, please contact \nAlfred Differ at adiffer@gmail.com");
 	
     	return content.toString();
     }
