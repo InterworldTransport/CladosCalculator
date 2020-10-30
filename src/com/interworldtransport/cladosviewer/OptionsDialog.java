@@ -49,7 +49,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class OptionsDialog extends JDialog implements ActionListener, TableModelListener
 {
-	private class 			MyTableModel 		extends AbstractTableModel 
+	private class 			PropTblModel 		extends AbstractTableModel 
 	{
 		private 			String[] 			columnNames = {"Key", "Value"};
 		private				Object[][]			data;
@@ -94,9 +94,10 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 	private	static final	Color				_tblBackColor 	= new Color(212, 212, 192);
 	private 				CladosCalculator	_GUI; 
 	private 				JButton 			btnClose;
-	private 				JButton				btnReload;
 	private 				JButton 			btnSave;
 	private 				JPanel				mainPane		= new JPanel(new BorderLayout());
+	private					JTable 				propTable;
+	private					PropTblModel		tblModel 		= new PropTblModel();
 
 /**
  * The constructor sets up the options dialog box and displays it.
@@ -127,40 +128,35 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
     {
     	switch (event.getActionCommand())
     	{
-    		case "reload":	
-    			reloadAll();
-    			break;
     		case "close":	
     			dispose();
     			break;
-    		case "save":	
-    			saveAll();
+    		case "save":
+    			saveAll(storeItAll());
     			dispose();
     	}
     }
-    
     @Override
 	public void tableChanged(TableModelEvent e) 
 	{
-		// TODO Auto-generated method stub
-		
+    	;
 	}
     
     private void addPropTable()
     {
-    	
-    	MyTableModel test = new MyTableModel();
-    	JTable propTable = new JTable(test);
+    	propTable = new JTable(tblModel);
     	propTable.setBackground(_tblBackColor);
+    	propTable.setShowHorizontalLines(true);
+    	propTable.setDragEnabled(false);
+    	propTable.setGridColor(Color.BLACK);
     	
-		Object[] testSet = _GUI.IniProps.stringPropertyNames().toArray();
-		test.data = new String [testSet.length][2];
-		for (int j=0; j<test.getRowCount(); j++)
-		{	//setValueAt(Object value, int row, int col)
-			test.setValueAt(testSet[j], j, 0);
-			test.setValueAt( _GUI.IniProps.get(testSet[j]), j, 1);
+		Object[] keys = _GUI.IniProps.stringPropertyNames().toArray();
+		tblModel.data = new String [keys.length][2];
+		for (int j=0; j<tblModel.getRowCount(); j++)
+		{
+			tblModel.setValueAt(keys[j], j, 0);
+			tblModel.setValueAt( _GUI.IniProps.get(keys[j]), j, 1);
 		}
-		
 		mainPane.add(new JScrollPane(propTable), "Center");
 		propTable.setFillsViewportHeight(true);    
 		propTable.setAutoCreateRowSorter(true);
@@ -175,14 +171,6 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
     	mainPane.add(controlPanel, "South");
     	
     	// Create buttons
-		btnReload = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Edit")));
-		btnReload.setActionCommand("reload");
-		btnReload.setToolTipText("Reload properties");
-		btnReload.setPreferredSize(new Dimension(30,30));
-		btnReload.setBorder(BorderFactory.createEtchedBorder(0));
-		btnReload.addActionListener(this);
-		controlPanel.add(btnReload);	
-    		
 		btnSave = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Save")));
 		btnSave.setActionCommand("save");
 		btnSave.setToolTipText("Save any changes, then close.");
@@ -199,76 +187,47 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 		btnClose.addActionListener(this);
 		controlPanel.add(btnClose);	
     }
-    
-    private void reloadAll()
+
+    private void saveAll(Properties pIn)
     {
     	File fIni=new File(_GUI.IniProps.getProperty("Desktop.PropertiesFile"));
-    	if (!(fIni.exists() & fIni.isFile() & fIni.canWrite())) _GUI.appStatusBar.setStatusMsg("The configuration file is not valid.");
-		
-    	try (	FileInputStream tempSpot=new FileInputStream(fIni);
-	    		BufferedInputStream tSpot = new BufferedInputStream(tempSpot))
+    	if (!	(fIni.exists() & fIni.isFile() & fIni.canWrite())	)
     	{
-    		_GUI.IniProps=new Properties(System.getProperties());
-    		_GUI.IniProps.loadFromXML(tSpot); // This loads an XML formatted key/pair properties file.
-    		addPropTable();
-    		tSpot.close();
+    		JFileChooser fc = new JFileChooser();
+    	    fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        	if (fc.showSaveDialog(btnSave) == JFileChooser.APPROVE_OPTION) fIni = fc.getSelectedFile();
+    	}
+    	if (!	(fIni.exists() & fIni.isFile() & fIni.canWrite())	) 
+    	{
+    		_GUI.appStatusBar.setStatusMsg("Options NOT saved. Can't seem to get a viable file to save them in");
+    		return;
+    	}
+    	
+    	try(	FileOutputStream tempSpot=new FileOutputStream(fIni);
+	    		BufferedOutputStream tSpot = new BufferedOutputStream(tempSpot))
+    	{
+    	   	pIn.storeToXML(tSpot, "Saved From Clados Calculator Properties Dialog");
+    	   	_GUI.appStatusBar.setStatusMsg("-->Options SAVED.\n");
+    	   	tSpot.flush();
+    	   	tempSpot.flush();
+    	   	tSpot.close();
     		tempSpot.close();
     	}
-    	catch(IOException e)
+    	catch (IOException e)
     	{
-    		_GUI.appStatusBar.setStatusMsg("IO Problem:  Incomplete Access to associated INI files.");
+    	   	_GUI.appStatusBar.setStatusMsg("-->Options NOT saved. IO Exception involving Properties target file.\n");
     	}
-    }
-    
-    private void saveAll()
-    {
-    	if (_GUI.IniProps.getProperty("Desktop.PropertiesFile") != null)	// save to file described in conf setting
+    	finally
 	    {
-	    	File fIni=new File(_GUI.IniProps.getProperty("Desktop.PropertiesFile"));
-	    	if (!(fIni.exists() & fIni.isFile() & fIni.canWrite()))
-	    	{
-	    		saveAsAll();	// Defer to Save As
-	    		return;
-	    	}
-	    	try(	FileOutputStream tempSpot=new FileOutputStream(fIni);
-		    		BufferedOutputStream tSpot = new BufferedOutputStream(tempSpot))
-	    	{
-	    	   	_GUI.IniProps.storeToXML(tSpot, "Saved From Clados Calculator Properties Dialog");
-	    	   	_GUI.appStatusBar.setStatusMsg("-->Options SAVED.\n");
-	    	}
-	    	catch (IOException e)
-	    	{
-	    	   	_GUI.appStatusBar.setStatusMsg("-->Options NOT saved. IO Exception involving Properties target file.\n");
-	    	}
-	    	finally
- 	    	{
- 	    		fIni = null;
- 	    	}
+    		_GUI.IniProps=pIn;
+	    	fIni = null;
 	    }
-	    else	saveAsAll();	// Defer to Save As
     }
-	private void saveAsAll()
-    {
-    	JFileChooser fc = new JFileChooser();
-	    fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-    	int returnVal = fc.showSaveDialog(btnSave);
- 	    if (returnVal == JFileChooser.APPROVE_OPTION) 
- 	    {
- 	    	File fIni = fc.getSelectedFile();
- 	    	try (	FileOutputStream tempSpot=new FileOutputStream(fIni);
-		    		BufferedOutputStream tSpot = new BufferedOutputStream(tempSpot))
- 	    	{
-	    	   	_GUI.IniProps.storeToXML(tSpot, "Saved From Clados Calculator Properties Dialog");
-	    	   	_GUI.appStatusBar.setStatusMsg("-->Options SAVED AS.\n");
-	    	}
-	    	catch (IOException e)
-	    	{
-	    	   	_GUI.appStatusBar.setStatusMsg("-->Options NOT saved. IO Exception involving Properties target file.\n");
-	    	}
- 	    	finally
- 	    	{
- 	    		fIni = null;
- 	    	}
- 	    } 
-    }
+	private Properties storeItAll()
+	{
+		Properties unload = new Properties();
+		for (int j=0; j<tblModel.getRowCount(); j++)
+			unload.put(tblModel.getValueAt(j, 0), tblModel.getValueAt(j, 1));
+		return unload;
+	}
 }
