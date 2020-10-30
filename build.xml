@@ -8,11 +8,13 @@
 	<property	name="appName" 		value="Clados Calculator" />
 	<property 	name="coName" 		value="Interworld Transport" />
 	<property 	name="appHome" 		value="https://github.com/InterworldTransport/CladosCalculator" />
-	<property 	name="buildDir"		value="build" />
-	<property 	name="docAPIDir"	value="docs/api" />
-	<property 	name="libDir" 		value="lib" />
-	<property	name="srcDir"		value="src" />
-	<property	name="confDir"		value="conf" />
+	<property 	name="base"			value="." />
+	<property 	name="build"		value="build" />
+	<property 	name="docAPI"		value="docs/api" />
+	<property 	name="lib" 			value="lib" />
+	<property	name="src"			value="src" />
+	<property	name="icons"		value="icons" />
+	<property	name="conf"			value="conf" />
 	<property 	name="clados"		value="com/interworldtransport/clados/" />
 	<property 	name="viewer"		value="com/interworldtransport/cladosviewer/" />
 	<property 	name="copyleft"		value="&lt;p&gt;
@@ -40,30 +42,30 @@ along with this program.  If not, see https://www.gnu.org/licenses/."/>
 
 	<target name="clean"
 			description="Removes all Clados files down to a basic src package.">
-		<delete dir="${buildDir}" /> <!-- made by compile target -->
-		<delete dir="${docAPIDir}" /> <!-- made by javadoc target -->
+		<delete dir="${build}" /> <!-- made by compile target -->
+		<delete dir="${docAPI}" /> <!-- made by javadoc target -->
 		<delete file="./CladosCalculator.jar" /> <!-- made by jar target -->
 	</target>
 
 	<target name="prepare"
 		description="Creates output directories" >
-		<mkdir dir="${buildDir}" />
+		<mkdir dir="${build}" />
 	</target>
 	
 	<target name="prepareDOC"
 			description="Creates output directories" >
-			<mkdir dir="${docAPIDir}" />
+			<mkdir dir="${docAPI}" />
 		</target>
 	
 	<target name="compile"
 			depends="prepare"
 			description="Compiles all the Clados Calculator source files" >
 		<javac 	includeantruntime="false"
-				classpath="${libDir}/clados.jar"
+				classpath="${lib}/clados.jar"
 				debug="on"
-				destdir="${buildDir}"
+				destdir="${build}"
 				nowarn="off"
-				srcdir="${srcDir}"
+				srcdir="${src}"
 				verbose="false" >			
 		</javac>
 	</target>
@@ -73,13 +75,13 @@ along with this program.  If not, see https://www.gnu.org/licenses/."/>
 			description="Generates the API documentation for clados." >
 		<javadoc 	author="true"
 					bottom="${copyleft}"
-					destdir="${docAPIDir}"
+					destdir="${docAPI}"
 					doctitle="Clados Calculator Documentation"
 					header="&lt;a target=_top href=${appHome}&gt;${coName}&lt;/a&gt;"
-					overview="/Users/alfredwdiffer/eclipse-workspace/CladosCalculator/src/overview.html"
+					overview="${src}/overview.html"
 					packagenames="com.interworldtransport.*"
-					sourcepath="${srcDir}"
-					classpath="${libDir}/clados.jar"
+					sourcepath="${src}"
+					classpath="${lib}/clados.jar"
 					verbose="false"
 					windowtitle="Clados Calculator API Documentation">
 		</javadoc>
@@ -89,16 +91,11 @@ along with this program.  If not, see https://www.gnu.org/licenses/."/>
 			depends="compile"
 			description="Package the clados calculator code" >
 		<jar 	manifest="clados.manifest"
-				index="true"
+				index="false"
 				jarfile="CladosCalculator.jar">
-			<fileset dir="${buildDir}" />
-			<zipfileset includes="**/*.class" src="lib/clados.jar"/>
-			<fileset dir="icons" />
-			<fileset dir=".">
-				<include name="clados.manifest"/>	
-			</fileset>
-			<fileset dir="${confDir}">
-				<include name="MonadViewer.conf" />
+			<fileset dir="${build}" />
+			<fileset dir="${base}" >
+				<include name="icons/*" />
 			</fileset>
 		</jar>
 	</target>
