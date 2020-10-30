@@ -1,1 +1,0 @@
-jdb -cp "lib/clados.jar" com.interworldtransport.cladosviewer.CladosCalculator -t "Interworld Transport - Clados Calculator - Debug Mode" -c "conf/CladosCalculator.conf"

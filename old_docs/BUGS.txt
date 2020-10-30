@@ -1,5 +1,0 @@
-Clados - Bug List and Contact Information
-
-
-If you detect a bug within Clados, please submit a bug report to the project
-site at SourceForge.net
