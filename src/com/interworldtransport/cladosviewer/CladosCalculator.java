@@ -470,7 +470,8 @@ public class CladosCalculator extends JFrame implements ActionListener
 	    	try (	FileInputStream tempSpot=new FileInputStream(fIni);
 		    		BufferedInputStream tSpot = new BufferedInputStream(tempSpot))
 	    	{
-	    		IniProps=new Properties(System.getProperties());
+	    		IniProps=new Properties();
+	    		//IniProps=new Properties(System.getProperties());
 	    		//IniProps.load(tSpot); // This loads the standard key/pair properties file format.
 	    		IniProps.loadFromXML(tSpot); // This loads an XML formatted key/pair properties file.
 	    		tSpot.close();
