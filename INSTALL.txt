@@ -27,3 +27,20 @@ since the primary purpose of this calculator is to debug the clados library.
 Making this work yourself is just a matter of including clados.jar in the 
 lib directory of the project. The jar target will pull its parts into the 
 calculator jar.
+
+2020/10/30
+I changed what gets included in the clados calculator jar again to AVOID
+the contents of the clados jar. What that really means is I finally figured
+out how to use clados.jar as an external library. Yah. A basic skill I 
+should have learned years ago. Better late than never.
+
+I also moved most of the image properties out of the properties file and 
+embedded them as required resources in the code. That means if anyone messes
+with file names in the icons directory, the code won't compile as is. They
+will also have to fix the strings that call out to those resources. A few
+are left in, though. Specifically the ones having to do with clados resources.
+Things like icons for Foot, Cardinal, Algebra, etc.
+
+Finally, the manifest buried in the jar has the classpath to use the clados.jar
+library if one puts it in lib. If you want it elsewhere, write your own 
+command line to the calculator's jar and insert your own classpath variation.
