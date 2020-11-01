@@ -251,17 +251,17 @@ public class FieldDisplay extends JTextArea implements FocusListener
 			
 			switch (_repMode)
 			{
-				case REALF:		displayFieldRF = (RealF) CladosField.REALF.createZERO(displayFieldRF.getCardinal());
+				case REALF:		displayFieldRF = (RealF) CladosField.REALF.createZERO(displayFieldRF);
 								displayFieldRF.setReal(Float.parseFloat(strB.substring(indexOfR, tBufferLength)));
 								break;
-				case REALD:		displayFieldRD = (RealD) CladosField.REALD.createZERO(displayFieldRD.getCardinal());
+				case REALD:		displayFieldRD = (RealD) CladosField.REALD.createZERO(displayFieldRD);
 								displayFieldRD.setReal(Double.parseDouble(strB.substring(indexOfR, tBufferLength)));
 								break;
-				case COMPLEXF:	displayFieldCF = (ComplexF) CladosField.COMPLEXF.createZERO(displayFieldCF.getCardinal());
+				case COMPLEXF:	displayFieldCF = (ComplexF) CladosField.COMPLEXF.createZERO(displayFieldCF);
 								displayFieldCF.setReal(Float.parseFloat(strB.substring(indexOfR, indexOfI-_IMAGINARY.length()-1)));
 								displayFieldCF.setImg(Float.parseFloat(strB.substring(indexOfI, tBufferLength)));
 								break;
-				case COMPLEXD:	displayFieldCD = (ComplexD) CladosField.COMPLEXD.createZERO(displayFieldCD.getCardinal());
+				case COMPLEXD:	displayFieldCD = (ComplexD) CladosField.COMPLEXD.createZERO(displayFieldCD);
 								displayFieldCD.setReal(Double.parseDouble(strB.substring(indexOfR, indexOfI-_IMAGINARY.length()-1)));
 								displayFieldCD.setImg(Double.parseDouble(strB.substring(indexOfI, tBufferLength)));
 			}

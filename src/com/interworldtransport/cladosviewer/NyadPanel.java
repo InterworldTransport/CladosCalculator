@@ -899,25 +899,25 @@ import java.util.*;
     			nyadName.setText(_repNyadF.getName());
 	    		nyadOrder.setText((new StringBuffer().append(_repNyadF.getMonadList().size())).toString());
 	    		nyadAlgOrder.setText((new StringBuffer().append(_repNyadF.getAlgebraList().size())).toString());
-	    		nyadFoot.setText(_repNyadF.getFootPoint().getFootName());
+	    		nyadFoot.setText(_repNyadF.getFoot().getFootName());
 	    		break;
     		case REALD:	
     			nyadName.setText(_repNyadD.getName());
 	    		nyadOrder.setText((new StringBuffer().append(_repNyadD.getMonadList().size())).toString());
 	    		nyadAlgOrder.setText((new StringBuffer().append(_repNyadD.getAlgebraList().size())).toString());
-	    		nyadFoot.setText(_repNyadD.getFootPoint().getFootName());
+	    		nyadFoot.setText(_repNyadD.getFoot().getFootName());
 	    		break;
     		case COMPLEXF:	
     			nyadName.setText(_repNyadCF.getName());
 	    		nyadOrder.setText((new StringBuffer().append(_repNyadCF.getMonadList().size())).toString());
 	    		nyadAlgOrder.setText((new StringBuffer().append(_repNyadCF.getAlgebraList().size())).toString());
-	    		nyadFoot.setText(_repNyadCF.getFootPoint().getFootName());
+	    		nyadFoot.setText(_repNyadCF.getFoot().getFootName());
 	    		break;
     		case COMPLEXD: 
     			nyadName.setText(_repNyadCD.getName());
 	    		nyadOrder.setText((new StringBuffer().append(_repNyadCD.getMonadList().size())).toString());
 	    		nyadAlgOrder.setText((new StringBuffer().append(_repNyadCD.getAlgebraList().size())).toString());
-	    		nyadFoot.setText(_repNyadCD.getFootPoint().getFootName());
+	    		nyadFoot.setText(_repNyadCD.getFoot().getFootName());
     	}
     }
 

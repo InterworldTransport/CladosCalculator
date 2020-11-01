@@ -68,17 +68,16 @@ import java.util.*;
 
  public class ViewerPanel extends JPanel implements ActionListener
 {
-	private static final long 				serialVersionUID = 4262057036375030572L;
-	public			CladosCalculator		_GUI;
-	private			CladosField				_repMode;
+	private	static final	Color			clrBackColor=new Color(255, 255, 220);
+	private static final	Dimension 		square 		= new Dimension(25,25);
+    public			CladosCalculator		_GUI;
+    private			CladosField				_repMode;
     private			JButton					btnCopyNyad;
     private			JButton					btnNewNyad;
     private			JButton					btnRemoveNyad;
     private			JButton					btnSwapAbove;
     private			JButton					btnSwapBelow;
-    private	final	Color					clrBackColor=new Color(255, 255, 220);
     private			JPanel					pnlControlBar;
-    private final	Dimension 				square = new Dimension(25,25);
     private 		ImageIcon				tabIcon;  
     protected		ArrayList<NyadPanel>	nyadPanelList;
     protected		JTabbedPane				nyadPanes;

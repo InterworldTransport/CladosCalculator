@@ -277,13 +277,13 @@ public class CreateDialog extends JDialog implements ActionListener
 					        	btnGetFoot.setToolTipText("Release Referenced Foot");
 					        	switch ((_GUI.appGeometryView.getNyadPanel(tSpot)).getRepMode())
 					        	{
-					        		case REALF:		copiedFoot=getNyadPanelFocus().getNyadRF().getFootPoint();
+					        		case REALF:		copiedFoot=getNyadPanelFocus().getNyadRF().getFoot();
 					        						break;
-					        		case REALD:		copiedFoot=getNyadPanelFocus().getNyadRD().getFootPoint();
+					        		case REALD:		copiedFoot=getNyadPanelFocus().getNyadRD().getFoot();
 					    							break;
-					        		case COMPLEXF:	copiedFoot=getNyadPanelFocus().getNyadCF().getFootPoint();
+					        		case COMPLEXF:	copiedFoot=getNyadPanelFocus().getNyadCF().getFoot();
 					    							break;
-					        		case COMPLEXD:	copiedFoot=getNyadPanelFocus().getNyadCD().getFootPoint();
+					        		case COMPLEXD:	copiedFoot=getNyadPanelFocus().getNyadCD().getFoot();
 					        	}
 					        	monadShort.foot.setText(copiedFoot.getFootName());
 					        	monadShort.foot.setFont(_PLAINFONT);
@@ -423,7 +423,7 @@ public class CreateDialog extends JDialog implements ActionListener
 			MonadComplexD rep = null;
 			if (copiedAlgCD != null)
 			{
-				if (copiedAlgCD.getFoot() != tNSpot.getFootPoint())
+				if (copiedAlgCD.getFoot() != tNSpot.getFoot())
 				{
 					_GUI.appStatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
 					return false;
@@ -487,7 +487,7 @@ public class CreateDialog extends JDialog implements ActionListener
 			MonadComplexF rep = null;
 			if (copiedAlgCF != null)
 			{
-				if (copiedAlgCF.getFoot() != tNSpot.getFootPoint())
+				if (copiedAlgCF.getFoot() != tNSpot.getFoot())
 				{
 					_GUI.appStatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
 					return false;
@@ -551,7 +551,7 @@ public class CreateDialog extends JDialog implements ActionListener
 			MonadRealD rep = null;
 			if (copiedAlgRD != null)
 			{
-				if (copiedAlgRD.getFoot() != tNSpot.getFootPoint())
+				if (copiedAlgRD.getFoot() != tNSpot.getFoot())
 				{
 					_GUI.appStatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
 					return false;
@@ -615,7 +615,7 @@ public class CreateDialog extends JDialog implements ActionListener
 			MonadRealF rep = null;
 			if (copiedAlgRF != null)
 			{
-				if (copiedAlgRF.getFoot() != tNSpot.getFootPoint())
+				if (copiedAlgRF.getFoot() != tNSpot.getFoot())
 				{
 					_GUI.appStatusBar.setStatusMsg("\n-->Chosen algebra had different foot from nyad. NO monad added.");
 					return false;

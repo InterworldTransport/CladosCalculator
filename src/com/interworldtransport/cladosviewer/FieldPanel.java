@@ -58,7 +58,6 @@ import javax.swing.border.BevelBorder;
 
  public class FieldPanel extends JPanel implements ActionListener, FocusListener
  {
-	private static final long serialVersionUID = -5507085437103006370L;
 	private static final int 					FONTSIZE = 			12;
 	private static final int 					_DOUBLESIZE = 		16;
 	private static final int 					_FLOATSIZE =	 	10;
@@ -203,20 +202,20 @@ import javax.swing.border.BevelBorder;
 					    		{
 						    		switch (_repMode)
 						    		{
-						    			case REALF:		_repRealF = (RealF) CladosField.REALF.createZERO(_repRealF.getCardinal());
+						    			case REALF:		_repRealF = (RealF) CladosField.REALF.createZERO(_repRealF);
 						    							_repRealF.setReal(Float.parseFloat(getRealText()));
 						    							setCoefficientDisplay(_repRealF.conjugate());
 						    							break;
-						    			case REALD:		_repRealD = (RealD) CladosField.REALD.createZERO(_repRealD.getCardinal());
+						    			case REALD:		_repRealD = (RealD) CladosField.REALD.createZERO(_repRealD);
 						    							_repRealD.setReal(Double.parseDouble(getRealText()));
 						    							setCoefficientDisplay(_repRealD.conjugate());
 														break;
-						    			case COMPLEXF:	_repComplexF = (ComplexF) CladosField.COMPLEXF.createZERO(_repComplexF.getCardinal()); 
+						    			case COMPLEXF:	_repComplexF = (ComplexF) CladosField.COMPLEXF.createZERO(_repComplexF); 
 						    							_repComplexF.setReal(Float.parseFloat(getRealText()));
 						    							_repComplexF.setImg(Float.parseFloat(getImgText()));
 						    							setCoefficientDisplay(_repComplexF.conjugate());
 														break;
-						    			case COMPLEXD:	_repComplexD = (ComplexD) CladosField.COMPLEXD.createZERO(_repComplexD.getCardinal()); 
+						    			case COMPLEXD:	_repComplexD = (ComplexD) CladosField.COMPLEXD.createZERO(_repComplexD); 
 						    							_repComplexD.setReal(Double.parseDouble(getRealText()));
 						    							_repComplexD.setImg(Double.parseDouble(getImgText()));
 														setCoefficientDisplay(_repComplexD.conjugate());
@@ -232,20 +231,20 @@ import javax.swing.border.BevelBorder;
 					    		{
 						    		switch (_repMode)
 						    		{
-						    			case REALF:		_repRealF = (RealF) CladosField.REALF.createZERO(_repRealF.getCardinal());
+						    			case REALF:		_repRealF = (RealF) CladosField.REALF.createZERO(_repRealF);
 														_repRealF.setReal(Float.parseFloat(getRealText()));
 						    							setCoefficientDisplay(_repRealF.invert());
 						    							break;
-						    			case REALD:		_repRealD = (RealD) CladosField.REALD.createZERO(_repRealD.getCardinal());
+						    			case REALD:		_repRealD = (RealD) CladosField.REALD.createZERO(_repRealD);
 														_repRealD.setReal(Double.parseDouble(getRealText()));
 														setCoefficientDisplay(_repRealD.invert());
 														break;
-						    			case COMPLEXF:	_repComplexF = (ComplexF) CladosField.COMPLEXF.createZERO(_repComplexF.getCardinal()); 
+						    			case COMPLEXF:	_repComplexF = (ComplexF) CladosField.COMPLEXF.createZERO(_repComplexF); 
 														_repComplexF.setReal(Float.parseFloat(getRealText()));
 														_repComplexF.setImg(Float.parseFloat(getImgText()));
 						    							setCoefficientDisplay(_repComplexF.invert());
 														break;
-						    			case COMPLEXD:	_repComplexD = (ComplexD) CladosField.COMPLEXD.createZERO(_repComplexD.getCardinal());  
+						    			case COMPLEXD:	_repComplexD = (ComplexD) CladosField.COMPLEXD.createZERO(_repComplexD);  
 														_repComplexD.setReal(Double.parseDouble(getRealText()));
 														_repComplexD.setImg(Double.parseDouble(getImgText()));
 														setCoefficientDisplay(_repComplexD.invert());
@@ -771,10 +770,7 @@ import javax.swing.border.BevelBorder;
     	{	
     		setRealText(Double.valueOf(pIn.getReal()).toString());
     		setImgText(Double.valueOf(pIn.getImg()).toString());
-    		if (pIn.getCardinal() != null)
-		    	setBackground(clrBackColor);
-		    else
-		    	setBackground(clrNullColor);
+    		setField(pIn);
     	}
     }
     /**
@@ -790,10 +786,7 @@ import javax.swing.border.BevelBorder;
     	{	
     		setRealText(Float.valueOf(pIn.getReal()).toString());
     		setImgText(Float.valueOf(pIn.getImg()).toString());
-    		if (pIn.getCardinal() != null)
-		    	setBackground(clrBackColor);
-		    else
-		    	setBackground(clrNullColor);
+    		setField(pIn);
     	}
     }
     /**
@@ -808,10 +801,7 @@ import javax.swing.border.BevelBorder;
     	if (_repMode == CladosField.REALD & pIn != null)
     	{	
     		setRealText(Double.valueOf(pIn.getReal()).toString());
-    		if (pIn.getCardinal() != null)
-		    	setBackground(clrBackColor);
-		    else
-		    	setBackground(clrNullColor);
+    		setField(pIn);
     	}
     }
     /**
@@ -826,10 +816,7 @@ import javax.swing.border.BevelBorder;
     	if (_repMode == CladosField.REALF & pIn != null)
     	{	
     		setRealText(Float.valueOf(pIn.getReal()).toString());
-    		if (pIn.getCardinal() != null)
-		    	setBackground(clrBackColor);
-		    else
-		    	setBackground(clrNullColor);
+    		setField(pIn);
     	}
     }
 	/**
