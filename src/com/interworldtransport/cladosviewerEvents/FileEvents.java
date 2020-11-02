@@ -24,7 +24,6 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-import java.awt.event.*;
 
 import javax.swing.JFileChooser;
 
@@ -32,6 +31,7 @@ import com.interworldtransport.cladosG.NyadComplexD;
 import com.interworldtransport.cladosG.NyadComplexF;
 import com.interworldtransport.cladosG.NyadRealD;
 import com.interworldtransport.cladosG.NyadRealF;
+
 import com.interworldtransport.cladosviewer.CladosCalculator;
 import com.interworldtransport.cladosviewer.NyadPanel;
 import com.interworldtransport.cladosviewer.ViewerMenu;
@@ -47,7 +47,7 @@ import com.interworldtransport.cladosviewer.ViewerMenu;
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class FileEvents implements ActionListener
+public class FileEvents 
 {
     protected 	FileSaveEvents		sp;
     protected 	FileSaveAsEvents	sa;
@@ -76,123 +76,55 @@ public class FileEvents implements ActionListener
     	fc = new JFileChooser();
 	    fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
     }
-
-/** 
- * This is the default action to be performed by all members of the File menu.
- * It will be overridden by specific members of the menu.
- */
-    public void actionPerformed(ActionEvent evt)
-    {
-    	;
-    }
     
     public String makeSnapshotContent()
 	{
     	if (_GUI.appGeometryView.getNyadListSize() == 0) return "Nothing in panels to save.";
     	
     	StringBuffer content=new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n");
-    	content.append("<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">\n");
     	content.append("<NyadList size=\""+_GUI.appGeometryView.getNyadListSize()+"\">\r\n");
     	
     	switch (_GUI.IniProps.getProperty("Desktop.File.Snapshot.FullXML"))
     	{
-	    	case "true":	for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels())
-							{
-								switch(tempNPN.getRepMode())
-								{
-									case REALF:		
-										NyadRealF tempNF=tempNPN.getNyadRF();
-										content.append(NyadRealF.toXMLFullString(tempNF));			
-										//content.append("\t<Nyad name=\""+tempNF.getName()+"\" ");
-										//content.append("order=\""+tempNF.getNyadOrder()+"\" ");
-										//content.append("foot=\""+tempNF.getFoot().getFootName()+"\">\r\n");
-										//content.append("\t\t<MonadList>\r\n");
-										//for (int m=0; m<tempNF.getNyadOrder(); m++)
-										//	content.append(MonadRealF.toXMLFullString(tempNF.getMonadList(m)));
-										break;
-									case REALD:		
-										NyadRealD tempND=tempNPN.getNyadRD();
-										content.append(NyadRealD.toXMLFullString(tempND));	
-										//content.append("\t<Nyad name=\""+tempND.getName()+"\" ");
-										//content.append("order=\""+tempND.getNyadOrder()+"\" ");
-										//content.append("foot=\""+tempND.getFoot().getFootName()+"\">\r\n");
-										//content.append("\t\t<MonadList>\r\n");
-										//for (int m=0; m<tempND.getNyadOrder(); m++)
-										//	content.append(MonadRealD.toXMLFullString(tempND.getMonadList(m)));
-										break;
-									case COMPLEXF:	
-										NyadComplexF tempNCF=tempNPN.getNyadCF();
-										content.append(NyadComplexF.toXMLFullString(tempNCF));
-										//content.append("\t<Nyad name=\""+tempNCF.getName()+"\" ");
-										//content.append("order=\""+tempNCF.getNyadOrder()+"\" ");
-										//content.append("foot=\""+tempNCF.getFoot().getFootName()+"\">\r\n");
-										//content.append("\t\t<MonadList>\r\n");
-										//for (int m=0; m<tempNCF.getNyadOrder(); m++)
-										//	content.append(MonadComplexF.toXMLFullString(tempNCF.getMonadList(m)));
-										break;
-									case COMPLEXD:	
-										NyadComplexD tempNCD=tempNPN.getNyadCD();
-										content.append(NyadComplexD.toXMLFullString(tempNCD));
-										//content.append("\t<Nyad name=\""+tempNCD.getName()+"\" ");
-										//content.append("order=\""+tempNCD.getNyadOrder()+"\" ");
-										//content.append("foot=\""+tempNCD.getFoot().getFootName()+"\">\r\n");
-										//content.append("\t\t<MonadList>\r\n");
-										//for (int m=0; m<tempNCD.getNyadOrder(); m++)
-										//	content.append(MonadComplexD.toXMLFullString(tempNCD.getMonadList(m)));
-								}
-								//content.append("\t\t</MonadList>\r\n");
-								//content.append("\t</Nyad>\r\n");
-							}
-	    					break;
-	    	case "false":	for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels())
-							{
-								switch(tempNPN.getRepMode())
-								{
-									case REALF:		
-										NyadRealF tempNF=tempNPN.getNyadRF();
-										content.append(NyadRealF.toXMLString(tempNF));	
-										//content.append("\t<Nyad name=\""+tempNF.getName()+"\" ");
-										//content.append("order=\""+tempNF.getNyadOrder()+"\" ");
-										//content.append("foot=\""+tempNF.getFoot().getFootName()+"\">\r\n");
-										//content.append("\t\t<MonadList>\r\n");
-										//for (int m=0; m<tempNF.getNyadOrder(); m++)
-										//	content.append(MonadRealF.toXMLString(tempNF.getMonadList(m)));
-										break;
-									case REALD:		
-										NyadRealD tempND=tempNPN.getNyadRD();
-										content.append(NyadRealD.toXMLString(tempND));
-										//content.append("\t<Nyad name=\""+tempND.getName()+"\" ");
-										//content.append("order=\""+tempND.getNyadOrder()+"\" ");
-										//content.append("foot=\""+tempND.getFoot().getFootName()+"\">\r\n");
-										//content.append("\t\t<MonadList>\r\n");
-										//for (int m=0; m<tempND.getNyadOrder(); m++)
-										//	content.append(MonadRealD.toXMLString(tempND.getMonadList(m)));
-										break;
-									case COMPLEXF:	
-										NyadComplexF tempNCF=tempNPN.getNyadCF();
-										content.append(NyadComplexF.toXMLString(tempNCF));
-										//content.append("\t<Nyad name=\""+tempNCF.getName()+"\" ");
-										//content.append("order=\""+tempNCF.getNyadOrder()+"\" ");
-										//content.append("foot=\""+tempNCF.getFoot().getFootName()+"\">\r\n");
-										//content.append("\t\t<MonadList>\r\n");
-										//for (int m=0; m<tempNCF.getNyadOrder(); m++)
-										//	content.append(MonadComplexF.toXMLString(tempNCF.getMonadList(m)));
-										break;
-									case COMPLEXD:	
-										NyadComplexD tempNCD=tempNPN.getNyadCD();
-										content.append(NyadComplexD.toXMLString(tempNCD));
-										//content.append("\t<Nyad name=\""+tempNCD.getName()+"\" ");
-										//content.append("order=\""+tempNCD.getNyadOrder()+"\" ");
-										//content.append("foot=\""+tempNCD.getFoot().getFootName()+"\">\r\n");
-										//content.append("\t\t<MonadList>\r\n");
-										//for (int m=0; m<tempNCD.getNyadOrder(); m++)
-										//	content.append(MonadComplexD.toXMLString(tempNCD.getMonadList(m)));
-								}
-								//content.append("\t\t</MonadList>\r\n");
-								//content.append("\t</Nyad>\r\n");
-							}
-	    					break;
-    		default:		content.append("\n<Empty />\n");
+    	case "true":	
+    		for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels())
+			{
+    			switch(tempNPN.getRepMode())
+				{
+				case REALF:
+					content.append(NyadRealF.toXMLFullString(tempNPN.getNyadRF()));
+					break;
+				case REALD:
+					content.append(NyadRealD.toXMLFullString(tempNPN.getNyadRD()));
+					break;
+				case COMPLEXF:
+					content.append(NyadComplexF.toXMLFullString(tempNPN.getNyadCF()));
+					break;
+				case COMPLEXD:
+					content.append(NyadComplexD.toXMLFullString(tempNPN.getNyadCD()));
+				}
+			}
+    		break;
+    	case "false":	
+    		for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels())
+			{
+    			switch(tempNPN.getRepMode())
+				{
+				case REALF:
+					content.append(NyadRealF.toXMLString(tempNPN.getNyadRF()));
+					break;
+				case REALD:
+					content.append(NyadRealD.toXMLString(tempNPN.getNyadRD()));
+					break;
+				case COMPLEXF:
+					content.append(NyadComplexF.toXMLString(tempNPN.getNyadCF()));
+					break;
+				case COMPLEXD:
+					content.append(NyadComplexD.toXMLString(tempNPN.getNyadCD()));
+				}
+			}
+    		break;
+		default:		content.append("\n<Empty />\n");
     	}
     	content.append("</NyadList>\r\n");
 		return content.toString();
