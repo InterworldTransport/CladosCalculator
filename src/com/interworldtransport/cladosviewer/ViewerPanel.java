@@ -181,7 +181,7 @@ import java.util.*;
 									    				_GUI.IniProps.getProperty("Desktop.Default.Sig"),
 									    				ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"))
 		    											);
-    		aNyad=new NyadComplexD(cnt, aMonad);
+    		aNyad=new NyadComplexD(cnt, aMonad, true);
     		// Now bootstrap the others using the first
     		short m=1;
     		while (m<monadCount)
@@ -235,7 +235,7 @@ import java.util.*;
 									    				_GUI.IniProps.getProperty("Desktop.Default.Sig"),
 									    				ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"))
 		    											);
-    		aNyad=new NyadComplexF(cnt, aMonad);
+    		aNyad=new NyadComplexF(cnt, aMonad, true);
     		// Now bootstrap the others using the first
     		short m=1;
     		while (m<monadCount)
@@ -288,7 +288,7 @@ import java.util.*;
 							    				_GUI.IniProps.getProperty("Desktop.Default.Sig"),
 							    				RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"))
     											);
-    		aNyad=new NyadRealD(cnt, aMonad);
+    		aNyad=new NyadRealD(cnt, aMonad, true);
     		// Now bootstrap the others using the first
     		short m=1;
     		while (m<monadCount)
@@ -341,7 +341,7 @@ import java.util.*;
 							    				_GUI.IniProps.getProperty("Desktop.Default.Sig"),
 							    				RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"))
     											);
-    		aNyad=new NyadRealF(cnt, aMonad);
+    		aNyad=new NyadRealF(cnt, aMonad, true);
     		// Now bootstrap the others using the first
     		short m=1;
     		while (m<monadCount)
@@ -393,25 +393,25 @@ import java.util.*;
 				case REALF:		
 					NyadRealF focusNyadRF=getNyadPanel(getPaneFocus()).getNyadRF();
 					buildName=new StringBuffer(focusNyadRF.getName()).append("_c").toString();
-					NyadRealF newNyadCopyRF=new NyadRealF(buildName, focusNyadRF);
+					NyadRealF newNyadCopyRF=new NyadRealF(buildName, focusNyadRF, true);
 					addNyad(newNyadCopyRF);
 					break;
 				case REALD:		
 					NyadRealD focusNyadRD=getNyadPanel(getPaneFocus()).getNyadRD();
 					buildName=new StringBuffer(focusNyadRD.getName()).append("_c").toString();
-					NyadRealD newNyadCopyRD=new NyadRealD(buildName, focusNyadRD);
+					NyadRealD newNyadCopyRD=new NyadRealD(buildName, focusNyadRD, true);
 					addNyad(newNyadCopyRD);
 					break;
 				case COMPLEXF:	
 					NyadComplexF focusNyadCF=getNyadPanel(getPaneFocus()).getNyadCF();
 					buildName=new StringBuffer(focusNyadCF.getName()).append("_c").toString();
-					NyadComplexF newNyadCopyCF=new NyadComplexF(buildName, focusNyadCF);
+					NyadComplexF newNyadCopyCF=new NyadComplexF(buildName, focusNyadCF, true);
 					addNyad(newNyadCopyCF);
 					break;
 				case COMPLEXD:	
 					NyadComplexD focusNyadCD=getNyadPanel(getPaneFocus()).getNyadCD();
 					buildName=new StringBuffer(focusNyadCD.getName()).append("_c").toString();
-					NyadComplexD newNyadCopyCD=new NyadComplexD(buildName, focusNyadCD);
+					NyadComplexD newNyadCopyCD=new NyadComplexD(buildName, focusNyadCD, true);
 					addNyad(newNyadCopyCD);
 			}
 		}

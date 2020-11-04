@@ -429,7 +429,7 @@ public class CreateDialog extends JDialog implements ActionListener
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
 				
-				ComplexD[] tC = new ComplexD[copiedAlgCD.getGProduct().getBladeCount()];
+				ComplexD[] tC = new ComplexD[copiedAlgCD.getBladeCount()];
 				for (short m=0; m<tC.length; m++)
 					tC[m] = (ComplexD) CladosField.COMPLEXD.createZERO(AlgebraComplexD.shareCardinal(copiedAlgCD));
 				
@@ -493,7 +493,7 @@ public class CreateDialog extends JDialog implements ActionListener
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
 				
-				ComplexF[] tC = new ComplexF[copiedAlgCF.getGProduct().getBladeCount()];
+				ComplexF[] tC = new ComplexF[copiedAlgCF.getBladeCount()];
 				for (short m=0; m<tC.length; m++)
 					tC[m] = (ComplexF) CladosField.COMPLEXF.createZERO(AlgebraComplexF.shareCardinal(copiedAlgCF));
 				
@@ -557,7 +557,7 @@ public class CreateDialog extends JDialog implements ActionListener
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
 				
-				RealD[] tC = new RealD[copiedAlgRD.getGProduct().getBladeCount()];
+				RealD[] tC = new RealD[copiedAlgRD.getBladeCount()];
 				for (short m=0; m<tC.length; m++)
 					tC[m]=(RealD) CladosField.REALD.createZERO(AlgebraRealD.shareCardinal(copiedAlgRD));
 				
@@ -621,7 +621,7 @@ public class CreateDialog extends JDialog implements ActionListener
 					return false;
 				}	//Foot reference match ensured. Algebra reference mismatch ensured. Moving on.
 				
-				RealF[] tC = new RealF[copiedAlgRF.getGProduct().getBladeCount()];
+				RealF[] tC = new RealF[copiedAlgRF.getBladeCount()];
 				for (short m=0; m<tC.length; m++)
 					tC[m]=(RealF) CladosField.REALF.createZERO(AlgebraRealF.shareCardinal(copiedAlgRF));
 				
@@ -676,13 +676,13 @@ public class CreateDialog extends JDialog implements ActionListener
 		boolean test=false;
 		if (copiedAlgCD != null) // Algebra's foot dominates separately chosen Foot
 		{
-			ComplexD[] tC = new ComplexD[copiedAlgCF.getGProduct().getBladeCount()];
+			ComplexD[] tC = new ComplexD[copiedAlgCF.getBladeCount()];
 			for (short m=0; m<tC.length; m++)	tC[m]=(ComplexD) CladosField.COMPLEXD.createZERO(AlgebraComplexD.shareCardinal(copiedAlgCD));
 			MonadComplexD rep=new MonadComplexD(monadShort.name.getText(),
 												copiedAlgCD,
 												monadShort.frame.getText(),
 												tC);
-			NyadComplexD rep2=new NyadComplexD("New", rep);
+			NyadComplexD rep2=new NyadComplexD("New", rep, false);
 			test = true;
     		_GUI.appGeometryView.addNyad(rep2);
 		}
@@ -694,7 +694,7 @@ public class CreateDialog extends JDialog implements ActionListener
 												copiedFoot,
 												monadShort.sig.getText(),
 												(ComplexD) CladosField.COMPLEXD.createZERO(monadShort.cardname.getText()));
-			NyadComplexD rep2=new NyadComplexD("New", rep);
+			NyadComplexD rep2=new NyadComplexD("New", rep, false);
     		_GUI.appGeometryView.addNyad(rep2);
     		test = true;
 		}
@@ -706,7 +706,7 @@ public class CreateDialog extends JDialog implements ActionListener
     											monadShort.foot.getText(),
     											monadShort.sig.getText(),
     											(ComplexD) CladosField.COMPLEXD.createZERO(monadShort.cardname.getText()));
-			NyadComplexD rep2=new NyadComplexD("New", rep);
+			NyadComplexD rep2=new NyadComplexD("New", rep, false);
     		test = true;
     		_GUI.appGeometryView.addNyad(rep2);
 		}
@@ -717,13 +717,13 @@ public class CreateDialog extends JDialog implements ActionListener
 		boolean test=false;
 		if (copiedAlgCF != null) // Algebra's foot dominates separately chosen Foot
 		{
-			ComplexF[] tC = new ComplexF[copiedAlgCF.getGProduct().getBladeCount()];
+			ComplexF[] tC = new ComplexF[copiedAlgCF.getBladeCount()];
 			for (short m=0; m<tC.length; m++)	tC[m]=(ComplexF) CladosField.COMPLEXF.createZERO(AlgebraComplexF.shareCardinal(copiedAlgCF));
 			MonadComplexF rep=new MonadComplexF(monadShort.name.getText(),
 												copiedAlgCF,
 												monadShort.frame.getText(),
 												tC);
-			NyadComplexF rep2=new NyadComplexF("New", rep);
+			NyadComplexF rep2=new NyadComplexF("New", rep, false);
 			test = true;
     		_GUI.appGeometryView.addNyad(rep2);
 		}
@@ -735,7 +735,7 @@ public class CreateDialog extends JDialog implements ActionListener
 												copiedFoot,
 												monadShort.sig.getText(),
 												(ComplexF) CladosField.COMPLEXF.createZERO(monadShort.cardname.getText()));
-			NyadComplexF rep2=new NyadComplexF("New", rep);
+			NyadComplexF rep2=new NyadComplexF("New", rep, false);
     		_GUI.appGeometryView.addNyad(rep2);
     		test = true;
 		}
@@ -747,7 +747,7 @@ public class CreateDialog extends JDialog implements ActionListener
     											monadShort.foot.getText(),
     											monadShort.sig.getText(),
     											(ComplexF) CladosField.COMPLEXF.createZERO(monadShort.cardname.getText()));
-    		NyadComplexF rep2=new NyadComplexF("New", rep);
+    		NyadComplexF rep2=new NyadComplexF("New", rep, false);
     		test = true;
     		_GUI.appGeometryView.addNyad(rep2);
 		}
@@ -758,13 +758,13 @@ public class CreateDialog extends JDialog implements ActionListener
 		boolean test=false;
 		if (copiedAlgRD != null) // Algebra's foot dominates separately chosen Foot
 		{
-			RealD[] tC = new RealD[copiedAlgRD.getGProduct().getBladeCount()];
+			RealD[] tC = new RealD[copiedAlgRD.getBladeCount()];
 			for (short m=0; m<tC.length; m++)	tC[m]=(RealD) CladosField.REALD.createZERO(AlgebraRealD.shareCardinal(copiedAlgRD));
 			MonadRealD rep=new MonadRealD(	monadShort.name.getText(),
 											copiedAlgRD,
 											monadShort.frame.getText(),
 											tC);
-			NyadRealD rep2=new NyadRealD("New", rep);
+			NyadRealD rep2=new NyadRealD("New", rep, false);
 			test = true;
     		_GUI.appGeometryView.addNyad(rep2);
 		}
@@ -776,7 +776,7 @@ public class CreateDialog extends JDialog implements ActionListener
 											copiedFoot,
 											monadShort.sig.getText(),
 											(RealD) CladosField.REALD.createZERO(monadShort.cardname.getText()));
-			NyadRealD rep2=new NyadRealD("New", rep);
+			NyadRealD rep2=new NyadRealD("New", rep, false);
     		_GUI.appGeometryView.addNyad(rep2);
     		test = true;
 		}
@@ -788,7 +788,7 @@ public class CreateDialog extends JDialog implements ActionListener
     										monadShort.foot.getText(),
     										monadShort.sig.getText(),
     										(RealD) CladosField.REALD.createZERO(monadShort.cardname.getText()));
-    		NyadRealD rep2=new NyadRealD("New", rep);
+    		NyadRealD rep2=new NyadRealD("New", rep, false);
     		test = true;
     		_GUI.appGeometryView.addNyad(rep2);
 		}
@@ -800,13 +800,13 @@ public class CreateDialog extends JDialog implements ActionListener
 		boolean test=false;
 		if (copiedAlgRF != null) // Algebra's foot dominates separately chosen Foot
 		{
-			RealF[] tC = new RealF[copiedAlgRF.getGProduct().getBladeCount()];
+			RealF[] tC = new RealF[copiedAlgRF.getBladeCount()];
 			for (short m=0; m<tC.length; m++)	tC[m]=(RealF) CladosField.REALF.createZERO(AlgebraRealF.shareCardinal(copiedAlgRF));
 			MonadRealF rep=new MonadRealF(	monadShort.name.getText(),
 											copiedAlgRF,
 											monadShort.frame.getText(),
 											tC);
-			NyadRealF rep2=new NyadRealF("New", rep);
+			NyadRealF rep2=new NyadRealF("New", rep, false);
 			test = true;
     		_GUI.appGeometryView.addNyad(rep2);
 		}
@@ -818,7 +818,7 @@ public class CreateDialog extends JDialog implements ActionListener
 											copiedFoot,
 											monadShort.sig.getText(),
 											(RealF) CladosField.REALF.createZERO(monadShort.cardname.getText()));
-			NyadRealF rep2=new NyadRealF("New", rep);
+			NyadRealF rep2=new NyadRealF("New", rep, false);
     		_GUI.appGeometryView.addNyad(rep2);
     		test = true;
 		}
@@ -830,7 +830,7 @@ public class CreateDialog extends JDialog implements ActionListener
     										monadShort.foot.getText(),
     										monadShort.sig.getText(),
     										(RealF) CladosField.REALF.createZERO(monadShort.cardname.getText()));
-    		NyadRealF rep2=new NyadRealF("New", rep);
+    		NyadRealF rep2=new NyadRealF("New", rep, false);
     		test = true;
     		_GUI.appGeometryView.addNyad(rep2);
 		}
