@@ -33,14 +33,11 @@ import com.interworldtransport.cladosviewerExceptions.CantGetIniException;
 
 import java.awt.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.util.*;
 import java.io.*;
-import java.net.URL;
 /**
  * The MonadViewer class will display Nyads and Monads and allow the user to
  * manipulate them via methods similar to old four-function calculators

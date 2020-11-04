@@ -6,7 +6,7 @@
 <entry key="Desktop.Image.Key">icons/key.png</entry>
 <entry key="Desktop.Image.Alg">icons/alg.png</entry>
 <entry key="Desktop.Default.Sig">-+++</entry>
-<entry key="Desktop.Default.Count">2</entry>
+<entry key="Desktop.Default.Count">1</entry>
 <entry key="Desktop.File.Snapshot">SavedObjects.xml</entry>
 <entry key="Desktop.Image.Sig">icons/sig.png</entry>
 <entry key="Desktop.Image.Cardinal">icons/cardinal.png</entry>
@@ -14,11 +14,11 @@
 <entry key="Desktop.Default.Cardinal">unitless</entry>
 <entry key="Desktop.Default.BaseName">wkc_</entry>
 <entry key="Desktop.File.Properties">conf/CladosCalculator.xml</entry>
-<entry key="Desktop.Default.Order">2</entry>
+<entry key="Desktop.Default.Order">1</entry>
 <entry key="User.Name">Alfred Differ</entry>
 <entry key="Desktop.File.Snapshot.FullXML">true</entry>
-<entry key="Desktop.Default.FrameName">portrait</entry>
-<entry key="Desktop.Default.DivField">RealD</entry>
+<entry key="Desktop.Default.FrameName">gilded</entry>
+<entry key="Desktop.Default.DivField">ComplexD</entry>
 <entry key="User.EmailDomain">gmail.com</entry>
 <entry key="Desktop.Default.FootName">wkc</entry>
 <entry key="Desktop.Version">0.86</entry>
