@@ -31,7 +31,7 @@ import com.interworldtransport.cladosF.ComplexD;
 import com.interworldtransport.cladosF.ComplexF;
 import com.interworldtransport.cladosF.RealD;
 import com.interworldtransport.cladosF.RealF;
-
+import com.interworldtransport.cladosG.MonadAbstract;
 import com.interworldtransport.cladosG.MonadComplexD;
 import com.interworldtransport.cladosG.MonadComplexF;
 import com.interworldtransport.cladosG.MonadRealD;
@@ -57,7 +57,6 @@ import java.util.*;
  */
 
 public class MonadPanel extends JPanel implements ActionListener, FocusListener {
-	private static final long serialVersionUID = 7012167884382905369L;
 	private static final String _IMAGINARY = "[I]";
 	private static final String _REAL = "[R]";
 	private static final Color clrBackColor = new Color(212, 212, 192);
@@ -644,6 +643,28 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		return _repMonadF;
 	}
 
+	/**
+	 * This method provides to the caller a monad held in this panel based on the
+	 * CladosField requested.
+	 * 
+	 * @param pIn One of the CladosField enumerations
+	 * @return MonadAbstract
+	 */
+	public MonadAbstract getMonad(CladosField pIn) {
+		switch (pIn) {
+		case REALF:
+			return _repMonadF;
+		case REALD:
+			return _repMonadD;
+		case COMPLEXF:
+			return _repMonadCF;
+		case COMPLEXD:
+			return _repMonadCD;
+		default:
+			return null;
+		}
+	}
+
 	public CladosField getRepMode() {
 		return _repMode;
 	}
@@ -756,7 +777,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 					pnlMonadCoeffPanel.add(headLabel, cn1);
 					cn1.gridy++;
 
-					tSpot = _repMonadF.getAlgebra().getGProduct().getGradeRange(j);
+					tSpot = _repMonadF.getAlgebra().getGradeRange(j);
 					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
 						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
@@ -773,7 +794,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 					pnlMonadCoeffPanel.add(headLabel, cn1);
 					cn1.gridy++;
 
-					tSpot = _repMonadD.getAlgebra().getGProduct().getGradeRange(j);
+					tSpot = _repMonadD.getAlgebra().getGradeRange(j);
 					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
 						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
@@ -790,7 +811,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 					pnlMonadCoeffPanel.add(headLabel, cn1);
 					cn1.gridy++;
 
-					tSpot = _repMonadCF.getAlgebra().getGProduct().getGradeRange(j);
+					tSpot = _repMonadCF.getAlgebra().getGradeRange(j);
 					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
 						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
@@ -807,7 +828,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 					pnlMonadCoeffPanel.add(headLabel, cn1);
 					cn1.gridy++;
 
-					tSpot = _repMonadCD.getAlgebra().getGProduct().getGradeRange(j);
+					tSpot = _repMonadCD.getAlgebra().getGradeRange(j);
 					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
 						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
@@ -832,7 +853,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 					pnlMonadCoeffPanel.add(headLabel, cn1);
 					cn1.gridx++;
 
-					tSpot = _repMonadF.getAlgebra().getGProduct().getGradeRange(j);
+					tSpot = _repMonadF.getAlgebra().getGradeRange(j);
 					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
 						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
@@ -849,7 +870,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 					pnlMonadCoeffPanel.add(headLabel, cn1);
 					cn1.gridx++;
 
-					tSpot = _repMonadD.getAlgebra().getGProduct().getGradeRange(j);
+					tSpot = _repMonadD.getAlgebra().getGradeRange(j);
 					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
 						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
@@ -866,7 +887,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 					pnlMonadCoeffPanel.add(headLabel, cn1);
 					cn1.gridx++;
 
-					tSpot = _repMonadCF.getAlgebra().getGProduct().getGradeRange(j);
+					tSpot = _repMonadCF.getAlgebra().getGradeRange(j);
 					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
 						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
@@ -883,7 +904,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 					pnlMonadCoeffPanel.add(headLabel, cn1);
 					cn1.gridx++;
 
-					tSpot = _repMonadCD.getAlgebra().getGProduct().getGradeRange(j);
+					tSpot = _repMonadCD.getAlgebra().getGradeRange(j);
 					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
 						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
