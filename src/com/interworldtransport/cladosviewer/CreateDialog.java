@@ -46,10 +46,11 @@ import javax.swing.border.*;
  * supposed to show a window that would allow a user to add a new Monad to the
  * stack in the Monad Viewer.
  * 
- * @version 0.85
+ * @version 0.86
  * @author Dr Alfred W Differ
  */
 public class CreateDialog extends JDialog implements ActionListener {
+	private static final long serialVersionUID = -7986167685794915609L;
 	private static final Font _ITALICFONT = new Font(Font.SERIF, Font.ITALIC, 10);
 	private final static Color _monadColor = new Color(212, 212, 192);
 	private final static Color _nyadColor = new Color(212, 200, 212);
@@ -73,19 +74,12 @@ public class CreateDialog extends JDialog implements ActionListener {
 		try {
 			tCD = new CreateDialog(pGUI, false, pMode);
 		} catch (UtilitiesException e) {
-			// Do nothing. Exception implies user doesn't get to create
-			// anything, so nothing is the correct action.
 			ErrorDialog.show("Couldn't construct create dialog.", "Utilities Exception");
 		} catch (BadSignatureException es) {
-			// Do nothing. Exception implies user doesn't get to create
-			// anything, so nothing is the correct action.
 			ErrorDialog.show("Couldn't construct create dialog.", "Bad Signatures Exception");
 		} catch (CladosMonadException em) {
-			// Do nothing. Exception implies user doesn't get to create
-			// anything, so nothing is the correct action.
 			ErrorDialog.show("Couldn't construct create dialog.", "Clados Monad Exception");
 		}
-
 		return tCD;
 	}
 
@@ -105,16 +99,10 @@ public class CreateDialog extends JDialog implements ActionListener {
 		try {
 			tCD = new CreateDialog(pGUI, true, pMode);
 		} catch (UtilitiesException e) {
-			// Do nothing. Exception implies user doesn't get to create
-			// anything, so nothing is the correct action.
 			ErrorDialog.show("Couldn't construct create dialog.", "Utilities Exception");
 		} catch (BadSignatureException es) {
-			// Do nothing. Exception implies user doesn't get to create
-			// anything, so nothing is the correct action.
 			ErrorDialog.show("Couldn't construct create dialog.", "Bad Signatures Exception");
 		} catch (CladosMonadException em) {
-			// Do nothing. Exception implies user doesn't get to create
-			// anything, so nothing is the correct action.
 			ErrorDialog.show("Couldn't construct create dialog.", "Clados Monad Exception");
 		}
 		return tCD;
@@ -300,8 +288,6 @@ public class CreateDialog extends JDialog implements ActionListener {
 				return; // No nyad chosen to get Foot
 			btnGetAlgebra.setActionCommand(".getalg.");
 			btnGetAlgebra.setToolTipText("Release Referenced Algebra");
-			// NyadPanel tSpotNPanel = getNyadPanelFocus();
-			// int tSpotMonadIndex = getMonadPaneFocus();
 			if (getMonadPaneFocus() < 0)
 				return; // No monad in the focus to get its algebra
 
@@ -394,28 +380,26 @@ public class CreateDialog extends JDialog implements ActionListener {
 					if (copyARF != null) {
 						appendMonadUsingAlg(_repMode, tPots, (NyadRealF) tPots.getNyad(_repMode));
 					} else
-						appendMonadRF(tPots, (NyadRealF) tPots.getNyad(_repMode));
-					break;
+						appendMonad(_repMode, tPots, (NyadRealF) tPots.getNyad(_repMode));
+					return;
 				case REALD:
 					if (copyARD != null) {
 						appendMonadUsingAlg(_repMode, tPots, (NyadRealD) tPots.getNyad(_repMode));
 					} else
-						appendMonadRD(tPots, (NyadRealD) tPots.getNyad(_repMode));
-					break;
+						appendMonad(_repMode, tPots, (NyadRealD) tPots.getNyad(_repMode));
+					return;
 				case COMPLEXF:
 					if (copyACF != null) {
 						appendMonadUsingAlg(_repMode, tPots, (NyadComplexF) tPots.getNyad(_repMode));
 					} else
-						appendMonadCF(tPots, (NyadComplexF) tPots.getNyad(_repMode));
-					break;
+						appendMonad(_repMode, tPots, (NyadComplexF) tPots.getNyad(_repMode));
+					return;
 				case COMPLEXD:
 					if (copyACD != null) {
 						appendMonadUsingAlg(_repMode, tPots, (NyadComplexD) tPots.getNyad(_repMode));
 					} else
-						appendMonadCD(tPots, (NyadComplexD) tPots.getNyad(_repMode));
+						appendMonad(_repMode, tPots, (NyadComplexD) tPots.getNyad(_repMode));
 				}
-				// TODO move appendMonad method calls to one method and shift it here passing
-				// _repMode
 			} catch (BadSignatureException es) {
 				ErrorDialog.show("Could not save new monad./n" + es.getSourceMessage(), "Bad Signature Exception.");
 			} catch (GeneratorRangeException e) {
@@ -430,35 +414,36 @@ public class CreateDialog extends JDialog implements ActionListener {
 		}
 	}
 
-	private void appendMonadCD(NyadPanel tNSpotP, NyadComplexD tNSpot)
+	private void appendMonad(CladosField pRep, NyadPanel tNSpotP, NyadAbstract tNSpot)
 			throws BadSignatureException, GeneratorRangeException, CladosMonadException, CladosNyadException {
-		// TODO Change the parameter to a NyadAbstract and then check what it is to
-		// switch on it
-		tNSpot.createMonad(monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
-				monadShort.sig.getText(), monadShort.cardname.getText());
-		tNSpotP.addMonadPanel(tNSpot.getMonadList(tNSpot.getNyadOrder() - 1));
-	}
-
-	private void appendMonadCF(NyadPanel tNSpotP, NyadComplexF tNSpot)
-			throws BadSignatureException, GeneratorRangeException, CladosMonadException, CladosNyadException {
-		tNSpot.createMonad(monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
-				monadShort.sig.getText(), monadShort.cardname.getText());
-		tNSpotP.addMonadPanel(tNSpot.getMonadList(tNSpot.getNyadOrder() - 1));
-	}
-
-	private void appendMonadRD(NyadPanel tNSpotP, NyadRealD tNSpot)
-			throws BadSignatureException, GeneratorRangeException, CladosMonadException, CladosNyadException {
-		tNSpot.createMonad(monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
-				monadShort.sig.getText(), monadShort.cardname.getText());
-		tNSpotP.addMonadPanel(tNSpot.getMonadList(tNSpot.getNyadOrder() - 1));
-
-	}
-
-	private void appendMonadRF(NyadPanel tNSpotP, NyadRealF tNSpot)
-			throws BadSignatureException, GeneratorRangeException, CladosMonadException, CladosNyadException {
-		tNSpot.createMonad(monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
-				monadShort.sig.getText(), monadShort.cardname.getText());
-		tNSpotP.addMonadPanel(tNSpot.getMonadList(tNSpot.getNyadOrder() - 1));
+		switch (pRep) {
+		case REALF:
+			NyadRealD tSpotRF = (NyadRealD) tNSpot;
+			tSpotRF.createMonad(monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
+					monadShort.sig.getText(), monadShort.cardname.getText());
+			tNSpotP.addMonadPanel(tSpotRF.getMonadList(tSpotRF.getNyadOrder() - 1));
+			return;
+		case REALD:
+			NyadRealD tSpotRD = (NyadRealD) tNSpot;
+			tSpotRD.createMonad(monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
+					monadShort.sig.getText(), monadShort.cardname.getText());
+			tNSpotP.addMonadPanel(tSpotRD.getMonadList(tSpotRD.getNyadOrder() - 1));
+			return;
+		case COMPLEXF:
+			NyadComplexF tSpotCF = (NyadComplexF) tNSpot;
+			tSpotCF.createMonad(monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
+					monadShort.sig.getText(), monadShort.cardname.getText());
+			tNSpotP.addMonadPanel(tSpotCF.getMonadList(tSpotCF.getNyadOrder() - 1));
+			return;
+		case COMPLEXD:
+			NyadComplexD tSpotCD = (NyadComplexD) tNSpot;
+			tSpotCD.createMonad(monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
+					monadShort.sig.getText(), monadShort.cardname.getText());
+			tNSpotP.addMonadPanel(tSpotCD.getMonadList(tSpotCD.getNyadOrder() - 1));
+			return;
+		default:
+			return;
+		}
 	}
 
 	private void appendMonadUsingAlg(CladosField pRep, NyadPanel tNSpotP, NyadAbstract tNSpot)
@@ -530,40 +515,34 @@ public class CreateDialog extends JDialog implements ActionListener {
 			CladosMonadException, CladosNyadException {
 		switch (pRep) {
 		case REALF:
-			NyadRealF rep = new NyadRealF("New",
-					(MonadRealF) CladosGMonad.REALF.createZero(
+			_GUI.appGeometryView.addNyad(pRep,
+					(NyadRealF) CladosGNyad.REALF.createWithMonad((MonadRealF) CladosGMonad.REALF.createZero(
 							(RealF) CladosField.REALF.createZERO(monadShort.cardname.getText()),
 							monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
-							monadShort.foot.getText(), monadShort.sig.getText()),
-					false);
-			_GUI.appGeometryView.addNyad(rep);
+							monadShort.foot.getText(), monadShort.sig.getText()), "New"));
 			break;
 		case REALD:
-			NyadRealD rep2 = new NyadRealD("New",
-					(MonadRealD) CladosGMonad.REALD.createZero(
+			_GUI.appGeometryView.addNyad(pRep,
+					(NyadRealD) CladosGNyad.REALD.createWithMonad((MonadRealD) CladosGMonad.REALD.createZero(
 							(RealD) CladosField.REALD.createZERO(monadShort.cardname.getText()),
 							monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
-							monadShort.foot.getText(), monadShort.sig.getText()),
-					false);
-			_GUI.appGeometryView.addNyad(rep2);
+							monadShort.foot.getText(), monadShort.sig.getText()), "New"));
 			break;
 		case COMPLEXF:
-			NyadComplexF rep3 = new NyadComplexF("New",
-					(MonadComplexF) CladosGMonad.COMPLEXF.createZero(
-							(ComplexF) CladosField.COMPLEXF.createZERO(monadShort.cardname.getText()),
-							monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
-							monadShort.foot.getText(), monadShort.sig.getText()),
-					false);
-			_GUI.appGeometryView.addNyad(rep3);
+			_GUI.appGeometryView.addNyad(pRep,
+					(NyadComplexF) CladosGNyad.COMPLEXF.createWithMonad((MonadComplexF) CladosGMonad.COMPLEXF
+							.createZero((ComplexF) CladosField.COMPLEXF.createZERO(monadShort.cardname.getText()),
+									monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
+									monadShort.foot.getText(), monadShort.sig.getText()),
+							"New"));
 			break;
 		case COMPLEXD:
-			NyadComplexD rep4 = new NyadComplexD("New",
-					(MonadComplexD) CladosGMonad.COMPLEXD.createZero(
-							(ComplexD) CladosField.COMPLEXD.createZERO(monadShort.cardname.getText()),
-							monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
-							monadShort.foot.getText(), monadShort.sig.getText()),
-					false);
-			_GUI.appGeometryView.addNyad(rep4);
+			_GUI.appGeometryView.addNyad(pRep,
+					(NyadComplexD) CladosGNyad.COMPLEXD.createWithMonad((MonadComplexD) CladosGMonad.COMPLEXD
+							.createZero((ComplexD) CladosField.COMPLEXD.createZERO(monadShort.cardname.getText()),
+									monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
+									monadShort.foot.getText(), monadShort.sig.getText()),
+							"New"));
 		}
 	}
 
@@ -571,40 +550,34 @@ public class CreateDialog extends JDialog implements ActionListener {
 			GeneratorRangeException, CladosMonadException, CladosNyadException {
 		switch (pRep) {
 		case REALF:
-			NyadRealF rep = new NyadRealF("New",
-					(MonadRealF) CladosGMonad.REALF.createWithFoot(
-							(RealD) CladosField.REALF.createZERO(monadShort.cardname.getText()), copyFoot,
+			_GUI.appGeometryView.addNyad(pRep,
+					(NyadRealF) CladosGNyad.REALF.createWithMonad((MonadRealF) CladosGMonad.REALF.createWithFoot(
+							(RealF) CladosField.REALF.createZERO(monadShort.cardname.getText()), copyFoot,
 							monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
-							monadShort.sig.getText()),
-					false);
-			_GUI.appGeometryView.addNyad(rep);
+							monadShort.sig.getText()), "New"));
 			break;
 		case REALD:
-			NyadRealD rep2 = new NyadRealD("New",
-					(MonadRealD) CladosGMonad.REALD.createWithFoot(
+			_GUI.appGeometryView.addNyad(pRep,
+					(NyadRealD) CladosGNyad.REALD.createWithMonad((MonadRealD) CladosGMonad.REALD.createWithFoot(
 							(RealD) CladosField.REALD.createZERO(monadShort.cardname.getText()), copyFoot,
 							monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
-							monadShort.sig.getText()),
-					false);
-			_GUI.appGeometryView.addNyad(rep2);
+							monadShort.sig.getText()), "New"));
 			break;
 		case COMPLEXF:
-			NyadComplexF rep3 = new NyadComplexF("New",
-					(MonadComplexF) CladosGMonad.COMPLEXF.createWithFoot(
-							(ComplexF) CladosField.COMPLEXF.createZERO(monadShort.cardname.getText()), copyFoot,
-							monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
-							monadShort.sig.getText()),
-					false);
-			_GUI.appGeometryView.addNyad(rep3);
+			_GUI.appGeometryView.addNyad(pRep,
+					(NyadComplexF) CladosGNyad.COMPLEXF.createWithMonad((MonadComplexF) CladosGMonad.COMPLEXF
+							.createWithFoot((ComplexF) CladosField.COMPLEXF.createZERO(monadShort.cardname.getText()),
+									copyFoot, monadShort.name.getText(), monadShort.aname.getText(),
+									monadShort.frame.getText(), monadShort.sig.getText()),
+							"New"));
 			break;
 		case COMPLEXD:
-			NyadComplexD rep4 = new NyadComplexD("New",
-					(MonadComplexD) CladosGMonad.COMPLEXD.createWithFoot(
-							(ComplexD) CladosField.COMPLEXD.createZERO(monadShort.cardname.getText()), copyFoot,
-							monadShort.name.getText(), monadShort.aname.getText(), monadShort.frame.getText(),
-							monadShort.sig.getText()),
-					false);
-			_GUI.appGeometryView.addNyad(rep4);
+			_GUI.appGeometryView.addNyad(pRep,
+					(NyadComplexD) CladosGNyad.COMPLEXD.createWithMonad((MonadComplexD) CladosGMonad.COMPLEXD
+							.createWithFoot((ComplexD) CladosField.COMPLEXD.createZERO(monadShort.cardname.getText()),
+									copyFoot, monadShort.name.getText(), monadShort.aname.getText(),
+									monadShort.frame.getText(), monadShort.sig.getText()),
+							"New"));
 		}
 	}
 
@@ -616,33 +589,35 @@ public class CreateDialog extends JDialog implements ActionListener {
 			tC = CladosFListBuilder.createRealF(copyARF.getBladeCount());
 			for (short m = 0; m < tC.length; m++)
 				tC[m] = (RealF) CladosField.REALF.createZERO(copyARF.shareCardinal());
-			NyadRealF rep = new NyadRealF("New", (MonadRealF) CladosGMonad.REALF.createWithAlgebra(tC, copyARF,
-					monadShort.name.getText(), monadShort.frame.getText()), false);
-			_GUI.appGeometryView.addNyad(rep);
+			_GUI.appGeometryView.addNyad(pRep,
+					(NyadRealF) CladosGNyad.REALF.createWithMonad((MonadRealF) CladosGMonad.REALF.createWithAlgebra(tC,
+							copyARF, monadShort.name.getText(), monadShort.frame.getText()), "New"));
 			break;
 		case REALD:
 			tC = CladosFListBuilder.createRealD(copyARD.getBladeCount());
 			for (short m = 0; m < tC.length; m++)
 				tC[m] = (RealD) CladosField.REALD.createZERO(copyARD.shareCardinal());
-			NyadRealD rep2 = new NyadRealD("New", (MonadRealD) CladosGMonad.REALD.createWithAlgebra(tC, copyARD,
-					monadShort.name.getText(), monadShort.frame.getText()), false);
-			_GUI.appGeometryView.addNyad(rep2);
+			_GUI.appGeometryView.addNyad(pRep,
+					(NyadRealD) CladosGNyad.REALD.createWithMonad((MonadRealD) CladosGMonad.REALD.createWithAlgebra(tC,
+							copyARD, monadShort.name.getText(), monadShort.frame.getText()), "New"));
 			break;
 		case COMPLEXF:
 			tC = CladosFListBuilder.createComplexF(copyACF.getBladeCount());
 			for (short m = 0; m < tC.length; m++)
 				tC[m] = (ComplexF) CladosField.COMPLEXF.createZERO(copyACF.shareCardinal());
-			NyadComplexF rep3 = new NyadComplexF("New", (MonadComplexF) CladosGMonad.COMPLEXF.createWithAlgebra(tC,
-					copyACF, monadShort.name.getText(), monadShort.frame.getText()), false);
-			_GUI.appGeometryView.addNyad(rep3);
+			_GUI.appGeometryView.addNyad(pRep,
+					(NyadComplexF) CladosGNyad.COMPLEXF.createWithMonad((MonadComplexF) CladosGMonad.COMPLEXF
+							.createWithAlgebra(tC, copyACF, monadShort.name.getText(), monadShort.frame.getText()),
+							"New"));
 			break;
 		case COMPLEXD:
 			tC = CladosFListBuilder.createComplexD(copyACD.getBladeCount());
 			for (short m = 0; m < tC.length; m++)
 				tC[m] = (ComplexD) CladosField.COMPLEXD.createZERO(copyACD.shareCardinal());
-			NyadComplexD rep4 = new NyadComplexD("New", (MonadComplexD) CladosGMonad.COMPLEXD.createWithAlgebra(tC,
-					copyACD, monadShort.name.getText(), monadShort.frame.getText()), false);
-			_GUI.appGeometryView.addNyad(rep4);
+			_GUI.appGeometryView.addNyad(pRep,
+					(NyadComplexD) CladosGNyad.COMPLEXD.createWithMonad((MonadComplexD) CladosGMonad.COMPLEXD
+							.createWithAlgebra(tC, copyACD, monadShort.name.getText(), monadShort.frame.getText()),
+							"New"));
 		}
 	}
 
