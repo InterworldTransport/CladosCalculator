@@ -27,6 +27,7 @@ package com.interworldtransport.cladosviewerEvents;
 
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
+import com.interworldtransport.cladosviewer.ErrorDialog;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -38,7 +39,7 @@ import javax.swing.*;
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class MOpsGradeSupressEvents implements ActionListener
+public class MOpsGradeSuppressEvents implements ActionListener
  {	
     protected JMenuItem 		_control;
     protected MOpsParentEvents 		_parent;
@@ -52,7 +53,7 @@ public class MOpsGradeSupressEvents implements ActionListener
  * 	NOpsParentEvents
  * This is a reference to the NOpsParentEvents parent event handler
  */
-    public MOpsGradeSupressEvents(	JMenuItem pmniControlled,
+    public MOpsGradeSuppressEvents(	JMenuItem pmniControlled,
     								MOpsParentEvents pParent)
     {
 		_control=pmniControlled;
@@ -75,7 +76,7 @@ public class MOpsGradeSupressEvents implements ActionListener
     	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
     		return;	
     	}
     	
@@ -83,7 +84,7 @@ public class MOpsGradeSupressEvents implements ActionListener
     	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nGradeSuppress Operation must have a monad in focus. Nothing done.\n");
+    		ErrorDialog.show("GradeSuppress Operation needs one monad in focus.\nNothing done.", "Need Monad In Focus");
     		return;
     	}
     	
@@ -107,12 +108,12 @@ public class MOpsGradeSupressEvents implements ActionListener
     	}
     	catch (NullPointerException eNull)
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nGradeSuppress Operation must have a real # in the FieldBar. Nothing done.\n");
+    		ErrorDialog.show("GradeSuppress Operation must have a real # in the FieldBar.\nNothing done.", "Null Pointer Exception");
     		return;
     	}
     	catch (NumberFormatException eFormat)
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nGradeSuppress Operation must have a parse-able real # in the FieldBar. Nothing done.\n");
+    		ErrorDialog.show("GradeSuppress Operation must have a parse-able real # in the FieldBar.\nNothing done.", "Number Format Exception");
     		return;
     	}
     }
