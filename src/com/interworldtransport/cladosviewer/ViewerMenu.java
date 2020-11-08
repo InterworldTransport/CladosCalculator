@@ -47,7 +47,7 @@ public class ViewerMenu extends JMenuBar
  * The File Parent Menu for the application.
  */
     public	JMenu			mnuFile;
-    //public	JMenuItem	mniOpen;
+    public	JMenuItem		mniOpen;
     public	JMenuItem		mniSave;
     public	JMenuItem		mniSaveAs;
     public	JMenuItem		mniExit;
@@ -132,6 +132,8 @@ public class ViewerMenu extends JMenuBar
     	
     	mnuFile=new JMenu("File");
     	add(mnuFile);
+    		mniOpen=new JMenuItem("Open");
+    		mnuFile.add(mniOpen);
 	    	mniSave=new JMenuItem("Save");
 	    	mnuFile.add(mniSave);
 	    	mniSaveAs=new JMenuItem("Save As");

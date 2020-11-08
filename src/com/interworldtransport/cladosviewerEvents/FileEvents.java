@@ -27,6 +27,9 @@ package com.interworldtransport.cladosviewerEvents;
 
 import javax.swing.JFileChooser;
 
+import com.interworldtransport.cladosF.CladosField;
+import com.interworldtransport.cladosG.MonadAbstract;
+import com.interworldtransport.cladosG.NyadAbstract;
 import com.interworldtransport.cladosG.NyadComplexD;
 import com.interworldtransport.cladosG.NyadComplexF;
 import com.interworldtransport.cladosG.NyadRealD;
@@ -36,61 +39,84 @@ import com.interworldtransport.cladosviewer.CladosCalculator;
 import com.interworldtransport.cladosviewer.NyadPanel;
 import com.interworldtransport.cladosviewer.ViewerMenu;
 
-/** 
- * This class groups the event listeners associated with the File menu.  It may
+/**
+ * This class groups the event listeners associated with the File menu. It may
  * be used in the future to act on events associated with the entire File menu
- * by having it register as a Listener with all of its controlled listeners.
- * The controlled listeners will create an event or call their parent.  It could
- * also register with all the components to which its listeners register..maybe.
+ * by having it register as a Listener with all of its controlled listeners. The
+ * controlled listeners will create an event or call their parent. It could also
+ * register with all the components to which its listeners register..maybe.
  * [None of this is done yet, of course.]
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class FileEvents 
-{
-    protected 	FileSaveEvents		sp;
-    protected 	FileSaveAsEvents	sa;
-    protected 	FileExitEvents		ex;
+public class FileEvents {
+	protected FileOpenEvents fo;
+	protected FileSaveEvents sp;
+	protected FileSaveAsEvents sa;
+	protected FileExitEvents ex;
 
-    public		JFileChooser 		fc;
-    protected 	ViewerMenu 			_GUIMenu;
-    protected 	CladosCalculator	_GUI;
+	public JFileChooser fc;
+	protected ViewerMenu _GUIMenu;
+	protected CladosCalculator _GUI;
 
-/** 
- * This is the default constructor.  The event structure of the File
- * menu starts here and finishes with the child menu items.
- * @param pTheGUIMenu
- *  ViewerMenu
- * This is a reference to the owner menu containing this one.
- */
-    public FileEvents(ViewerMenu pTheGUIMenu)
-    {
-    	_GUIMenu=pTheGUIMenu;
-    	_GUI=_GUIMenu._parentGUI;
-    	
-    	sp = new FileSaveEvents(	_GUIMenu.mniSave, this);
-    	sa = new FileSaveAsEvents(	_GUIMenu.mniSaveAs, this);
-    	ex = new FileExitEvents(	_GUIMenu.mniExit, this);
-    	
-    	fc = new JFileChooser();
-	    fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-    }
-    
-    public String makeSnapshotContent()
-	{
-    	if (_GUI.appGeometryView.getNyadListSize() == 0) return "Nothing in panels to save.";
-    	
-    	StringBuffer content=new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n");
-    	content.append("<NyadList size=\""+_GUI.appGeometryView.getNyadListSize()+"\">\r\n");
-    	
-    	switch (_GUI.IniProps.getProperty("Desktop.File.Snapshot.FullXML"))
-    	{
-    	case "true":	
-    		for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels())
-			{
-    			switch(tempNPN.getRepMode())
-				{
+	/**
+	 * This is the default constructor. The event structure of the File menu starts
+	 * here and finishes with the child menu items.
+	 * 
+	 * @param pTheGUIMenu ViewerMenu This is a reference to the owner menu
+	 *                    containing this one.
+	 */
+	public FileEvents(ViewerMenu pTheGUIMenu) {
+		_GUIMenu = pTheGUIMenu;
+		_GUI = _GUIMenu._parentGUI;
+
+		fo = new FileOpenEvents(_GUIMenu.mniOpen, this);
+		sp = new FileSaveEvents(_GUIMenu.mniSave, this);
+		sa = new FileSaveAsEvents(_GUIMenu.mniSaveAs, this);
+		ex = new FileExitEvents(_GUIMenu.mniExit, this);
+
+		fc = new JFileChooser();
+		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+	}
+
+	public MonadAbstract parseMonad(CladosField pRep) {
+		// TODO Accept a few discovered parameters and then parse a monad from the XML
+		// content being handled. Return it as a child object of MonadAbstract on the
+		// assumption that the caller will correctly understand which one it is
+		// receiving.
+
+		return null;
+	}
+
+	public NyadAbstract parseNyad(CladosField pRep) {
+		// TODO Accept a few discovered parameters and then parse a nyad from the XML
+		// content being handled. Return it as a child object of NyadAbstract on the
+		// assumption that the caller will correctly understand which one it is
+		// receiving.
+
+		return null;
+	}
+
+	/**
+	 * This is really just an internal utility method so the code that builds XML
+	 * output is kept in one place. It's not that it has to be HERE, but that's
+	 * where it is right now..
+	 * 
+	 * @return String XMLAsString representing the nyad list currently open in the
+	 *         calculator.
+	 */
+	public String makeSnapshotContent() {
+		if (_GUI.appGeometryView.getNyadListSize() == 0)
+			return "Nothing in panels to save.";
+
+		StringBuffer content = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n");
+		content.append("<NyadList size=\"" + _GUI.appGeometryView.getNyadListSize() + "\">\r\n");
+
+		switch (_GUI.IniProps.getProperty("Desktop.File.Snapshot.FullXML")) {
+		case "true":
+			for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels()) {
+				switch (tempNPN.getRepMode()) {
 				case REALF:
 					content.append(NyadRealF.toXMLFullString(tempNPN.getNyadRF()));
 					break;
@@ -104,12 +130,10 @@ public class FileEvents
 					content.append(NyadComplexD.toXMLFullString(tempNPN.getNyadCD()));
 				}
 			}
-    		break;
-    	case "false":	
-    		for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels())
-			{
-    			switch(tempNPN.getRepMode())
-				{
+			break;
+		case "false":
+			for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels()) {
+				switch (tempNPN.getRepMode()) {
 				case REALF:
 					content.append(NyadRealF.toXMLString(tempNPN.getNyadRF()));
 					break;
@@ -123,10 +147,11 @@ public class FileEvents
 					content.append(NyadComplexD.toXMLString(tempNPN.getNyadCD()));
 				}
 			}
-    		break;
-		default:		content.append("\n<Empty />\n");
-    	}
-    	content.append("</NyadList>\r\n");
+			break;
+		default:
+			content.append("\n<Empty />\n");
+		}
+		content.append("</NyadList>\r\n");
 		return content.toString();
 	}
 }
