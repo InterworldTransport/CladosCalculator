@@ -47,5 +47,4 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 <p> 
 Use of this code or executable objects derived from it by the Licensee  states their willingness to accept the terms of the license. <p> 
 <p>
-You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
-<p> 
+You should have received a copy of the GNU Affero General Public License along with this program.  If not, see https://www.gnu.org/licenses/
