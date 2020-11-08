@@ -29,6 +29,7 @@ import com.interworldtransport.cladosG.NyadComplexF;
 import com.interworldtransport.cladosG.NyadRealD;
 import com.interworldtransport.cladosG.NyadRealF;
 import com.interworldtransport.cladosviewer.NyadPanel;
+import com.interworldtransport.cladosviewer.ErrorDialog;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -71,7 +72,7 @@ public class NOpsRMatchEvents implements ActionListener
     	int tNyadIndex=_parent._GUI.appGeometryView.getPaneFocus();
     	if (tNyadIndex<0 | tNyadIndex>=_parent._GUI.appGeometryView.getNyadListSize()-1) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("No nyad in the focus... or the last one is.\n");
+    		ErrorDialog.show("No nyad in the focus... or the last one is.\nNothing done.", "Need Nyad In Focus");
     		return;	
     	}
     	
@@ -79,7 +80,7 @@ public class NOpsRMatchEvents implements ActionListener
     	NyadPanel panelNyadNext = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex+1);
     	if (panelNyadSelected.getRepMode() != panelNyadNext.getRepMode())
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("Nyads using different DivFields.\n");
+    		ErrorDialog.show("Nyads using different DivFields.", "Nyad DivField Mismatch");
     		return;	
     	}
     	boolean test = false;

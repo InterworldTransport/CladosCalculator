@@ -32,6 +32,7 @@ import com.interworldtransport.cladosG.MonadRealF;
 import com.interworldtransport.cladosGExceptions.*;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
+import com.interworldtransport.cladosviewer.ErrorDialog;
 import com.interworldtransport.cladosFExceptions.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -73,7 +74,7 @@ public class MOpsScaledIdempotentEvents implements ActionListener
     	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
     		return;	
     	}
     	    	
@@ -81,7 +82,7 @@ public class MOpsScaledIdempotentEvents implements ActionListener
     	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nMultiple of Idempotent Test needs one monad in focus. Nothing done.\n");
+    		ErrorDialog.show("Scaled Idempotent Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
     		return;
     	}
     	
@@ -106,21 +107,15 @@ public class MOpsScaledIdempotentEvents implements ActionListener
     	}
 		catch (CladosMonadException e)
 		{
-			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad created a CladosMonadException.\n");
-			_parent._GUI.appStatusBar.setStatusMsg(e.getSourceMessage());
-			_parent._GUI.appStatusBar.setStatusMsg("\n\n");
+			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n"+e.getSourceMessage(), "Clados Monad Exception");
 		}
 		catch (FieldBinaryException eb)
 		{
-			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad created a FieldBinaryException.\n");
-			_parent._GUI.appStatusBar.setStatusMsg(eb.getSourceMessage());
-			_parent._GUI.appStatusBar.setStatusMsg("\n\n");
+			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n"+eb.getSourceMessage(), "Field Binary Exception");
 		}
     	catch (FieldException ef)
     	{
-			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad created a general FieldException.\n");
-			_parent._GUI.appStatusBar.setStatusMsg(ef.getSourceMessage());
-			_parent._GUI.appStatusBar.setStatusMsg("\n\n");
+    		ErrorDialog.show("Selected monad has an issue.\nNothing done.\n"+ef.getSourceMessage(), "Field Exception");
     	}
     }
 }

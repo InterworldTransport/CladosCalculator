@@ -24,7 +24,7 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-//import com.interworldtransport.cladosF.CladosField;
+import com.interworldtransport.cladosviewer.ErrorDialog;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
 
@@ -75,7 +75,7 @@ public class MOpsHasGradeEvents implements ActionListener
     	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
     		return;	
     	}
     	
@@ -83,7 +83,7 @@ public class MOpsHasGradeEvents implements ActionListener
     	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nHas Grade Test needs one monad in focus. Nothing done.\n");
+    		ErrorDialog.show("Has Grade Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
     		return;
     	}
     	
@@ -97,12 +97,12 @@ public class MOpsHasGradeEvents implements ActionListener
     	}
     	catch (NullPointerException eNull)	// Catch the empty text 'real number' text field on the FieldBar.
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nHas Grade Test must have a real # in the FieldBar. Nothing done.\n");
+    		ErrorDialog.show("Has Grade Test must have a real # in the FieldBar.\nNothing done.", "Null Pointer Exception");
     		return;
     	}
     	catch (NumberFormatException eFormat)	// Catch the non-parse-able text 'real number' text field on the FieldBar.
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nHas Grade Test must have a parse-able real # in the FieldBar. Nothing done.\n");
+    		ErrorDialog.show("Has Grade Test must have a parse-able real # in the FieldBar.\nNothing done.", "Number Format Exception");
     		return;
     	}
     	

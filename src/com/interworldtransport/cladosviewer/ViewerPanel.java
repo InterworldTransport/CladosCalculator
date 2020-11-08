@@ -106,18 +106,13 @@ public class ViewerPanel extends JPanel implements ActionListener {
 
 		// Get the nyad tab image for the nyad panes being constructed
 		tabIcon = new ImageIcon(this.getClass().getResource("/icons/N.png"));
-		// _GUI._StatusBar.setStatusMsg(tabIcon.getIconHeight()+",
-		// "+tabIcon.getIconWidth()+" | "+tabIcon.getDescription());
-
 		_repMode = validateInitialDivField();
-
 		// The Viewer contains NyadPanels displayed as a JTabbedPanes containing
 		// JScrollPanes containing a NyadPanel each. We initiate the JTabbedPane here
 		nyadPanes = new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
 		nyadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		// JScrollPanes are used only when a nyadPanel with nyadPanes.addTab()
 		add(nyadPanes, JTabbedPane.CENTER);
-
 		nyadPanelList = new ArrayList<NyadPanel>(0);
 
 		initObjects(); // This is the old initializer. TODO change to an XML reader
@@ -526,7 +521,8 @@ public class ViewerPanel extends JPanel implements ActionListener {
 						tempPane.setWheelScrollingEnabled(true);
 						nyadPanes.addTab(new StringBuffer().append(j).toString(), tabIcon, tempPane);
 					} else
-						_GUI.appStatusBar.setStatusMsg("... null NyadRealF for new NyadPanel avoided.\n");
+						ErrorDialog.show("Null NyadRealF for new NyadPanel avoided in initialization step.",
+								"Init Failed");
 				} catch (UtilitiesException eutil) {
 					ErrorDialog.show("Could not create new NyadPanel.\n" + eutil.getSourceMessage() + "\n"
 							+ eutil.getStackTrace().toString(), "Utilities Exception");
@@ -546,7 +542,8 @@ public class ViewerPanel extends JPanel implements ActionListener {
 						tempPane.setWheelScrollingEnabled(true);
 						nyadPanes.addTab(new StringBuffer().append(j).toString(), tabIcon, tempPane);
 					} else
-						_GUI.appStatusBar.setStatusMsg("... null NyadRealD for new NyadPanel avoided.\n");
+						ErrorDialog.show("Null NyadRealD for new NyadPanel avoided in initialization step.",
+								"Init Failed");
 				} catch (UtilitiesException eutil) {
 					ErrorDialog.show("Could not create new NyadPanel.\n" + eutil.getSourceMessage() + "\n"
 							+ eutil.getStackTrace().toString(), "Utilities Exception");
@@ -566,7 +563,8 @@ public class ViewerPanel extends JPanel implements ActionListener {
 						tempPane.setWheelScrollingEnabled(true);
 						nyadPanes.addTab(new StringBuffer().append(j).toString(), tabIcon, tempPane);
 					} else
-						_GUI.appStatusBar.setStatusMsg("... null NyadComplexF for new NyadPanel avoided.\n");
+						ErrorDialog.show("Null NyadComplexF for new NyadPanel avoided in initialization step.",
+								"Init Failed");
 				} catch (UtilitiesException eutil) {
 					ErrorDialog.show("Could not create new NyadPanel.\n" + eutil.getSourceMessage() + "\n"
 							+ eutil.getStackTrace().toString(), "Utilities Exception");
@@ -586,7 +584,8 @@ public class ViewerPanel extends JPanel implements ActionListener {
 						tempPane.setWheelScrollingEnabled(true);
 						nyadPanes.addTab(new StringBuffer().append(j).toString(), tabIcon, tempPane);
 					} else
-						_GUI.appStatusBar.setStatusMsg("... null NyadComplexD for new NyadPanel avoided.\n");
+						ErrorDialog.show("Null NyadComplexD for new NyadPanel avoided in initialization step.",
+								"Init Failed");
 				} catch (UtilitiesException eutil) {
 					ErrorDialog.show("Could not create new NyadPanel.\n" + eutil.getSourceMessage() + "\n"
 							+ eutil.getStackTrace().toString(), "Utilities Exception");
@@ -665,15 +664,14 @@ public class ViewerPanel extends JPanel implements ActionListener {
 			default:
 				return null;
 			}
-
 		} catch (NullPointerException eNull) {
-			_GUI.appStatusBar
-					.setStatusMsg("\nDesktop.Default.DivField from the configuration file appears to be null.\n");
-			_GUI.appStatusBar.setStatusMsg("No nyad will be initialized.\n");
+			ErrorDialog.show(
+					"Desktop.Default.DivField from the configuration file appears to be null.\nNo nyad will be initialized.",
+					"Null Pointer Exception");
 		} catch (NumberFormatException eFormat) {
-			_GUI.appStatusBar.setStatusMsg(
-					"\nDesktop.Default.DivField from the configuration file appears to be non-parse-able.\n");
-			_GUI.appStatusBar.setStatusMsg("No nyad will be initialized.\n");
+			ErrorDialog.show(
+					"Desktop.Default.DivField from the configuration file appears to be non-parse-able.\nNo nyad will be initialized.",
+					"Number Format Exception");
 		}
 		return null;
 	}
@@ -684,12 +682,13 @@ public class ViewerPanel extends JPanel implements ActionListener {
 			nCount = Integer.parseInt(_GUI.IniProps.getProperty("Desktop.Default.Count"));
 			nyadPanelList = new ArrayList<NyadPanel>(nCount);
 		} catch (NullPointerException eNull) {
-			_GUI.appStatusBar.setStatusMsg(
-					"\nDesktop.Default.Count from the configuration file appears to be null. Set to Zero.\n");
+			ErrorDialog.show("Desktop.Default.Count from the configuration file appears to be null.\nSet to Zero.",
+					"Null Pointer Exception");
 			nyadPanelList = new ArrayList<NyadPanel>(0);
 		} catch (NumberFormatException eFormat) {
-			_GUI.appStatusBar.setStatusMsg(
-					"\nDesktop.Default.Count from the configuration file appears to be non-parse-able. Set to Zero.\n");
+			ErrorDialog.show(
+					"Desktop.Default.Count from the configuration file appears to be non-parse-able.\nSet to Zero.",
+					"Null Pointer Exception");
 			nyadPanelList = new ArrayList<NyadPanel>(0);
 		}
 		return nCount;
@@ -700,11 +699,12 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		try {
 			nOrd = Short.parseShort(_GUI.IniProps.getProperty("Desktop.Default.Order"));
 		} catch (NullPointerException eNull) {
-			_GUI.appStatusBar.setStatusMsg(
-					"\nDesktop.Default.Order from the configuration file appears to be null. Set to ONE.\n");
+			ErrorDialog.show("Desktop.Default.Order from the configuration file appears to be null.\nSet to One.",
+					"Null Pointer Exception");
 		} catch (NumberFormatException eFormat) {
-			_GUI.appStatusBar.setStatusMsg(
-					"\nDesktop.Default.Order from the configuration file appears to be non-parse-able. Set to ONE.\n");
+			ErrorDialog.show(
+					"Desktop.Default.Count from the configuration file appears to be non-parse-able.\nSet to One.",
+					"Null Pointer Exception");
 		}
 		return nOrd;
 	}
@@ -761,8 +761,6 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		nyadPanes.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				// _GUI._StatusBar.setStatusMsg("ChangeEvent for
-				// "+e.getSource().getClass().getName()+".\n");
 				if (nyadPanes.getTabCount() > 0) {
 					if (nyadPanes.getSelectedIndex() >= 0) {
 						if (nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getTabCount() > 0) {

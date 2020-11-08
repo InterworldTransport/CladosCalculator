@@ -31,6 +31,8 @@ import java.io.IOException;
 
 import javax.swing.*;
 
+import com.interworldtransport.cladosviewer.ErrorDialog;
+
 /** 
  *  This class manages events relating to the saving of the current state
  *  of the application.
@@ -82,7 +84,7 @@ public class FileSaveAsEvents implements ActionListener
 	    	}
 	    	catch (IOException e)
 	    	{
-	    		_parent._GUI.appStatusBar.setStatusMsg("-->Stack Snapshot NOT saved. IO Exception at SaveAs menu.\n");
+	    		ErrorDialog.show("Stack Snapshot NOT saved. IO Exception at SaveAs menu.", "IO Exception");
 	    	}
 	    	finally
 	    	{

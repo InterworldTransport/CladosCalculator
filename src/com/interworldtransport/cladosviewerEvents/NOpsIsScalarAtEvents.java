@@ -29,6 +29,7 @@ import com.interworldtransport.cladosG.NyadComplexF;
 import com.interworldtransport.cladosG.NyadRealD;
 import com.interworldtransport.cladosG.NyadRealF;
 import com.interworldtransport.cladosviewer.NyadPanel;
+import com.interworldtransport.cladosviewer.ErrorDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -80,7 +81,7 @@ public class NOpsIsScalarAtEvents implements ActionListener
     	int tNyadIndex=_parent._GUI.appGeometryView.getPaneFocus();
     	if (tNyadIndex<0 | tNyadIndex>=_parent._GUI.appGeometryView.getNyadListSize()-1) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("No nyad in the focus... or the last one is.\n");
+    		ErrorDialog.show("No nyad in the focus... or the last one is.\nNothing done.", "Need Nyad In Focus");
     		return;	
     	}
     	
@@ -88,7 +89,7 @@ public class NOpsIsScalarAtEvents implements ActionListener
     	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nHas Algebra Test must have a monad in focus. Nothing done.\n");
+    		ErrorDialog.show("IsScalarAt Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
     		return;
     	}
     	
@@ -96,7 +97,7 @@ public class NOpsIsScalarAtEvents implements ActionListener
     	
     	if (panelNyadSelected.getRepMode() != panelNyadNext.getRepMode())
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("Nyads using different DivFields.\n");
+    		ErrorDialog.show("Nyads using different DivFields.", "Nyad DivField Mismatch");
     		return;	
     	}
     	

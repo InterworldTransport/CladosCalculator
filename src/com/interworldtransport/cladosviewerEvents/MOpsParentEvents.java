@@ -51,7 +51,7 @@ public class MOpsParentEvents //implements ActionListener
     public	 	MOpsReverseEvents		rev;
     public		MOpsScaleEvents			scale;
     public	 	MOpsGradePartEvents		gradep;
-    public	 	MOpsGradeSupressEvents	grades;
+    public	 	MOpsGradeSuppressEvents	grades;
     
 	public	 	MOpsGradeEvents				grade;
 	public	 	MOpsMultGradeEvents			mgrade;
@@ -85,7 +85,7 @@ public class MOpsParentEvents //implements ActionListener
 		rev = new MOpsReverseEvents(			_GUIMenu.mniReverse, this);
 		scale = new MOpsScaleEvents(			_GUIMenu.mniScale, this);
 		gradep = new MOpsGradePartEvents(		_GUIMenu.mniGradeCrop, this);
-		grades = new MOpsGradeSupressEvents(	_GUIMenu.mniGradeCut, this);
+		grades = new MOpsGradeSuppressEvents(	_GUIMenu.mniGradeCut, this);
 		
 		mgrade = new MOpsMultGradeEvents(		_GUIMenu.mniisMultiGrade, this);
 		grade = new MOpsGradeEvents(			_GUIMenu.mniisGrade, this);

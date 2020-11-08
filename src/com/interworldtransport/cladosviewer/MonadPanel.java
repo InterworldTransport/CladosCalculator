@@ -529,7 +529,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 			makeWritable();
 			break;
 		default:
-			_GUI.appStatusBar.setStatusMsg("No Detectable Command at the Monad Panel. No action.\n");
+			ErrorDialog.show("No detectable command processed.", "Action At MonadPanel Attempted");
 		}
 	}
 
@@ -1223,8 +1223,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 				gradeKey.setText(new StringBuffer().append(_repMonadCD.getGradeKey()).toString());
 			}
 		} catch (CladosMonadException e) {
-			_GUI.appStatusBar.setStatusMsg("Could not set at least one of the edited coefficients.\n");
-			_GUI.appStatusBar.setStatusMsg(e.getSourceMessage() + "\n");
+			ErrorDialog.show("Could not set at least one of the edited coefficients.\n"+e.getSourceMessage(), "Clados Monad Exception");
 		}
 	}
 

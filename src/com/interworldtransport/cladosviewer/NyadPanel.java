@@ -343,7 +343,7 @@ public class NyadPanel extends JPanel implements ActionListener {
 			makeNotWritable();
 			break;
 		default:
-			_GUI.appStatusBar.setStatusMsg("No Detectable Command at the Nyad Panel. No action.\n");
+			ErrorDialog.show("No detectable command processed.", "Action At NyadPanel Attempted");
 		}
 	}
 
@@ -810,7 +810,7 @@ public class NyadPanel extends JPanel implements ActionListener {
 				}
 				removeMonadTab(point);
 			} catch (CladosNyadException e) {
-				_GUI.appStatusBar.setStatusMsg("Could not remove the monad. " + e.getSourceMessage() + "\n");
+				ErrorDialog.show("Could not remove the monad.\n"+e.getSourceMessage(), "Clados Nyad Exception");
 			}
 		} else // The only way to get here is if the monad to be removed is the last one in the
 				// nyad.

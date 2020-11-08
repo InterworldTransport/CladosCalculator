@@ -213,8 +213,8 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 					setCoefficientDisplay(_repComplexD.conjugate());
 				}
 			} catch (NumberFormatException en) {
-				_GUI.appStatusBar.setStatusMsg("Number Format Exception prevented conjugation.\n");
-				_GUI.appStatusBar.setStatusMsg(en.getMessage());
+				ErrorDialog.show("Conjugation action halted.\nProbably a parsing error when reading FieldBar.\n"
+						+ en.getMessage(), "Number Format Exception");
 			}
 			break;
 		case "inverse":
@@ -243,17 +243,16 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 					setCoefficientDisplay(_repComplexD.invert());
 				}
 			} catch (FieldException e) {
-				_GUI.appStatusBar.setStatusMsg("Field Exception prevented inversion.\n");
-				_GUI.appStatusBar.setStatusMsg(e.getSourceMessage() + "\n");
-				_GUI.appStatusBar.setStatusMsg(e.getSource().getCardinalString() + "\n");
+				ErrorDialog.show("Field Exception prevented inversion.\nCardinal=" + e.getSource().getCardinalString()
+						+ "\nSource Message=" + e.getSourceMessage(), "Field Exception");
 			} catch (NumberFormatException en) {
-				_GUI.appStatusBar.setStatusMsg("Number Format Exception prevented inversion.\n");
-				_GUI.appStatusBar.setStatusMsg(en.getMessage() + "\n");
+				ErrorDialog.show("Inversion action halted.\nProbably a parsing error when reading FieldBar.\n",
+						"Number Format Exception");
 			}
 			break;
 		case "makeFloat":
 			if (_GUI.appGeometryView.getNyadListSize() != 0) {
-				_GUI.appStatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
+				ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.", "DivField Change");
 				break;
 			}
 			valDisplays.clear();
@@ -276,7 +275,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 			break;
 		case "makeDouble":
 			if (_GUI.appGeometryView.getNyadListSize() != 0) {
-				_GUI.appStatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
+				ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.", "DivField Change");
 				break;
 			}
 			valDisplays.clear();
@@ -299,7 +298,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 			break;
 		case "makeReal":
 			if (_GUI.appGeometryView.getNyadListSize() != 0) {
-				_GUI.appStatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
+				ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.", "DivField Change");
 				break;
 			}
 			valDisplays.clear();
@@ -322,7 +321,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 			break;
 		case "makeComplex":
 			if (_GUI.appGeometryView.getNyadListSize() != 0) {
-				_GUI.appStatusBar.setStatusMsg("Can't change mode while nyads are displayed.\n");
+				ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.", "DivField Change");
 				break;
 			}
 			valDisplays.clear();
@@ -344,7 +343,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 			_GUI.pack();
 			break;
 		default:
-			_GUI.appStatusBar.setStatusMsg("No Detectable Command in the FieldBar.\n");
+			ErrorDialog.show("No detectable command processed.", "Action At FieldBar Attempted");
 		}
 	}
 
@@ -417,7 +416,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 				}
 			}
 		} catch (NumberFormatException en) {
-			ErrorDialog.show("Couldn't parse FieldBar.\nNo action taken seting the Div Field it represents.",
+			ErrorDialog.show("Couldn't parse FieldBar.\nNo action taken setting the Div Field it represents.",
 					"Parse Issue");
 		}
 

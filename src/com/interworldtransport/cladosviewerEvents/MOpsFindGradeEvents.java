@@ -24,9 +24,9 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-//import com.interworldtransport.cladosF.CladosField;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
+import com.interworldtransport.cladosviewer.ErrorDialog;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -75,7 +75,7 @@ public class MOpsFindGradeEvents implements ActionListener
     	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
     		return;	
     	}
     	
@@ -83,7 +83,7 @@ public class MOpsFindGradeEvents implements ActionListener
     	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nGrade Test needs one monad in focus. Nothing done.\n");
+    		ErrorDialog.show("Grade Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
     		return;
     	}
     	
@@ -103,7 +103,7 @@ public class MOpsFindGradeEvents implements ActionListener
     	
     	if (logGradeKey < 0) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nDivField not recognized by action handler.\n");
+    		ErrorDialog.show("DivField not recognized.", "DivField Unsupported");
     		return;
     	}
     	

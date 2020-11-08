@@ -28,6 +28,7 @@ package com.interworldtransport.cladosviewerEvents;
 import com.interworldtransport.cladosGExceptions.*;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
+import com.interworldtransport.cladosviewer.ErrorDialog;
 import com.interworldtransport.cladosFExceptions.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -68,7 +69,7 @@ public class NOpsLMultEvents implements ActionListener
     	int indxNydPnlSlctd = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indxNydPnlSlctd<0 | indxNydPnlSlctd == _parent._GUI.appGeometryView.getNyadListSize()-1) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus... or the last one is.\n");
+    		ErrorDialog.show("No nyad in the focus... or the last one is.\nNothing done.", "Need Nyad In Focus");
     		return;	
     	}
     	
@@ -78,7 +79,7 @@ public class NOpsLMultEvents implements ActionListener
     	int indxMndPnlSlctd = tSpot.getPaneFocus();
     	if (indxMndPnlSlctd<0 | indxNydPnlSlctd > tSpotPlus.getMonadListSize()) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nMultiplication needs two monads at the same index in a nyad. Nothing done.\n");
+    		ErrorDialog.show("Multiplication needs two monads at the same index in a nyad.\nNothing done.", "Monads In Focus Issue");
     		return;
     	}
     	
@@ -101,11 +102,11 @@ public class NOpsLMultEvents implements ActionListener
     	}
     	catch (FieldBinaryException eb)
 		{
-			_parent._GUI.appStatusBar.setStatusMsg("\nField Binary error between second and first monads. Nothing done.\n");
+    		ErrorDialog.show("Monads using different DivFields.\nNothing done.", "Field Binary Exception");
 		}
 		catch (CladosMonadException e)
 		{
-			_parent._GUI.appStatusBar.setStatusMsg("\nReference Match error between second and first monads. Nothing done.\n");
+			ErrorDialog.show("Reference Match Error between monads.\nNothing done.", "Clados Monad Exception");
 		}
     }
  }

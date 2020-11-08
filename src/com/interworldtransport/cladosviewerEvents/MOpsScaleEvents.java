@@ -44,6 +44,7 @@ import com.interworldtransport.cladosG.AlgebraComplexD;
 
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
+import com.interworldtransport.cladosviewer.ErrorDialog;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -88,7 +89,7 @@ public class MOpsScaleEvents implements ActionListener
     	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
     		return;	
     	}
 
@@ -96,7 +97,7 @@ public class MOpsScaleEvents implements ActionListener
 		int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nScale function must have a monad in focus. Nothing done.\n");
+    		ErrorDialog.show("Scale Operation needs one monad in focus.\nNothing done.", "Need Monad In Focus");
     		return;
     	}
     	
@@ -142,7 +143,7 @@ public class MOpsScaleEvents implements ActionListener
 	    }
 		catch (FieldBinaryException eb)
 		{
-		    _parent._GUI.appStatusBar.setStatusMsg("-->Monad has NOT been rescaled due to field binary exception.\n");
+			ErrorDialog.show("Monad has not been rescaled.\nNothing done.\n"+eb.getSourceMessage(), "Field Binary Exception");
 		}
 	    
     }

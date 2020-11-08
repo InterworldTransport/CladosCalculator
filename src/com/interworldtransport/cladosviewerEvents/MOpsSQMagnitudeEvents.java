@@ -32,6 +32,7 @@ import com.interworldtransport.cladosF.RealF;
 import com.interworldtransport.cladosGExceptions.CladosMonadException;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
+import com.interworldtransport.cladosviewer.ErrorDialog;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -73,7 +74,7 @@ public class MOpsSQMagnitudeEvents implements ActionListener
     	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
     	if (indexNyadPanelSelected<0) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nNo nyad in the focus.\n");
+    		ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
     		return;	
     	}
     	
@@ -82,7 +83,7 @@ public class MOpsSQMagnitudeEvents implements ActionListener
     	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
     	if (indxMndPnlSlctd<0) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("\nSQ Magnitude Discovery needs one monad in focus. Nothing done.\n");
+    		ErrorDialog.show("SQ Magnitude Discovery needs one monad in focus.\nNothing done.", "Need Monad In Focus");
     		return;
     	}
     	
@@ -109,8 +110,7 @@ public class MOpsSQMagnitudeEvents implements ActionListener
     	} 
     	catch (CladosMonadException e) 
     	{
-    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad SQmagnitude has NOT been computed due to a Clados Monad Exception.\n");
-    		_parent._GUI.appStatusBar.setStatusMsg(e.getSourceMessage());
+    		ErrorDialog.show("Selected monad SQmagnitude has NOT been computed.\nNothing done.\n"+e.getSourceMessage(), "Clados Monad Exception");
     	}
     }
  }
