@@ -80,24 +80,6 @@ public class FileEvents {
 		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 	}
 
-	public MonadAbstract parseMonad(CladosField pRep) {
-		// TODO Accept a few discovered parameters and then parse a monad from the XML
-		// content being handled. Return it as a child object of MonadAbstract on the
-		// assumption that the caller will correctly understand which one it is
-		// receiving.
-
-		return null;
-	}
-
-	public NyadAbstract parseNyad(CladosField pRep) {
-		// TODO Accept a few discovered parameters and then parse a nyad from the XML
-		// content being handled. Return it as a child object of NyadAbstract on the
-		// assumption that the caller will correctly understand which one it is
-		// receiving.
-
-		return null;
-	}
-
 	/**
 	 * This is really just an internal utility method so the code that builds XML
 	 * output is kept in one place. It's not that it has to be HERE, but that's
