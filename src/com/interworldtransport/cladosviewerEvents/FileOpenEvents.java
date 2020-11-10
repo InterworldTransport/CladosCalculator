@@ -34,15 +34,18 @@ import javax.swing.*;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.interworldtransport.cladosF.CladosFBuilder;
 import com.interworldtransport.cladosF.CladosField;
 import com.interworldtransport.cladosG.AlgebraAbstract;
+import com.interworldtransport.cladosG.CladosGAlgebra;
 import com.interworldtransport.cladosG.CladosGBuilder;
 import com.interworldtransport.cladosG.Foot;
 import com.interworldtransport.cladosG.MonadAbstract;
+import com.interworldtransport.cladosG.NyadAbstract;
 import com.interworldtransport.cladosGExceptions.BadSignatureException;
 import com.interworldtransport.cladosGExceptions.GeneratorRangeException;
 import com.interworldtransport.cladosviewer.ErrorDialog;
@@ -58,18 +61,25 @@ import javax.xml.xpath.XPathFactory;
 
 public class FileOpenEvents implements ActionListener {
 
-	private final static String path2AllCardinals = "//Foot/Cardinals/Cardinal/@type";
-	private final static String path2AllSignatures = "//GProduct/@signature";
+	private final static String path2Algs = "//Algebra";
+	private final static String path2AlgNames = "//Algebra/Name/text()";
+	private final static String path2AllCardinals = "//Foot/Cardinals/Cardinal/@unit";
+	private final static String path2AllSignatures = "//GProduct/Signature/text()";
 	private final static String path2DivFields = "//Algebra/*[@cardinal]";
-	private final static String path2FootCardinals = "//Foot[name=!]/Cardinals/Cardinal/@type";
-	private final static String path2FootNames = "//Algebra/Foot/@name";
-	private final static String path2NyadNames = "//Nyad/@name";
-	// private final static String path4NyadOrders = "count(//Nyad/@order)";
+	private final static String path2FootCardinals = "//Foot/Name[!]	/Cardinals/Cardinal/@unit"; // re-do this one
+	private final static String path2FootNames = "//Algebra/Foot/Name/text()";
+	private final static String path2MonadNames = "//Monad/Name/text()";
+	private final static String path2Monads = "//Monad";
+	private final static String path2NyadNames = "//Nyad/Name/text()";
 	private final static String path4NyadCount = "count(//Nyad)";
+	private ArrayList<String> _algNames;
 	private ArrayList<AlgebraAbstract> _algs;
 	private ArrayList<Foot> _foot;
+	private ArrayList<String> _monadNames;
 	private ArrayList<MonadAbstract> _monads;
 	private int _nyadCount;
+	private ArrayList<String> _nyadNames;
+	private ArrayList<NyadAbstract> _nyads;
 	private CladosField _repMode;
 
 	protected JMenuItem _control;
@@ -108,54 +118,65 @@ public class FileOpenEvents implements ActionListener {
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
-		XPathFactory xPathfactory = XPathFactory.newInstance();
-		XPath xpath = xPathfactory.newXPath();
+		XPathFactory xPathFactory = XPathFactory.newInstance();
 		try {
 			builder = factory.newDocumentBuilder();
 			Document doc = builder.parse(fIni);
 			if (doc == null | doc.getFirstChild().getNodeName() != "NyadList")
 				return;
 
-			_repMode = findDivField(doc, xPathfactory.newXPath());
-			// Validate! If currently visible nyads have a different repMode,
-			// just STOP before conflicts happen.
+			if (findNyadCount(doc, xPathFactory.newXPath()) <= 0)
+				return; // STOP if no nyads are to be created
+			// ----------------
+			// We know how many nyads are involved. Validation done too.
+			// ----------------
+			_repMode = findDivField(doc, xPathFactory.newXPath());
 			if (_parent._GUI.appGeometryView.getNyadListSize() > 0) {
 				if (_parent._GUI.appGeometryView.getRepMode() != _repMode)
 					return;
 			}
-
-			// TODO parse the XML into the 'defaults' for initiating the calculator.
-			// 'Count', 'Order', 'DivField', etc.
-			buildGProducts(doc, xPathfactory.newXPath());
 			// ----------------
-			// Bases and GProducts are built and sitting in CladosGBuilder.INSTANCE lists.
-			// They can be acquired when building monads and nyads later.
+			// We know which DivField child is involved. Validation done too.
 			// ----------------
-			buildCardinals(doc, xPathfactory.newXPath());
+			buildGProducts(doc, xPathFactory.newXPath());
 			// ----------------
-			// Cardinals are built and sitting in CladosFBuilder.INSTANCE list.
-			// They can be acquired when building monads and nyads later.
+			// Bases/GProducts built/stored in CladosGBuilder.INSTANCE. Retrieve later.
 			// ----------------
-			buildFoot(doc, xPathfactory.newXPath());
+			buildCardinals(doc, xPathFactory.newXPath());
+			// ----------------
+			// Cardinals built/stored in CladosFBuilder.INSTANCE. Retrieve later.
+			// ----------------
+			buildFoot(doc, xPathFactory.newXPath());
 			if (_foot == null | _foot.size() == 0)
 				return; // STOP if no Foot objects created.
-			appendFootCardinals(doc, xPathfactory.newXPath());
+			appendFootCardinals(doc, xPathFactory.newXPath());
 			// ----------------
-			// Foot objects have been worked out and created.
-			// NOT appending Frames right now as those will change soon.
+			// Foot objects built/stored locally in _foot.
+			// [[NOT appending Frames right now as those will change soon.]]
 			// ----------------
-
-			_nyadCount = Integer.parseInt(xpath.evaluate(path4NyadCount, doc));
+			// findAllAlgebraNames(doc, xPathFactory.newXPath());
 			// ----------------
-			// Now we know how many nyads and which DivField children are involved.
+			// GProducts, DivField, Cardnals known, it is time to build algebras.
 			// ----------------
-
-			// TODO Validate! If Count and Order (+) don't make sense, just STOP.
-			String[] nyadNames = new String[_nyadCount];
-			XPathExpression expr = xpath.compile(path2NyadNames);
-			NodeList nyadNameNodes = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
-			for (int k = 0; k < nyadNameNodes.getLength(); k++)
-				nyadNames[k] = nyadNameNodes.item(k).getNodeValue();
+			buildTheAlgebras(doc, xPathFactory.newXPath());
+			// ----------------
+			// All DISTINCT algebras present in the file are created
+			// One issue, though. If two algebras have the same name and different details
+			// only the first one encountered will be created.
+			// DO NOT name them the same unless you intend them to be the same.
+			// ----------------
+			
+			findAllMonadNames(doc, xPathFactory.newXPath());
+			// ----------------
+			// _monadNames has as many entry as were found with some possibly being empty.
+			// ----------------
+			_nyadNames = new ArrayList<String>(_nyadCount);
+			findAllNyadNames(doc, xPathFactory.newXPath());
+			// ----------------
+			// _nyadNames will have _nyadCount entries now with some possibly being empty.
+			// ----------------
+			// TODO parse the XML into the 'defaults' for initiating the calculator.
+			// 'Count', 'Order', 'DivField', etc.
 
 		} catch (ParserConfigurationException e1) {
 			ErrorDialog.show("Couldn't acquire DocumentBuilderFactory instance.\n" + e1.getMessage(),
@@ -245,6 +266,117 @@ public class FileOpenEvents implements ActionListener {
 			CladosGBuilder.INSTANCE.createGProduct(sigNodes.item(k).getNodeValue());
 	}
 
+	private void buildTheAlgebras(Document pDoc, XPath pX) throws XPathExpressionException, BadSignatureException {
+		XPathExpression expr = pX.compile(path2Algs);
+		NodeList algNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
+		_algs = new ArrayList<AlgebraAbstract>(algNodes.getLength());
+		for (int j = 0; j < algNodes.getLength(); j++) {
+			// For this to work, the Alg child elements must be in order.
+			// Name, A Div Field, Foot, GProduct
+			// And GProducts, Bases, and Cardinals already exist as objects
+
+			Node name = algNodes.item(j).getFirstChild();
+			String name2Use = name.getTextContent();
+			boolean testIfPresent = false;
+			for (AlgebraAbstract point : _algs)
+				if (point.getAlgebraName() == name2Use) {
+					testIfPresent = true;
+					break;
+				}
+			if (testIfPresent)
+				break; // Do NOT make another algebra with the same name
+			// -------------------
+			// New algebra to create because name not found in _algs
+			// -------------------
+			Node divF = name.getNextSibling();
+			String card2Use = divF.getAttributes().getNamedItem("cardinal").getTextContent();
+			// We will look up the Cardinal in the Algebra constructor
+			Node foot = divF.getNextSibling();
+			String foot2Use = foot.getFirstChild().getTextContent();
+			// We will find the pre-created foot in a moment
+			Node gp = divF.getNextSibling();
+			String sig2Use = gp.getFirstChild().getTextContent();
+			// We will look up the the GProduct in the Algebra constructor
+			int ftIndx = -1;
+			for (Foot point : _foot) {
+				if (point.getFootName() == foot2Use)
+					ftIndx = _foot.indexOf(point);
+			}
+			if (ftIndx < 0)
+				return;
+			// ftIndx points at the foot to use
+			
+			// FINALLY we build the new algebra and add it to _algs.
+			switch (_repMode) {
+			case REALF:
+				_algs.add(CladosGAlgebra.REALF.createWithFootPlus(_foot.get(ftIndx),
+						CladosFBuilder.INSTANCE.findCardinal(card2Use), CladosGBuilder.INSTANCE.findGProduct(sig2Use),
+						name2Use));
+			case REALD:
+				_algs.add(CladosGAlgebra.REALD.createWithFootPlus(_foot.get(ftIndx),
+						CladosFBuilder.INSTANCE.findCardinal(card2Use), CladosGBuilder.INSTANCE.findGProduct(sig2Use),
+						name2Use));
+			case COMPLEXF:
+				_algs.add(CladosGAlgebra.COMPLEXF.createWithFootPlus(_foot.get(ftIndx),
+						CladosFBuilder.INSTANCE.findCardinal(card2Use), CladosGBuilder.INSTANCE.findGProduct(sig2Use),
+						name2Use));
+			case COMPLEXD:
+				_algs.add(CladosGAlgebra.COMPLEXD.createWithFootPlus(_foot.get(ftIndx),
+						CladosFBuilder.INSTANCE.findCardinal(card2Use), CladosGBuilder.INSTANCE.findGProduct(sig2Use),
+						name2Use));
+			}
+		}
+	}
+	
+	private void buildTheMonads(Document pDoc, XPath pX) throws XPathExpressionException {
+		XPathExpression expr = pX.compile(path2Algs);
+		NodeList monadNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
+		_monads = new ArrayList<MonadAbstract>(monadNodes.getLength());
+		for (int j = 0; j < monadNodes.getLength(); j++) {
+			// For this to work, the Monad child elements must be in order.
+			// Name, Algebra, Frame, Coefficients
+			// And GProducts, Bases, and Cardinals already exist as objects
+			Node name = monadNodes.item(j).getFirstChild();
+			String name2Use = name.getTextContent();
+			// No duplication test occurs
+			
+		}
+		
+		
+		
+	}
+
+	private void findAllAlgebraNames(Document pDoc, XPath pX) throws XPathExpressionException {
+		XPathExpression expr = pX.compile(path2AlgNames);
+		NodeList nameNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
+		_algNames = new ArrayList<String>(nameNodes.getLength());
+		for (int k = 0; k < nameNodes.getLength(); k++)
+			_algNames.add(nameNodes.item(k).getTextContent());
+	}
+
+	private void findAllMonadNames(Document pDoc, XPath pX) throws XPathExpressionException {
+		XPathExpression expr = pX.compile(path2MonadNames);
+		NodeList nameNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
+		_monadNames = new ArrayList<String>(nameNodes.getLength());
+		for (int k = 0; k < nameNodes.getLength(); k++)
+			_monadNames.add(nameNodes.item(k).getTextContent());
+	}
+
+	private void findAllNyadNames(Document pDoc, XPath pX) throws XPathExpressionException {
+		XPathExpression expr = pX.compile(path2NyadNames);
+		NodeList nameNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
+		_nyadNames.clear();
+		if (nameNodes.getLength() > 0) {
+			for (int k = 0; k < nameNodes.getLength(); k++)
+				_nyadNames.add(nameNodes.item(k).getTextContent());
+			if (nameNodes.getLength() < _nyadCount)
+				for (int k = nameNodes.getLength(); k < _nyadCount; k++)
+					_nyadNames.add("");
+		} else
+			for (int k = 0; k < _nyadCount; k++)
+				_nyadNames.add("");
+	}
+
 	private CladosField findDivField(Document pDoc, XPath pX) throws XPathExpressionException {
 		XPathExpression expr = pX.compile(path2DivFields);
 		NodeList divFieldNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
@@ -279,6 +411,11 @@ public class FileOpenEvents implements ActionListener {
 		default:
 			return null;
 		}
+	}
 
+	private int findNyadCount(Document pDoc, XPath pX) throws XPathExpressionException {
+		XPathExpression expr = pX.compile(path4NyadCount);
+		_nyadCount = (int) expr.evaluate(pDoc, XPathConstants.NODESET);
+		return _nyadCount;
 	}
 }
