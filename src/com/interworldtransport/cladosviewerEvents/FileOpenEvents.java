@@ -62,7 +62,7 @@ import javax.xml.xpath.XPathFactory;
 public class FileOpenEvents implements ActionListener {
 
 	private final static String path2Algs = "//Algebra";
-	private final static String path2AlgNames = "//Algebra/Name/text()";
+	private final static String path2AlgUUIDs = "//Algebra/@UUID";
 	private final static String path2AllCardinals = "//Foot/Cardinals/Cardinal/@unit";
 	private final static String path2AllSignatures = "//GProduct/Signature/text()";
 	private final static String path2DivFields = "//Algebra/*[@cardinal]";
@@ -71,8 +71,9 @@ public class FileOpenEvents implements ActionListener {
 	private final static String path2MonadNames = "//Monad/Name/text()";
 	private final static String path2Monads = "//Monad";
 	private final static String path2NyadNames = "//Nyad/Name/text()";
+	private final static String path2Nyads = "//Nyad";
 	private final static String path4NyadCount = "count(//Nyad)";
-	private ArrayList<String> _algNames;
+	private ArrayList<String> _algUUIDs;
 	private ArrayList<AlgebraAbstract> _algs;
 	private ArrayList<Foot> _foot;
 	private ArrayList<String> _monadNames;
@@ -165,8 +166,8 @@ public class FileOpenEvents implements ActionListener {
 			// only the first one encountered will be created.
 			// DO NOT name them the same unless you intend them to be the same.
 			// ----------------
-			
-			findAllMonadNames(doc, xPathFactory.newXPath());
+
+			// findAllMonadNames(doc, xPathFactory.newXPath());
 			// ----------------
 			// _monadNames has as many entry as were found with some possibly being empty.
 			// ----------------
@@ -274,7 +275,7 @@ public class FileOpenEvents implements ActionListener {
 			// For this to work, the Alg child elements must be in order.
 			// Name, A Div Field, Foot, GProduct
 			// And GProducts, Bases, and Cardinals already exist as objects
-
+			String uuid = algNodes.item(j).getAttributes().getNamedItem("UUID").getTextContent();
 			Node name = algNodes.item(j).getFirstChild();
 			String name2Use = name.getTextContent();
 			boolean testIfPresent = false;
@@ -305,7 +306,7 @@ public class FileOpenEvents implements ActionListener {
 			if (ftIndx < 0)
 				return;
 			// ftIndx points at the foot to use
-			
+
 			// FINALLY we build the new algebra and add it to _algs.
 			switch (_repMode) {
 			case REALF:
@@ -327,31 +328,55 @@ public class FileOpenEvents implements ActionListener {
 			}
 		}
 	}
+
+	private MonadAbstract buildAMonad(Node pNode) {
+
+		// For this to work, the Monad child elements must be in order.
+		// Name, Algebra, Frame, Coefficients
+		// And GProducts, Bases, and Cardinals already exist as objects
+		Node name = pNode.getFirstChild();
+		String name2Use = name.getTextContent();
+		
+		Node alg = name.getNextSibling();
+		
+
+	}
 	
-	private void buildTheMonads(Document pDoc, XPath pX) throws XPathExpressionException {
-		XPathExpression expr = pX.compile(path2Algs);
-		NodeList monadNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
-		_monads = new ArrayList<MonadAbstract>(monadNodes.getLength());
-		for (int j = 0; j < monadNodes.getLength(); j++) {
-			// For this to work, the Monad child elements must be in order.
-			// Name, Algebra, Frame, Coefficients
-			// And GProducts, Bases, and Cardinals already exist as objects
-			Node name = monadNodes.item(j).getFirstChild();
+	private void buildAllNyads(Document pDoc, XPath pX) throws XPathExpressionException {
+		XPathExpression expr = pX.compile(path2Nyads);
+		NodeList nyadNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
+		_nyads = new ArrayList<NyadAbstract>(nyadNodes.getLength());
+		// For this to work, the Nyad child elements must be in order.
+		// Name, Foot, AlgebraList, MonadList
+		for (int k = 0; k < _nyadCount; k++)
+		{
+			Node name = nyadNodes.item(k).getFirstChild();
 			String name2Use = name.getTextContent();
-			// No duplication test occurs
 			
+			Node foot = name.getNextSibling();
+			String foot2Use = foot.getFirstChild().getTextContent();
+			
+			Node monadList = foot.getNextSibling().getNextSibling();
+			NodeList monads = monadList.getChildNodes();
+			int nyadOrder = monads.getLength();
+			_monads = new ArrayList<MonadAbstract>(nyadOrder);
+			for (int j = 0; j < nyadOrder; j++)
+			{
+				_monads.add(buildAMonad(monads.item(j)));
+			}
 		}
 		
 		
 		
+
 	}
 
-	private void findAllAlgebraNames(Document pDoc, XPath pX) throws XPathExpressionException {
-		XPathExpression expr = pX.compile(path2AlgNames);
-		NodeList nameNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
-		_algNames = new ArrayList<String>(nameNodes.getLength());
-		for (int k = 0; k < nameNodes.getLength(); k++)
-			_algNames.add(nameNodes.item(k).getTextContent());
+	private void findAllAlgebraUUIDs(Document pDoc, XPath pX) throws XPathExpressionException {
+		XPathExpression expr = pX.compile(path2AlgUUIDs);
+		NodeList UUIDNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
+		_algUUIDs = new ArrayList<String>(UUIDNodes.getLength());
+		for (int k = 0; k < UUIDNodes.getLength(); k++)
+			_algUUIDs.add(UUIDNodes.item(k).getTextContent());
 	}
 
 	private void findAllMonadNames(Document pDoc, XPath pX) throws XPathExpressionException {
