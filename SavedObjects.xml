@@ -3,7 +3,7 @@
 	<Nyad order="2" algorder="2" >
 		<Name>"CurrentDensity"</Name>
 		<Foot>
-			<Name>"wkc"</Name>
+			<Name>wkc</Name>
 			<Cardinals number="2" >
 				<Cardinal unit="c=1" />
 				<Cardinal unit="q=1" />
@@ -11,31 +11,31 @@
 		</Foot>
 		<AlgebraList>
 			<Algebra>
-				<Name>"property"</Name>
+				<Name>property</Name>
 			</Algebra>
 			<Algebra>
-				<Name>"motion"</Name>
+				<Name>motion</Name>
 			</Algebra>
 		</AlgebraList>
 		<MonadList>
 			<Monad gradeKey="10" sparseFlag="true" >
-				<Name>"4Velocity"</Name>
+				<Name>4Velocity</Name>
 				<Algebra UUID="6eb47e1a-84f8-4f3e-96ff-da6782da2cd9" >
-					<Name>"motion"</Name>
+					<Name>motion</Name>
 					<ComplexD cardinal="c=1" realvalue="1.0" imgvalue="0.0"/>
 					<Frames number="2" >
 						<Frame number="0" name="canonical" />
 						<Frame number="1" name="gilded" />
 					</Frames>
 					<Foot>
-						<Name>"wkc"</Name>
+						<Name>wkc</Name>
 						<Cardinals number="2" >
 							<Cardinal unit="c=1" />
 							<Cardinal unit="q=1" />
 						</Cardinals>
 					</Foot>
 					<GProduct>
-						<Signature>"-+++"</Signature>
+						<Signature>-+++</Signature>
 						<Basis>
 							<Grades count="5">
 								<Grade number="0" range="0-0" />
@@ -83,7 +83,7 @@
 						</ProductTable>
 					</GProduct>
 				</Algebra>
-				<Frame>"gilded"</Frame>
+				<Frame>gilded</Frame>
 				<Coefficients number="16" gradeKey="10">
 					<ComplexD cardinal="c=1" realvalue="0.0" imgvalue="0.0"/>
 					<ComplexD cardinal="c=1" realvalue="1.0" imgvalue="0.0"/>
@@ -104,23 +104,23 @@
 				</Coefficients>
 			</Monad>
 			<Monad gradeKey="1" sparseFlag="true" >
-				<Name>"chargeDensity"</Name>
+				<Name>chargeDensity</Name>
 				<Algebra UUID="8cad773b-f732-40bf-8f3d-48dc789f3637" >
-					<Name>"property"</Name>
+					<Name>property</Name>
 					<ComplexD cardinal="q=1" realvalue="1.0" imgvalue="0.0"/>
 					<Frames number="2" >
 						<Frame number="0" name="canonical" />
 						<Frame number="1" name="gilded" />
 					</Frames>
 					<Foot>
-						<Name>"wkc"</Name>
+						<Name>wkc</Name>
 						<Cardinals number="2" >
 							<Cardinal unit="c=1" />
 							<Cardinal unit="q=1" />
 						</Cardinals>
 					</Foot>
 					<GProduct>
-						<Signature>"-+++"</Signature>
+						<Signature>-+++</Signature>
 						<Basis>
 							<Grades count="5">
 								<Grade number="0" range="0-0" />
@@ -168,7 +168,7 @@
 						</ProductTable>
 					</GProduct>
 				</Algebra>
-				<Frame>"gilded"</Frame>
+				<Frame>gilded</Frame>
 				<Coefficients number="16" gradeKey="1">
 					<ComplexD cardinal="c=1" realvalue="1.0" imgvalue="0.0"/>
 					<ComplexD cardinal="q=1" realvalue="0.0" imgvalue="0.0"/>
