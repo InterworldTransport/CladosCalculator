@@ -19,7 +19,7 @@ public class NyadListXMLParser
     public static void main(String[] args) throws Exception 
     {
  
-    	final String xmlFilePath = "Snapshot.xml";
+    	final String xmlFilePath = "SavedObjects.xml";
         
         //Use method to convert XML string content to XML Document object
         Document doc = loadXMLObjectsToXMLDocument( xmlFilePath );
@@ -36,23 +36,8 @@ public class NyadListXMLParser
 		String result = xpath.evaluate(path4NyadCount, doc);
 		System.out.println("Nyad count is "+result);
 		int count = Integer.parseInt(result);
-		String[] nyadNames = new String[count];
-		for (int j=1; j<=count; j++)
-		{
-			xpath.reset();
-			String test = path4NyadOrder1 + j + path4NyadOrder2;
-			int order = Integer.parseInt(xpath.evaluate(test, doc));
-			System.out.println(" and nyad #"+j+" is of order "+count);
-			for (int m = 1; m<=order; m++)
-			{
-				xpath.reset();
-				test = "//Nyad["+j+"]//Monad["+m+"]/@name";
-				result = xpath.evaluate(test, doc);
-				System.out.print("with monad named "+result+"\t");
-			}
-			System.out.print("\n");
-			
-		}
+		
+		
 		xpath.reset();
 		XPathExpression expr = xpath.compile("//Algebra/*[@cardinal]");
 		NodeList fields = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
