@@ -25,31 +25,30 @@
 
 package com.interworldtransport.cladosviewerExceptions;
 
-/** com.interworldtransport.cladosviewer.CantGetSaveException
- *  This exception is thrown when the interface is unable to save snapshot data.
- *  The most likely problem that leads here is a mis-pointed output file.
- *  All such problems lead here.
+/**
+ * com.interworldtransport.cladosviewer.CantGetSaveException This exception is
+ * thrown when the interface is unable to save snapshot data. The most likely
+ * problem that leads here is a mis-pointed output file. All such problems lead
+ * here.
  *
  * @version 0.80, $Date: 2005/07/28 16:57:25 $
  * @author Dr Alfred W Differ
  */
-public class CantGetSaveException extends UtilitiesException 
-{
+public class CantGetSaveException extends UtilitiesException {
 
 	private static final long serialVersionUID = 3346191904559396286L;
+
 	/**
-	 * This is just a constructor method delivering a string to the descendant of 
-	 * a UtilitiesException
-	 * @param pMessage
-	 *  String
-	 * This is the hopefully helpful message to be delivered when things go specifically wrong
-	 * with access to a save/snapshot file. The app works well enough without it, but not 
-	 * being able to save results is annoying.
+	 * This is just a constructor method delivering a string to the descendant of a
+	 * UtilitiesException
+	 * 
+	 * @param pMessage String This is the hopefully helpful message to be delivered
+	 *                 when things go specifically wrong with access to a
+	 *                 save/snapshot file. The app works well enough without it, but
+	 *                 not being able to save results is annoying.
 	 */
-	public CantGetSaveException(String pMessage)
-	{
+	public CantGetSaveException(String pMessage) {
 		super(pMessage);
 	}
 
-    } //end of CantGetSaveException class
-
+}

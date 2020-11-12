@@ -38,93 +38,82 @@ import com.interworldtransport.cladosviewer.ErrorDialog;
 import java.awt.event.*;
 import javax.swing.*;
 
-/** 
- *  This class manages events relating to the answering of a boolean question.
- *  Is the selected monad nilpotent?
+/**
+ * This class manages events relating to the answering of a boolean question. Is
+ * the selected monad nilpotent?
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class MOpsNilpotentEvents implements ActionListener
- {
-    protected JMenuItem 		_control;
-    protected MOpsParentEvents 	_parent;
+public class MOpsNilpotentEvents implements ActionListener {
+	protected JMenuItem _control;
+	protected MOpsParentEvents _parent;
 
-/** 
- * This is the default constructor.
- * @param pmniControlled
- *  JMenuItem
- * This is a reference to the Menu Item for which this event acts.
- * @param pParent
- * 	NOpsParentEvents
- * This is a reference to the NOpsParentEvents parent event handler
- */
-    public MOpsNilpotentEvents(	JMenuItem 			pmniControlled,
-    							MOpsParentEvents	pParent)
-    {
-		_control=pmniControlled;
+	/**
+	 * This is the default constructor.
+	 * 
+	 * @param pmniControlled JMenuItem This is a reference to the Menu Item for
+	 *                       which this event acts.
+	 * @param pParent        NOpsParentEvents This is a reference to the
+	 *                       NOpsParentEvents parent event handler
+	 */
+	public MOpsNilpotentEvents(JMenuItem pmniControlled, MOpsParentEvents pParent) {
+		_control = pmniControlled;
 		_control.addActionListener(this);
-		_parent=pParent;
-    }
+		_parent = pParent;
+	}
 
-/** 
- * This is the actual action to be performed by this member of the menu.
- * The monad with focus is tested to see if it is nilpotent.
- */
-    public void actionPerformed(ActionEvent evt)
-    {
-    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
-    	if (indexNyadPanelSelected<0) 
-    	{
-    		ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
-    		return;	
-    	}
-    	    	
-    	NyadPanel panelNyadSelected=_parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
-    	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
-    	if (indxMndPnlSlctd<0) 
-    	{
-    		ErrorDialog.show("Nilpotent Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
-    		return;
-    	}
-    	
-    	MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
-    	boolean test = false;
-    	try
-    	{
-    		int pow2Test = (int) Float.parseFloat(_parent._GUI.appFieldBar.getRealText());
-	    	switch (tSpot.getRepMode())
-	    	{
-		    	case REALF: 	test = MonadRealF.isNilpotent(tSpot.getMonadRF(), pow2Test);
-								    	break;
-		    	case REALD: 	test = MonadRealD.isNilpotent(tSpot.getMonadRD(), pow2Test);
-								    	break;
-		    	case COMPLEXF:	test = MonadComplexF.isNilpotent(tSpot.getMonadCF(), pow2Test);
-								    	break;
-		    	case COMPLEXD:	test = MonadComplexD.isNilpotent(tSpot.getMonadCD(), pow2Test);
-	    	}
-	    	if (test)
-				_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is nilpotent at power="+pow2Test+".\n");
-	    	else
-	    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is NOT nilpotent at power="+pow2Test+".\n");
-    	}
-    	catch (NullPointerException eNull)	// Catch the empty text 'real number' text field on the FieldBar.
-    	{
-    		ErrorDialog.show("Power Nilpotent Test must have a real # in the FieldBar.\nNothing done.", "Null Pointer Exception");
-    		return;
-    	}
-    	catch (NumberFormatException eFormat)	// Catch the non-parse-able text 'real number' text field on the FieldBar.
-    	{
-    		ErrorDialog.show("Power Nilpotent Test must have a parse-able real # in the FieldBar.\nNothing done.", "Number Format Exception");
-    		return;
-    	}
-		catch (CladosMonadException e)
-		{
-			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n"+e.getSourceMessage(), "Clados Monad Exception");
+	/**
+	 * This is the actual action to be performed by this member of the menu. The
+	 * monad with focus is tested to see if it is nilpotent.
+	 */
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
+		if (indexNyadPanelSelected < 0) {
+			ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
+			return;
 		}
-		catch (FieldBinaryException eb)
-		{
-			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n"+eb.getSourceMessage(), "Field Binary Exception");
+
+		NyadPanel panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
+		int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
+		if (indxMndPnlSlctd < 0) {
+			ErrorDialog.show("Nilpotent Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
+			return;
 		}
-    }
- }
+
+		MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+
+		try {
+			int pow2Test = (int) Float.parseFloat(_parent._GUI.appFieldBar.getRealText());
+			boolean test = switch (tSpot.getRepMode()) {
+			case REALF -> MonadRealF.isNilpotent(tSpot.getMonadRF(), pow2Test);
+			case REALD -> MonadRealD.isNilpotent(tSpot.getMonadRD(), pow2Test);
+			case COMPLEXF -> MonadComplexF.isNilpotent(tSpot.getMonadCF(), pow2Test);
+			case COMPLEXD -> MonadComplexD.isNilpotent(tSpot.getMonadCD(), pow2Test);
+			};
+			if (test)
+				_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is nilpotent at power=" + pow2Test + ".\n");
+			else
+				_parent._GUI.appStatusBar
+						.setStatusMsg("-->Selected monad is NOT nilpotent at power=" + pow2Test + ".\n");
+		} catch (NullPointerException eNull) // Catch the empty text 'real number' text field on the FieldBar.
+		{
+			ErrorDialog.show("Power Nilpotent Test must have a real # in the FieldBar.\nNothing done.",
+					"Null Pointer Exception");
+			return;
+		} catch (NumberFormatException eFormat) // Catch the non-parse-able text 'real number' text field on the
+												// FieldBar.
+		{
+			ErrorDialog.show("Power Nilpotent Test must have a parse-able real # in the FieldBar.\nNothing done.",
+					"Number Format Exception");
+			return;
+		} catch (CladosMonadException e) {
+			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n" + e.getSourceMessage(),
+					"Clados Monad Exception");
+		} catch (FieldBinaryException eb) {
+			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n" + eb.getSourceMessage(),
+					"Field Binary Exception");
+		}
+	}
+}

@@ -36,71 +36,60 @@ import com.interworldtransport.cladosviewer.ErrorDialog;
 import java.awt.event.*;
 import javax.swing.*;
 
-/** 
- *  This class manages events relating to the answering of a boolean question.
- *  Is the selected monad multigrade?
+/**
+ * This class manages events relating to the answering of a boolean question. Is
+ * the selected monad multigrade?
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class MOpsMultGradeEvents implements ActionListener
- {
-    protected JMenuItem 		_control;
-    protected MOpsParentEvents 	_parent;
+public class MOpsMultGradeEvents implements ActionListener {
+	protected JMenuItem _control;
+	protected MOpsParentEvents _parent;
 
-/** 
- * This is the default constructor.
- * @param pmniControlled
- *  JMenuItem
- * This is a reference to the Menu Item for which this event acts.
- * @param pParent
- * 	NOpsParentEvents
- * This is a reference to the NOpsParentEvents parent event handler
- */
-    public MOpsMultGradeEvents(	JMenuItem 			pmniControlled,
-    							MOpsParentEvents 	pParent)
-    {
-		_control=pmniControlled;
+	/**
+	 * This is the default constructor.
+	 * 
+	 * @param pmniControlled JMenuItem This is a reference to the Menu Item for
+	 *                       which this event acts.
+	 * @param pParent        NOpsParentEvents This is a reference to the
+	 *                       NOpsParentEvents parent event handler
+	 */
+	public MOpsMultGradeEvents(JMenuItem pmniControlled, MOpsParentEvents pParent) {
+		_control = pmniControlled;
 		_control.addActionListener(this);
-		_parent=pParent;
-    }
+		_parent = pParent;
+	}
 
-/** 
- * This is the actual action to be performed by this member of the menu.
- */
-    public void actionPerformed(ActionEvent evt)
-    {
-    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
-    	if (indexNyadPanelSelected<0) 
-    	{
-    		ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
-    		return;	
-    	}
-    	
-    	NyadPanel panelNyadSelected=_parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
-    	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
-    	if (indxMndPnlSlctd<0) 
-    	{
-    		ErrorDialog.show("Multi-Grade Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
-    		return;
-    	}
-    	
-    	MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
-    	boolean test = false;
-    	switch (tSpot.getRepMode())
-    	{
-	    	case REALF: 	test = MonadRealF.isMultiGrade(tSpot.getMonadRF());
-							    	break;
-	    	case REALD: 	test = MonadRealD.isMultiGrade(tSpot.getMonadRD());
-							    	break;
-	    	case COMPLEXF:	test = MonadComplexF.isMultiGrade(tSpot.getMonadCF());
-							    	break;
-	    	case COMPLEXD:	test = MonadComplexD.isMultiGrade(tSpot.getMonadCD());
-    	}
-	
+	/**
+	 * This is the actual action to be performed by this member of the menu.
+	 */
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
+		if (indexNyadPanelSelected < 0) {
+			ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
+			return;
+		}
+
+		NyadPanel panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
+		int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
+		if (indxMndPnlSlctd < 0) {
+			ErrorDialog.show("Multi-Grade Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
+			return;
+		}
+
+		MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+		boolean test = switch (tSpot.getRepMode()) {
+		case REALF -> MonadRealF.isMultiGrade(tSpot.getMonadRF());
+		case REALD -> MonadRealD.isMultiGrade(tSpot.getMonadRD());
+		case COMPLEXF -> MonadComplexF.isMultiGrade(tSpot.getMonadCF());
+		case COMPLEXD -> MonadComplexD.isMultiGrade(tSpot.getMonadCD());
+		};
+
 		if (test)
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is a multigrade.\n");
 		else
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is NOT multigrade.\n");
-    }
- }
+	}
+}

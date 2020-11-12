@@ -61,6 +61,7 @@ public class FileSaveEvents implements ActionListener {
 	/**
 	 * This is the actual action to be performed by this member of the File menu.
 	 */
+	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if (_parent._GUI.IniProps.getProperty("Desktop.File.Snapshot") != null) // save to file described in conf
 																				// setting

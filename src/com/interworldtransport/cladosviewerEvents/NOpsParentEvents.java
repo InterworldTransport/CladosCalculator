@@ -24,9 +24,9 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
-//import java.awt.event.*;
 
-import com.interworldtransport.cladosviewer.*;
+import com.interworldtransport.cladosviewer.CladosCalculator;
+import com.interworldtransport.cladosviewer.ViewerMenu;
 
 /** 
  * This class groups the event listeners associated with the Boolean Operations

@@ -23,7 +23,8 @@
  * ------------------------------------------------------------------------ <br>
  */
 
-package com.interworldtransport.cladosviewer ;
+package com.interworldtransport.cladosviewer;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -33,65 +34,64 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-/** 
+/**
  * The UtilityStatusBar class is intended to be the status bar of a Utility
  * application.
  * <p>
+ * 
  * @version 0.85
  * @author Dr Alfred W Differ
  */
 
- public class UtilityStatusBar extends JPanel implements ActionListener
- {
-	private static final 	long 				serialVersionUID 	= -3822473396042460868L;
-	private	static final 	int 				_FONTSIZE 			= 10;
-    private	static final	Color				_backColor 			= new Color(255, 255, 222);
-    private static final	Dimension 			square 				= new Dimension(25,25);
-	private					JTextArea			stmesgt;
-	private					JButton				clearIt;
+public class UtilityStatusBar extends JPanel implements ActionListener {
+	private static final long serialVersionUID = 7838984392693449770L;
+	private static final int _FONTSIZE = 10;
+	private static final Color _backColor = new Color(255, 255, 222);
+	private static final Dimension square = new Dimension(25, 25);
+	private JTextArea stmesgt;
+	private JButton clearIt;
 
-/**
- * The UtilityStatusBar class is intended to be the status bar of the SailAway
- * application.  There is nothing really special about this class.  It can and
- * used to be defined and built within the SailAway application.  For the sake
- * of maintenance, it has been moved to its own class and file.
- */
-    public UtilityStatusBar()
-    {
-    	super();
-    	setBackground(_backColor);
+	/**
+	 * The UtilityStatusBar class is intended to be the status bar of the SailAway
+	 * application. There is nothing really special about this class. It can and
+	 * used to be defined and built within the SailAway application. For the sake of
+	 * maintenance, it has been moved to its own class and file.
+	 */
+	public UtilityStatusBar() {
+		super();
+		setBackground(_backColor);
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEtchedBorder());
-		
-		clearIt=new JButton(new ImageIcon(this.getClass().getResource("/icons/remove.png")));
+
+		clearIt = new JButton(new ImageIcon(this.getClass().getResource("/icons/remove.png")));
 		clearIt.setActionCommand("clear");
 		clearIt.setToolTipText("clear the message stack");
 		clearIt.setPreferredSize(square);
 		clearIt.setBorder(BorderFactory.createEtchedBorder(0));
 		clearIt.addActionListener(this);
-    	add(clearIt, BorderLayout.LINE_START);
-		
+		add(clearIt, BorderLayout.LINE_START);
+
 		stmesgt = new JTextArea(10, 40);
 		stmesgt.setFont(new Font(Font.SERIF, Font.PLAIN, _FONTSIZE));
 		stmesgt.setLineWrap(true);
 		stmesgt.setWrapStyleWord(true);
 		add(new JScrollPane(stmesgt), BorderLayout.CENTER);
-    }
-    /**
-     * This is the message setting method that practically all other display panels
-     * use when trying to report issues and results to the GUI.
-     * @param pMsg
-     *  String
-     * Typical use of this is to construct a string with the message by appending
-     * other strings in a string buffer... and then converting it at the end to String.
-     */
-    public void setStatusMsg(String pMsg)
-    {
-    	stmesgt.append(pMsg);
-    }
+	}
+
+	/**
+	 * This is the message setting method that practically all other display panels
+	 * use when trying to report issues and results to the GUI.
+	 * 
+	 * @param pMsg String Typical use of this is to construct a string with the
+	 *             message by appending other strings in a string buffer... and then
+	 *             converting it at the end to String.
+	 */
+	public void setStatusMsg(String pMsg) {
+		stmesgt.append(pMsg);
+	}
+
 	@Override
-	public void actionPerformed(ActionEvent e) 
-	{
+	public void actionPerformed(ActionEvent e) {
 		stmesgt.setText("");
 	}
 }

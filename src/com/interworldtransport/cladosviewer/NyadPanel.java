@@ -258,6 +258,8 @@ public class NyadPanel extends JPanel implements ActionListener {
 	 *                               currently tracked with a short integer. {--****
 	 */
 	public NyadPanel(CladosCalculator pGUI, NyadRealF pN) throws UtilitiesException, BadSignatureException {
+		// TODO Why are their four versions of this constructor when switching would
+		// suffice to cope with the differences between the Nyad siblings?
 		super();
 		if (pGUI == null)
 			throw new UtilitiesException("A GUI must be passed to a NyadPanel");
@@ -295,55 +297,45 @@ public class NyadPanel extends JPanel implements ActionListener {
 		add(monadPanes, JTabbedPane.CENTER);
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent event) {
 		switch (event.getActionCommand()) {
-		case "copy":
-			copyMonadCommand(); // It's a little long
-			break;
-		case "erase":
-			removeMonadCommand();
-			break;
-		case "create":
-			CreateDialog.createMonad(_GUI, _repMode); // Create a new monad for the selected nyad OR a whole new nyad
-			break;
-		case "push":
-			push(); // Swaps the currently selected nyad with the one below it
-			break;
-		case "pop":
-			pop(); // Swaps the currently selected nyad with the one above it
-			break;
-		case "save":
+		case "copy" -> copyMonadCommand(); // It's a little long
+		case "erase" -> removeMonadCommand();
+		case "create" -> CreateDialog.createMonad(_GUI, _repMode);
+		case "push" -> push(); // Swaps the currently selected nyad with the one below it
+		case "pop" -> pop(); // Swaps the currently selected nyad with the one above it
+		case "save" -> {
 			setRepName();
 			btnEditMonad.setActionCommand("edit");
 			btnEditMonad.setToolTipText("start edits");
 			btnSaveEdits.setEnabled(false);
 			btnUndoEdits.setEnabled(false);
 			makeNotWritable();
-			break;
-		case "abort":
+		}
+		case "abort" -> {
 			setReferences();
 			btnEditMonad.setActionCommand("edit");
 			btnEditMonad.setToolTipText("start edits");
 			btnSaveEdits.setEnabled(false);
 			btnUndoEdits.setEnabled(false);
 			makeNotWritable();
-			break;
-		case "edit":
+		}
+		case "edit" -> {
 			btnEditMonad.setActionCommand(".edit.");
 			btnEditMonad.setToolTipText("end edits w/o save");
 			btnSaveEdits.setEnabled(true);
 			btnUndoEdits.setEnabled(true);
 			makeWritable();
-			break;
-		case ".edit.":
+		}
+		case ".edit." -> {
 			btnEditMonad.setActionCommand("edit");
 			btnEditMonad.setToolTipText("start edits");
 			btnSaveEdits.setEnabled(false);
 			btnUndoEdits.setEnabled(false);
 			makeNotWritable();
-			break;
-		default:
-			ErrorDialog.show("No detectable command processed.", "Action At NyadPanel Attempted");
+		}
+		default -> ErrorDialog.show("No detectable command processed.", "Action At NyadPanel Attempted");
 		}
 	}
 
@@ -360,6 +352,8 @@ public class NyadPanel extends JPanel implements ActionListener {
 	 *           MonadPanel to be appended to this NyadPanel.
 	 */
 	public void addMonadPanel(MonadComplexD pM) {
+		// TODO Why are there four versions of this method that do NOT seem to care
+		// about the DivField on the passed Monad?
 		MonadPanel pMP = new MonadPanel(_GUI, pM);
 		addMonadPanel(pMP);
 	}
@@ -391,7 +385,7 @@ public class NyadPanel extends JPanel implements ActionListener {
 	 *            elsewhere.
 	 */
 	public void addMonadPanel(MonadPanel pMP) {
-		int next = Integer.valueOf(monadPanes.getTitleAt(monadPanes.getTabCount() - 1)) + 1;
+		int next = Integer.valueOf(monadPanes.getTitleAt(monadPanes.getTabCount() - 1)).intValue() + 1;
 		monadPanelList.ensureCapacity(next + 1);
 		monadPanelList.add(pMP);
 		monadPanes.addTab((new StringBuffer()).append(next).toString(), tabIcon, new JScrollPane(pMP));
@@ -467,16 +461,21 @@ public class NyadPanel extends JPanel implements ActionListener {
 
 	public NyadAbstract getNyad(CladosField pIn) {
 		switch (pIn) {
-		case COMPLEXD:
+		case COMPLEXD -> {
 			return _repNyadCD;
-		case COMPLEXF:
+		}
+		case COMPLEXF -> {
 			return _repNyadCF;
-		case REALD:
+		}
+		case REALD -> {
 			return _repNyadD;
-		case REALF:
+		}
+		case REALF -> {
 			return _repNyadF;
-		default:
+		}
+		default -> {
 			return null;
+		}
 		}
 	}
 
@@ -511,58 +510,56 @@ public class NyadPanel extends JPanel implements ActionListener {
 	private void copyMonadCommand() {
 		if (getMonadListSize() <= 0)
 			return; // Nothing to do here. No monad to be copied.
-		String buildName = "";
-		String buildAlgName = "";
-		String buildFrameName = "";
 		try {
 			switch (_repMode) {
-			case REALF:
+			case REALF -> {
 				MonadRealF mRF = (MonadRealF) getMonadPanel(getPaneFocus()).getMonad(_repMode);
-				buildName = new StringBuffer(mRF.getName()).append("_c").toString();
-				buildAlgName = new StringBuffer(mRF.getAlgebra().getAlgebraName()).append("_c").toString();
-				buildFrameName = new StringBuffer(mRF.getFrameName()).append("_c").toString();
+				String buildName = new StringBuffer(mRF.getName()).append("_c").toString();
+				String buildAlgName = new StringBuffer(mRF.getAlgebra().getAlgebraName()).append("_c").toString();
+				String buildFrameName = new StringBuffer(mRF.getFrameName()).append("_c").toString();
 				MonadRealF newMRF = (MonadRealF) CladosGMonad.REALF.createWithAlgebra(mRF.getCoeff(),
 						(AlgebraRealF) CladosGAlgebra.REALF.createWithFootPlus(mRF.getAlgebra().getFoot(),
 								mRF.getAlgebra().shareCardinal(), mRF.getAlgebra().getGProduct(), buildAlgName),
 						buildName, buildFrameName);
 				_repNyadF.appendMonad(newMRF);
 				addMonadPanel(newMRF);
-				break;
-			case REALD:
+			}
+			case REALD -> {
 				MonadRealD mRD = (MonadRealD) getMonadPanel(getPaneFocus()).getMonad(_repMode);
-				buildName = new StringBuffer(mRD.getName()).append("_c").toString();
-				buildAlgName = new StringBuffer(mRD.getAlgebra().getAlgebraName()).append("_c").toString();
-				buildFrameName = new StringBuffer(mRD.getFrameName()).append("_c").toString();
+				String buildName = new StringBuffer(mRD.getName()).append("_c").toString();
+				String buildAlgName = new StringBuffer(mRD.getAlgebra().getAlgebraName()).append("_c").toString();
+				String buildFrameName = new StringBuffer(mRD.getFrameName()).append("_c").toString();
 				MonadRealD newMRD = (MonadRealD) CladosGMonad.REALD.createWithAlgebra(mRD.getCoeff(),
 						(AlgebraRealD) CladosGAlgebra.REALD.createWithFootPlus(mRD.getAlgebra().getFoot(),
 								mRD.getAlgebra().shareCardinal(), mRD.getAlgebra().getGProduct(), buildAlgName),
 						buildName, buildFrameName);
 				_repNyadD.appendMonad(newMRD);
 				addMonadPanel(newMRD);
-				break;
-			case COMPLEXF:
+			}
+			case COMPLEXF -> {
 				MonadComplexF mCF = (MonadComplexF) getMonadPanel(getPaneFocus()).getMonad(_repMode);
-				buildName = new StringBuffer(mCF.getName()).append("_c").toString();
-				buildAlgName = new StringBuffer(mCF.getAlgebra().getAlgebraName()).append("_c").toString();
-				buildFrameName = new StringBuffer(mCF.getFrameName()).append("_c").toString();
+				String buildName = new StringBuffer(mCF.getName()).append("_c").toString();
+				String buildAlgName = new StringBuffer(mCF.getAlgebra().getAlgebraName()).append("_c").toString();
+				String buildFrameName = new StringBuffer(mCF.getFrameName()).append("_c").toString();
 				MonadComplexF newMCF = (MonadComplexF) CladosGMonad.COMPLEXF.createWithAlgebra(mCF.getCoeff(),
 						(AlgebraComplexF) CladosGAlgebra.COMPLEXF.createWithFootPlus(mCF.getAlgebra().getFoot(),
 								mCF.getAlgebra().shareCardinal(), mCF.getAlgebra().getGProduct(), buildAlgName),
 						buildName, buildFrameName);
 				_repNyadCF.appendMonad(newMCF);
 				addMonadPanel(newMCF);
-				break;
-			case COMPLEXD:
+			}
+			case COMPLEXD -> {
 				MonadComplexD mCD = (MonadComplexD) getMonadPanel(getPaneFocus()).getMonad(_repMode);
-				buildName = new StringBuffer(mCD.getName()).append("_c").toString();
-				buildAlgName = new StringBuffer(mCD.getAlgebra().getAlgebraName()).append("_c").toString();
-				buildFrameName = new StringBuffer(mCD.getFrameName()).append("_c").toString();
+				String buildName = new StringBuffer(mCD.getName()).append("_c").toString();
+				String buildAlgName = new StringBuffer(mCD.getAlgebra().getAlgebraName()).append("_c").toString();
+				String buildFrameName = new StringBuffer(mCD.getFrameName()).append("_c").toString();
 				MonadComplexD newMCD = (MonadComplexD) CladosGMonad.COMPLEXD.createWithAlgebra(mCD.getCoeff(),
 						(AlgebraComplexD) CladosGAlgebra.COMPLEXD.createWithFootPlus(mCD.getAlgebra().getFoot(),
 								mCD.getAlgebra().shareCardinal(), mCD.getAlgebra().getGProduct(), buildAlgName),
 						buildName, buildFrameName);
 				_repNyadCD.appendMonad(newMCD);
 				addMonadPanel(newMCD);
+			}
 			}
 		} catch (BadSignatureException es) {
 			ErrorDialog.show("Could not create copy because monad signature is malformed.", "Malformed Signature?");
@@ -794,28 +791,22 @@ public class NyadPanel extends JPanel implements ActionListener {
 	private void removeMonadCommand() {
 		if (monadPanes.getTabCount() > 1) {
 			try {
-				int point = monadPanes.getSelectedIndex();
 				switch (_repMode) {
-				case REALF:
-					_repNyadF.removeMonad(point);
-					break;
-				case REALD:
-					_repNyadD.removeMonad(point);
-					break;
-				case COMPLEXF:
-					_repNyadCF.removeMonad(point);
-					break;
-				case COMPLEXD:
-					_repNyadCD.removeMonad(point);
+				case REALF -> _repNyadF.removeMonad(monadPanes.getSelectedIndex());
+				case REALD -> _repNyadD.removeMonad(monadPanes.getSelectedIndex());
+				case COMPLEXF -> _repNyadCF.removeMonad(monadPanes.getSelectedIndex());
+				case COMPLEXD -> _repNyadCD.removeMonad(monadPanes.getSelectedIndex());
 				}
-				removeMonadTab(point);
+				removeMonadTab(monadPanes.getSelectedIndex());
 			} catch (CladosNyadException e) {
-				ErrorDialog.show("Could not remove the monad.\n"+e.getSourceMessage(), "Clados Nyad Exception");
+				ErrorDialog.show("Could not remove the monad.\n" + e.getSourceMessage(), "Clados Nyad Exception");
 			}
-		} else // The only way to get here is if the monad to be removed is the last one in the
-				// nyad.
-		{ // That causes the entire nyad to be removed.
+		} else {
+			// The only way here is if the monad to remove is the last one in the nyad.
+			// That causes the entire nyad to be removed.
 			_GUI.appGeometryView.removeNyadPanel(0);
+			// Don't worry about the tab count being zero or negative. The command to get
+			// here wouldn't have been visible.
 		}
 	}
 
@@ -839,49 +830,51 @@ public class NyadPanel extends JPanel implements ActionListener {
 
 	private void setReferences() {
 		switch (_repMode) {
-		case REALF:
+		case REALF -> {
 			nyadName.setText(_repNyadF.getName());
 			nyadOrder.setText((new StringBuffer().append(_repNyadF.getMonadList().size())).toString());
 			nyadAlgOrder.setText((new StringBuffer().append(_repNyadF.getAlgebraList().size())).toString());
 			nyadFoot.setText(_repNyadF.getFoot().getFootName());
-			break;
-		case REALD:
+		}
+		case REALD -> {
 			nyadName.setText(_repNyadD.getName());
 			nyadOrder.setText((new StringBuffer().append(_repNyadD.getMonadList().size())).toString());
 			nyadAlgOrder.setText((new StringBuffer().append(_repNyadD.getAlgebraList().size())).toString());
 			nyadFoot.setText(_repNyadD.getFoot().getFootName());
-			break;
-		case COMPLEXF:
+		}
+		case COMPLEXF -> {
 			nyadName.setText(_repNyadCF.getName());
 			nyadOrder.setText((new StringBuffer().append(_repNyadCF.getMonadList().size())).toString());
 			nyadAlgOrder.setText((new StringBuffer().append(_repNyadCF.getAlgebraList().size())).toString());
 			nyadFoot.setText(_repNyadCF.getFoot().getFootName());
-			break;
-		case COMPLEXD:
+		}
+		case COMPLEXD -> {
 			nyadName.setText(_repNyadCD.getName());
 			nyadOrder.setText((new StringBuffer().append(_repNyadCD.getMonadList().size())).toString());
 			nyadAlgOrder.setText((new StringBuffer().append(_repNyadCD.getAlgebraList().size())).toString());
 			nyadFoot.setText(_repNyadCD.getFoot().getFootName());
 		}
+		}
 	}
 
 	private void setRepName() {
 		switch (_repMode) {
-		case REALF:
+		case REALF -> {
 			if (nyadName.getText() != _repNyadF.getName())
 				_repNyadF.setName(nyadName.getText());
-			break;
-		case REALD:
+		}
+		case REALD -> {
 			if (nyadName.getText() != _repNyadD.getName())
 				_repNyadD.setName(nyadName.getText());
-			break;
-		case COMPLEXF:
+		}
+		case COMPLEXF -> {
 			if (nyadName.getText() != _repNyadCF.getName())
 				_repNyadCF.setName(nyadName.getText());
-			break;
-		case COMPLEXD:
+		}
+		case COMPLEXD -> {
 			if (nyadName.getText() != _repNyadCD.getName())
 				_repNyadCD.setName(nyadName.getText());
+		}
 		}
 	}
 }

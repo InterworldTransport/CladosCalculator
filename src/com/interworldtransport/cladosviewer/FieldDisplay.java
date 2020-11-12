@@ -189,23 +189,15 @@ public class FieldDisplay extends JTextArea implements FocusListener {
 	}
 
 	public void displayContents() {
-		StringBuffer str = new StringBuffer().append(FieldDisplay._REAL);
 		switch (_repMode) {
-		case REALF:
-			str.append(displayFieldRF.getReal());
-			setText(str.toString());
-			break;
-		case REALD:
-			str.append(displayFieldRD.getReal());
-			setText(str.toString());
-			break;
-		case COMPLEXF:
-			str.append(displayFieldCF.getReal()).append("\n" + FieldDisplay._IMAGINARY).append(displayFieldCF.getImg());
-			setText(str.toString());
-			break;
-		case COMPLEXD:
-			str.append(displayFieldCD.getReal()).append("\n" + FieldDisplay._IMAGINARY).append(displayFieldCD.getImg());
-			setText(str.toString());
+		case REALF -> setText(
+				new StringBuilder().append(FieldDisplay._REAL).append(displayFieldRF.getReal()).toString());
+		case REALD -> setText(
+				new StringBuilder().append(FieldDisplay._REAL).append(displayFieldRD.getReal()).toString());
+		case COMPLEXF -> setText(new StringBuilder().append(FieldDisplay._REAL).append(displayFieldCF.getReal())
+				.append("\n" + FieldDisplay._IMAGINARY).append(displayFieldCF.getImg()).toString());
+		case COMPLEXD -> setText(new StringBuilder().append(FieldDisplay._REAL).append(displayFieldCD.getReal())
+				.append("\n" + FieldDisplay._IMAGINARY).append(displayFieldCD.getImg()).toString());
 		}
 	}
 
@@ -214,22 +206,12 @@ public class FieldDisplay extends JTextArea implements FocusListener {
 		if (_parent._editMode) // Only do this when parent MonadPanel is in edit mode.
 		{
 			switch (_parent.getRepMode()) {
-			case REALF:
-				displayFieldRF = RealF.copyOf(_parent._GUI.appFieldBar._repRealF);
-				displayContents();
-				break;
-			case REALD:
-				displayFieldRD = RealD.copyOf(_parent._GUI.appFieldBar._repRealD);
-				displayContents();
-				break;
-			case COMPLEXF:
-				displayFieldCF = ComplexF.copyOf(_parent._GUI.appFieldBar._repComplexF);
-				displayContents();
-				break;
-			case COMPLEXD:
-				displayFieldCD = ComplexD.copyOf(_parent._GUI.appFieldBar._repComplexD);
-				displayContents();
+			case REALF -> displayFieldRF = RealF.copyOf(_parent._GUI.appFieldBar._repRealF);
+			case REALD -> displayFieldRD = RealD.copyOf(_parent._GUI.appFieldBar._repRealD);
+			case COMPLEXF -> displayFieldCF = ComplexF.copyOf(_parent._GUI.appFieldBar._repComplexF);
+			case COMPLEXD -> displayFieldCD = ComplexD.copyOf(_parent._GUI.appFieldBar._repComplexD);
 			}
+			displayContents();
 		}
 	}
 
@@ -249,24 +231,25 @@ public class FieldDisplay extends JTextArea implements FocusListener {
 			int indexOfI = strB.indexOf(_IMAGINARY) + _IMAGINARY.length();
 
 			switch (_repMode) {
-			case REALF:
+			case REALF -> {
 				displayFieldRF = (RealF) CladosField.REALF.createZERO(displayFieldRF);
 				displayFieldRF.setReal(Float.parseFloat(strB.substring(indexOfR, tBufferLength)));
-				break;
-			case REALD:
+			}
+			case REALD -> {
 				displayFieldRD = (RealD) CladosField.REALD.createZERO(displayFieldRD);
 				displayFieldRD.setReal(Double.parseDouble(strB.substring(indexOfR, tBufferLength)));
-				break;
-			case COMPLEXF:
+			}
+			case COMPLEXF -> {
 				displayFieldCF = (ComplexF) CladosField.COMPLEXF.createZERO(displayFieldCF);
 				displayFieldCF.setReal(Float.parseFloat(strB.substring(indexOfR, indexOfI - _IMAGINARY.length() - 1)));
 				displayFieldCF.setImg(Float.parseFloat(strB.substring(indexOfI, tBufferLength)));
-				break;
-			case COMPLEXD:
+			}
+			case COMPLEXD -> {
 				displayFieldCD = (ComplexD) CladosField.COMPLEXD.createZERO(displayFieldCD);
 				displayFieldCD
 						.setReal(Double.parseDouble(strB.substring(indexOfR, indexOfI - _IMAGINARY.length() - 1)));
 				displayFieldCD.setImg(Double.parseDouble(strB.substring(indexOfI, tBufferLength)));
+			}
 			}
 			setFont(_PLAINFONT);
 			displayContents();
@@ -286,6 +269,9 @@ public class FieldDisplay extends JTextArea implements FocusListener {
 	 *               presented by this panel.
 	 */
 	public void updateField(ComplexD pField) {
+		// TODO Consider re-writing these four updateField methods so they detect the
+		// DivField type and switch on it. There is nothing about the method bodies that
+		// requires distinct methods. They simply use a different builder.
 		if (pField != null) {
 			displayFieldCD = ComplexD.copyOf(pField);
 			displayContents();

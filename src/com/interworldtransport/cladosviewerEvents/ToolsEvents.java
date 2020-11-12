@@ -30,44 +30,34 @@ import com.interworldtransport.cladosviewer.ViewerMenu;
 
 import java.awt.event.*;
 
-/** com.interworldtransport.cladosviewer.ToolsEvents
- * This class groups the event listeners associated with the Tools menu.
- * It may be used in the future to act on events associated with the entire Tools menu
- * by having it register as a Listeners with all of its controlled listeners.  The controlled
- * listeners will create an event or call their parent.  It could also register all the
- * components to which its listeners register....maybe....
+/**
+ * This class groups the event listeners associated with the Tools menu. It may
+ * be used in the future to act on events associated with the entire Tools menu
+ * by having it register as a Listeners with all of its controlled listeners.
+ * The controlled listeners will create an event or call their parent. It could
+ * also register all the components to which its listeners register....maybe....
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class ToolsEvents implements ActionListener
-{
-    public		ToolsCreate			cr;
-    protected 	ToolsOptions		op;
-    protected 	ViewerMenu 			_GUIMenu;
-    protected 	CladosCalculator	_GUI;
+public class ToolsEvents {
+	public ToolsCreate cr;
+	protected ToolsOptions op;
+	protected ViewerMenu _GUIMenu;
+	protected CladosCalculator _GUI;
 
-/** 
- * This is the default constructor.  The event structure of the Tools
- * menu starts here and finishes with the child menu items.
- * @param pTheGUIMenu
- *  ViewerMenu
- * This is a reference to the owner menu containing this one.
- */
-    public ToolsEvents(ViewerMenu pTheGUIMenu)
-    {
-    	_GUIMenu=pTheGUIMenu;
-		_GUI=_GUIMenu._parentGUI;
-		cr = new ToolsCreate(	_GUIMenu.mniCreateNyad, this);
-		op = new ToolsOptions(	_GUIMenu.mniOptions, this);
-    }
+	/**
+	 * This is the default constructor. The event structure of the Tools menu starts
+	 * here and finishes with the child menu items.
+	 * 
+	 * @param pTheGUIMenu ViewerMenu This is a reference to the owner menu
+	 *                    containing this one.
+	 */
+	public ToolsEvents(ViewerMenu pTheGUIMenu) {
+		_GUIMenu = pTheGUIMenu;
+		_GUI = _GUIMenu._parentGUI;
+		cr = new ToolsCreate(_GUIMenu.mniCreateNyad, this);
+		op = new ToolsOptions(_GUIMenu.mniOptions, this);
+	}
 
-/** 
- * This is the default action to be performed by all members of the Tools menu.
- * It will be overridden by specific members of the menu.
- */
-    public void actionPerformed(ActionEvent evt)
-    {
-    	;
-    }
 }

@@ -48,6 +48,8 @@ import java.io.*;
  * @since clados 1.0
  */
 public class CladosCalculator extends JFrame implements ActionListener {
+
+	private static final long serialVersionUID = 2693054448133487057L;
 	private static final Color _backColor = new Color(255, 255, 222);
 
 	public static void main(String[] args) {
@@ -87,7 +89,7 @@ public class CladosCalculator extends JFrame implements ActionListener {
 	 */
 	public UtilityStatusBar appStatusBar;
 
-	private ViewerMenu _MenuBar;
+	private ViewerMenu appMenuBar;
 	private JButton btnHasGrade;
 	private JButton btnHasNyadAlgebra;
 	private JButton btnIsGrade;
@@ -123,6 +125,7 @@ public class CladosCalculator extends JFrame implements ActionListener {
 	public CladosCalculator(String pTitle, String pConfig) {
 		super(pTitle);
 		addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				System.gc();
 				System.exit(0);
@@ -137,9 +140,9 @@ public class CladosCalculator extends JFrame implements ActionListener {
 		}
 		Container cp = getContentPane();
 
-		_MenuBar = new ViewerMenu(this);
-		setJMenuBar(_MenuBar); // The Menu Bar is an element of the parent class JFrame
-		appEventModel = new ViewerEventModel(_MenuBar); // EventModel relies on existance of _MenuBar
+		appMenuBar = new ViewerMenu(this);
+		setJMenuBar(appMenuBar); // The Menu Bar is an element of the parent class JFrame
+		appEventModel = new ViewerEventModel(appMenuBar); // EventModel relies on existance of appMenuBar
 
 		appStatusBar = new UtilityStatusBar(); // Next up because errors have to be reported somewhere.
 		cp.add(appStatusBar, "South");
@@ -154,35 +157,38 @@ public class CladosCalculator extends JFrame implements ActionListener {
 			int indexedMonad = tSpot.getPaneFocus();
 			if (indexedMonad >= 0) {
 				switch (appGeometryView.getNyadPanel(indxNPanelSelected).getRepMode()) {
-				case REALF:
+				case REALF -> {
 					AlgebraRealF tSpotRF = tSpot.getNyadRF().getMonadList(indexedMonad).getAlgebra();
 					appFieldBar = new FieldPanel(this, AlgebraRealF.shareProtoNumber(tSpotRF));
 					cp.add(appFieldBar, "North");
 					tSpotRF = null;
-					break;
-				case REALD:
+				}
+				case REALD -> {
 					AlgebraRealD tSpotRD = tSpot.getNyadRD().getMonadList(indexedMonad).getAlgebra();
 					appFieldBar = new FieldPanel(this, AlgebraRealD.shareProtoNumber(tSpotRD));
 					cp.add(appFieldBar, "North");
 					tSpotRD = null;
-					break;
-				case COMPLEXF:
+				}
+
+				case COMPLEXF -> {
 					AlgebraComplexF tSpotCF = tSpot.getNyadCF().getMonadList(indexedMonad).getAlgebra();
 					appFieldBar = new FieldPanel(this, AlgebraComplexF.shareProtoNumber(tSpotCF));
 					cp.add(appFieldBar, "North");
 					tSpotCF = null;
-					break;
-				case COMPLEXD:
+				}
+
+				case COMPLEXD -> {
 					AlgebraComplexD tSpotCD = tSpot.getNyadCD().getMonadList(indexedMonad).getAlgebra();
 					appFieldBar = new FieldPanel(this, AlgebraComplexD.shareProtoNumber(tSpotCD));
 					cp.add(appFieldBar, "North");
 					tSpotCD = null;
 				}
+				}
 			}
 			tSpot = null;
-		} else // This catches the possibility that no NyadPanel was created upon
-				// initialization
-		{
+		} else {
+			// This catches the possibility that no NyadPanel was created upon
+			// initialization
 			appFieldBar = new FieldPanel(this, CladosFBuilder.createRealFZERO("PlaceHolder"));
 			cp.add(appFieldBar, "North");
 		}
@@ -198,58 +204,32 @@ public class CladosCalculator extends JFrame implements ActionListener {
 		setLocation(dim.width / 4 - this.getSize().width / 4, dim.height / 4 - this.getSize().height / 4);
 	}
 
+	/**
+	 * Action Listeners trigger this method on ActionEvents. This particular one
+	 * covers the actions listed as buttons on the left panel that apply to
+	 * potentially more than one nyad or to specific monads in a way that is
+	 * indifferent to the containing nyad.
+	 */
+	@Override
 	public void actionPerformed(ActionEvent event) {
 		switch (event.getActionCommand()) {
-		case "strong ref match":
-			appEventModel.NOpsParts.strgrmatch.actionPerformed(event);
-			break;
-		case "weak ref match":
-			appEventModel.NOpsParts.weakrmatch.actionPerformed(event);
-			break;
-		case "algebra detect":
-			appEventModel.NOpsParts.hasalgebra.actionPerformed(event);
-			break;
-		case "equal":
-			appEventModel.NOpsParts.equal.actionPerformed(event);
-			break;
-		case "zero":
-			appEventModel.NOpsParts.zero.actionPerformed(event);
-			break;
-		case "scalar at":
-			appEventModel.NOpsParts.scalarAtAlg.actionPerformed(event);
-			break;
-		case "pscalar at":
-			appEventModel.NOpsParts.pscalarAtAlg.actionPerformed(event);
-			break;
-		case "nilpotent":
-			appEventModel.MOpsParts.nilp.actionPerformed(event);
-			break;
-		case "idempotent":
-			appEventModel.MOpsParts.idemp.actionPerformed(event);
-			break;
-		case "scaled idempotent":
-			appEventModel.MOpsParts.midemp.actionPerformed(event);
-			break;
-		case "is findgrade":
-			appEventModel.MOpsParts.grade.actionPerformed(event);
-			break;
-		case "is mgrade":
-			appEventModel.MOpsParts.mgrade.actionPerformed(event);
-			break;
-		case "is findgrade!":
-			appEventModel.MOpsParts.findgrade.actionPerformed(event);
-			break;
-		case "has findgrade":
-			appEventModel.MOpsParts.hasgrade.actionPerformed(event);
-			break;
-		case "magnitude of":
-			appEventModel.MOpsParts.mag.actionPerformed(event);
-			break;
-		case "sqmagnitude of":
-			appEventModel.MOpsParts.sqmag.actionPerformed(event);
-			break;
-		default:
-			ErrorDialog.show("No detectable command processed.", "Action At Viewer Attempted");
+		case "strong ref match" -> appEventModel.NOpsParts.strgrmatch.actionPerformed(event);
+		case "weak ref match" -> appEventModel.NOpsParts.weakrmatch.actionPerformed(event);
+		case "algebra detect" -> appEventModel.NOpsParts.hasalgebra.actionPerformed(event);
+		case "equal" -> appEventModel.NOpsParts.equal.actionPerformed(event);
+		case "zero" -> appEventModel.NOpsParts.zero.actionPerformed(event);
+		case "scalar at" -> appEventModel.NOpsParts.scalarAtAlg.actionPerformed(event);
+		case "pscalar at" -> appEventModel.NOpsParts.pscalarAtAlg.actionPerformed(event);
+		case "nilpotent" -> appEventModel.MOpsParts.nilp.actionPerformed(event);
+		case "idempotent" -> appEventModel.MOpsParts.idemp.actionPerformed(event);
+		case "scaled idempotent" -> appEventModel.MOpsParts.midemp.actionPerformed(event);
+		case "is findgrade" -> appEventModel.MOpsParts.grade.actionPerformed(event);
+		case "is mgrade" -> appEventModel.MOpsParts.mgrade.actionPerformed(event);
+		case "is findgrade!" -> appEventModel.MOpsParts.findgrade.actionPerformed(event);
+		case "has findgrade" -> appEventModel.MOpsParts.hasgrade.actionPerformed(event);
+		case "magnitude of" -> appEventModel.MOpsParts.mag.actionPerformed(event);
+		case "sqmagnitude of" -> appEventModel.MOpsParts.sqmag.actionPerformed(event);
+		default -> ErrorDialog.show("No detectable command processed.", "Action At Viewer Attempted");
 		}
 	}
 

@@ -95,43 +95,30 @@ public class FileEvents {
 		StringBuffer content = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n");
 		content.append("<NyadList size=\"" + _GUI.appGeometryView.getNyadListSize() + "\">\r\n");
 
+		// TODO Ugh. Convert the following property to a boolean or Boolean and THEN
+		// switch on it.
 		switch (_GUI.IniProps.getProperty("Desktop.File.Snapshot.FullXML")) {
-		case "true":
+		case "true" -> {
 			for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels()) {
 				switch (tempNPN.getRepMode()) {
-				case REALF:
-					content.append(NyadRealF.toXMLFullString(tempNPN.getNyadRF()));
-					break;
-				case REALD:
-					content.append(NyadRealD.toXMLFullString(tempNPN.getNyadRD()));
-					break;
-				case COMPLEXF:
-					content.append(NyadComplexF.toXMLFullString(tempNPN.getNyadCF()));
-					break;
-				case COMPLEXD:
-					content.append(NyadComplexD.toXMLFullString(tempNPN.getNyadCD()));
+				case REALF -> content.append(NyadRealF.toXMLFullString(tempNPN.getNyadRF()));
+				case REALD -> content.append(NyadRealD.toXMLFullString(tempNPN.getNyadRD()));
+				case COMPLEXF -> content.append(NyadComplexF.toXMLFullString(tempNPN.getNyadCF()));
+				case COMPLEXD -> content.append(NyadComplexD.toXMLFullString(tempNPN.getNyadCD()));
 				}
 			}
-			break;
-		case "false":
+		}
+		case "false" -> {
 			for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels()) {
 				switch (tempNPN.getRepMode()) {
-				case REALF:
-					content.append(NyadRealF.toXMLString(tempNPN.getNyadRF()));
-					break;
-				case REALD:
-					content.append(NyadRealD.toXMLString(tempNPN.getNyadRD()));
-					break;
-				case COMPLEXF:
-					content.append(NyadComplexF.toXMLString(tempNPN.getNyadCF()));
-					break;
-				case COMPLEXD:
-					content.append(NyadComplexD.toXMLString(tempNPN.getNyadCD()));
+				case REALF -> content.append(NyadRealF.toXMLString(tempNPN.getNyadRF()));
+				case REALD -> content.append(NyadRealD.toXMLString(tempNPN.getNyadRD()));
+				case COMPLEXF -> content.append(NyadComplexF.toXMLString(tempNPN.getNyadCF()));
+				case COMPLEXD -> content.append(NyadComplexD.toXMLString(tempNPN.getNyadCD()));
 				}
 			}
-			break;
-		default:
-			content.append("\n<Empty />\n");
+		}
+		default -> content.append("\n<Empty />\n");
 		}
 		content.append("</NyadList>\r\n");
 		return content.toString();

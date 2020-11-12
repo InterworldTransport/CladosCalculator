@@ -24,6 +24,7 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
+
 import com.interworldtransport.cladosGExceptions.*;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
@@ -32,82 +33,68 @@ import com.interworldtransport.cladosFExceptions.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-/** com.interworldtransport.cladosviewer.COpsAddEvents
- *  This class manages events relating to a complex operation.
- *  Add to this Monad another Monad.
+/**
+ * com.interworldtransport.cladosviewer.COpsAddEvents This class manages events
+ * relating to a complex operation. Add to this Monad another Monad.
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class NOpsAddEvents implements ActionListener
- {
-    protected JMenuItem 		_control;
-    protected NOpsParentEvents 	_parent;
+public class NOpsAddEvents implements ActionListener {
+	protected JMenuItem _control;
+	protected NOpsParentEvents _parent;
 
-/** 
- * This is the default constructor.
- * @param pmniControlled
- *  JMenuItem
- * This is a reference to the Menu Item for which this event acts.
- * @param pParent
- * 	COpsEvents
- * This is a reference to the NOpsParentEvents parent event handler
- */
-    public NOpsAddEvents(	JMenuItem 		pmniControlled,
-    						NOpsParentEvents pParent)
-    {
-		_control=pmniControlled;
+	/**
+	 * This is the default constructor.
+	 * 
+	 * @param pmniControlled JMenuItem This is a reference to the Menu Item for
+	 *                       which this event acts.
+	 * @param pParent        COpsEvents This is a reference to the NOpsParentEvents
+	 *                       parent event handler
+	 */
+	public NOpsAddEvents(JMenuItem pmniControlled, NOpsParentEvents pParent) {
+		_control = pmniControlled;
 		_control.addActionListener(this);
-		_parent=pParent;
-    }
+		_parent = pParent;
+	}
 
-/** 
- * This is the actual action to be performed by this member of the menu.
- */
-    public void actionPerformed(ActionEvent evt)
-    {
-    	int indxNydPnlSlctd = _parent._GUI.appGeometryView.getPaneFocus();
-    	if (indxNydPnlSlctd<0 | indxNydPnlSlctd == _parent._GUI.appGeometryView.getNyadListSize()-1) 
-    	{
-    		ErrorDialog.show("No nyad in the focus... or the last one is.\nNothing done.", "Need Nyad In Focus");
-    		return;	
-    	}
-    	
-    	NyadPanel tSpot = _parent._GUI.appGeometryView.getNyadPanel(indxNydPnlSlctd);
-    	NyadPanel tSpotPlus = _parent._GUI.appGeometryView.getNyadPanel(indxNydPnlSlctd+1);
-    	
-    	int indxMndPnlSlctd = tSpot.getPaneFocus();
-    	if (indxMndPnlSlctd<0 | indxNydPnlSlctd > tSpotPlus.getMonadListSize()) 
-    	{
-    		ErrorDialog.show("Addition needs two monads at the same index in a nyad.\nNothing done.", "Monads In Focus Issue");
-    		return;
-    	}
-    	
-    	MonadPanel temp0=tSpot.getMonadPanel(indxMndPnlSlctd);
-    	MonadPanel temp1=tSpotPlus.getMonadPanel(indxMndPnlSlctd);
-    		
-    	try
-    	{
-    		switch (temp0.getRepMode())
-    		{
-    			case REALF:	(temp0.getMonadRF()).add(temp1.getMonadRF());
-    									break;
-    			case REALD:	(temp0.getMonadRD()).add(temp1.getMonadRD());
-    									break;
-    			case COMPLEXF:	(temp0.getMonadCF()).add(temp1.getMonadCF());
-										break;
-    			case COMPLEXD:	(temp0.getMonadCD()).add(temp1.getMonadCD());
-    									
-    		}
-    		temp0.setCoefficientDisplay();
-    	}
-    	catch (FieldBinaryException eb)
-		{
-    		ErrorDialog.show("Field Binary error between monads.\nNothing done.", "Field Binary Exception");
+	/**
+	 * This is the actual action to be performed by this member of the menu.
+	 */
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		int indxNydPnlSlctd = _parent._GUI.appGeometryView.getPaneFocus();
+		if (indxNydPnlSlctd < 0 | indxNydPnlSlctd == _parent._GUI.appGeometryView.getNyadListSize() - 1) {
+			ErrorDialog.show("No nyad in the focus... or the last one is.\nNothing done.", "Need Nyad In Focus");
+			return;
 		}
-		catch (CladosMonadException e)
-		{
+
+		NyadPanel tSpot = _parent._GUI.appGeometryView.getNyadPanel(indxNydPnlSlctd);
+		NyadPanel tSpotPlus = _parent._GUI.appGeometryView.getNyadPanel(indxNydPnlSlctd + 1);
+
+		int indxMndPnlSlctd = tSpot.getPaneFocus();
+		if (indxMndPnlSlctd < 0 | indxNydPnlSlctd > tSpotPlus.getMonadListSize()) {
+			ErrorDialog.show("Addition needs two monads at the same index in a nyad.\nNothing done.",
+					"Monads In Focus Issue");
+			return;
+		}
+
+		MonadPanel temp0 = tSpot.getMonadPanel(indxMndPnlSlctd);
+		MonadPanel temp1 = tSpotPlus.getMonadPanel(indxMndPnlSlctd);
+
+		try {
+			switch (temp0.getRepMode()) {
+			case REALF -> (temp0.getMonadRF()).add(temp1.getMonadRF());
+			case REALD -> (temp0.getMonadRD()).add(temp1.getMonadRD());
+			case COMPLEXF -> (temp0.getMonadCF()).add(temp1.getMonadCF());
+			case COMPLEXD -> (temp0.getMonadCD()).add(temp1.getMonadCD());
+
+			}
+			temp0.setCoefficientDisplay();
+		} catch (FieldBinaryException eb) {
+			ErrorDialog.show("Field Binary error between monads.\nNothing done.", "Field Binary Exception");
+		} catch (CladosMonadException e) {
 			ErrorDialog.show("Reference Match Error between monads.\nNothing done.", "Clados Monad Exception");
 		}
-    }
- }
+	}
+}

@@ -48,22 +48,30 @@ import javax.swing.table.AbstractTableModel;
  * @author Dr Alfred W Differ
  */
 public class OptionsDialog extends JDialog implements ActionListener, TableModelListener {
+
+	private static final long serialVersionUID = 1385685951107112318L;
+
 	private class PropTblModel extends AbstractTableModel {
+		private static final long serialVersionUID = 3785462031208177980L;
 		private String[] columnNames = { "Key", "Value" };
 		private Object[][] data;
 
+		@Override
 		public int getColumnCount() {
 			return columnNames.length;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			return columnNames[col];
 		}
 
+		@Override
 		public int getRowCount() {
 			return data.length;
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			return data[row][col];
 		}
@@ -71,6 +79,7 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 		/*
 		 * Don't need to implement this method unless your table's editable.
 		 */
+		@Override
 		public boolean isCellEditable(int row, int col) {
 			if (col == 1)
 				return true;
@@ -80,6 +89,7 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 		/*
 		 * Don't need to implement this method unless your table's data can change.
 		 */
+		@Override
 		public void setValueAt(Object value, int row, int col) {
 			data[row][col] = value;
 			fireTableCellUpdated(row, col);
@@ -122,12 +132,11 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		switch (event.getActionCommand()) {
-		case "close":
-			dispose();
-			break;
-		case "save":
+		case "close" -> dispose();
+		case "save" -> {
 			saveAll(storeItAll());
 			dispose();
+		}
 		}
 	}
 

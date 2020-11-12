@@ -32,94 +32,76 @@ import com.interworldtransport.cladosviewer.ErrorDialog;
 import java.awt.event.*;
 import javax.swing.*;
 
-/** 
- *  This class manages events relating to a simple operation...
- *  Take the dual of this Monad.
+/**
+ * This class manages events relating to a simple operation... Take the dual of
+ * this Monad.
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class MOpsLocalDualEvents implements ActionListener
-{
-    protected JMenuItem 		_control;
-    protected MOpsParentEvents 	_parent;
+public class MOpsLocalDualEvents implements ActionListener {
+	protected JMenuItem _control;
+	protected MOpsParentEvents _parent;
 
-/** 
- * This is the default constructor.
- * @param pmniControlled
- *  JMenuItem
- * This is a reference to the Menu Item for which this event acts.
- * @param pParent
- * 	NOpsParentEvents
- * This is a reference to the NOpsParentEvents parent event handler
- */
-    public MOpsLocalDualEvents(	JMenuItem pmniControlled,
-								MOpsParentEvents pParent)
-    {
-		_control=pmniControlled;
+	/**
+	 * This is the default constructor.
+	 * 
+	 * @param pmniControlled JMenuItem This is a reference to the Menu Item for
+	 *                       which this event acts.
+	 * @param pParent        NOpsParentEvents This is a reference to the
+	 *                       NOpsParentEvents parent event handler
+	 */
+	public MOpsLocalDualEvents(JMenuItem pmniControlled, MOpsParentEvents pParent) {
+		_control = pmniControlled;
 		_control.addActionListener(this);
-		_parent=pParent;
-    }
+		_parent = pParent;
+	}
 
-/** 
- * This is the actual action to be performed by this member of the menu.
- * The monad with focus has is multiplied by the PS on the right or left. 
- * 
- * A future version of the method must use the PS represented in the
- * reference frame instead. Fourier decomposition is done against that frame 
- * and not the canonical one most of the time.
- */
-    public void actionPerformed(ActionEvent evt)
-    {
-    	String command = evt.getActionCommand();
-    	
-    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
-    	if (indexNyadPanelSelected<0) 
-    	{
-    		ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
-    		return;	
-    	}
-    	
-    	NyadPanel tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
-    	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
-    	if (indxMndPnlSlctd<0) 
-    	{
-    		ErrorDialog.show("Dual Operation needs one monad in focus.\nNothing done.", "Need Monad In Focus");
-    		return;
-    	}
-    	
-    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
-    	
-    	
-    	if (command.equals("dual>"))
-    	{
-        	switch (tMSpotPnl.getRepMode())
-        	{
-    	    	case REALF: 	tMSpotPnl.getMonadRF().dualLeft();
-    							    	break;
-    	    	case REALD: 	tMSpotPnl.getMonadRD().dualLeft();
-    							    	break;
-    	    	case COMPLEXF:	tMSpotPnl.getMonadCF().dualLeft();
-    							    	break;
-    	    	case COMPLEXD:	tMSpotPnl.getMonadCD().dualLeft();
-        	}
-    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the left.\n");
-    	}
-    	if (command.equals("<dual"))
-    	{
-    		switch (tMSpotPnl.getRepMode())
-        	{
-    	    	case REALF: 	tMSpotPnl.getMonadRF().dualRight();
-    							    	break;
-    	    	case REALD: 	tMSpotPnl.getMonadRD().dualRight();
-    							    	break;
-    	    	case COMPLEXF:	tMSpotPnl.getMonadCF().dualRight();
-    							    	break;
-    	    	case COMPLEXD:	tMSpotPnl.getMonadCD().dualRight();
-    							    	break;
-        	}
-    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the right.\n");
-    	}
-    	tMSpotPnl.setCoefficientDisplay();
-    }
- }
+	/**
+	 * This is the actual action to be performed by this member of the menu. The
+	 * monad with focus has is multiplied by the PS on the right or left.
+	 * 
+	 * A future version of the method must use the PS represented in the reference
+	 * frame instead. Fourier decomposition is done against that frame and not the
+	 * canonical one most of the time.
+	 */
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		String command = evt.getActionCommand();
+
+		int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
+		if (indexNyadPanelSelected < 0) {
+			ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
+			return;
+		}
+
+		NyadPanel tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
+		int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
+		if (indxMndPnlSlctd < 0) {
+			ErrorDialog.show("Dual Operation needs one monad in focus.\nNothing done.", "Need Monad In Focus");
+			return;
+		}
+
+		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+
+		if (command.equals("dual>")) {
+			switch (tMSpotPnl.getRepMode()) {
+			case REALF -> tMSpotPnl.getMonadRF().dualLeft();
+			case REALD -> tMSpotPnl.getMonadRD().dualLeft();
+			case COMPLEXF -> tMSpotPnl.getMonadCF().dualLeft();
+			case COMPLEXD -> tMSpotPnl.getMonadCD().dualLeft();
+			}
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the left.\n");
+		}
+		if (command.equals("<dual")) {
+			switch (tMSpotPnl.getRepMode()) {
+			case REALF -> tMSpotPnl.getMonadRF().dualRight();
+			case REALD -> tMSpotPnl.getMonadRD().dualRight();
+			case COMPLEXF -> tMSpotPnl.getMonadCF().dualRight();
+			case COMPLEXD -> tMSpotPnl.getMonadCD().dualRight();
+			}
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the right.\n");
+		}
+		tMSpotPnl.setCoefficientDisplay();
+	}
+}

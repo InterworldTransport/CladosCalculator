@@ -60,7 +60,8 @@ public class HelpSupportEvents implements ActionListener
 /** This is the default action to be performed by all members of the Help menu.
  *  It will be overridden by specific members of the menu.
  */
-    public void actionPerformed(ActionEvent evt)
+    @Override
+	public void actionPerformed(ActionEvent evt)
     {
 		new SupportDialog(_parent._GUI);
     }

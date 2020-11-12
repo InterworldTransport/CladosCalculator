@@ -26,37 +26,36 @@
 package com.interworldtransport.cladosviewerExceptions;
 
 /**
- * This class is the Parent of all Exceptions originating from the viewer package.
+ * This class is the Parent of all Exceptions originating from the viewer
+ * package.
  *
  * @version 0.85, 2020/09/17
  * @author Dr Alfred W Differ
  */
-public class UtilitiesException extends Exception 
-{
+public class UtilitiesException extends Exception {
 
 	private static final long serialVersionUID = 6331343927784606625L;
-	public String	SourceMessage;
+	public String SourceMessage;
 
 	/**
-	 * Construct the parent exception and force a record of the source message for all
-	 * descendants.
-	 * @param pMessage
-	 *  String
-	 * This is the hopefully helpful message to be delivered when things go generically wrong.
+	 * Construct the parent exception and force a record of the source message for
+	 * all descendants.
+	 * 
+	 * @param pMessage String This is the hopefully helpful message to be delivered
+	 *                 when things go generically wrong.
 	 */
-	public UtilitiesException(String pMessage)
-	{
+	public UtilitiesException(String pMessage) {
 		super();
-		this.SourceMessage=pMessage;
+		this.SourceMessage = pMessage;
 	}
-/**
- * Return the Source Message associated with this Exception.
- * @return String
- * Returns the string message embedded in the object that hopefully explains 
- * more about why the exception occurred.
- */
-	public String	getSourceMessage() 
-	{
+
+	/**
+	 * Return the Source Message associated with this Exception.
+	 * 
+	 * @return String Returns the string message embedded in the object that
+	 *         hopefully explains more about why the exception occurred.
+	 */
+	public String getSourceMessage() {
 		return this.SourceMessage;
 	}
 

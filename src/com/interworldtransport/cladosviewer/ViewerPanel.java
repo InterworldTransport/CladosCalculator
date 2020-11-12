@@ -121,23 +121,12 @@ public class ViewerPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		switch (event.getActionCommand()) {
-		case "push":
-			push(); // Swaps the currently selected nyad with the one below it
-			break;
-		case "pop":
-			pop(); // Swaps the currently selected nyad with the one above it
-			break;
-		case "copy":
-			copyNyadCommand(); // Clone the selected nyad and place it at the end of the stack
-			break;
-		case "erase":
-			eraseNyadCommand(); // Remove the selected nyad from the stack
-			break;
-		case "create":
-			CreateDialog.createNyad(_GUI, _repMode); // Create a new monad for the selected nyad OR a whole new nyad
-			break;
-		default:
-			ErrorDialog.show("No detectable command given at ViewerPanel. No action.", "That's Odd");
+		case "push" -> push(); // Swaps the currently selected nyad with the one below it
+		case "pop" -> pop(); // Swaps the currently selected nyad with the one above it
+		case "copy" -> copyNyadCommand(); // Clone the selected nyad and place it at the end of the stack
+		case "erase" -> eraseNyadCommand(); // Remove the selected nyad from the stack
+		case "create" -> CreateDialog.createNyad(_GUI, _repMode); // Create a monad for the nyad OR a whole new nyad
+		default -> ErrorDialog.show("No detectable command given at ViewerPanel. No action.", "That's Odd");
 		}
 	}
 
@@ -165,6 +154,9 @@ public class ViewerPanel extends JPanel implements ActionListener {
 	}
 
 	private NyadComplexD buildANyadCD(short pWhich, short monadCount) {
+		// TODO Time to re-write these four buildANyad methods to use CladosGNyad
+		// builder instead. Should be able to write one and let the calling object
+		// cast the NyadAbstract.
 		NyadComplexD aNyad = null;
 		try {
 			String cnt = new StringBuffer("N").append(pWhich).toString();
@@ -336,34 +328,23 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		if (getNyadListSize() <= 0)
 			return; // Nothing to do since nyad list is empty. Nothing to copy.
 
-		NyadPanel newP;
 		int endPlus = 0;
 		if (nyadPanes.getTabCount() > 0)
-			endPlus = Integer.valueOf(nyadPanes.getTitleAt(nyadPanes.getTabCount() - 1)) + 1;
+			endPlus = Integer.valueOf(nyadPanes.getTitleAt(nyadPanes.getTabCount() - 1)).intValue() + 1;
 		nyadPanelList.ensureCapacity(endPlus + 1);
 		String buildName = "copied";
 		try {
-			switch (getNyadPanel(getPaneFocus()).getRepMode()) {
-			case REALF:
-				newP = new NyadPanel(_GUI,
-						(NyadRealF) CladosGNyad.REALF.copyRename(getNyadPanel(getPaneFocus()).getNyadRF(), buildName));
-				break;
-			case REALD:
-				newP = new NyadPanel(_GUI,
-						(NyadRealD) CladosGNyad.REALD.copyRename(getNyadPanel(getPaneFocus()).getNyadRD(), buildName));
-				break;
-			case COMPLEXF:
-				newP = new NyadPanel(_GUI, (NyadComplexF) CladosGNyad.COMPLEXF
-						.copyRename(getNyadPanel(getPaneFocus()).getNyadCF(), buildName));
-
-				return;
-			case COMPLEXD:
-				newP = new NyadPanel(_GUI, (NyadComplexD) CladosGNyad.COMPLEXD
-						.copyRename(getNyadPanel(getPaneFocus()).getNyadCD(), buildName));
-				break;
-			default:
-				newP = null;
-			}
+			NyadPanel newP = switch (getNyadPanel(getPaneFocus()).getRepMode()) {
+			case REALF -> new NyadPanel(_GUI,
+					(NyadRealF) CladosGNyad.REALF.copyRename(getNyadPanel(getPaneFocus()).getNyadRF(), buildName));
+			case REALD -> new NyadPanel(_GUI,
+					(NyadRealD) CladosGNyad.REALD.copyRename(getNyadPanel(getPaneFocus()).getNyadRD(), buildName));
+			case COMPLEXF -> new NyadPanel(_GUI, (NyadComplexF) CladosGNyad.COMPLEXF
+					.copyRename(getNyadPanel(getPaneFocus()).getNyadCF(), buildName));
+			case COMPLEXD -> new NyadPanel(_GUI, (NyadComplexD) CladosGNyad.COMPLEXD
+					.copyRename(getNyadPanel(getPaneFocus()).getNyadCD(), buildName));
+			default -> null;
+			};
 			nyadPanelList.add(newP);
 			nyadPanes.addTab((new StringBuffer().append(endPlus)).toString(), tabIcon, new JScrollPane(newP));
 			_GUI.pack();
@@ -454,23 +435,24 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		if (nyadPanes.getTabCount() > 0) {
 			int point = nyadPanes.getSelectedIndex();
 			switch (getNyadPanel(point).getRepMode()) {
-			case REALF:
+			case REALF -> {
 				_GUI.appFieldBar._repRealF = null;
 				_GUI.appFieldBar.setRealText("");
-				break;
-			case REALD:
+			}
+			case REALD -> {
 				_GUI.appFieldBar._repRealD = null;
 				_GUI.appFieldBar.setRealText("");
-				break;
-			case COMPLEXF:
+			}
+			case COMPLEXF -> {
 				_GUI.appFieldBar._repComplexF = null;
 				_GUI.appFieldBar.setRealText("");
 				_GUI.appFieldBar.setImgText("");
-				break;
-			case COMPLEXD:
+			}
+			case COMPLEXD -> {
 				_GUI.appFieldBar._repComplexD = null;
 				_GUI.appFieldBar.setRealText("");
 				_GUI.appFieldBar.setImgText("");
+			}
 			}
 			removeNyadPanel(point);
 		} else {
@@ -510,7 +492,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		short j = 0;
 		while (j < intCount) {
 			switch (_repMode) {
-			case REALF:
+			case REALF -> {
 				NyadRealF aNyadRF = buildANyadRF(j, intOrd); // the NyadRF bootstrapper
 				try // Here we finally initiate the NyadPanel because the Nyad is actually filled at
 					// this point.
@@ -530,8 +512,8 @@ public class ViewerPanel extends JPanel implements ActionListener {
 					ErrorDialog.show("Could not create a nyad due to signature issue.\n" + e.getSourceMessage() + "\n"
 							+ e.getStackTrace().toString(), "Bad Signature Exception");
 				}
-				break;
-			case REALD:
+			}
+			case REALD -> {
 				NyadRealD aNyadRD = buildANyadRD(j, intOrd); // the NyadRD bootstrapper
 				try // Here we finally initiate the NyadPanel because the Nyad is actually filled at
 					// this point.
@@ -551,8 +533,8 @@ public class ViewerPanel extends JPanel implements ActionListener {
 					ErrorDialog.show("Could not create a nyad due to signature issue.\n" + e.getSourceMessage() + "\n"
 							+ e.getStackTrace().toString(), "Bad Signature Exception");
 				}
-				break;
-			case COMPLEXF:
+			}
+			case COMPLEXF -> {
 				NyadComplexF aNyadCF = buildANyadCF(j, intOrd); // the NyadCF bootstrapper
 				try // Here we finally initiate the NyadPanel because the Nyad is actually filled at
 					// this point.
@@ -572,8 +554,8 @@ public class ViewerPanel extends JPanel implements ActionListener {
 					ErrorDialog.show("Could not create a nyad due to signature issue.\n" + e.getSourceMessage() + "\n"
 							+ e.getStackTrace().toString(), "Bad Signature Exception");
 				}
-				break;
-			case COMPLEXD:
+			}
+			case COMPLEXD -> {
 				NyadComplexD aNyadCD = buildANyadCD(j, intOrd); // the NyadCD bootstrapper
 				try // Here we finally initiate the NyadPanel because the Nyad is actually filled at
 					// this point.
@@ -593,6 +575,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 					ErrorDialog.show("Could not create a nyad due to signature issue.\n" + e.getSourceMessage() + "\n"
 							+ e.getStackTrace().toString(), "Bad Signature Exception");
 				}
+			}
 			}
 			j++;
 		}
@@ -653,16 +636,21 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		try {
 			String sType = _GUI.IniProps.getProperty("Desktop.Default.DivField");
 			switch (sType) {
-			case "RealF":
+			case "RealF" -> {
 				return CladosField.REALF;
-			case "RealD":
+			}
+			case "RealD" -> {
 				return CladosField.REALD;
-			case "ComplexF":
+			}
+			case "ComplexF" -> {
 				return CladosField.COMPLEXF;
-			case "ComplexD":
+			}
+			case "ComplexD" -> {
 				return CladosField.COMPLEXD;
-			default:
+			}
+			default -> {
 				return null;
+			}
 			}
 		} catch (NullPointerException eNull) {
 			ErrorDialog.show(
@@ -677,10 +665,10 @@ public class ViewerPanel extends JPanel implements ActionListener {
 	}
 
 	private int validateInitialNyadCount() {
-		int nCount = 0;
 		try {
-			nCount = Integer.parseInt(_GUI.IniProps.getProperty("Desktop.Default.Count"));
+			int nCount = Integer.parseInt(_GUI.IniProps.getProperty("Desktop.Default.Count"));
 			nyadPanelList = new ArrayList<NyadPanel>(nCount);
+			return nCount;
 		} catch (NullPointerException eNull) {
 			ErrorDialog.show("Desktop.Default.Count from the configuration file appears to be null.\nSet to Zero.",
 					"Null Pointer Exception");
@@ -691,13 +679,12 @@ public class ViewerPanel extends JPanel implements ActionListener {
 					"Null Pointer Exception");
 			nyadPanelList = new ArrayList<NyadPanel>(0);
 		}
-		return nCount;
+		return 0;
 	}
 
 	private short validateInitialNyadOrder() {
-		short nOrd = 1;
 		try {
-			nOrd = Short.parseShort(_GUI.IniProps.getProperty("Desktop.Default.Order"));
+			return Short.parseShort(_GUI.IniProps.getProperty("Desktop.Default.Order"));
 		} catch (NullPointerException eNull) {
 			ErrorDialog.show("Desktop.Default.Order from the configuration file appears to be null.\nSet to One.",
 					"Null Pointer Exception");
@@ -706,32 +693,23 @@ public class ViewerPanel extends JPanel implements ActionListener {
 					"Desktop.Default.Count from the configuration file appears to be non-parse-able.\nSet to One.",
 					"Null Pointer Exception");
 		}
-		return nOrd;
+		return 1;
 	}
 
 	protected void addNyad(CladosField pRep, NyadAbstract pN) {
-		NyadPanel newP;
+
 		int endPlus = 0;
 		if (nyadPanes.getTabCount() > 0)
-			endPlus = Integer.valueOf(nyadPanes.getTitleAt(nyadPanes.getTabCount() - 1)) + 1;
+			endPlus = Integer.valueOf(nyadPanes.getTitleAt(nyadPanes.getTabCount() - 1)).intValue() + 1;
 		nyadPanelList.ensureCapacity(endPlus + 1);
 		try {
-			switch (pRep) {
-			case REALF:
-				newP = new NyadPanel(_GUI, (NyadRealF) pN);
-				break;
-			case REALD:
-				newP = new NyadPanel(_GUI, (NyadRealD) pN);
-				break;
-			case COMPLEXF:
-				newP = new NyadPanel(_GUI, (NyadComplexF) pN);
-				break;
-			case COMPLEXD:
-				newP = new NyadPanel(_GUI, (NyadComplexD) pN);
-				break;
-			default:
-				newP = null;
-			}
+			NyadPanel newP = switch (pRep) {
+			case REALF -> new NyadPanel(_GUI, (NyadRealF) pN);
+			case REALD -> new NyadPanel(_GUI, (NyadRealD) pN);
+			case COMPLEXF -> new NyadPanel(_GUI, (NyadComplexF) pN);
+			case COMPLEXD -> new NyadPanel(_GUI, (NyadComplexD) pN);
+			default -> null;
+			};
 			nyadPanelList.add(newP);
 			nyadPanes.addTab((new StringBuffer().append(endPlus)).toString(), tabIcon, new JScrollPane(newP));
 			_GUI.pack();
@@ -767,17 +745,14 @@ public class ViewerPanel extends JPanel implements ActionListener {
 							int j = nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getSelectedIndex();
 							MonadPanel tSpot = nyadPanelList.get(nyadPanes.getSelectedIndex()).getMonadPanel(j);
 							switch (tSpot.getRepMode()) {
-							case REALF:
-								pFieldPanel.setField(AlgebraRealF.shareProtoNumber(tSpot.getMonadRF().getAlgebra()));
-								break;
-							case REALD:
-								pFieldPanel.setField(AlgebraRealD.shareProtoNumber(tSpot.getMonadRD().getAlgebra()));
-								break;
-							case COMPLEXF:
-								pFieldPanel.setField(AlgebraComplexF.shareProtoNumber(tSpot.getMonadCF().getAlgebra()));
-								break;
-							case COMPLEXD:
-								pFieldPanel.setField(AlgebraComplexD.shareProtoNumber(tSpot.getMonadCD().getAlgebra()));
+							case REALF -> pFieldPanel
+									.setField(AlgebraRealF.shareProtoNumber(tSpot.getMonadRF().getAlgebra()));
+							case REALD -> pFieldPanel
+									.setField(AlgebraRealD.shareProtoNumber(tSpot.getMonadRD().getAlgebra()));
+							case COMPLEXF -> pFieldPanel
+									.setField(AlgebraComplexF.shareProtoNumber(tSpot.getMonadCF().getAlgebra()));
+							case COMPLEXD -> pFieldPanel
+									.setField(AlgebraComplexD.shareProtoNumber(tSpot.getMonadCD().getAlgebra()));
 							}
 							_GUI.appFieldBar.makeWritable();
 						}

@@ -34,69 +34,60 @@ import com.interworldtransport.cladosviewer.ErrorDialog;
 import java.awt.event.*;
 import javax.swing.*;
 
-/** 
- *  This class manages events relating to the answering of a boolean question.
- *  Is the selected nyad a strong reference match with the one following it on the stack?
+/**
+ * This class manages events relating to the answering of a boolean question. Is
+ * the selected nyad a strong reference match with the one following it on the
+ * stack?
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class NOpsRMatchEvents implements ActionListener
- {
-    protected JMenuItem 		_control;
-    protected NOpsParentEvents 	_parent;
+public class NOpsRMatchEvents implements ActionListener {
+	protected JMenuItem _control;
+	protected NOpsParentEvents _parent;
 
-/** 
- * This is the default constructor.
- * @param pmniControlled
- *  JMenuItem
- * This is a reference to the Menu Item for which this event acts.
- * @param pParent
- * 	NOpsParentEvents
- * This is a reference to the NOpsParentEvents parent event handler
- */
-    public NOpsRMatchEvents(JMenuItem pmniControlled,
-    						NOpsParentEvents pParent)
-    {
-		_control=pmniControlled;
+	/**
+	 * This is the default constructor.
+	 * 
+	 * @param pmniControlled JMenuItem This is a reference to the Menu Item for
+	 *                       which this event acts.
+	 * @param pParent        NOpsParentEvents This is a reference to the
+	 *                       NOpsParentEvents parent event handler
+	 */
+	public NOpsRMatchEvents(JMenuItem pmniControlled, NOpsParentEvents pParent) {
+		_control = pmniControlled;
 		_control.addActionListener(this);
-		_parent=pParent;
-    }
+		_parent = pParent;
+	}
 
-/** 
- * This is the actual action to be performed by this member of the menu.
- * Nyad strong reference match is checked between focus nyad and the next one in the stack.
- */
-    public void actionPerformed(ActionEvent evt)
-    {
-    	int tNyadIndex=_parent._GUI.appGeometryView.getPaneFocus();
-    	if (tNyadIndex<0 | tNyadIndex>=_parent._GUI.appGeometryView.getNyadListSize()-1) 
-    	{
-    		ErrorDialog.show("No nyad in the focus... or the last one is.\nNothing done.", "Need Nyad In Focus");
-    		return;	
-    	}
-    	
-    	NyadPanel panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex);
-    	NyadPanel panelNyadNext = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex+1);
-    	if (panelNyadSelected.getRepMode() != panelNyadNext.getRepMode())
-    	{
-    		ErrorDialog.show("Nyads using different DivFields.", "Nyad DivField Mismatch");
-    		return;	
-    	}
-    	boolean test = false;
-    	switch (panelNyadSelected.getRepMode())
-    	{
-    		case REALF: 	test = NyadRealF.isStrongReferenceMatch(panelNyadSelected.getNyadRF(), panelNyadNext.getNyadRF());
-    								break;
-    		case REALD: 	test = NyadRealD.isStrongReferenceMatch(panelNyadSelected.getNyadRD(), panelNyadNext.getNyadRD());
-									break;
-    		case COMPLEXF: test = NyadComplexF.isStrongReferenceMatch(panelNyadSelected.getNyadCF(), panelNyadNext.getNyadCF());
-									break;
-    		case COMPLEXD: test = NyadComplexD.isStrongReferenceMatch(panelNyadSelected.getNyadCD(), panelNyadNext.getNyadCD());
-    	}
-    	if (test)
+	/**
+	 * This is the actual action to be performed by this member of the menu. Nyad
+	 * strong reference match is checked between focus nyad and the next one in the
+	 * stack.
+	 */
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		int tNyadIndex = _parent._GUI.appGeometryView.getPaneFocus();
+		if (tNyadIndex < 0 | tNyadIndex >= _parent._GUI.appGeometryView.getNyadListSize() - 1) {
+			ErrorDialog.show("No nyad in the focus... or the last one is.\nNothing done.", "Need Nyad In Focus");
+			return;
+		}
+
+		NyadPanel panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex);
+		NyadPanel panelNyadNext = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex + 1);
+		if (panelNyadSelected.getRepMode() != panelNyadNext.getRepMode()) {
+			ErrorDialog.show("Nyads using different DivFields.", "Nyad DivField Mismatch");
+			return;
+		}
+		boolean test = switch (panelNyadSelected.getRepMode()) {
+		case REALF -> NyadRealF.isStrongReferenceMatch(panelNyadSelected.getNyadRF(), panelNyadNext.getNyadRF());
+		case REALD -> NyadRealD.isStrongReferenceMatch(panelNyadSelected.getNyadRD(), panelNyadNext.getNyadRD());
+		case COMPLEXF -> NyadComplexF.isStrongReferenceMatch(panelNyadSelected.getNyadCF(), panelNyadNext.getNyadCF());
+		case COMPLEXD -> NyadComplexD.isStrongReferenceMatch(panelNyadSelected.getNyadCD(), panelNyadNext.getNyadCD());
+		};
+		if (test)
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected nyad and the next are STRONG REF MATCHED.\n");
 		else
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected nyad and the next are NOT strong ref matched.\n");
-    }
- }
+	}
+}

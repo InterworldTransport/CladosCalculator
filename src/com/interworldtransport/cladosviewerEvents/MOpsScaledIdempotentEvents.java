@@ -37,85 +37,71 @@ import com.interworldtransport.cladosFExceptions.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-/** 
- *  This class manages events relating to the answering of a boolean question.
- *  Is the selected monad a multiple of an idempotent?
+/**
+ * This class manages events relating to the answering of a boolean question. Is
+ * the selected monad a multiple of an idempotent?
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class MOpsScaledIdempotentEvents implements ActionListener
- {
-    protected JMenuItem 		_control;
-    protected MOpsParentEvents 		_parent;
+public class MOpsScaledIdempotentEvents implements ActionListener {
+	protected JMenuItem _control;
+	protected MOpsParentEvents _parent;
 
-/** 
- * This is the default constructor.
- * @param pmniControlled
- *  JMenuItem
- * This is a reference to the Menu Item for which this event acts.
- * @param pParent
- * 	NOpsParentEvents
- * This is a reference to the NOpsParentEvents parent event handler
- */
-    public MOpsScaledIdempotentEvents(	JMenuItem 			pmniControlled,
-    									MOpsParentEvents 	pParent)
-    {
-		_control=pmniControlled;
+	/**
+	 * This is the default constructor.
+	 * 
+	 * @param pmniControlled JMenuItem This is a reference to the Menu Item for
+	 *                       which this event acts.
+	 * @param pParent        NOpsParentEvents This is a reference to the
+	 *                       NOpsParentEvents parent event handler
+	 */
+	public MOpsScaledIdempotentEvents(JMenuItem pmniControlled, MOpsParentEvents pParent) {
+		_control = pmniControlled;
 		_control.addActionListener(this);
-		_parent=pParent;
-    }
+		_parent = pParent;
+	}
 
-/** 
- * This is the actual action to be performed by this member of the menu.
- */
-    public void actionPerformed(ActionEvent evt)
-    {
-    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
-    	if (indexNyadPanelSelected<0) 
-    	{
-    		ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
-    		return;	
-    	}
-    	    	
-    	NyadPanel panelNyadSelected=_parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
-    	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
-    	if (indxMndPnlSlctd<0) 
-    	{
-    		ErrorDialog.show("Scaled Idempotent Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
-    		return;
-    	}
-    	
-    	MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
-    	boolean test = false;
-    	try
-    	{
-	    	switch (tSpot.getRepMode())
-	    	{
-		    	case REALF: 	test = MonadRealF.isScaledIdempotent(tSpot.getMonadRF());
-								    	break;
-		    	case REALD: 	test = MonadRealD.isScaledIdempotent(tSpot.getMonadRD());
-								    	break;
-		    	case COMPLEXF:	test = MonadComplexF.isScaledIdempotent(tSpot.getMonadCF());
-								    	break;
-		    	case COMPLEXD:	test = MonadComplexD.isScaledIdempotent(tSpot.getMonadCD());
-	    	}
-	    	if (test)
+	/**
+	 * This is the actual action to be performed by this member of the menu.
+	 */
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
+		if (indexNyadPanelSelected < 0) {
+			ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
+			return;
+		}
+
+		NyadPanel panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
+		int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
+		if (indxMndPnlSlctd < 0) {
+			ErrorDialog.show("Scaled Idempotent Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
+			return;
+		}
+
+		MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+		boolean test = false;
+		try {
+			switch (tSpot.getRepMode()) {
+			case REALF -> test = MonadRealF.isScaledIdempotent(tSpot.getMonadRF());
+			case REALD -> test = MonadRealD.isScaledIdempotent(tSpot.getMonadRD());
+			case COMPLEXF -> test = MonadComplexF.isScaledIdempotent(tSpot.getMonadCF());
+			case COMPLEXD -> test = MonadComplexD.isScaledIdempotent(tSpot.getMonadCD());
+			}
+			if (test)
 				_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is multiple of an idempotent.\n");
-	    	else
-	    		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is NOT multiple of an idempotent.\n");
-    	}
-		catch (CladosMonadException e)
-		{
-			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n"+e.getSourceMessage(), "Clados Monad Exception");
+			else
+				_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is NOT multiple of an idempotent.\n");
+		} catch (CladosMonadException e) {
+			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n" + e.getSourceMessage(),
+					"Clados Monad Exception");
+		} catch (FieldBinaryException eb) {
+			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n" + eb.getSourceMessage(),
+					"Field Binary Exception");
+		} catch (FieldException ef) {
+			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n" + ef.getSourceMessage(),
+					"Field Exception");
 		}
-		catch (FieldBinaryException eb)
-		{
-			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n"+eb.getSourceMessage(), "Field Binary Exception");
-		}
-    	catch (FieldException ef)
-    	{
-    		ErrorDialog.show("Selected monad has an issue.\nNothing done.\n"+ef.getSourceMessage(), "Field Exception");
-    	}
-    }
+	}
 }

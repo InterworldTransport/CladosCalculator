@@ -34,83 +34,72 @@ import com.interworldtransport.cladosviewer.ErrorDialog;
 import java.awt.event.*;
 import javax.swing.*;
 
-/** 
- *  This class manages events relating to the answering of a boolean question.
- *  Is the selected monad's algebra used by the nyad following on the stack?
+/**
+ * This class manages events relating to the answering of a boolean question. Is
+ * the selected monad's algebra used by the nyad following on the stack?
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class NOpsHasAlgebraMatchEvents implements ActionListener
- {
-    protected JMenuItem 		_control;
-    protected NOpsParentEvents 	_parent;
+public class NOpsHasAlgebraMatchEvents implements ActionListener {
+	protected JMenuItem _control;
+	protected NOpsParentEvents _parent;
 
-/** 
- * This is the default constructor.
- * @param pmniControlled
- *  JMenuItem
- * This is a reference to the Menu Item for which this event acts.
- * @param pParent
- * 	NOpsParentEvents
- * This is a reference to the NOpsParentEvents parent event handler
- */
-    public NOpsHasAlgebraMatchEvents(	JMenuItem 			pmniControlled,
-    									NOpsParentEvents 	pParent)
-    {
-		_control=pmniControlled;
+	/**
+	 * This is the default constructor.
+	 * 
+	 * @param pmniControlled JMenuItem This is a reference to the Menu Item for
+	 *                       which this event acts.
+	 * @param pParent        NOpsParentEvents This is a reference to the
+	 *                       NOpsParentEvents parent event handler
+	 */
+	public NOpsHasAlgebraMatchEvents(JMenuItem pmniControlled, NOpsParentEvents pParent) {
+		_control = pmniControlled;
 		_control.addActionListener(this);
-		_parent=pParent;
-    }
+		_parent = pParent;
+	}
 
-/** 
- * This is the actual action to be performed by this member of the menu.
- * Nyad algebra match test is checked between focus monad and the next nyad in the stack.
- */
-    public void actionPerformed(ActionEvent evt)
-    {
-    	int tNyadIndex=_parent._GUI.appGeometryView.getPaneFocus();
-    	if (tNyadIndex<0 | tNyadIndex>=_parent._GUI.appGeometryView.getNyadListSize()-1) 
-    	{
-    		ErrorDialog.show("No nyad in the focus... or the last one is.\nNothing done.", "Need Nyad In Focus");
-    		return;	
-    	}
-    	
-    	NyadPanel panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex);
-    	int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
-    	if (indxMndPnlSlctd<0) 
-    	{
-    		ErrorDialog.show("HasAlgebra Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
-    		return;
-    	}
-    	//MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
-    	
-    	NyadPanel panelNyadNext = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex+1);
-    	
-    	if (panelNyadSelected.getRepMode() != panelNyadNext.getRepMode())
-    	{
-    		ErrorDialog.show("Nyads using different DivFields.", "Nyad DivField Mismatch");
-    		return;	
-    	}
-    	
-    	boolean test = false;
-    	switch (panelNyadSelected.getRepMode())
-    	{
-    		case REALF: 	test = NyadRealF.hasAlgebra(panelNyadNext.getNyadRF(), 
-    															panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadRF().getAlgebra());
-    								break;
-    		case REALD: 	test = NyadRealD.hasAlgebra(panelNyadNext.getNyadRD(), 
-    															panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadRD().getAlgebra());
-									break;
-    		case COMPLEXF: test = NyadComplexF.hasAlgebra(	panelNyadNext.getNyadCF(), 
-    																panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadCF().getAlgebra());
-    								break;
-    		case COMPLEXD: test = NyadComplexD.hasAlgebra(	panelNyadNext.getNyadCD(), 
-    																panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadCD().getAlgebra());
-    	}
-    	if (test)
+	/**
+	 * This is the actual action to be performed by this member of the menu. Nyad
+	 * algebra match test is checked between focus monad and the next nyad in the
+	 * stack.
+	 */
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		int tNyadIndex = _parent._GUI.appGeometryView.getPaneFocus();
+		if (tNyadIndex < 0 | tNyadIndex >= _parent._GUI.appGeometryView.getNyadListSize() - 1) {
+			ErrorDialog.show("No nyad in the focus... or the last one is.\nNothing done.", "Need Nyad In Focus");
+			return;
+		}
+
+		NyadPanel panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex);
+		int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
+		if (indxMndPnlSlctd < 0) {
+			ErrorDialog.show("HasAlgebra Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
+			return;
+		}
+		// MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+
+		NyadPanel panelNyadNext = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex + 1);
+
+		if (panelNyadSelected.getRepMode() != panelNyadNext.getRepMode()) {
+			ErrorDialog.show("Nyads using different DivFields.", "Nyad DivField Mismatch");
+			return;
+		}
+
+		boolean test = switch (panelNyadSelected.getRepMode()) {
+		case REALF -> NyadRealF.hasAlgebra(panelNyadNext.getNyadRF(),
+				panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadRF().getAlgebra());
+		case REALD -> NyadRealD.hasAlgebra(panelNyadNext.getNyadRD(),
+				panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadRD().getAlgebra());
+		case COMPLEXF -> NyadComplexF.hasAlgebra(panelNyadNext.getNyadCF(),
+				panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadCF().getAlgebra());
+		case COMPLEXD -> NyadComplexD.hasAlgebra(panelNyadNext.getNyadCD(),
+				panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadCD().getAlgebra());
+		};
+		if (test)
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad's algebra HAS presence in the next nyad.\n");
 		else
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad's algebra HAS NO presence in the next nyad.\n");
-    }
- }
+	}
+}

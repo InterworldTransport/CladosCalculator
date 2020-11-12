@@ -24,6 +24,7 @@
  */
 
 package com.interworldtransport.cladosviewerEvents;
+
 import com.interworldtransport.cladosGExceptions.CladosMonadException;
 import com.interworldtransport.cladosviewer.MonadPanel;
 import com.interworldtransport.cladosviewer.NyadPanel;
@@ -32,80 +33,68 @@ import com.interworldtransport.cladosviewer.ErrorDialog;
 import java.awt.event.*;
 import javax.swing.*;
 
-/** 
- *  This class manages events relating to a simple operation...
- *  Normalize the selected Monad.
+/**
+ * This class manages events relating to a simple operation... Normalize the
+ * selected Monad.
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class MOpsNormalizeEvents implements ActionListener
- {
-    protected JMenuItem 		_control;
-    protected MOpsParentEvents 	_parent;
+public class MOpsNormalizeEvents implements ActionListener {
+	protected JMenuItem _control;
+	protected MOpsParentEvents _parent;
 
-/** 
- * This is the default constructor.
- * @param pmniControlled
- *  JMenuItem
- * This is a reference to the Menu Item for which this event acts.
- * @param pParent
- * 	NOpsParentEvents
- * This is a reference to the NOpsParentEvents parent event handler
- */
-    public MOpsNormalizeEvents(	JMenuItem pmniControlled,
-    							MOpsParentEvents pParent)
-    {
-		_control=pmniControlled;
+	/**
+	 * This is the default constructor.
+	 * 
+	 * @param pmniControlled JMenuItem This is a reference to the Menu Item for
+	 *                       which this event acts.
+	 * @param pParent        NOpsParentEvents This is a reference to the
+	 *                       NOpsParentEvents parent event handler
+	 */
+	public MOpsNormalizeEvents(JMenuItem pmniControlled, MOpsParentEvents pParent) {
+		_control = pmniControlled;
 		_control.addActionListener(this);
-		_parent=pParent;
-    }
+		_parent = pParent;
+	}
 
-/** 
- * This is the actual action to be performed by this member of the menu.
- * The monad with focus is normalized if possible.
- * Watch out for idempotents and nilpotents.
- * 
- * The normalize() method on a monad needs some work. In the future, it must
- * channel through the reference frame instead of the canonical basis. Also,
- * attention might be needed on exactly how it is calculated.
- */
-    public void actionPerformed(ActionEvent evt)
-    {
-    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
-    	if (indexNyadPanelSelected<0) 
-    	{
-    		ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
-    		return;	
-    	}
-    	
-    	NyadPanel tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
-    	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
-    	if (indxMndPnlSlctd<0) 
-    	{
-    		ErrorDialog.show("Normalize Operation needs one monad in focus.\nNothing done.", "Need Monad In Focus");
-    		return;
-    	}
-    	
-    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
-    	try
-    	{
-	    	switch (tMSpotPnl.getRepMode())
-	    	{
-		    	case REALF: 	tMSpotPnl.getMonadRF().normalize();
-								    	break;
-		    	case REALD: 	tMSpotPnl.getMonadRD().normalize();
-								    	break;
-		    	case COMPLEXF:	tMSpotPnl.getMonadCF().normalize();
-								    	break;
-		    	case COMPLEXD:	tMSpotPnl.getMonadCD().normalize();
-	    	}
-	    	tMSpotPnl.setCoefficientDisplay();
-	    	_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been normalized.\n");
-    	}
-    	catch (CladosMonadException e)	// Normalization can fail if the monad does not have an inverse.
-		{
+	/**
+	 * This is the actual action to be performed by this member of the menu. The
+	 * monad with focus is normalized if possible. Watch out for idempotents and
+	 * nilpotents.
+	 * 
+	 * The normalize() method on a monad needs some work. In the future, it must
+	 * channel through the reference frame instead of the canonical basis. Also,
+	 * attention might be needed on exactly how it is calculated.
+	 */
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
+		if (indexNyadPanelSelected < 0) {
+			ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
+			return;
+		}
+
+		NyadPanel tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
+		int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
+		if (indxMndPnlSlctd < 0) {
+			ErrorDialog.show("Normalize Operation needs one monad in focus.\nNothing done.", "Need Monad In Focus");
+			return;
+		}
+
+		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+		try {
+			switch (tMSpotPnl.getRepMode()) {
+			case REALF -> tMSpotPnl.getMonadRF().normalize();
+			case REALD -> tMSpotPnl.getMonadRD().normalize();
+			case COMPLEXF -> tMSpotPnl.getMonadCF().normalize();
+			case COMPLEXD -> tMSpotPnl.getMonadCD().normalize();
+			}
+			tMSpotPnl.setCoefficientDisplay();
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been normalized.\n");
+		} catch (CladosMonadException e) {
+			// Normalization can fail if the monad does not have an inverse.
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has NOT been normalized.\n");
 		}
-    }
- }
+	}
+}

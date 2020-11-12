@@ -67,7 +67,7 @@ public class FileOpenEvents implements ActionListener {
 	private final static String path2AllSignatures = "//GProduct/Signature/text()";
 	private final static String path2DivFields = "//Algebra/*[@cardinal]";
 	private final static String path2FootCardinals = "//Foot/Name[!]	/Cardinals/Cardinal/@unit"; // re-do this one
-	private final static String path2FootNames = "//Algebra/Foot/Name/text()";
+	private final static String path2FootNames = "//Algebra/Foot/Name";
 	private final static String path2MonadNames = "//Monad/Name/text()";
 	private final static String path2Monads = "//Monad";
 	private final static String path2NyadNames = "//Nyad/Name/text()";
@@ -148,16 +148,14 @@ public class FileOpenEvents implements ActionListener {
 			// Cardinals built/stored in CladosFBuilder.INSTANCE. Retrieve later.
 			// ----------------
 			buildFoot(doc, xPathFactory.newXPath());
+			System.out.println("Made it past Foot building.");
 			if (_foot == null | _foot.size() == 0)
 				return; // STOP if no Foot objects created.
 			appendFootCardinals(doc, xPathFactory.newXPath());
+			System.out.println("Made it past Foot Card populating.");
 			// ----------------
 			// Foot objects built/stored locally in _foot.
 			// [[NOT appending Frames right now as those will change soon.]]
-			// ----------------
-			// findAllAlgebraNames(doc, xPathFactory.newXPath());
-			// ----------------
-			// GProducts, DivField, Cardnals known, it is time to build algebras.
 			// ----------------
 			buildTheAlgebras(doc, xPathFactory.newXPath());
 			// ----------------
@@ -167,10 +165,6 @@ public class FileOpenEvents implements ActionListener {
 			// DO NOT name them the same unless you intend them to be the same.
 			// ----------------
 
-			// findAllMonadNames(doc, xPathFactory.newXPath());
-			// ----------------
-			// _monadNames has as many entry as were found with some possibly being empty.
-			// ----------------
 			_nyadNames = new ArrayList<String>(_nyadCount);
 			findAllNyadNames(doc, xPathFactory.newXPath());
 			// ----------------
@@ -204,7 +198,8 @@ public class FileOpenEvents implements ActionListener {
 			ErrorDialog.show("An unsupported signature length was found in file.", "Generator Range Exception");
 			return;
 		} catch (BadSignatureException e1) {
-			ErrorDialog.show("An malformed(bad characters) signature was found in file.", "Bad Signature Exception");
+			ErrorDialog.show("A malformed (bad characters) signature was found in file.\n" + e1.getSourceMessage(),
+					"Bad Signature Exception");
 			return;
 		}
 
@@ -228,7 +223,9 @@ public class FileOpenEvents implements ActionListener {
 
 			XPathExpression expr = pX.compile(test.toString());
 			NodeList cardNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
-			if (cardNodes == null | cardNodes.getLength() == 0)
+			if (cardNodes == null)
+				continue;
+			if (cardNodes.getLength() == 0)
 				continue;
 			for (int m = 0; m < cardNodes.getLength(); m++)
 				pt.appendCardinal(CladosFBuilder.INSTANCE.findCardinal(cardNodes.item(m).getNodeName()));
@@ -245,14 +242,17 @@ public class FileOpenEvents implements ActionListener {
 	private void buildFoot(Document pDoc, XPath pX) throws XPathExpressionException {
 		XPathExpression expr = pX.compile(path2FootNames);
 		NodeList footNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
-		if (footNodes == null | footNodes.getLength() == 0)
+		if (footNodes == null)
+			return;
+		if (footNodes.getLength() == 0)
 			return;
 
 		ArrayList<String> finds = new ArrayList<String>(footNodes.getLength());
 
 		for (int k = 0; k < footNodes.getLength(); k++)
-			if (!finds.contains(footNodes.item(k).getNodeName()))
-				finds.add(footNodes.item(k).getNodeName());
+			if (!finds.contains(footNodes.item(k).getNodeValue()))
+				finds.add(footNodes.item(k).getNodeValue());
+		finds.trimToSize();
 
 		_foot = new ArrayList<Foot>(finds.size());
 		for (String pt : finds)
@@ -263,8 +263,9 @@ public class FileOpenEvents implements ActionListener {
 			throws XPathExpressionException, DOMException, GeneratorRangeException, BadSignatureException {
 		XPathExpression expr = pX.compile(path2AllSignatures);
 		NodeList sigNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
-		for (int k = 0; k < sigNodes.getLength(); k++)
+		for (int k = 0; k < sigNodes.getLength(); k++) {
 			CladosGBuilder.INSTANCE.createGProduct(sigNodes.item(k).getNodeValue());
+		}
 	}
 
 	private void buildTheAlgebras(Document pDoc, XPath pX) throws XPathExpressionException, BadSignatureException {
@@ -313,18 +314,22 @@ public class FileOpenEvents implements ActionListener {
 				_algs.add(CladosGAlgebra.REALF.createWithFootPlus(_foot.get(ftIndx),
 						CladosFBuilder.INSTANCE.findCardinal(card2Use), CladosGBuilder.INSTANCE.findGProduct(sig2Use),
 						name2Use));
+				return;
 			case REALD:
 				_algs.add(CladosGAlgebra.REALD.createWithFootPlus(_foot.get(ftIndx),
 						CladosFBuilder.INSTANCE.findCardinal(card2Use), CladosGBuilder.INSTANCE.findGProduct(sig2Use),
 						name2Use));
+				return;
 			case COMPLEXF:
 				_algs.add(CladosGAlgebra.COMPLEXF.createWithFootPlus(_foot.get(ftIndx),
 						CladosFBuilder.INSTANCE.findCardinal(card2Use), CladosGBuilder.INSTANCE.findGProduct(sig2Use),
 						name2Use));
+				return;
 			case COMPLEXD:
 				_algs.add(CladosGAlgebra.COMPLEXD.createWithFootPlus(_foot.get(ftIndx),
 						CladosFBuilder.INSTANCE.findCardinal(card2Use), CladosGBuilder.INSTANCE.findGProduct(sig2Use),
 						name2Use));
+				return;
 			}
 		}
 	}
@@ -336,38 +341,33 @@ public class FileOpenEvents implements ActionListener {
 		// And GProducts, Bases, and Cardinals already exist as objects
 		Node name = pNode.getFirstChild();
 		String name2Use = name.getTextContent();
-		
-		Node alg = name.getNextSibling();
-		
 
+		Node alg = name.getNextSibling();
+
+		return null;
 	}
-	
+
 	private void buildAllNyads(Document pDoc, XPath pX) throws XPathExpressionException {
 		XPathExpression expr = pX.compile(path2Nyads);
 		NodeList nyadNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
 		_nyads = new ArrayList<NyadAbstract>(nyadNodes.getLength());
 		// For this to work, the Nyad child elements must be in order.
 		// Name, Foot, AlgebraList, MonadList
-		for (int k = 0; k < _nyadCount; k++)
-		{
+		for (int k = 0; k < _nyadCount; k++) {
 			Node name = nyadNodes.item(k).getFirstChild();
 			String name2Use = name.getTextContent();
-			
+
 			Node foot = name.getNextSibling();
 			String foot2Use = foot.getFirstChild().getTextContent();
-			
+
 			Node monadList = foot.getNextSibling().getNextSibling();
 			NodeList monads = monadList.getChildNodes();
 			int nyadOrder = monads.getLength();
 			_monads = new ArrayList<MonadAbstract>(nyadOrder);
-			for (int j = 0; j < nyadOrder; j++)
-			{
+			for (int j = 0; j < nyadOrder; j++) {
 				_monads.add(buildAMonad(monads.item(j)));
 			}
 		}
-		
-		
-		
 
 	}
 
@@ -439,8 +439,9 @@ public class FileOpenEvents implements ActionListener {
 	}
 
 	private int findNyadCount(Document pDoc, XPath pX) throws XPathExpressionException {
-		XPathExpression expr = pX.compile(path4NyadCount);
-		_nyadCount = (int) expr.evaluate(pDoc, XPathConstants.NODESET);
+		XPathExpression expr = pX.compile(path2Nyads);
+		NodeList nyadNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
+		_nyadCount = nyadNodes.getLength();
 		return _nyadCount;
 	}
 }

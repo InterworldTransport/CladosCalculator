@@ -30,7 +30,7 @@ import com.interworldtransport.cladosviewer.OptionsDialog;
 
 import java.awt.event.*;
 
-/** com.interworldtransport.cladosviewer.ToolsOptions
+/**
  * This class shows the About dialog box and its related information.
  *
  * @version 0.85
@@ -61,7 +61,8 @@ public class ToolsOptions implements ActionListener
 /** 
  * This is the actual action to be performed by this menu item.
  */
-    public void actionPerformed(ActionEvent evt)
+    @Override
+	public void actionPerformed(ActionEvent evt)
     {
     	new OptionsDialog(_parent._GUI);
     }

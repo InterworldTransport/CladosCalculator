@@ -33,22 +33,19 @@ package com.interworldtransport.cladosviewerExceptions;
  * @author Dr Alfred W Differ
  *
  */
-public class CantGetIniException extends UtilitiesException 
-{
+public class CantGetIniException extends UtilitiesException {
 	private static final long serialVersionUID = -194690479375721970L;
+
 	/**
-	 * This is just a constructor method delivering a string to the descendant of 
-	 * a UtilitiesException
-	 * @param pMessage
-	 *  String
-	 * This is the hopefully helpful message to be delivered when things go specifically wrong
-	 * with access to the configuration file. Not much works when the configuration file 
-	 * can't be handled right.
+	 * This is just a constructor method delivering a string to the descendant of a
+	 * UtilitiesException
+	 * 
+	 * @param pMessage String This is the hopefully helpful message to be delivered
+	 *                 when things go specifically wrong with access to the
+	 *                 configuration file. Not much works when the configuration
+	 *                 file can't be handled right.
 	 */
-	public CantGetIniException(String pMessage)
-    {
-    	super(pMessage);
+	public CantGetIniException(String pMessage) {
+		super(pMessage);
 	}
-} 
-
-
+}

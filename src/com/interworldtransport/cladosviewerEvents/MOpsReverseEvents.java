@@ -32,74 +32,64 @@ import com.interworldtransport.cladosviewer.ErrorDialog;
 import java.awt.event.*;
 import javax.swing.*;
 
-/** 
- *  This class manages events relating to a simple operation...
- *  Reverse this Monad.
+/**
+ * This class manages events relating to a simple operation... Reverse this
+ * Monad.
  *
  * @version 0.85
  * @author Dr Alfred W Differ
  */
-public class MOpsReverseEvents implements ActionListener
- {
-    protected JMenuItem 		_control;
-    protected MOpsParentEvents 	_parent;
+public class MOpsReverseEvents implements ActionListener {
+	protected JMenuItem _control;
+	protected MOpsParentEvents _parent;
 
-/** 
- * This is the default constructor.
- * @param pmniControlled
- *  JMenuItem
- * This is a reference to the Menu Item for which this event acts.
- * @param pParent
- * 	NOpsParentEvents
- * This is a reference to the NOpsParentEvents parent event handler
- */
-    public MOpsReverseEvents(	JMenuItem pmniControlled,
-								MOpsParentEvents pParent)
-    {
-		_control=pmniControlled;
+	/**
+	 * This is the default constructor.
+	 * 
+	 * @param pmniControlled JMenuItem This is a reference to the Menu Item for
+	 *                       which this event acts.
+	 * @param pParent        NOpsParentEvents This is a reference to the
+	 *                       NOpsParentEvents parent event handler
+	 */
+	public MOpsReverseEvents(JMenuItem pmniControlled, MOpsParentEvents pParent) {
+		_control = pmniControlled;
 		_control.addActionListener(this);
-		_parent=pParent;
-    }
+		_parent = pParent;
+	}
 
-/** 
- * This is the actual action to be performed by this member of the menu.
- * The monad with focus has its blades multiplication order reversed. 
- * Blade a^b^c^d becomes d^c^b^a on the default (canonical) basis.
- * 
- * A future version of the reverse method must reverse the 1-blades represented in 
- * the reference frame instead. Fourier decomposition is done against that frame 
- * and not the canonical one most of the time.
- */
-    public void actionPerformed(ActionEvent evt)
-    {
-    	int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
-    	if (indexNyadPanelSelected<0) 
-    	{
-    		ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
-    		return;	
-    	}
-    	
-    	NyadPanel tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
-    	int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
-    	if (indxMndPnlSlctd<0) 
-    	{
-    		ErrorDialog.show("Reverse Operation needs one monad in focus.\nNothing done.", "Need Monad In Focus");
-    		return;
-    	}
-    	
-    	MonadPanel tMSpotPnl=tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
-    	
-    	switch (tMSpotPnl.getRepMode())
-    	{
-	    	case REALF: 	tMSpotPnl.getMonadRF().reverse();
-							    	break;
-	    	case REALD: 	tMSpotPnl.getMonadRD().reverse();
-							    	break;
-	    	case COMPLEXF:	tMSpotPnl.getMonadCF().reverse();
-							    	break;
-	    	case COMPLEXD:	tMSpotPnl.getMonadCD().reverse();
-    	}
-    	tMSpotPnl.setCoefficientDisplay();
-    	_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been reversed.\n");
-    }
- }
+	/**
+	 * This is the actual action to be performed by this member of the menu. The
+	 * monad with focus has its blades multiplication order reversed. Blade a^b^c^d
+	 * becomes d^c^b^a on the default (canonical) basis.
+	 * 
+	 * A future version of the reverse method must reverse the 1-blades represented
+	 * in the reference frame instead. Fourier decomposition is done against that
+	 * frame and not the canonical one most of the time.
+	 */
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		int indexNyadPanelSelected = _parent._GUI.appGeometryView.getPaneFocus();
+		if (indexNyadPanelSelected < 0) {
+			ErrorDialog.show("No nyad in the focus.\nNothing done.", "Need Nyad In Focus");
+			return;
+		}
+
+		NyadPanel tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
+		int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
+		if (indxMndPnlSlctd < 0) {
+			ErrorDialog.show("Reverse Operation needs one monad in focus.\nNothing done.", "Need Monad In Focus");
+			return;
+		}
+
+		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+
+		switch (tMSpotPnl.getRepMode()) {
+		case REALF -> tMSpotPnl.getMonadRF().reverse();
+		case REALD -> tMSpotPnl.getMonadRD().reverse();
+		case COMPLEXF -> tMSpotPnl.getMonadCF().reverse();
+		case COMPLEXD -> tMSpotPnl.getMonadCD().reverse();
+		}
+		tMSpotPnl.setCoefficientDisplay();
+		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been reversed.\n");
+	}
+}
