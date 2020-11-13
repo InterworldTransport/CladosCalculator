@@ -15,8 +15,8 @@
 	<property	name="src"			value="src" />
 	<property	name="icons"		value="icons" />
 	<property	name="conf"			value="conf" />
-	<property 	name="clados"		value="com/interworldtransport/clados/" />
-	<property 	name="viewer"		value="com/interworldtransport/cladosviewer/" />
+	<property 	name="clados"		value="org/interworldtransport/clados/" />
+	<property 	name="viewer"		value="org/interworldtransport/cladosviewer/" />
 	<property 	name="copyleft"		value="&lt;p&gt;
 --------------------------------------------------------------------------------
 &lt;br&gt;
@@ -79,7 +79,7 @@ along with this program.  If not, see https://www.gnu.org/licenses/."/>
 					doctitle="Clados Calculator Documentation"
 					header="&lt;a target=_top href=${appHome}&gt;${coName}&lt;/a&gt;"
 					overview="${src}/overview.html"
-					packagenames="com.interworldtransport.*"
+					packagenames="org.interworldtransport.*"
 					sourcepath="${src}"
 					classpath="${lib}/clados.jar"
 					verbose="false"

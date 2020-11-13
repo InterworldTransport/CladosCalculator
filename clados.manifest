@@ -1,2 +1,2 @@
-Main-Class: com.interworldtransport.cladosviewer.CladosCalculator
+Main-Class: org.interworldtransport.cladosviewer.CladosCalculator
 Class-Path: lib/clados.jar
