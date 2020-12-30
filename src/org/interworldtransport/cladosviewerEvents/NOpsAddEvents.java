@@ -25,8 +25,6 @@
 
 package org.interworldtransport.cladosviewerEvents;
 
-import org.interworldtransport.cladosFExceptions.FieldBinaryException;
-import org.interworldtransport.cladosGExceptions.*;
 import org.interworldtransport.cladosviewer.*;
 
 import java.awt.event.ActionEvent;

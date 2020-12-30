@@ -25,12 +25,12 @@
 
 package org.interworldtransport.cladosviewer;
 
+import org.interworldtransport.cladosF.CladosFBuilder;
 import org.interworldtransport.cladosF.CladosField;
-import org.interworldtransport.cladosF.RealF;
-import org.interworldtransport.cladosF.RealD;
-import org.interworldtransport.cladosF.ComplexF;
-import org.interworldtransport.cladosF.ComplexD;
-
+import org.interworldtransport.cladosF.Field;
+import org.interworldtransport.cladosF.Normalizable;
+//import org.interworldtransport.cladosF.RealF;
+import org.interworldtransport.cladosF.UnitAbstract;
 import org.interworldtransport.cladosG.Monad;
 import org.interworldtransport.cladosG.Nyad;
 import org.interworldtransport.cladosG.CladosGBuilder;
@@ -144,144 +144,27 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		return _repMode;
 	}
 
-	private Nyad buildANyadCD(short pWhich, short monadCount) {
-		// TODO Time to re-write these four buildANyad methods to use CladosGNyad
-		// builder instead. Should be able to write one and let the calling object
-		// cast the NyadAbstract.
+	@SuppressWarnings("unchecked")
+	private <T extends UnitAbstract & Field & Normalizable> Nyad buildANyad(short pWhich, short monadCount) {
 		Nyad aNyad = null;
+		T keyNumber = null;
 		try {
 			String cnt = new StringBuffer("N").append(pWhich).toString();
-			Monad aMonad = new Monad("M", _GUI.IniProps.getProperty("Desktop.Default.AlgebraName"),
-					_GUI.IniProps.getProperty("Desktop.Default.FrameName"),
-					_GUI.IniProps.getProperty("Desktop.Default.FootName"),
-					_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-					ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal")));
-			aNyad = new Nyad(cnt, aMonad, true);
-			// Now bootstrap the others using the first
-			short m = 1;
-			while (m < monadCount) {
-				String nextMonadName = (new StringBuffer(aMonad.getName()).append(m)).toString();
-				String nextAlgebraName = (new StringBuffer(aMonad.getAlgebra().getAlgebraName()).append(m)).toString();
-				String nextFrameName = (new StringBuffer(aMonad.getFrameName()).append(m)).toString();
-
-				aNyad.createMonad(nextMonadName, nextAlgebraName, nextFrameName,
-						_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-						_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
-				m++;
+			switch (_GUI.IniProps.getProperty("Desktop.Default.DivField")) {
+			case "RealF" -> keyNumber = (T) CladosFBuilder.REALF
+					.createZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
+			case "RealD" -> keyNumber = (T) CladosFBuilder.REALD
+					.createZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
+			case "ComplexF" -> keyNumber = (T) CladosFBuilder.COMPLEXF
+					.createZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
+			case "ComplexD" -> keyNumber = (T) CladosFBuilder.COMPLEXD
+					.createZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
 			}
-		} catch (BadSignatureException es) {
-			ErrorDialog.show("Could not construct a monad due to signature issue.\n" + es.getSourceMessage(),
-					"Bad Signature Exception");
-			return null;
-		} catch (GeneratorRangeException e) {
-			ErrorDialog.show("Cannot construct a monad due to unsupported signature size.\n" + e.getSourceMessage(),
-					"Generator Range Exception");
-			return null;
-		} catch (CladosMonadException em) {
-			ErrorDialog.show("Could not construct first part of the Viewer Panel because monad was malformed.\n"
-					+ em.getSourceMessage(), "Clados Monad Exception");
-			return null;
-		} catch (CladosNyadException en) {
-			ErrorDialog.show("Could not add Nyad to the Viewer Panel.\n" + en.getSourceMessage(),
-					"Clados Nyad Exception");
-			return null;
-		}
-		return aNyad;
-	}
 
-	private Nyad buildANyadCF(short pWhich, short monadCount) {
-		Nyad aNyad = null;
-		try {
-			String cnt = new StringBuffer("N").append(pWhich).toString();
 			Monad aMonad = new Monad("M", _GUI.IniProps.getProperty("Desktop.Default.AlgebraName"),
 					_GUI.IniProps.getProperty("Desktop.Default.FrameName"),
 					_GUI.IniProps.getProperty("Desktop.Default.FootName"),
-					_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-					ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal")));
-			aNyad = new Nyad(cnt, aMonad, true);
-			// Now bootstrap the others using the first
-			short m = 1;
-			while (m < monadCount) {
-				String nextMonadName = (new StringBuffer(aMonad.getName()).append(m)).toString();
-				String nextAlgebraName = (new StringBuffer(aMonad.getAlgebra().getAlgebraName()).append(m)).toString();
-				String nextFrameName = (new StringBuffer(aMonad.getFrameName()).append(m)).toString();
-
-				aNyad.createMonad(nextMonadName, nextAlgebraName, nextFrameName,
-						_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-						_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
-				m++;
-			}
-		} catch (BadSignatureException es) {
-			ErrorDialog.show("Could not construct a monad due to signature issue.\n" + es.getSourceMessage(),
-					"Bad Signature Exception");
-			return null;
-		} catch (GeneratorRangeException e) {
-			ErrorDialog.show("Cannot construct a monad due to unsupported signature size.\n" + e.getSourceMessage(),
-					"Generator Range Exception");
-			return null;
-		} catch (CladosMonadException em) {
-			ErrorDialog.show("Could not construct first part of the Viewer Panel because monad was malformed.\n"
-					+ em.getSourceMessage(), "Clados Monad Exception");
-			return null;
-		} catch (CladosNyadException en) {
-			ErrorDialog.show("Could not add Nyad to the Viewer Panel.\n" + en.getSourceMessage(),
-					"Clados Nyad Exception");
-			return null;
-		}
-		return aNyad;
-	}
-
-	private Nyad buildANyadRD(short pWhich, short monadCount) {
-		Nyad aNyad = null;
-		try {
-			String cnt = new StringBuffer("N").append(pWhich).toString();
-			Monad aMonad = new Monad("M", _GUI.IniProps.getProperty("Desktop.Default.AlgebraName"),
-					_GUI.IniProps.getProperty("Desktop.Default.FrameName"),
-					_GUI.IniProps.getProperty("Desktop.Default.FootName"),
-					_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-					RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal")));
-			aNyad = new Nyad(cnt, aMonad, true);
-			// Now bootstrap the others using the first
-			short m = 1;
-			while (m < monadCount) {
-				String nextMonadName = (new StringBuffer(aMonad.getName()).append(m)).toString();
-				String nextAlgebraName = (new StringBuffer(aMonad.getAlgebra().getAlgebraName()).append(m)).toString();
-				String nextFrameName = (new StringBuffer(aMonad.getFrameName()).append(m)).toString();
-
-				aNyad.createMonad(nextMonadName, nextAlgebraName, nextFrameName,
-						_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-						_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
-				m++;
-			}
-		} catch (BadSignatureException es) {
-			ErrorDialog.show("Could not construct a monad due to signature issue.\n" + es.getSourceMessage(),
-					"Bad Signature Exception");
-			return null;
-		} catch (GeneratorRangeException e) {
-			ErrorDialog.show("Cannot construct a monad due to unsupported signature size.\n" + e.getSourceMessage(),
-					"Generator Range Exception");
-			return null;
-		} catch (CladosMonadException em) {
-			ErrorDialog.show("Could not construct first part of the Viewer Panel because monad was malformed.\n"
-					+ em.getSourceMessage(), "Clados Monad Exception");
-			return null;
-		} catch (CladosNyadException en) {
-			ErrorDialog.show("Could not add Nyad to the Viewer Panel.\n" + en.getSourceMessage(),
-					"Clados Nyad Exception");
-			return null;
-		}
-		return aNyad;
-	}
-
-	private Nyad buildANyadRF(short pWhich, short monadCount) {
-		Nyad aNyad = null;
-		try {
-			String cnt = new StringBuffer("N").append(pWhich).toString();
-			Monad aMonad = new Monad("M", _GUI.IniProps.getProperty("Desktop.Default.AlgebraName"),
-					_GUI.IniProps.getProperty("Desktop.Default.FrameName"),
-					_GUI.IniProps.getProperty("Desktop.Default.FootName"),
-					_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-					RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal")));
+					_GUI.IniProps.getProperty("Desktop.Default.Sig"), keyNumber);
 			aNyad = new Nyad(cnt, aMonad, true);
 			// Now bootstrap the others using the first
 			short m = 1;
@@ -473,7 +356,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		// {max = intOrder}
 		short j = 0;
 		while (j < intCount) {
-			Nyad aNyad = buildANyadRF(j, intOrd); // the NyadRF bootstrapper
+			Nyad aNyad = buildANyad(j, intOrd); // the NyadRF bootstrapper
 			try // Here we finally initiate the NyadPanel because the Nyad is actually filled at
 				// this point.
 			{
@@ -483,8 +366,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 					tempPane.setWheelScrollingEnabled(true);
 					nyadPanes.addTab(new StringBuffer().append(j).toString(), tabIcon, tempPane);
 				} else
-					ErrorDialog.show("Null NyadRealF for new NyadPanel avoided in initialization step.",
-							"Init Failed");
+					ErrorDialog.show("Null NyadRealF for new NyadPanel avoided in initialization step.", "Init Failed");
 			} catch (UtilitiesException eutil) {
 				ErrorDialog.show("Could not create new NyadPanel.\n" + eutil.getSourceMessage() + "\n"
 						+ eutil.getStackTrace().toString(), "Utilities Exception");
@@ -611,8 +493,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		return 1;
 	}
 
-	protected void addNyad(CladosField pRep, Nyad pN) {
-
+	protected void addNyad(Nyad pN) {
 		int endPlus = 0;
 		if (nyadPanes.getTabCount() > 0)
 			endPlus = Integer.valueOf(nyadPanes.getTitleAt(nyadPanes.getTabCount() - 1)).intValue() + 1;
@@ -653,7 +534,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 						if (nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getTabCount() > 0) {
 							int j = nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getSelectedIndex();
 							MonadPanel tSpot = nyadPanelList.get(nyadPanes.getSelectedIndex()).getMonadPanel(j);
-							pFieldPanel.setField(tSpot.getMonad().getAlgebra().getProtoNumber());
+							pFieldPanel.setField(CladosFBuilder.copyOf(tSpot.getMonad().getScales().getScalar()));
 							_GUI.appFieldBar.makeWritable();
 						}
 					}

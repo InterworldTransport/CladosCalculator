@@ -8,8 +8,7 @@ module org.interworldtransport.cladoscalculator {
 	exports org.interworldtransport.cladosviewer;
 	exports org.interworldtransport.cladosviewerEvents;
 
-	requires transitive java.desktop;
+	requires java.desktop;
 	requires transitive java.xml;
 	requires transitive org.interworldtransport.clados;
-	
 }

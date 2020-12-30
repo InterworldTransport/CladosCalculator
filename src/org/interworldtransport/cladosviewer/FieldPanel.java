@@ -28,6 +28,8 @@ package org.interworldtransport.cladosviewer;
 import org.interworldtransport.cladosF.CladosField;
 import org.interworldtransport.cladosF.ComplexD;
 import org.interworldtransport.cladosF.ComplexF;
+import org.interworldtransport.cladosF.Field;
+import org.interworldtransport.cladosF.Normalizable;
 import org.interworldtransport.cladosF.UnitAbstract;
 import org.interworldtransport.cladosF.RealD;
 import org.interworldtransport.cladosF.RealF;
@@ -818,8 +820,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 	 *               requirements are met on later function calls. The DivField
 	 *               child will be determined and then the FieldBar assigned.
 	 */
-	@SuppressWarnings("null")
-	protected void setField(UnitAbstract pField) {
+	protected <T extends UnitAbstract & Field & Normalizable> void setField(T pField) {
 		if (pField == null)
 			return;
 		CladosField test = null;
@@ -831,10 +832,11 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 			test = CladosField.COMPLEXF;
 		else if (pField instanceof ComplexD)
 			test = CladosField.COMPLEXD;
+		else
+			return;
 
-		// test will NOT be null at this point because there are only four DivField
-		// descendants. IF CladosField is ever extended to others, though, this WILL
-		// fail.
+		// test will NOT be null at this point because there are only four UnitAbstract
+		// descendants. IF CladosField is ever extended more, though, this WILL fail.
 		switch (test) {
 		case REALF -> {
 			_repRealF = (RealF) pField;
@@ -875,13 +877,6 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 				setBackground(clrBackColor);
 			else
 				setBackground(clrNullColor);
-		}
-		default -> {
-			_repRealF = null;
-			_repRealD = null;
-			_repComplexF = null;
-			_repComplexD = null;
-			setBackground(clrNullColor);
 		}
 		}
 	}
