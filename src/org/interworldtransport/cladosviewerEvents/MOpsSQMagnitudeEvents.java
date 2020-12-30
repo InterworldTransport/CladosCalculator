@@ -82,32 +82,27 @@ public class MOpsSQMagnitudeEvents implements ActionListener {
 		}
 
 		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(indxMndPnlSlctd);
-		try {
-			switch (tMSpotPnl.getRepMode()) {
-			case REALF -> {
-				RealF scaleRF = tMSpotPnl.getMonadRF().sqMagnitude();
-				_parent._GUI.appFieldBar.setWhatFloatR(scaleRF.getModulus());
-			}
-			case REALD -> {
-				RealD scaleRD = tMSpotPnl.getMonadRD().sqMagnitude();
-				_parent._GUI.appFieldBar.setWhatDoubleR(scaleRD.getModulus());
-			}
-			case COMPLEXF -> {
-				ComplexF scaleCF = tMSpotPnl.getMonadCF().sqMagnitude();
-				_parent._GUI.appFieldBar.setWhatFloatR(scaleCF.getModulus());
-				_parent._GUI.appFieldBar.setWhatFloatI(0.0F);
-			}
-			case COMPLEXD -> {
-				ComplexD scaleCD = tMSpotPnl.getMonadCD().sqMagnitude();
-				_parent._GUI.appFieldBar.setWhatDoubleR(scaleCD.getModulus());
-				_parent._GUI.appFieldBar.setWhatDoubleI(0.0D);
-			}
-			}
-			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad SQmagnitude has been computed.\n");
-		} catch (CladosMonadException e) {
-			ErrorDialog.show(
-					"Selected monad SQmagnitude has NOT been computed.\nNothing done.\n" + e.getSourceMessage(),
-					"Clados Monad Exception");
+		
+		switch (tMSpotPnl.getRepMode()) {
+		case REALF -> {
+			RealF scaleRF = tMSpotPnl.getMonad().sqMagnitude();
+			_parent._GUI.appFieldBar.setWhatFloatR(scaleRF.modulus());
 		}
+		case REALD -> {
+			RealD scaleRD = tMSpotPnl.getMonad().sqMagnitude();
+			_parent._GUI.appFieldBar.setWhatDoubleR(scaleRD.modulus());
+		}
+		case COMPLEXF -> {
+			ComplexF scaleCF = tMSpotPnl.getMonad().sqMagnitude();
+			_parent._GUI.appFieldBar.setWhatFloatR(scaleCF.modulus());
+			_parent._GUI.appFieldBar.setWhatFloatI(0.0F);
+		}
+		case COMPLEXD -> {
+			ComplexD scaleCD = tMSpotPnl.getMonad().sqMagnitude();
+			_parent._GUI.appFieldBar.setWhatDoubleR(scaleCD.modulus());
+			_parent._GUI.appFieldBar.setWhatDoubleI(0.0D);
+		}
+		}
+		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad SQmagnitude has been computed.\n");
 	}
 }

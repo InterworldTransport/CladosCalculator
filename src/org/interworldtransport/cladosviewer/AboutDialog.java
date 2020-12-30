@@ -22,7 +22,6 @@
  * ---org.interworldtransport.cladosviewer.AboutDialog<br>
  * ------------------------------------------------------------------------ <br>
  */
-
 package org.interworldtransport.cladosviewer;
 
 import java.awt.*;

@@ -27,8 +27,11 @@ package org.interworldtransport.cladosviewer;
 
 import org.interworldtransport.cladosF.CladosField;
 import org.interworldtransport.cladosG.*;
-import org.interworldtransport.cladosGExceptions.*;
-import org.interworldtransport.cladosviewerExceptions.*;
+import org.interworldtransport.cladosGExceptions.BadSignatureException;
+import org.interworldtransport.cladosGExceptions.CladosMonadException;
+import org.interworldtransport.cladosGExceptions.CladosNyadException;
+import org.interworldtransport.cladosGExceptions.GeneratorRangeException;
+import org.interworldtransport.cladosviewerExceptions.UtilitiesException;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -37,7 +40,6 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
-
 
 import java.util.*;
 
@@ -52,10 +54,7 @@ import java.util.*;
 
 public class NyadPanel extends JPanel implements ActionListener {
 	public CladosCalculator _GUI;
-	private NyadComplexD _repNyadCD;
-	private NyadComplexF _repNyadCF;
-	private NyadRealD _repNyadD;
-	private NyadRealF _repNyadF;
+	private Nyad repNyad;
 	private JButton btnCopyMonad;
 	private JButton btnEditMonad;
 	private JButton btnNewMonad;
@@ -85,168 +84,6 @@ public class NyadPanel extends JPanel implements ActionListener {
 	 * 
 	 * @param pGUI CladosCalculator This is just a reference to the owner
 	 *             application so error messages can be presented.
-	 * @param pN   NyadComplexD This is a reference to the nyad to be displayed and
-	 *             manipulated.
-	 * @throws UtilitiesException    This is the general exception. Could be any
-	 *                               miscellaneous issue. Ready the message to see.
-	 * @throws BadSignatureException This exception is thrown when one of the monad
-	 *                               panels can't accept the string signature
-	 *                               offered. That happens when something other than
-	 *                               '+' or '-' is used... or maybe when signature
-	 *                               is too long. Remember that blade count is
-	 *                               currently tracked with a short integer. {--****
-	 */
-	public NyadPanel(CladosCalculator pGUI, NyadComplexD pN) throws UtilitiesException, BadSignatureException {
-		super();
-		if (pGUI == null)
-			throw new UtilitiesException("A GUI must be passed to a NyadPanel");
-		_GUI = pGUI;
-
-		if (pN == null)
-			throw new UtilitiesException("A Nyad must be passed to this NyadPanel constructor");
-		_repNyadCD = pN;
-		_repMode = CladosField.COMPLEXD;
-
-		setReferences();
-
-		setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		setBackground(clrBackColor);
-		setLayout(new BorderLayout());
-
-		tabIcon = new ImageIcon(this.getClass().getResource("/icons/M.png"));
-
-		createEditLayout();
-		createStackLayout();
-		createReferenceLayout();
-
-		monadPanes = new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
-		monadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		monadPanelList = new ArrayList<MonadPanel>(_repNyadCD.getMonadList().size());
-
-		for (MonadComplexD point : _repNyadCD.getMonadList()) {
-			short j = (short) _repNyadCD.getMonadList().indexOf(point);
-			monadPanelList.add(j, new MonadPanel(_GUI, point));
-			JScrollPane tempPane = new JScrollPane(monadPanelList.get(j));
-			tempPane.setWheelScrollingEnabled(true);
-			monadPanes.addTab(Short.toString(j), tabIcon, tempPane);
-		}
-		add(monadPanes, JTabbedPane.CENTER);
-	}
-
-	/**
-	 * The NyadPanel class is intended to be contain a cladosG Nyad in order to
-	 * offer its parts for display and manipulation by the calculator
-	 * 
-	 * @param pGUI CladosCalculator This is just a reference to the owner
-	 *             application so error messages can be presented.
-	 * @param pN   NyadComplexF This is a reference to the nyad to be displayed and
-	 *             manipulated.
-	 * @throws UtilitiesException    This is the general exception. Could be any
-	 *                               miscellaneous issue. Ready the message to see.
-	 * @throws BadSignatureException This exception is thrown when one of the monad
-	 *                               panels can't accept the string signature
-	 *                               offered. That happens when something other than
-	 *                               '+' or '-' is used... or maybe when signature
-	 *                               is too long. Remember that blade count is
-	 *                               currently tracked with a short integer. {--****
-	 */
-	public NyadPanel(CladosCalculator pGUI, NyadComplexF pN) throws UtilitiesException, BadSignatureException {
-		super();
-		if (pGUI == null)
-			throw new UtilitiesException("A GUI must be passed to a NyadPanel");
-		_GUI = pGUI;
-
-		if (pN == null)
-			throw new UtilitiesException("A Nyad must be passed to this NyadPanel constructor");
-		_repNyadCF = pN;
-		_repMode = CladosField.COMPLEXF;
-
-		setReferences();
-
-		setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		setBackground(clrBackColor);
-		setLayout(new BorderLayout());
-
-		tabIcon = new ImageIcon(this.getClass().getResource("/icons/M.png"));
-
-		createEditLayout();
-		createStackLayout();
-		createReferenceLayout();
-
-		monadPanes = new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
-		monadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		monadPanelList = new ArrayList<MonadPanel>(_repNyadCF.getMonadList().size());
-
-		for (MonadComplexF point : _repNyadCF.getMonadList()) {
-			short j = (short) _repNyadCF.getMonadList().indexOf(point);
-			monadPanelList.add(j, new MonadPanel(_GUI, point));
-			JScrollPane tempPane = new JScrollPane(monadPanelList.get(j));
-			tempPane.setWheelScrollingEnabled(true);
-			monadPanes.addTab(Short.toString(j), tabIcon, tempPane);
-		}
-		add(monadPanes, JTabbedPane.CENTER);
-	}
-
-	/**
-	 * The NyadPanel class is intended to be contain a cladosG Nyad in order to
-	 * offer its parts for display and manipulation by the calculator
-	 * 
-	 * @param pGUI CladosCalculator This is just a reference to the owner
-	 *             application so error messages can be presented.
-	 * @param pN   NyadRealD This is a reference to the nyad to be displayed and
-	 *             manipulated.
-	 * @throws UtilitiesException    This is the general exception. Could be any
-	 *                               miscellaneous issue. Ready the message to see.
-	 * @throws BadSignatureException This exception is thrown when one of the monad
-	 *                               panels can't accept the string signature
-	 *                               offered. That happens when something other than
-	 *                               '+' or '-' is used... or maybe when signature
-	 *                               is too long. Remember that blade count is
-	 *                               currently tracked with a short integer. {--****
-	 */
-	public NyadPanel(CladosCalculator pGUI, NyadRealD pN) throws UtilitiesException, BadSignatureException {
-		super();
-		if (pGUI == null)
-			throw new UtilitiesException("A GUI must be passed to a NyadPanel");
-		_GUI = pGUI;
-
-		if (pN == null)
-			throw new UtilitiesException("A Nyad must be passed to this NyadPanel constructor");
-		_repNyadD = pN;
-		_repMode = CladosField.REALD;
-
-		setReferences();
-
-		setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-		setBackground(clrBackColor);
-		setLayout(new BorderLayout());
-
-		tabIcon = new ImageIcon(this.getClass().getResource("/icons/M.png"));
-
-		createEditLayout();
-		createStackLayout();
-		createReferenceLayout();
-
-		monadPanes = new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
-		monadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		monadPanelList = new ArrayList<MonadPanel>(_repNyadD.getMonadList().size());
-
-		for (MonadRealD point : _repNyadD.getMonadList()) {
-			short j = (short) _repNyadD.getMonadList().indexOf(point);
-			monadPanelList.add(j, new MonadPanel(_GUI, point));
-			JScrollPane tempPane = new JScrollPane(monadPanelList.get(j));
-			tempPane.setWheelScrollingEnabled(true);
-			monadPanes.addTab(Short.toString(j), tabIcon, tempPane);
-		}
-		add(monadPanes, JTabbedPane.CENTER);
-	}
-
-	/**
-	 * The NyadPanel class is intended to be contain a cladosG Nyad in order to
-	 * offer its parts for display and manipulation by the calculator
-	 * 
-	 * @param pGUI CladosCalculator This is just a reference to the owner
-	 *             application so error messages can be presented.
 	 * @param pN   NyadRealF This is a reference to the nyad to be displayed and
 	 *             manipulated.
 	 * @throws UtilitiesException    This is the general exception. Could be any
@@ -258,7 +95,7 @@ public class NyadPanel extends JPanel implements ActionListener {
 	 *                               is too long. Remember that blade count is
 	 *                               currently tracked with a short integer. {--****
 	 */
-	public NyadPanel(CladosCalculator pGUI, NyadRealF pN) throws UtilitiesException, BadSignatureException {
+	public NyadPanel(CladosCalculator pGUI, Nyad pN) throws UtilitiesException, BadSignatureException {
 		// TODO Why are their four versions of this constructor when switching would
 		// suffice to cope with the differences between the Nyad siblings?
 		super();
@@ -268,8 +105,8 @@ public class NyadPanel extends JPanel implements ActionListener {
 
 		if (pN == null)
 			throw new UtilitiesException("A Nyad must be passed to this NyadPanel constructor");
-		_repNyadF = pN;
-		_repMode = CladosField.REALF;
+		repNyad = pN;
+		_repMode = pN.getMode();
 
 		setReferences();
 
@@ -285,10 +122,10 @@ public class NyadPanel extends JPanel implements ActionListener {
 
 		monadPanes = new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
 		monadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		monadPanelList = new ArrayList<MonadPanel>(_repNyadF.getMonadList().size());
+		monadPanelList = new ArrayList<MonadPanel>(repNyad.getMonadList().size());
 
-		for (MonadRealF point : _repNyadF.getMonadList()) {
-			short j = (short) _repNyadF.getMonadList().indexOf(point);
+		for (Monad point : repNyad.getMonadList()) {
+			short j = (short) repNyad.getMonadList().indexOf(point);
 			monadPanelList.add(j, new MonadPanel(_GUI, point));
 			JScrollPane tempPane = new JScrollPane(monadPanelList.get(j));
 			tempPane.setWheelScrollingEnabled(true);
@@ -352,26 +189,9 @@ public class NyadPanel extends JPanel implements ActionListener {
 	 * @param pM MonadComplexD This is the MonadRealF to use to construct a
 	 *           MonadPanel to be appended to this NyadPanel.
 	 */
-	public void addMonadPanel(MonadComplexD pM) {
+	public void addMonadPanel(Monad pM) {
 		// TODO Why are there four versions of this method that do NOT seem to care
 		// about the DivField on the passed Monad?
-		MonadPanel pMP = new MonadPanel(_GUI, pM);
-		addMonadPanel(pMP);
-	}
-
-	/**
-	 * This method supports adding a monad panel to the nyad's list of monads. Be
-	 * aware that no tests are performed to prevent the panel being added. That
-	 * means the nyad might change from strong to weak without notice by this panel.
-	 * <p>
-	 * The difference between this one and the other by a similar name is this one
-	 * receives a monad and constructs the appropriate panel.
-	 * <p>
-	 * 
-	 * @param pM MonadComplexF This is the MonadRealF to use to construct a
-	 *           MonadPanel to be appended to this NyadPanel.
-	 */
-	public void addMonadPanel(MonadComplexF pM) {
 		MonadPanel pMP = new MonadPanel(_GUI, pM);
 		addMonadPanel(pMP);
 	}
@@ -393,40 +213,6 @@ public class NyadPanel extends JPanel implements ActionListener {
 		setReferences();
 	}
 
-	/**
-	 * This method supports adding a monad panel to the nyad's list of monads. Be
-	 * aware that no tests are performed to prevent the panel being added. That
-	 * means the nyad might change from strong to weak without notice by this panel.
-	 * <p>
-	 * The difference between this one and the other by a similar name is this one
-	 * receives a monad and constructs the appropriate panel.
-	 * <p>
-	 * 
-	 * @param pM MonadRealD This is the MonadRealD to use to construct a MonadPanel
-	 *           to be appended to this NyadPanel.
-	 */
-	public void addMonadPanel(MonadRealD pM) {
-		MonadPanel pMP = new MonadPanel(_GUI, pM);
-		addMonadPanel(pMP);
-	}
-
-	/**
-	 * This method supports adding a monad panel to the nyad's list of monads. Be
-	 * aware that no tests are performed to prevent the panel being added. That
-	 * means the nyad might change from strong to weak without notice by this panel.
-	 * <p>
-	 * The difference between this one and the other by a similar name is this one
-	 * receives a monad and constructs the appropriate panel.
-	 * <p>
-	 * 
-	 * @param pM MonadRealF This is the MonadRealF to use to construct a MonadPanel
-	 *           to be appended to this NyadPanel.
-	 */
-	public void addMonadPanel(MonadRealF pM) {
-		MonadPanel pMP = new MonadPanel(_GUI, pM);
-		addMonadPanel(pMP);
-	}
-
 	public int getMonadListSize() {
 		return monadPanelList.size();
 	}
@@ -444,40 +230,8 @@ public class NyadPanel extends JPanel implements ActionListener {
 		return null;
 	}
 
-	public NyadComplexD getNyadCD() {
-		return _repNyadCD;
-	}
-
-	public NyadComplexF getNyadCF() {
-		return _repNyadCF;
-	}
-
-	public NyadRealD getNyadRD() {
-		return _repNyadD;
-	}
-
-	public NyadRealF getNyadRF() {
-		return _repNyadF;
-	}
-
-	public NyadAbstract getNyad(CladosField pIn) {
-		switch (pIn) {
-		case COMPLEXD -> {
-			return _repNyadCD;
-		}
-		case COMPLEXF -> {
-			return _repNyadCF;
-		}
-		case REALD -> {
-			return _repNyadD;
-		}
-		case REALF -> {
-			return _repNyadF;
-		}
-		default -> {
-			return null;
-		}
-		}
+	public Nyad getNyad() {
+		return repNyad;
 	}
 
 	public int getOrder() {
@@ -514,51 +268,51 @@ public class NyadPanel extends JPanel implements ActionListener {
 		try {
 			switch (_repMode) {
 			case REALF -> {
-				MonadRealF mRF = (MonadRealF) getMonadPanel(getPaneFocus()).getMonad(_repMode);
+				Monad mRF = getMonadPanel(getPaneFocus()).getMonad();
 				String buildName = new StringBuffer(mRF.getName()).append("_c").toString();
 				String buildAlgName = new StringBuffer(mRF.getAlgebra().getAlgebraName()).append("_c").toString();
 				String buildFrameName = new StringBuffer(mRF.getFrameName()).append("_c").toString();
-				MonadRealF newMRF = (MonadRealF) CladosGMonad.REALF.createWithAlgebra(mRF.getCoeff(),
-						(AlgebraRealF) CladosGAlgebra.REALF.createWithFootPlus(mRF.getAlgebra().getFoot(),
-								mRF.getAlgebra().shareCardinal(), mRF.getAlgebra().getGProduct(), buildAlgName),
+				Monad newMRF = CladosGBuilder.createMonadWithAlgebra(mRF.getCoeff(),
+						CladosGBuilder.createAlgebraWithFootPlus(mRF.getAlgebra().getFoot(),
+								mRF.getAlgebra().getCardinal(), mRF.getAlgebra().getGProduct(), buildAlgName),
 						buildName, buildFrameName);
-				_repNyadF.appendMonad(newMRF);
+				repNyad.appendMonad(newMRF);
 				addMonadPanel(newMRF);
 			}
 			case REALD -> {
-				MonadRealD mRD = (MonadRealD) getMonadPanel(getPaneFocus()).getMonad(_repMode);
+				Monad mRD = getMonadPanel(getPaneFocus()).getMonad();
 				String buildName = new StringBuffer(mRD.getName()).append("_c").toString();
 				String buildAlgName = new StringBuffer(mRD.getAlgebra().getAlgebraName()).append("_c").toString();
 				String buildFrameName = new StringBuffer(mRD.getFrameName()).append("_c").toString();
-				MonadRealD newMRD = (MonadRealD) CladosGMonad.REALD.createWithAlgebra(mRD.getCoeff(),
-						(AlgebraRealD) CladosGAlgebra.REALD.createWithFootPlus(mRD.getAlgebra().getFoot(),
-								mRD.getAlgebra().shareCardinal(), mRD.getAlgebra().getGProduct(), buildAlgName),
+				Monad newMRD = CladosGBuilder.createMonadWithAlgebra(mRD.getCoeff(),
+						CladosGBuilder.createAlgebraWithFootPlus(mRD.getAlgebra().getFoot(),
+								mRD.getAlgebra().getCardinal(), mRD.getAlgebra().getGProduct(), buildAlgName),
 						buildName, buildFrameName);
-				_repNyadD.appendMonad(newMRD);
+				repNyad.appendMonad(newMRD);
 				addMonadPanel(newMRD);
 			}
 			case COMPLEXF -> {
-				MonadComplexF mCF = (MonadComplexF) getMonadPanel(getPaneFocus()).getMonad(_repMode);
+				Monad mCF = getMonadPanel(getPaneFocus()).getMonad();
 				String buildName = new StringBuffer(mCF.getName()).append("_c").toString();
 				String buildAlgName = new StringBuffer(mCF.getAlgebra().getAlgebraName()).append("_c").toString();
 				String buildFrameName = new StringBuffer(mCF.getFrameName()).append("_c").toString();
-				MonadComplexF newMCF = (MonadComplexF) CladosGMonad.COMPLEXF.createWithAlgebra(mCF.getCoeff(),
-						(AlgebraComplexF) CladosGAlgebra.COMPLEXF.createWithFootPlus(mCF.getAlgebra().getFoot(),
-								mCF.getAlgebra().shareCardinal(), mCF.getAlgebra().getGProduct(), buildAlgName),
+				Monad newMCF = CladosGBuilder.createMonadWithAlgebra(mCF.getCoeff(),
+						CladosGBuilder.createAlgebraWithFootPlus(mCF.getAlgebra().getFoot(),
+								mCF.getAlgebra().getCardinal(), mCF.getAlgebra().getGProduct(), buildAlgName),
 						buildName, buildFrameName);
-				_repNyadCF.appendMonad(newMCF);
+				repNyad.appendMonad(newMCF);
 				addMonadPanel(newMCF);
 			}
 			case COMPLEXD -> {
-				MonadComplexD mCD = (MonadComplexD) getMonadPanel(getPaneFocus()).getMonad(_repMode);
+				Monad mCD = getMonadPanel(getPaneFocus()).getMonad();
 				String buildName = new StringBuffer(mCD.getName()).append("_c").toString();
 				String buildAlgName = new StringBuffer(mCD.getAlgebra().getAlgebraName()).append("_c").toString();
 				String buildFrameName = new StringBuffer(mCD.getFrameName()).append("_c").toString();
-				MonadComplexD newMCD = (MonadComplexD) CladosGMonad.COMPLEXD.createWithAlgebra(mCD.getCoeff(),
-						(AlgebraComplexD) CladosGAlgebra.COMPLEXD.createWithFootPlus(mCD.getAlgebra().getFoot(),
-								mCD.getAlgebra().shareCardinal(), mCD.getAlgebra().getGProduct(), buildAlgName),
+				Monad newMCD = CladosGBuilder.createMonadWithAlgebra(mCD.getCoeff(),
+						CladosGBuilder.createAlgebraWithFootPlus(mCD.getAlgebra().getFoot(),
+								mCD.getAlgebra().getCardinal(), mCD.getAlgebra().getGProduct(), buildAlgName),
 						buildName, buildFrameName);
-				_repNyadCD.appendMonad(newMCD);
+				repNyad.appendMonad(newMCD);
 				addMonadPanel(newMCD);
 			}
 			}
@@ -792,12 +546,7 @@ public class NyadPanel extends JPanel implements ActionListener {
 	private void removeMonadCommand() {
 		if (monadPanes.getTabCount() > 1) {
 			try {
-				switch (_repMode) {
-				case REALF -> _repNyadF.removeMonad(monadPanes.getSelectedIndex());
-				case REALD -> _repNyadD.removeMonad(monadPanes.getSelectedIndex());
-				case COMPLEXF -> _repNyadCF.removeMonad(monadPanes.getSelectedIndex());
-				case COMPLEXD -> _repNyadCD.removeMonad(monadPanes.getSelectedIndex());
-				}
+				repNyad.removeMonad(monadPanes.getSelectedIndex());
 				removeMonadTab(monadPanes.getSelectedIndex());
 			} catch (CladosNyadException e) {
 				ErrorDialog.show("Could not remove the monad.\n" + e.getSourceMessage(), "Clados Nyad Exception");
@@ -830,52 +579,14 @@ public class NyadPanel extends JPanel implements ActionListener {
 	}
 
 	private void setReferences() {
-		switch (_repMode) {
-		case REALF -> {
-			nyadName.setText(_repNyadF.getName());
-			nyadOrder.setText((new StringBuffer().append(_repNyadF.getMonadList().size())).toString());
-			nyadAlgOrder.setText((new StringBuffer().append(_repNyadF.getAlgebraList().size())).toString());
-			nyadFoot.setText(_repNyadF.getFoot().getFootName());
-		}
-		case REALD -> {
-			nyadName.setText(_repNyadD.getName());
-			nyadOrder.setText((new StringBuffer().append(_repNyadD.getMonadList().size())).toString());
-			nyadAlgOrder.setText((new StringBuffer().append(_repNyadD.getAlgebraList().size())).toString());
-			nyadFoot.setText(_repNyadD.getFoot().getFootName());
-		}
-		case COMPLEXF -> {
-			nyadName.setText(_repNyadCF.getName());
-			nyadOrder.setText((new StringBuffer().append(_repNyadCF.getMonadList().size())).toString());
-			nyadAlgOrder.setText((new StringBuffer().append(_repNyadCF.getAlgebraList().size())).toString());
-			nyadFoot.setText(_repNyadCF.getFoot().getFootName());
-		}
-		case COMPLEXD -> {
-			nyadName.setText(_repNyadCD.getName());
-			nyadOrder.setText((new StringBuffer().append(_repNyadCD.getMonadList().size())).toString());
-			nyadAlgOrder.setText((new StringBuffer().append(_repNyadCD.getAlgebraList().size())).toString());
-			nyadFoot.setText(_repNyadCD.getFoot().getFootName());
-		}
-		}
+		nyadName.setText(repNyad.getName());
+		nyadOrder.setText((new StringBuffer().append(repNyad.getMonadList().size())).toString());
+		nyadAlgOrder.setText((new StringBuffer().append(repNyad.getAlgebraList().size())).toString());
+		nyadFoot.setText(repNyad.getFoot().getFootName());
 	}
 
 	private void setRepName() {
-		switch (_repMode) {
-		case REALF -> {
-			if (nyadName.getText() != _repNyadF.getName())
-				_repNyadF.setName(nyadName.getText());
-		}
-		case REALD -> {
-			if (nyadName.getText() != _repNyadD.getName())
-				_repNyadD.setName(nyadName.getText());
-		}
-		case COMPLEXF -> {
-			if (nyadName.getText() != _repNyadCF.getName())
-				_repNyadCF.setName(nyadName.getText());
-		}
-		case COMPLEXD -> {
-			if (nyadName.getText() != _repNyadCD.getName())
-				_repNyadCD.setName(nyadName.getText());
-		}
-		}
+		if (nyadName.getText() != repNyad.getName())
+			repNyad.setName(nyadName.getText());
 	}
 }

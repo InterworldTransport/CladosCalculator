@@ -25,7 +25,9 @@
 
 package org.interworldtransport.cladosviewerEvents;
 
-import org.interworldtransport.cladosviewer.*;
+import org.interworldtransport.cladosviewer.ErrorDialog;
+import org.interworldtransport.cladosviewer.MonadPanel;
+import org.interworldtransport.cladosviewer.NyadPanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -85,21 +87,11 @@ public class MOpsLocalDualEvents implements ActionListener {
 		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
 
 		if (command.equals("dual>")) {
-			switch (tMSpotPnl.getRepMode()) {
-			case REALF -> tMSpotPnl.getMonadRF().dualLeft();
-			case REALD -> tMSpotPnl.getMonadRD().dualLeft();
-			case COMPLEXF -> tMSpotPnl.getMonadCF().dualLeft();
-			case COMPLEXD -> tMSpotPnl.getMonadCD().dualLeft();
-			}
+			tMSpotPnl.getMonad().dualLeft();
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the left.\n");
 		}
 		if (command.equals("<dual")) {
-			switch (tMSpotPnl.getRepMode()) {
-			case REALF -> tMSpotPnl.getMonadRF().dualRight();
-			case REALD -> tMSpotPnl.getMonadRD().dualRight();
-			case COMPLEXF -> tMSpotPnl.getMonadCF().dualRight();
-			case COMPLEXD -> tMSpotPnl.getMonadCD().dualRight();
-			}
+			tMSpotPnl.getMonad().dualRight();
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the right.\n");
 		}
 		tMSpotPnl.setCoefficientDisplay();

@@ -24,10 +24,7 @@
  */
 package org.interworldtransport.cladosviewerEvents;
 
-import org.interworldtransport.cladosG.NyadComplexD;
-import org.interworldtransport.cladosG.NyadComplexF;
-import org.interworldtransport.cladosG.NyadRealD;
-import org.interworldtransport.cladosG.NyadRealF;
+import org.interworldtransport.cladosG.Nyad;
 
 import org.interworldtransport.cladosviewer.*;
 
@@ -80,12 +77,7 @@ public class NOpsRMatchEvents implements ActionListener {
 			ErrorDialog.show("Nyads using different DivFields.", "Nyad DivField Mismatch");
 			return;
 		}
-		boolean test = switch (panelNyadSelected.getRepMode()) {
-		case REALF -> NyadRealF.isStrongReferenceMatch(panelNyadSelected.getNyadRF(), panelNyadNext.getNyadRF());
-		case REALD -> NyadRealD.isStrongReferenceMatch(panelNyadSelected.getNyadRD(), panelNyadNext.getNyadRD());
-		case COMPLEXF -> NyadComplexF.isStrongReferenceMatch(panelNyadSelected.getNyadCF(), panelNyadNext.getNyadCF());
-		case COMPLEXD -> NyadComplexD.isStrongReferenceMatch(panelNyadSelected.getNyadCD(), panelNyadNext.getNyadCD());
-		};
+		boolean test = Nyad.isStrongReferenceMatch(panelNyadSelected.getNyad(), panelNyadNext.getNyad());
 		if (test)
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected nyad and the next are STRONG REF MATCHED.\n");
 		else

@@ -25,17 +25,15 @@
 
 package org.interworldtransport.cladosviewerEvents;
 
-import org.interworldtransport.cladosG.MonadRealF;
-import org.interworldtransport.cladosG.MonadRealD;
-import org.interworldtransport.cladosG.MonadComplexF;
-import org.interworldtransport.cladosG.MonadComplexD;
-
-import org.interworldtransport.cladosviewer.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
+
+import org.interworldtransport.cladosG.Monad;
+import org.interworldtransport.cladosviewer.ErrorDialog;
+import org.interworldtransport.cladosviewer.MonadPanel;
+import org.interworldtransport.cladosviewer.NyadPanel;
 
 /**
  * This class manages events relating to the answering of a boolean question. Is
@@ -81,12 +79,7 @@ public class MOpsMultGradeEvents implements ActionListener {
 		}
 
 		MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
-		boolean test = switch (tSpot.getRepMode()) {
-		case REALF -> MonadRealF.isMultiGrade(tSpot.getMonadRF());
-		case REALD -> MonadRealD.isMultiGrade(tSpot.getMonadRD());
-		case COMPLEXF -> MonadComplexF.isMultiGrade(tSpot.getMonadCF());
-		case COMPLEXD -> MonadComplexD.isMultiGrade(tSpot.getMonadCD());
-		};
+		boolean test = Monad.isMultiGrade(tSpot.getMonad());
 
 		if (test)
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is a multigrade.\n");

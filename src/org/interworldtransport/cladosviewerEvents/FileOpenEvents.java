@@ -29,26 +29,27 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import javax.swing.*;
 
-import org.interworldtransport.cladosviewer.ErrorDialog;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import org.interworldtransport.cladosF.CladosFBuilder;
+import org.interworldtransport.cladosF.Cardinal;
+import org.interworldtransport.cladosF.CladosFCache;
 import org.interworldtransport.cladosF.CladosField;
-import org.interworldtransport.cladosG.AlgebraAbstract;
-import org.interworldtransport.cladosG.CladosGAlgebra;
+import org.interworldtransport.cladosG.Algebra;
 import org.interworldtransport.cladosG.CladosGBuilder;
+import org.interworldtransport.cladosG.CladosGCache;
 import org.interworldtransport.cladosG.Foot;
-import org.interworldtransport.cladosG.MonadAbstract;
-import org.interworldtransport.cladosG.NyadAbstract;
+import org.interworldtransport.cladosG.Monad;
+import org.interworldtransport.cladosG.Nyad;
 import org.interworldtransport.cladosGExceptions.BadSignatureException;
 import org.interworldtransport.cladosGExceptions.GeneratorRangeException;
+import org.interworldtransport.cladosviewer.ErrorDialog;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -74,13 +75,13 @@ public class FileOpenEvents implements ActionListener {
 	private final static String path2Nyads = "//Nyad";
 	private final static String path4NyadCount = "count(//Nyad)";
 	private ArrayList<String> _algUUIDs;
-	private ArrayList<AlgebraAbstract> _algs;
+	private ArrayList<Algebra> _algs;
 	private ArrayList<Foot> _foot;
 	private ArrayList<String> _monadNames;
-	private ArrayList<MonadAbstract> _monads;
+	private ArrayList<Monad> _monads;
 	private int _nyadCount;
 	private ArrayList<String> _nyadNames;
-	private ArrayList<NyadAbstract> _nyads;
+	private ArrayList<Nyad> _nyads;
 	private CladosField _repMode;
 
 	protected JMenuItem _control;
@@ -227,16 +228,20 @@ public class FileOpenEvents implements ActionListener {
 				continue;
 			if (cardNodes.getLength() == 0)
 				continue;
-			for (int m = 0; m < cardNodes.getLength(); m++)
-				pt.appendCardinal(CladosFBuilder.INSTANCE.findCardinal(cardNodes.item(m).getNodeName()));
+			for (int m = 0; m < cardNodes.getLength(); m++) {
+				Optional<Cardinal> temp = CladosFCache.INSTANCE.findCardinal(cardNodes.item(m).getNodeName());
+				if (temp.isPresent()) pt.appendCardinal(temp.get());
+			}
 		}
 	}
 
 	private void buildCardinals(Document pDoc, XPath pX) throws XPathExpressionException {
 		XPathExpression expr = pX.compile(path2AllCardinals);
 		NodeList cardNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
-		for (int k = 0; k < cardNodes.getLength(); k++)
-			CladosFBuilder.INSTANCE.createCardinal(cardNodes.item(k).getNodeValue());
+		for (int k = 0; k < cardNodes.getLength(); k++) {
+			Cardinal temp = Cardinal.generate(cardNodes.item(k).getNodeName());
+			CladosFCache.INSTANCE.appendCardinal(temp);
+		}
 	}
 
 	private void buildFoot(Document pDoc, XPath pX) throws XPathExpressionException {
@@ -271,7 +276,7 @@ public class FileOpenEvents implements ActionListener {
 	private void buildTheAlgebras(Document pDoc, XPath pX) throws XPathExpressionException, BadSignatureException {
 		XPathExpression expr = pX.compile(path2Algs);
 		NodeList algNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
-		_algs = new ArrayList<AlgebraAbstract>(algNodes.getLength());
+		_algs = new ArrayList<Algebra>(algNodes.getLength());
 		for (int j = 0; j < algNodes.getLength(); j++) {
 			// For this to work, the Alg child elements must be in order.
 			// Name, A Div Field, Foot, GProduct
@@ -280,7 +285,7 @@ public class FileOpenEvents implements ActionListener {
 			Node name = algNodes.item(j).getFirstChild();
 			String name2Use = name.getTextContent();
 			boolean testIfPresent = false;
-			for (AlgebraAbstract point : _algs)
+			for (Algebra point : _algs)
 				if (point.getAlgebraName() == name2Use) {
 					testIfPresent = true;
 					break;
@@ -309,32 +314,13 @@ public class FileOpenEvents implements ActionListener {
 			// ftIndx points at the foot to use
 
 			// FINALLY we build the new algebra and add it to _algs.
-			switch (_repMode) {
-			case REALF:
-				_algs.add(CladosGAlgebra.REALF.createWithFootPlus(_foot.get(ftIndx),
-						CladosFBuilder.INSTANCE.findCardinal(card2Use), CladosGBuilder.INSTANCE.findGProduct(sig2Use),
-						name2Use));
-				return;
-			case REALD:
-				_algs.add(CladosGAlgebra.REALD.createWithFootPlus(_foot.get(ftIndx),
-						CladosFBuilder.INSTANCE.findCardinal(card2Use), CladosGBuilder.INSTANCE.findGProduct(sig2Use),
-						name2Use));
-				return;
-			case COMPLEXF:
-				_algs.add(CladosGAlgebra.COMPLEXF.createWithFootPlus(_foot.get(ftIndx),
-						CladosFBuilder.INSTANCE.findCardinal(card2Use), CladosGBuilder.INSTANCE.findGProduct(sig2Use),
-						name2Use));
-				return;
-			case COMPLEXD:
-				_algs.add(CladosGAlgebra.COMPLEXD.createWithFootPlus(_foot.get(ftIndx),
-						CladosFBuilder.INSTANCE.findCardinal(card2Use), CladosGBuilder.INSTANCE.findGProduct(sig2Use),
-						name2Use));
-				return;
-			}
+			_algs.add(CladosGBuilder.createAlgebraWithFootPlus(_foot.get(ftIndx),
+					CladosFCache.INSTANCE.findCardinal(card2Use).get(),
+					CladosGCache.INSTANCE.findGProductMap(sig2Use).get(), name2Use));
 		}
 	}
 
-	private MonadAbstract buildAMonad(Node pNode) {
+	private Monad buildAMonad(Node pNode) {
 
 		// For this to work, the Monad child elements must be in order.
 		// Name, Algebra, Frame, Coefficients
@@ -350,7 +336,7 @@ public class FileOpenEvents implements ActionListener {
 	private void buildAllNyads(Document pDoc, XPath pX) throws XPathExpressionException {
 		XPathExpression expr = pX.compile(path2Nyads);
 		NodeList nyadNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
-		_nyads = new ArrayList<NyadAbstract>(nyadNodes.getLength());
+		_nyads = new ArrayList<Nyad>(nyadNodes.getLength());
 		// For this to work, the Nyad child elements must be in order.
 		// Name, Foot, AlgebraList, MonadList
 		for (int k = 0; k < _nyadCount; k++) {
@@ -363,7 +349,7 @@ public class FileOpenEvents implements ActionListener {
 			Node monadList = foot.getNextSibling().getNextSibling();
 			NodeList monads = monadList.getChildNodes();
 			int nyadOrder = monads.getLength();
-			_monads = new ArrayList<MonadAbstract>(nyadOrder);
+			_monads = new ArrayList<Monad>(nyadOrder);
 			for (int j = 0; j < nyadOrder; j++) {
 				_monads.add(buildAMonad(monads.item(j)));
 			}

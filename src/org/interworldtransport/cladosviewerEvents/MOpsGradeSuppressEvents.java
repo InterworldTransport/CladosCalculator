@@ -85,13 +85,8 @@ public class MOpsGradeSuppressEvents implements ActionListener {
 		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
 
 		try {
-			short tGrade = (short) Float.parseFloat(_parent._GUI.appFieldBar.getRealText());
-			switch (tMSpotPnl.getRepMode()) {
-			case REALF -> tMSpotPnl.getMonadRF().gradeSuppress(tGrade);
-			case REALD -> tMSpotPnl.getMonadRD().gradeSuppress(tGrade);
-			case COMPLEXF -> tMSpotPnl.getMonadCF().gradeSuppress(tGrade);
-			case COMPLEXD -> tMSpotPnl.getMonadCD().gradeSuppress(tGrade);
-			}
+			byte tGrade = Byte.parseByte(_parent._GUI.appFieldBar.getRealText());
+			tMSpotPnl.getMonad().gradeSuppress(tGrade);
 			tMSpotPnl.setCoefficientDisplay();
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been cut at " + tGrade + "-findgrade.\n");
 		} catch (NullPointerException eNull) {

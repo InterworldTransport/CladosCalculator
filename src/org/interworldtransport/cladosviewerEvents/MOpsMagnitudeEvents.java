@@ -30,6 +30,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
 
+import org.interworldtransport.cladosF.ComplexD;
+import org.interworldtransport.cladosF.ComplexF;
+import org.interworldtransport.cladosF.RealD;
+import org.interworldtransport.cladosF.RealF;
 import org.interworldtransport.cladosGExceptions.CladosMonadException;
 import org.interworldtransport.cladosviewer.*;
 
@@ -78,23 +82,26 @@ public class MOpsMagnitudeEvents implements ActionListener {
 		}
 
 		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(indxMndPnlSlctd);
-		try {
-			switch (tMSpotPnl.getRepMode()) {
-			case REALF -> _parent._GUI.appFieldBar.setWhatFloatR(tMSpotPnl.getMonadRF().magnitude().getModulus());
-			case REALD -> _parent._GUI.appFieldBar.setWhatDoubleR(tMSpotPnl.getMonadRD().magnitude().getModulus());
-			case COMPLEXF -> {
-				_parent._GUI.appFieldBar.setWhatFloatR(tMSpotPnl.getMonadCF().magnitude().getModulus());
-				_parent._GUI.appFieldBar.setWhatFloatI(0.0F);
-			}
-			case COMPLEXD -> {
-				_parent._GUI.appFieldBar.setWhatDoubleR(tMSpotPnl.getMonadCD().magnitude().getModulus());
-				_parent._GUI.appFieldBar.setWhatDoubleI(0.0D);
-			}
-			}
-			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad magnitude has been computed.\n");
-		} catch (CladosMonadException e) {
-			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n" + e.getSourceMessage(),
-					"Clados Monad Exception");
+		switch (tMSpotPnl.getRepMode()) {
+		case REALF -> {
+			RealF scaleRF = tMSpotPnl.getMonad().sqMagnitude();
+			_parent._GUI.appFieldBar.setWhatFloatR(scaleRF.modulus());
 		}
+		case REALD -> {
+			RealD scaleRD = tMSpotPnl.getMonad().sqMagnitude();
+			_parent._GUI.appFieldBar.setWhatDoubleR(scaleRD.modulus());
+		}
+		case COMPLEXF -> {
+			ComplexF scaleCF = tMSpotPnl.getMonad().sqMagnitude();
+			_parent._GUI.appFieldBar.setWhatFloatR(scaleCF.modulus());
+			_parent._GUI.appFieldBar.setWhatFloatI(0.0F);
+		}
+		case COMPLEXD -> {
+			ComplexD scaleCD = tMSpotPnl.getMonad().sqMagnitude();
+			_parent._GUI.appFieldBar.setWhatDoubleR(scaleCD.modulus());
+			_parent._GUI.appFieldBar.setWhatDoubleI(0.0D);
+		}
+		}
+		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad magnitude has been computed.\n");
 	}
 }

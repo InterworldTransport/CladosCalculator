@@ -82,13 +82,7 @@ public class MOpsReverseEvents implements ActionListener {
 		}
 
 		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
-
-		switch (tMSpotPnl.getRepMode()) {
-		case REALF -> tMSpotPnl.getMonadRF().reverse();
-		case REALD -> tMSpotPnl.getMonadRD().reverse();
-		case COMPLEXF -> tMSpotPnl.getMonadCF().reverse();
-		case COMPLEXD -> tMSpotPnl.getMonadCD().reverse();
-		}
+		tMSpotPnl.getMonad().reverse();
 		tMSpotPnl.setCoefficientDisplay();
 		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been reversed.\n");
 	}

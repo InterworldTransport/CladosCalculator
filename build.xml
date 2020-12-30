@@ -61,7 +61,7 @@ along with this program.  If not, see https://www.gnu.org/licenses/."/>
 			depends="prepare"
 			description="Compiles all the Clados Calculator source files" >
 		<javac 	includeantruntime="false"
-				classpath="${lib}/clados.jar"
+				modulepath="${lib}/clados.jar"
 				debug="off"
 				destdir="${build}"
 				nowarn="off"

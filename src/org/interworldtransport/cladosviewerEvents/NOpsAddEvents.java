@@ -83,19 +83,8 @@ public class NOpsAddEvents implements ActionListener {
 		MonadPanel temp0 = tSpot.getMonadPanel(indxMndPnlSlctd);
 		MonadPanel temp1 = tSpotPlus.getMonadPanel(indxMndPnlSlctd);
 
-		try {
-			switch (temp0.getRepMode()) {
-			case REALF -> (temp0.getMonadRF()).add(temp1.getMonadRF());
-			case REALD -> (temp0.getMonadRD()).add(temp1.getMonadRD());
-			case COMPLEXF -> (temp0.getMonadCF()).add(temp1.getMonadCF());
-			case COMPLEXD -> (temp0.getMonadCD()).add(temp1.getMonadCD());
+		temp0.getMonad().add(temp1.getMonad());
+		temp0.setCoefficientDisplay();
 
-			}
-			temp0.setCoefficientDisplay();
-		} catch (FieldBinaryException eb) {
-			ErrorDialog.show("Field Binary error between monads.\nNothing done.", "Field Binary Exception");
-		} catch (CladosMonadException e) {
-			ErrorDialog.show("Reference Match Error between monads.\nNothing done.", "Clados Monad Exception");
-		}
 	}
 }

@@ -84,12 +84,7 @@ public class MOpsFindGradeEvents implements ActionListener {
 		}
 
 		MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
-		double logGradeKey = switch (tSpot.getRepMode()) {
-		case REALF -> Math.log10(tSpot.getMonadRF().getGradeKey());
-		case REALD -> Math.log10(tSpot.getMonadRD().getGradeKey());
-		case COMPLEXF -> Math.log10(tSpot.getMonadCF().getGradeKey());
-		case COMPLEXD -> Math.log10(tSpot.getMonadCD().getGradeKey());
-		};
+		double logGradeKey =  Math.log10(tSpot.getMonad().getGradeKey());
 
 		if (logGradeKey < 0) {
 			ErrorDialog.show("DivField not recognized.", "DivField Unsupported");

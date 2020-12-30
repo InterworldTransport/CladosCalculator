@@ -24,10 +24,7 @@
  */
 package org.interworldtransport.cladosviewerEvents;
 
-import org.interworldtransport.cladosG.NyadRealF;
-import org.interworldtransport.cladosG.NyadRealD;
-import org.interworldtransport.cladosG.NyadComplexF;
-import org.interworldtransport.cladosG.NyadComplexD;
+import org.interworldtransport.cladosG.Nyad;
 
 import org.interworldtransport.cladosviewer.*;
 
@@ -78,12 +75,9 @@ public class NOpsEqualEvents implements ActionListener {
 			ErrorDialog.show("Nyads using different DivFields.", "Nyad DivField Mismatch");
 			return;
 		}
-		boolean test = switch (panelNyadSelected.getRepMode()) {
-		case REALF -> NyadRealF.isMEqual(panelNyadSelected.getNyadRF(), panelNyadNext.getNyadRF());
-		case REALD -> NyadRealD.isMEqual(panelNyadSelected.getNyadRD(), panelNyadNext.getNyadRD());
-		case COMPLEXF -> NyadComplexF.isMEqual(panelNyadSelected.getNyadCF(), panelNyadNext.getNyadCF());
-		case COMPLEXD -> NyadComplexD.isMEqual(panelNyadSelected.getNyadCD(), panelNyadNext.getNyadCD());
-		};
+		boolean test = Nyad.isMEqual(panelNyadSelected.getNyad(), panelNyadNext.getNyad());
+				
+				
 		if (test)
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected nyad and the next are EQUAL\n");
 		else

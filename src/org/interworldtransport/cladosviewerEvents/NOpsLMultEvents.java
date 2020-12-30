@@ -84,18 +84,7 @@ public class NOpsLMultEvents implements ActionListener {
 		MonadPanel temp0 = tSpot.getMonadPanel(indxMndPnlSlctd);
 		MonadPanel temp1 = tSpotPlus.getMonadPanel(indxMndPnlSlctd);
 
-		try {
-			switch (temp0.getRepMode()) {
-			case REALF -> (temp0.getMonadRF()).multiplyLeft(temp1.getMonadRF());
-			case REALD -> (temp0.getMonadRD()).multiplyLeft(temp1.getMonadRD());
-			case COMPLEXF -> (temp0.getMonadCF()).multiplyLeft(temp1.getMonadCF());
-			case COMPLEXD -> (temp0.getMonadCD()).multiplyLeft(temp1.getMonadCD());
-			}
-			temp0.setCoefficientDisplay();
-		} catch (FieldBinaryException eb) {
-			ErrorDialog.show("Monads using different DivFields.\nNothing done.", "Field Binary Exception");
-		} catch (CladosMonadException e) {
-			ErrorDialog.show("Reference Match Error between monads.\nNothing done.", "Clados Monad Exception");
-		}
+		temp0.getMonad().multiplyLeft(temp1.getMonad());
+		temp0.setCoefficientDisplay();
 	}
 }

@@ -31,10 +31,10 @@ import org.interworldtransport.cladosviewer.CladosCalculator;
 import org.interworldtransport.cladosviewer.NyadPanel;
 import org.interworldtransport.cladosviewer.ViewerMenu;
 
-import org.interworldtransport.cladosG.NyadRealF;
-import org.interworldtransport.cladosG.NyadRealD;
-import org.interworldtransport.cladosG.NyadComplexF;
-import org.interworldtransport.cladosG.NyadComplexD;
+//import org.interworldtransport.cladosG.Nyad;
+//import org.interworldtransport.cladosG.NyadRealD;
+//import org.interworldtransport.cladosG.NyadComplexF;
+//import org.interworldtransport.cladosG.NyadComplexD;
 
 /**
  * This class groups the event listeners associated with the File menu. It may
@@ -97,22 +97,26 @@ public class FileEvents {
 		switch (_GUI.IniProps.getProperty("Desktop.File.Snapshot.FullXML")) {
 		case "true" -> {
 			for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels()) {
-				switch (tempNPN.getRepMode()) {
-				case REALF -> content.append(NyadRealF.toXMLFullString(tempNPN.getNyadRF()));
-				case REALD -> content.append(NyadRealD.toXMLFullString(tempNPN.getNyadRD()));
-				case COMPLEXF -> content.append(NyadComplexF.toXMLFullString(tempNPN.getNyadCF()));
-				case COMPLEXD -> content.append(NyadComplexD.toXMLFullString(tempNPN.getNyadCD()));
-				}
+				content.append(tempNPN.getNyad().toXMLFullString(""));
+				
+//				switch (tempNPN.getRepMode()) {
+//				case REALF -> 
+//				case REALD -> content.append(Nyad.toXMLFullString(tempNPN.getNyadRD()));
+//				case COMPLEXF -> content.append(Nyad.toXMLFullString(tempNPN.getNyadCF()));
+//				case COMPLEXD -> content.append(Nyad.toXMLFullString(tempNPN.getNyadCD()));
+//				}
 			}
 		}
 		case "false" -> {
 			for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels()) {
-				switch (tempNPN.getRepMode()) {
-				case REALF -> content.append(NyadRealF.toXMLString(tempNPN.getNyadRF()));
-				case REALD -> content.append(NyadRealD.toXMLString(tempNPN.getNyadRD()));
-				case COMPLEXF -> content.append(NyadComplexF.toXMLString(tempNPN.getNyadCF()));
-				case COMPLEXD -> content.append(NyadComplexD.toXMLString(tempNPN.getNyadCD()));
-				}
+				content.append(tempNPN.getNyad().toXMLString(""));
+				
+//				switch (tempNPN.getRepMode()) {
+//				case REALF -> content.append(Nyad.toXMLString(tempNPN.getNyad()));
+//				case REALD -> content.append(Nyad.toXMLString(tempNPN.getNyadRD()));
+//				case COMPLEXF -> content.append(Nyad.toXMLString(tempNPN.getNyadCF()));
+//				case COMPLEXD -> content.append(Nyad.toXMLString(tempNPN.getNyadCD()));
+//				}
 			}
 		}
 		default -> content.append("\n<Empty />\n");

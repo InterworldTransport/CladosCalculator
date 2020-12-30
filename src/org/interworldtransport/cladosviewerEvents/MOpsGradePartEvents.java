@@ -85,13 +85,8 @@ public class MOpsGradePartEvents implements ActionListener {
 		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
 
 		try {
-			short tGrade = (short) Float.parseFloat(_parent._GUI.appFieldBar.getRealText());
-			switch (tMSpotPnl.getRepMode()) {
-			case REALF -> tMSpotPnl.getMonadRF().gradePart(tGrade);
-			case REALD -> tMSpotPnl.getMonadRD().gradePart(tGrade);
-			case COMPLEXF -> tMSpotPnl.getMonadCF().gradePart(tGrade);
-			case COMPLEXD -> tMSpotPnl.getMonadCD().gradePart(tGrade);
-			}
+			byte tGrade = Byte.parseByte(_parent._GUI.appFieldBar.getRealText());
+			tMSpotPnl.getMonad().gradePart(tGrade);
 			tMSpotPnl.setCoefficientDisplay();
 			_parent._GUI.appStatusBar
 					.setStatusMsg("-->Selected monad has been cropped around " + tGrade + "-findgrade.\n");

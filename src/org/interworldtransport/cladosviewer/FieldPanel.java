@@ -28,7 +28,7 @@ package org.interworldtransport.cladosviewer;
 import org.interworldtransport.cladosF.CladosField;
 import org.interworldtransport.cladosF.ComplexD;
 import org.interworldtransport.cladosF.ComplexF;
-import org.interworldtransport.cladosF.DivField;
+import org.interworldtransport.cladosF.UnitAbstract;
 import org.interworldtransport.cladosF.RealD;
 import org.interworldtransport.cladosF.RealF;
 import org.interworldtransport.cladosFExceptions.FieldException;
@@ -819,7 +819,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 	 *               child will be determined and then the FieldBar assigned.
 	 */
 	@SuppressWarnings("null")
-	protected void setField(DivField pField) {
+	protected void setField(UnitAbstract pField) {
 		if (pField == null)
 			return;
 		CladosField test = null;

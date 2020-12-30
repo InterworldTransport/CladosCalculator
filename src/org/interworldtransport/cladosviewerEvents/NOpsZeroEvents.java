@@ -24,10 +24,7 @@
  */
 package org.interworldtransport.cladosviewerEvents;
 
-import org.interworldtransport.cladosG.MonadComplexD;
-import org.interworldtransport.cladosG.MonadComplexF;
-import org.interworldtransport.cladosG.MonadRealD;
-import org.interworldtransport.cladosG.MonadRealF;
+import org.interworldtransport.cladosG.Monad;
 
 import org.interworldtransport.cladosviewer.*;
 
@@ -79,12 +76,7 @@ public class NOpsZeroEvents implements ActionListener {
 		}
 
 		MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
-		boolean test = switch (tSpot.getRepMode()) {
-		case REALF -> MonadRealF.isGZero(tSpot.getMonadRF());
-		case REALD -> MonadRealD.isGZero(tSpot.getMonadRD());
-		case COMPLEXF -> MonadComplexF.isGZero(tSpot.getMonadCF());
-		case COMPLEXD -> MonadComplexD.isGZero(tSpot.getMonadCD());
-		};
+		boolean test =  Monad.isGZero(tSpot.getMonad());
 
 		if (test)
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is ZERO.\n");

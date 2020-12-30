@@ -25,14 +25,15 @@
 
 package org.interworldtransport.cladosviewerEvents;
 
-import org.interworldtransport.cladosviewer.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
 
-import org.interworldtransport.cladosGExceptions.CladosMonadException;
+import org.interworldtransport.cladosFExceptions.FieldException;
+import org.interworldtransport.cladosviewer.ErrorDialog;
+import org.interworldtransport.cladosviewer.MonadPanel;
+import org.interworldtransport.cladosviewer.NyadPanel;
 
 
 /**
@@ -86,16 +87,10 @@ public class MOpsNormalizeEvents implements ActionListener {
 
 		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
 		try {
-			switch (tMSpotPnl.getRepMode()) {
-			case REALF -> tMSpotPnl.getMonadRF().normalize();
-			case REALD -> tMSpotPnl.getMonadRD().normalize();
-			case COMPLEXF -> tMSpotPnl.getMonadCF().normalize();
-			case COMPLEXD -> tMSpotPnl.getMonadCD().normalize();
-			}
+			tMSpotPnl.getMonad().normalize();
 			tMSpotPnl.setCoefficientDisplay();
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been normalized.\n");
-		} catch (CladosMonadException e) {
-			// Normalization can fail if the monad does not have an inverse.
+		} catch (FieldException e) {
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has NOT been normalized.\n");
 		}
 	}

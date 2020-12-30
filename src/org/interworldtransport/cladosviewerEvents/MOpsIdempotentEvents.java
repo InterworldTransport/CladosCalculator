@@ -25,16 +25,15 @@
 
 package org.interworldtransport.cladosviewerEvents;
 
-import org.interworldtransport.cladosFExceptions.FieldBinaryException;
-import org.interworldtransport.cladosG.*;
-import org.interworldtransport.cladosGExceptions.*;
-
-import org.interworldtransport.cladosviewer.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
+
+import org.interworldtransport.cladosG.Monad;
+import org.interworldtransport.cladosviewer.ErrorDialog;
+import org.interworldtransport.cladosviewer.MonadPanel;
+import org.interworldtransport.cladosviewer.NyadPanel;
 
 /**
  * This class manages events relating to the answering of a boolean question. Is
@@ -80,25 +79,11 @@ public class MOpsIdempotentEvents implements ActionListener {
 			ErrorDialog.show("Idempotent Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
 			return;
 		}
-
 		MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
-		try {
-			boolean test = switch (tSpot.getRepMode()) {
-			case REALF -> MonadRealF.isIdempotent(tSpot.getMonadRF());
-			case REALD -> MonadRealD.isIdempotent(tSpot.getMonadRD());
-			case COMPLEXF -> MonadComplexF.isIdempotent(tSpot.getMonadCF());
-			case COMPLEXD -> MonadComplexD.isIdempotent(tSpot.getMonadCD());
-			};
-			if (test)
-				_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is idempotent.\n");
-			else
-				_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is NOT idempotent.\n");
-		} catch (CladosMonadException e) {
-			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n" + e.getSourceMessage(),
-					"Clados Monad Exception");
-		} catch (FieldBinaryException eb) {
-			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n" + eb.getSourceMessage(),
-					"Field Binary Exception");
-		}
+		boolean test =  Monad.isIdempotent(tSpot.getMonad());
+		if (test)
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is idempotent.\n");
+		else
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is NOT idempotent.\n");
 	}
 }

@@ -29,12 +29,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 
-import org.interworldtransport.cladosFExceptions.*;
-import org.interworldtransport.cladosG.MonadComplexD;
-import org.interworldtransport.cladosG.MonadComplexF;
-import org.interworldtransport.cladosG.MonadRealD;
-import org.interworldtransport.cladosG.MonadRealF;
-import org.interworldtransport.cladosGExceptions.*;
+import org.interworldtransport.cladosFExceptions.FieldBinaryException;
+import org.interworldtransport.cladosFExceptions.FieldException;
+import org.interworldtransport.cladosG.Monad;
 import org.interworldtransport.cladosviewer.ErrorDialog;
 import org.interworldtransport.cladosviewer.MonadPanel;
 import org.interworldtransport.cladosviewer.NyadPanel;
@@ -85,19 +82,11 @@ public class MOpsScaledIdempotentEvents implements ActionListener {
 		MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
 		boolean test = false;
 		try {
-			switch (tSpot.getRepMode()) {
-			case REALF -> test = MonadRealF.isScaledIdempotent(tSpot.getMonadRF());
-			case REALD -> test = MonadRealD.isScaledIdempotent(tSpot.getMonadRD());
-			case COMPLEXF -> test = MonadComplexF.isScaledIdempotent(tSpot.getMonadCF());
-			case COMPLEXD -> test = MonadComplexD.isScaledIdempotent(tSpot.getMonadCD());
-			}
+			test = Monad.isScaledIdempotent(tSpot.getMonad());
 			if (test)
 				_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is multiple of an idempotent.\n");
 			else
 				_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is NOT multiple of an idempotent.\n");
-		} catch (CladosMonadException e) {
-			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n" + e.getSourceMessage(),
-					"Clados Monad Exception");
 		} catch (FieldBinaryException eb) {
 			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n" + eb.getSourceMessage(),
 					"Field Binary Exception");

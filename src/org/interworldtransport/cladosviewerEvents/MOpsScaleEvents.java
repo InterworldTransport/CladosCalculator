@@ -35,17 +35,7 @@ import org.interworldtransport.cladosF.RealF;
 import org.interworldtransport.cladosF.RealD;
 import org.interworldtransport.cladosF.ComplexF;
 import org.interworldtransport.cladosF.ComplexD;
-import org.interworldtransport.cladosFExceptions.FieldBinaryException;
-
-import org.interworldtransport.cladosG.MonadRealF;
-import org.interworldtransport.cladosG.MonadRealD;
-import org.interworldtransport.cladosG.MonadComplexF;
-import org.interworldtransport.cladosG.MonadComplexD;
-
-import org.interworldtransport.cladosG.AlgebraRealF;
-import org.interworldtransport.cladosG.AlgebraRealD;
-import org.interworldtransport.cladosG.AlgebraComplexF;
-import org.interworldtransport.cladosG.AlgebraComplexD;
+import org.interworldtransport.cladosG.Monad;
 
 import org.interworldtransport.cladosviewer.*;
 
@@ -97,53 +87,41 @@ public class MOpsScaleEvents implements ActionListener {
 
 		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
 
-		try {
-			switch (tMSpotPnl.getRepMode()) {
-			case REALF -> {
-				MonadRealF tMonadRF = tMSpotPnl.getMonadRF();
-				RealF tFieldRF = (RealF) CladosField.REALF
-						.createZERO(AlgebraRealF.shareCardinal(tMonadRF.getAlgebra()));
-				tFieldRF.setReal(Float.parseFloat(_parent._GUI.appFieldBar.getRealText()));
-				tMonadRF.scale(tFieldRF);
-				_parent._GUI.appStatusBar.setStatusMsg("\tmonad has been rescaled by ");
-				_parent._GUI.appStatusBar.setStatusMsg(_parent._GUI.appFieldBar.getRealText() + "\n");
-			}
-			case REALD -> {
-				MonadRealD tMonadRD = tMSpotPnl.getMonadRD();
-				RealD tFieldRD = (RealD) CladosField.REALD
-						.createZERO(AlgebraRealD.shareCardinal(tMonadRD.getAlgebra()));
-				tFieldRD.setReal(Double.parseDouble(_parent._GUI.appFieldBar.getRealText()));
-				tMonadRD.scale(tFieldRD);
-				_parent._GUI.appStatusBar.setStatusMsg("\tmonad has been rescaled by ");
-				_parent._GUI.appStatusBar.setStatusMsg(_parent._GUI.appFieldBar.getRealText() + "\n");
-			}
-			case COMPLEXF -> {
-				MonadComplexF tMonadCF = tMSpotPnl.getMonadCF();
-				ComplexF tFieldCF = (ComplexF) CladosField.COMPLEXF
-						.createZERO(AlgebraComplexF.shareCardinal(tMonadCF.getAlgebra()));
-				tFieldCF.setReal(Float.parseFloat(_parent._GUI.appFieldBar.getRealText()));
-				tFieldCF.setImg(Float.parseFloat(_parent._GUI.appFieldBar.getImgText()));
-				tMonadCF.scale(tFieldCF);
-				_parent._GUI.appStatusBar.setStatusMsg("\tmonad has been rescaled by (R");
-				_parent._GUI.appStatusBar.setStatusMsg(_parent._GUI.appFieldBar.getRealText() + ", I");
-				_parent._GUI.appStatusBar.setStatusMsg(_parent._GUI.appFieldBar.getImgText() + ")\n");
-			}
-			case COMPLEXD -> {
-				MonadComplexD tMonadCD = tMSpotPnl.getMonadCD();
-				ComplexD tFieldCD = (ComplexD) CladosField.COMPLEXD
-						.createZERO(AlgebraComplexD.shareCardinal(tMonadCD.getAlgebra()));
-				tFieldCD.setReal(Double.parseDouble(_parent._GUI.appFieldBar.getRealText()));
-				tFieldCD.setImg(Double.parseDouble(_parent._GUI.appFieldBar.getImgText()));
-				tMonadCD.scale(tFieldCD);
-				_parent._GUI.appStatusBar.setStatusMsg("\tmonad has been rescaled by (R");
-				_parent._GUI.appStatusBar.setStatusMsg(_parent._GUI.appFieldBar.getRealText() + ", I");
-				_parent._GUI.appStatusBar.setStatusMsg(_parent._GUI.appFieldBar.getImgText() + ")\n");
-			}
-			}
-			tMSpotPnl.setCoefficientDisplay();
-		} catch (FieldBinaryException eb) {
-			ErrorDialog.show("Monad has not been rescaled.\nNothing done.\n" + eb.getSourceMessage(),
-					"Field Binary Exception");
+		Monad tMonad = tMSpotPnl.getMonad();
+		switch (tMSpotPnl.getRepMode()) {
+		case REALF -> {
+			RealF tFieldRF = (RealF) CladosField.REALF.createZERO(tMonad.getAlgebra().getCardinal());
+			tFieldRF.setReal(Float.parseFloat(_parent._GUI.appFieldBar.getRealText()));
+			tMonad.scale(tFieldRF);
+			_parent._GUI.appStatusBar.setStatusMsg("\tmonad has been rescaled by ");
+			_parent._GUI.appStatusBar.setStatusMsg(_parent._GUI.appFieldBar.getRealText() + "\n");
 		}
+		case REALD -> {
+			RealD tFieldRD = (RealD) CladosField.REALD.createZERO(tMonad.getAlgebra().getCardinal());
+			tFieldRD.setReal(Double.parseDouble(_parent._GUI.appFieldBar.getRealText()));
+			tMonad.scale(tFieldRD);
+			_parent._GUI.appStatusBar.setStatusMsg("\tmonad has been rescaled by ");
+			_parent._GUI.appStatusBar.setStatusMsg(_parent._GUI.appFieldBar.getRealText() + "\n");
+		}
+		case COMPLEXF -> {
+			ComplexF tFieldCF = (ComplexF) CladosField.COMPLEXF.createZERO(tMonad.getAlgebra().getCardinal());
+			tFieldCF.setReal(Float.parseFloat(_parent._GUI.appFieldBar.getRealText()));
+			tFieldCF.setImg(Float.parseFloat(_parent._GUI.appFieldBar.getImgText()));
+			tMonad.scale(tFieldCF);
+			_parent._GUI.appStatusBar.setStatusMsg("\tmonad has been rescaled by (R");
+			_parent._GUI.appStatusBar.setStatusMsg(_parent._GUI.appFieldBar.getRealText() + ", I");
+			_parent._GUI.appStatusBar.setStatusMsg(_parent._GUI.appFieldBar.getImgText() + ")\n");
+		}
+		case COMPLEXD -> {
+			ComplexD tFieldCD = (ComplexD) CladosField.COMPLEXD.createZERO(tMonad.getAlgebra().getCardinal());
+			tFieldCD.setReal(Double.parseDouble(_parent._GUI.appFieldBar.getRealText()));
+			tFieldCD.setImg(Double.parseDouble(_parent._GUI.appFieldBar.getImgText()));
+			tMonad.scale(tFieldCD);
+			_parent._GUI.appStatusBar.setStatusMsg("\tmonad has been rescaled by (R");
+			_parent._GUI.appStatusBar.setStatusMsg(_parent._GUI.appFieldBar.getRealText() + ", I");
+			_parent._GUI.appStatusBar.setStatusMsg(_parent._GUI.appFieldBar.getImgText() + ")\n");
+		}
+		}
+		tMSpotPnl.setCoefficientDisplay();
 	}
 }

@@ -24,18 +24,18 @@
  */
 package org.interworldtransport.cladosviewer;
 
-import org.interworldtransport.cladosF.CladosFBuilder;
-import org.interworldtransport.cladosG.AlgebraComplexD;
-import org.interworldtransport.cladosG.AlgebraComplexF;
-import org.interworldtransport.cladosG.AlgebraRealD;
-import org.interworldtransport.cladosG.AlgebraRealF;
+import org.interworldtransport.cladosF.RealF;
+import org.interworldtransport.cladosF.RealD;
+import org.interworldtransport.cladosF.ComplexF;
+import org.interworldtransport.cladosF.ComplexD;
+//import org.interworldtransport.cladosG.Algebra;
+import org.interworldtransport.cladosG.Monad;
+import org.interworldtransport.cladosviewerExceptions.CantGetIniException;
 
-import org.interworldtransport.cladosviewerExceptions.*;
+//import org.interworldtransport.cladosviewerExceptions.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
-
-import org.interworldtransport.cladosviewerExceptions.CantGetIniException;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -146,7 +146,6 @@ public class CladosCalculator extends JFrame implements ActionListener {
 		appMenuBar = new ViewerMenu(this);
 		setJMenuBar(appMenuBar); // The Menu Bar is an element of the parent class JFrame
 		appEventModel = new ViewerEventModel(appMenuBar); // EventModel relies on existance of appMenuBar
-
 		appStatusBar = new UtilityStatusBar(); // Next up because errors have to be reported somewhere.
 		cp.add(appStatusBar, "South");
 
@@ -159,32 +158,25 @@ public class CladosCalculator extends JFrame implements ActionListener {
 			NyadPanel tSpot = appGeometryView.getNyadPanel(indxNPanelSelected);
 			int indexedMonad = tSpot.getPaneFocus();
 			if (indexedMonad >= 0) {
+				Monad tSpotM = tSpot.getNyad().getMonadList(indexedMonad);
 				switch (appGeometryView.getNyadPanel(indxNPanelSelected).getRepMode()) {
 				case REALF -> {
-					AlgebraRealF tSpotRF = tSpot.getNyadRF().getMonadList(indexedMonad).getAlgebra();
-					appFieldBar = new FieldPanel(this, AlgebraRealF.shareProtoNumber(tSpotRF));
+					appFieldBar = new FieldPanel(this, (RealF) tSpotM.getScales().getScalar());
 					cp.add(appFieldBar, "North");
-					tSpotRF = null;
 				}
 				case REALD -> {
-					AlgebraRealD tSpotRD = tSpot.getNyadRD().getMonadList(indexedMonad).getAlgebra();
-					appFieldBar = new FieldPanel(this, AlgebraRealD.shareProtoNumber(tSpotRD));
+					appFieldBar = new FieldPanel(this, (RealD) tSpotM.getScales().getScalar());
 					cp.add(appFieldBar, "North");
-					tSpotRD = null;
 				}
 
 				case COMPLEXF -> {
-					AlgebraComplexF tSpotCF = tSpot.getNyadCF().getMonadList(indexedMonad).getAlgebra();
-					appFieldBar = new FieldPanel(this, AlgebraComplexF.shareProtoNumber(tSpotCF));
+					appFieldBar = new FieldPanel(this, (ComplexF) tSpotM.getScales().getScalar());
 					cp.add(appFieldBar, "North");
-					tSpotCF = null;
 				}
 
 				case COMPLEXD -> {
-					AlgebraComplexD tSpotCD = tSpot.getNyadCD().getMonadList(indexedMonad).getAlgebra();
-					appFieldBar = new FieldPanel(this, AlgebraComplexD.shareProtoNumber(tSpotCD));
+					appFieldBar = new FieldPanel(this, (ComplexD) tSpotM.getScales().getScalar());
 					cp.add(appFieldBar, "North");
-					tSpotCD = null;
 				}
 				}
 			}
@@ -192,7 +184,7 @@ public class CladosCalculator extends JFrame implements ActionListener {
 		} else {
 			// This catches the possibility that no NyadPanel was created upon
 			// initialization
-			appFieldBar = new FieldPanel(this, CladosFBuilder.createRealFZERO("PlaceHolder"));
+			appFieldBar = null;
 			cp.add(appFieldBar, "North");
 		}
 
