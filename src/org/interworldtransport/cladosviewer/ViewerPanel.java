@@ -61,7 +61,7 @@ import java.util.*;
  * @author Dr Alfred W Differ
  */
 
-public class ViewerPanel extends JPanel implements ActionListener {
+public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel implements ActionListener {
 	private static final Color clrBackColor = new Color(255, 255, 220);
 	private static final Dimension square = new Dimension(25, 25);
 	public CladosCalculator _GUI;
@@ -73,7 +73,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 	private JButton btnSwapBelow;
 	private JPanel pnlControlBar;
 	private ImageIcon tabIcon;
-	protected ArrayList<NyadPanel> nyadPanelList;
+	protected ArrayList<NyadPanel<T>> nyadPanelList;
 	protected JTabbedPane nyadPanes;
 
 	/**
@@ -104,7 +104,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		nyadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		// JScrollPanes are used only when a nyadPanel with nyadPanes.addTab()
 		add(nyadPanes, JTabbedPane.CENTER);
-		nyadPanelList = new ArrayList<NyadPanel>(0);
+		nyadPanelList = new ArrayList<NyadPanel<T>>(0);
 
 		initObjects(); // This is the old initializer. TODO change to an XML reader
 	}
@@ -125,14 +125,14 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		return nyadPanelList.size();
 	}
 
-	public NyadPanel getNyadPanel(int pInd) {
+	public NyadPanel<T> getNyadPanel(int pInd) {
 		if (pInd < nyadPanelList.size() && pInd >= 0)
 			return nyadPanelList.get(pInd);
 
 		return null;
 	}
 
-	public ArrayList<NyadPanel> getNyadPanels() {
+	public ArrayList<NyadPanel<T>> getNyadPanels() {
 		return nyadPanelList;
 	}
 
@@ -145,7 +145,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T extends UnitAbstract & Field & Normalizable> Nyad buildANyad(short pWhich, short monadCount) {
+	private Nyad buildANyad(short pWhich, short monadCount) {
 		Nyad aNyad = null;
 		T keyNumber = null;
 		try {
@@ -208,7 +208,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		nyadPanelList.ensureCapacity(endPlus + 1);
 		String buildName = "copied";
 		try {
-			NyadPanel newP = new NyadPanel(_GUI,
+			NyadPanel<T> newP = new NyadPanel<T>(_GUI,
 					CladosGBuilder.INSTANCE.copyOfNyad(getNyadPanel(getPaneFocus()).getNyad(), buildName));
 			nyadPanelList.add(newP);
 			nyadPanes.addTab((new StringBuffer().append(endPlus)).toString(), tabIcon, new JScrollPane(newP));
@@ -329,7 +329,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		// Look in the conf file and determine how many nyads to initiate and init
 		// NyadPanelList
 		int intCount = validateInitialNyadCount();
-		nyadPanelList = new ArrayList<NyadPanel>(intCount);
+		nyadPanelList = new ArrayList<NyadPanel<T>>(intCount);
 
 		// Look in the conf file and determine how many monads in each nyad get
 		// initiated
@@ -343,7 +343,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		{
 			intOrd = 0;
 			intCount = 0;
-			nyadPanelList = new ArrayList<NyadPanel>(0);
+			nyadPanelList = new ArrayList<NyadPanel<T>>(0);
 		}
 		// Note that we re-nitialized the NyadPanelList if no valid DivField is found
 		// for initialization
@@ -361,7 +361,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 				// this point.
 			{
 				if (aNyad != null) {
-					nyadPanelList.add(j, new NyadPanel(_GUI, aNyad));
+					nyadPanelList.add(j, new NyadPanel<T>(_GUI, aNyad));
 					JScrollPane tempPane = new JScrollPane(nyadPanelList.get(j));
 					tempPane.setWheelScrollingEnabled(true);
 					nyadPanes.addTab(new StringBuffer().append(j).toString(), tabIcon, tempPane);
@@ -394,7 +394,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 			nyadPanes.setTitleAt(where - 1, thisTitle);
 			nyadPanes.setComponentAt(where - 1, thisPane);
 
-			NyadPanel tempPanel = (NyadPanel) nyadPanelList.remove(where - 1);
+			NyadPanel<T> tempPanel = (NyadPanel<T>) nyadPanelList.remove(where - 1);
 			nyadPanelList.add(where, tempPanel);
 
 			revalidate();
@@ -421,7 +421,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 			nyadPanes.setTitleAt(where + 1, thisTitle);
 			nyadPanes.setComponentAt(where + 1, thisPane);
 
-			NyadPanel tempPanel = (NyadPanel) nyadPanelList.remove(where);
+			NyadPanel<T> tempPanel = (NyadPanel<T>) nyadPanelList.remove(where);
 			nyadPanelList.add(where + 1, tempPanel);
 
 			revalidate();
@@ -464,17 +464,17 @@ public class ViewerPanel extends JPanel implements ActionListener {
 	private int validateInitialNyadCount() {
 		try {
 			int nCount = Integer.parseInt(_GUI.IniProps.getProperty("Desktop.Default.Count"));
-			nyadPanelList = new ArrayList<NyadPanel>(nCount);
+			nyadPanelList = new ArrayList<NyadPanel<T>>(nCount);
 			return nCount;
 		} catch (NullPointerException eNull) {
 			ErrorDialog.show("Desktop.Default.Count from the configuration file appears to be null.\nSet to Zero.",
 					"Null Pointer Exception");
-			nyadPanelList = new ArrayList<NyadPanel>(0);
+			nyadPanelList = new ArrayList<NyadPanel<T>>(0);
 		} catch (NumberFormatException eFormat) {
 			ErrorDialog.show(
 					"Desktop.Default.Count from the configuration file appears to be non-parse-able.\nSet to Zero.",
 					"Null Pointer Exception");
-			nyadPanelList = new ArrayList<NyadPanel>(0);
+			nyadPanelList = new ArrayList<NyadPanel<T>>(0);
 		}
 		return 0;
 	}
@@ -499,7 +499,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 			endPlus = Integer.valueOf(nyadPanes.getTitleAt(nyadPanes.getTabCount() - 1)).intValue() + 1;
 		nyadPanelList.ensureCapacity(endPlus + 1);
 		try {
-			NyadPanel newP = new NyadPanel(_GUI, pN);
+			NyadPanel<T> newP = new NyadPanel<T>(_GUI, pN);
 			nyadPanelList.add(newP);
 			nyadPanes.addTab((new StringBuffer().append(endPlus)).toString(), tabIcon, new JScrollPane(newP));
 			_GUI.pack();
@@ -533,7 +533,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 					if (nyadPanes.getSelectedIndex() >= 0) {
 						if (nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getTabCount() > 0) {
 							int j = nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getSelectedIndex();
-							MonadPanel tSpot = nyadPanelList.get(nyadPanes.getSelectedIndex()).getMonadPanel(j);
+							MonadPanel<T> tSpot = nyadPanelList.get(nyadPanes.getSelectedIndex()).getMonadPanel(j);
 							pFieldPanel.setField(CladosFBuilder.copyOf(tSpot.getMonad().getScales().getScalar()));
 							_GUI.appFieldBar.makeWritable();
 						}

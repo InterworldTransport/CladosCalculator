@@ -26,6 +26,9 @@
 package org.interworldtransport.cladosviewer;
 
 import org.interworldtransport.cladosF.CladosField;
+import org.interworldtransport.cladosF.Field;
+import org.interworldtransport.cladosF.Normalizable;
+import org.interworldtransport.cladosF.UnitAbstract;
 import org.interworldtransport.cladosG.*;
 import org.interworldtransport.cladosGExceptions.BadSignatureException;
 import org.interworldtransport.cladosGExceptions.CladosMonadException;
@@ -52,7 +55,7 @@ import java.util.*;
  * @author Dr Alfred W Differ
  */
 
-public class NyadPanel extends JPanel implements ActionListener {
+public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel implements ActionListener {
 	public CladosCalculator _GUI;
 	private Nyad repNyad;
 	private JButton btnCopyMonad;
@@ -75,7 +78,7 @@ public class NyadPanel extends JPanel implements ActionListener {
 	private final Dimension square = new Dimension(25, 25);
 	private ImageIcon tabIcon;
 	protected CladosField _repMode;
-	protected ArrayList<MonadPanel> monadPanelList;
+	protected ArrayList<MonadPanel<T>> monadPanelList;
 	protected JTabbedPane monadPanes;
 
 	/**
@@ -122,11 +125,11 @@ public class NyadPanel extends JPanel implements ActionListener {
 
 		monadPanes = new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
 		monadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		monadPanelList = new ArrayList<MonadPanel>(repNyad.getMonadList().size());
+		monadPanelList = new ArrayList<MonadPanel<T>>(repNyad.getMonadList().size());
 
 		for (Monad point : repNyad.getMonadList()) {
 			short j = (short) repNyad.getMonadList().indexOf(point);
-			monadPanelList.add(j, new MonadPanel(_GUI, point));
+			monadPanelList.add(j, new MonadPanel<T>(_GUI, point));
 			JScrollPane tempPane = new JScrollPane(monadPanelList.get(j));
 			tempPane.setWheelScrollingEnabled(true);
 			monadPanes.addTab(Short.toString(j), tabIcon, tempPane);
@@ -192,7 +195,7 @@ public class NyadPanel extends JPanel implements ActionListener {
 	public void addMonadPanel(Monad pM) {
 		// TODO Why are there four versions of this method that do NOT seem to care
 		// about the DivField on the passed Monad?
-		MonadPanel pMP = new MonadPanel(_GUI, pM);
+		MonadPanel<T> pMP = new MonadPanel<>(_GUI, pM);
 		addMonadPanel(pMP);
 	}
 
@@ -205,7 +208,7 @@ public class NyadPanel extends JPanel implements ActionListener {
 	 *            NyadPanel. It is assumed that the monad panel is constructed
 	 *            elsewhere.
 	 */
-	public void addMonadPanel(MonadPanel pMP) {
+	public void addMonadPanel(MonadPanel<T> pMP) {
 		int next = Integer.valueOf(monadPanes.getTitleAt(monadPanes.getTabCount() - 1)).intValue() + 1;
 		monadPanelList.ensureCapacity(next + 1);
 		monadPanelList.add(pMP);
@@ -223,10 +226,10 @@ public class NyadPanel extends JPanel implements ActionListener {
 	 * @return MonadPanel The MonadPanel at the indicated location in the
 	 *         monadPanelList
 	 */
-	public MonadPanel getMonadPanel(int pInd) {
+	public MonadPanel<T> getMonadPanel(int pInd) {
 		int limit = monadPanelList.size();
 		if (pInd < limit)
-			return (MonadPanel) monadPanelList.get(pInd);
+			return (MonadPanel<T>) monadPanelList.get(pInd);
 		return null;
 	}
 
@@ -266,56 +269,51 @@ public class NyadPanel extends JPanel implements ActionListener {
 		if (getMonadListSize() <= 0)
 			return; // Nothing to do here. No monad to be copied.
 		try {
-			switch (_repMode) {
-			case REALF -> {
-				Monad mRF = getMonadPanel(getPaneFocus()).getMonad();
-				String buildName = new StringBuffer(mRF.getName()).append("_c").toString();
-				String buildAlgName = new StringBuffer(mRF.getAlgebra().getAlgebraName()).append("_c").toString();
-				String buildFrameName = new StringBuffer(mRF.getFrameName()).append("_c").toString();
-				Monad newMRF = CladosGBuilder.createMonadWithAlgebra(mRF.getCoeff(),
-						CladosGBuilder.createAlgebraWithFootPlus(mRF.getAlgebra().getFoot(),
-								mRF.getAlgebra().getCardinal(), mRF.getAlgebra().getGProduct(), buildAlgName),
-						buildName, buildFrameName);
-				repNyad.appendMonad(newMRF);
-				addMonadPanel(newMRF);
-			}
-			case REALD -> {
-				Monad mRD = getMonadPanel(getPaneFocus()).getMonad();
-				String buildName = new StringBuffer(mRD.getName()).append("_c").toString();
-				String buildAlgName = new StringBuffer(mRD.getAlgebra().getAlgebraName()).append("_c").toString();
-				String buildFrameName = new StringBuffer(mRD.getFrameName()).append("_c").toString();
-				Monad newMRD = CladosGBuilder.createMonadWithAlgebra(mRD.getCoeff(),
-						CladosGBuilder.createAlgebraWithFootPlus(mRD.getAlgebra().getFoot(),
-								mRD.getAlgebra().getCardinal(), mRD.getAlgebra().getGProduct(), buildAlgName),
-						buildName, buildFrameName);
-				repNyad.appendMonad(newMRD);
-				addMonadPanel(newMRD);
-			}
-			case COMPLEXF -> {
-				Monad mCF = getMonadPanel(getPaneFocus()).getMonad();
-				String buildName = new StringBuffer(mCF.getName()).append("_c").toString();
-				String buildAlgName = new StringBuffer(mCF.getAlgebra().getAlgebraName()).append("_c").toString();
-				String buildFrameName = new StringBuffer(mCF.getFrameName()).append("_c").toString();
-				Monad newMCF = CladosGBuilder.createMonadWithAlgebra(mCF.getCoeff(),
-						CladosGBuilder.createAlgebraWithFootPlus(mCF.getAlgebra().getFoot(),
-								mCF.getAlgebra().getCardinal(), mCF.getAlgebra().getGProduct(), buildAlgName),
-						buildName, buildFrameName);
-				repNyad.appendMonad(newMCF);
-				addMonadPanel(newMCF);
-			}
-			case COMPLEXD -> {
-				Monad mCD = getMonadPanel(getPaneFocus()).getMonad();
-				String buildName = new StringBuffer(mCD.getName()).append("_c").toString();
-				String buildAlgName = new StringBuffer(mCD.getAlgebra().getAlgebraName()).append("_c").toString();
-				String buildFrameName = new StringBuffer(mCD.getFrameName()).append("_c").toString();
-				Monad newMCD = CladosGBuilder.createMonadWithAlgebra(mCD.getCoeff(),
-						CladosGBuilder.createAlgebraWithFootPlus(mCD.getAlgebra().getFoot(),
-								mCD.getAlgebra().getCardinal(), mCD.getAlgebra().getGProduct(), buildAlgName),
-						buildName, buildFrameName);
-				repNyad.appendMonad(newMCD);
-				addMonadPanel(newMCD);
-			}
-			}
+			Monad tMonad = getMonadPanel(getPaneFocus()).getMonad();
+			String buildName = new StringBuffer(tMonad.getName()).append("_c").toString();
+			String buildAlgName = new StringBuffer(tMonad.getAlgebra().getAlgebraName()).append("_c").toString();
+			String buildFrameName = new StringBuffer(tMonad.getFrameName()).append("_c").toString();
+			Monad newMonad = CladosGBuilder.createMonadWithAlgebra(
+								tMonad.getCoeff(),	// TODO These might not be arriving in order.
+								CladosGBuilder.createAlgebraWithFootPlus(
+										tMonad.getAlgebra().getFoot(),
+										tMonad.getAlgebra().getCardinal(), 
+										tMonad.getAlgebra().getGProduct(), 
+										buildAlgName),
+								buildName, 
+								buildFrameName);
+			repNyad.appendMonad(newMonad);
+			addMonadPanel(newMonad);
+			
+//			switch (_repMode) {
+//			case REALF -> {
+//				
+//			}
+//			case REALD -> {
+//				Monad newMRD = CladosGBuilder.createMonadWithAlgebra(tMonad.getCoeff(),
+//						CladosGBuilder.createAlgebraWithFootPlus(tMonad.getAlgebra().getFoot(),
+//								tMonad.getAlgebra().getCardinal(), tMonad.getAlgebra().getGProduct(), buildAlgName),
+//						buildName, buildFrameName);
+//				repNyad.appendMonad(newMRD);
+//				addMonadPanel(newMRD);
+//			}
+//			case COMPLEXF -> {
+//				Monad newMCF = CladosGBuilder.createMonadWithAlgebra(tMonad.getCoeff(),
+//						CladosGBuilder.createAlgebraWithFootPlus(tMonad.getAlgebra().getFoot(),
+//								tMonad.getAlgebra().getCardinal(), tMonad.getAlgebra().getGProduct(), buildAlgName),
+//						buildName, buildFrameName);
+//				repNyad.appendMonad(newMCF);
+//				addMonadPanel(newMCF);
+//			}
+//			case COMPLEXD -> {
+//				Monad newMCD = CladosGBuilder.createMonadWithAlgebra(tMonad.getCoeff(),
+//						CladosGBuilder.createAlgebraWithFootPlus(tMonad.getAlgebra().getFoot(),
+//								tMonad.getAlgebra().getCardinal(), tMonad.getAlgebra().getGProduct(), buildAlgName),
+//						buildName, buildFrameName);
+//				repNyad.appendMonad(newMCD);
+//				addMonadPanel(newMCD);
+//			}
+//			}
 		} catch (BadSignatureException es) {
 			ErrorDialog.show("Could not create copy because monad signature is malformed.", "Malformed Signature?");
 		} catch (GeneratorRangeException er) {
@@ -515,7 +513,7 @@ public class NyadPanel extends JPanel implements ActionListener {
 			monadPanes.setTitleAt(where - 1, thisTitle);
 			monadPanes.setComponentAt(where - 1, thisPane);
 
-			MonadPanel tempPanel = (MonadPanel) monadPanelList.remove(where - 1);
+			MonadPanel<T> tempPanel = (MonadPanel<T>) monadPanelList.remove(where - 1);
 			monadPanelList.add(where, tempPanel);
 		}
 	}
@@ -536,7 +534,7 @@ public class NyadPanel extends JPanel implements ActionListener {
 			monadPanes.setTitleAt(where + 1, thisTitle);
 			monadPanes.setComponentAt(where + 1, thisPane);
 
-			MonadPanel tempPanel = (MonadPanel) monadPanelList.remove(where);
+			MonadPanel<T> tempPanel = (MonadPanel<T>) monadPanelList.remove(where);
 			monadPanelList.add(where + 1, tempPanel);
 
 			revalidate();

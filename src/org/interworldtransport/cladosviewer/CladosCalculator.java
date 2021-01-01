@@ -25,8 +25,11 @@
 package org.interworldtransport.cladosviewer;
 
 import org.interworldtransport.cladosF.RealF;
+import org.interworldtransport.cladosF.UnitAbstract;
 import org.interworldtransport.cladosF.RealD;
 import org.interworldtransport.cladosF.ComplexF;
+import org.interworldtransport.cladosF.Field;
+import org.interworldtransport.cladosF.Normalizable;
 import org.interworldtransport.cladosF.ComplexD;
 //import org.interworldtransport.cladosG.Algebra;
 import org.interworldtransport.cladosG.Monad;
@@ -85,7 +88,7 @@ public class CladosCalculator extends JFrame implements ActionListener {
 	 * The Center Display Panel for the application. Located in the center of the
 	 * GUI and intended for display panels.
 	 */
-	public ViewerPanel appGeometryView;
+	public ViewerPanel<?> appGeometryView;
 	/**
 	 * The Status Display Panel for the application. Located at the bottom of the
 	 * GUI and intended for status information.
@@ -125,7 +128,8 @@ public class CladosCalculator extends JFrame implements ActionListener {
 	 * @param pConfig String This is the path/filename for the configuration file
 	 *                for the viewer
 	 */
-	public CladosCalculator(String pTitle, String pConfig) {
+	@SuppressWarnings("unchecked")
+	public <T extends UnitAbstract & Field & Normalizable> CladosCalculator(String pTitle, String pConfig) {
 		super(pTitle);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -149,13 +153,13 @@ public class CladosCalculator extends JFrame implements ActionListener {
 		appStatusBar = new UtilityStatusBar(); // Next up because errors have to be reported somewhere.
 		cp.add(appStatusBar, "South");
 
-		appGeometryView = new ViewerPanel(this); // ViewerPanel next to display stuff from nyads and monads
+		appGeometryView = new ViewerPanel<>(this); // ViewerPanel next to display stuff from nyads and monads
 		appGeometryView.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 		cp.add(appGeometryView, "Center");
 		// FieldBar MUST follow ViewerPanel to make use of protonumbers
 		int indxNPanelSelected = appGeometryView.getPaneFocus();
 		if (indxNPanelSelected >= 0) {
-			NyadPanel tSpot = appGeometryView.getNyadPanel(indxNPanelSelected);
+			NyadPanel<T> tSpot = (NyadPanel<T>) appGeometryView.getNyadPanel(indxNPanelSelected);
 			int indexedMonad = tSpot.getPaneFocus();
 			if (indexedMonad >= 0) {
 				Monad tSpotM = tSpot.getNyad().getMonadList(indexedMonad);
