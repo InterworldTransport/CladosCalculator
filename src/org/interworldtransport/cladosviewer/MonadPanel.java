@@ -55,18 +55,16 @@ import java.util.*;
 public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel
 		implements ActionListener, FocusListener {
 	private static final String _IMAGINARY = "[I]";
+	private static final int COEFF_SIZE = 10;
+	private static final Font _ITALICFONT = new Font(Font.SERIF, Font.ITALIC, COEFF_SIZE);
+	private static final Font _PLAINFONT = new Font(Font.SERIF, Font.PLAIN, COEFF_SIZE);
 	private static final String _REAL = "[R]";
 	private static final Color clrBackColor = new Color(212, 212, 192);
 	private static final Color clrUnlockColor = new Color(255, 192, 192);
-	private static final int COEFF_SIZE = 10;
 	private static final Dimension squareLittle = new Dimension(25, 25);
 	private static final Dimension squareMedium = new Dimension(28, 28);
-	private static final Font _PLAINFONT = new Font(Font.SERIF, Font.PLAIN, COEFF_SIZE);
-	private static final Font _ITALICFONT = new Font(Font.SERIF, Font.ITALIC, COEFF_SIZE);
 
-	private TreeMap<Blade, FieldDisplay<T>> jCoeffs;
-	private CladosField repMode;
-	private Monad repMonad;
+	public CladosCalculator _GUI;
 	private JButton btnChangeOrient;
 	private JButton btnDualLeft;
 	private JButton btnDualRight;
@@ -81,16 +79,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 	private JButton btnSync;
 	private ImageIcon iconHorizontal;
 	private ImageIcon iconVertical;
-	private JPanel pnlMonadAlterControls;
-	private JPanel pnlMonadCoeffPanel;
-	private JPanel pnlMonadEditControls;
-	private JPanel pnlMonadReferences;
-	/*
-	 * This boolean is for knowing whether to render the coefficients. This panel
-	 * doubles as a monad create dialog where no coefficients can exist until after
-	 * a generator signature is given.
-	 */
-	private boolean useFullPanel;
+	private TreeMap<Blade, FieldDisplay<T>> jCoeffs;
 	/*
 	 * This boolean is for tracking whether the panel knows its monad is an element
 	 * in a nyad. This panel is embedded in the nyad create dialog to provide
@@ -99,11 +88,22 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 	 * display a Foot. It should force reuse of the nyad's existing Foot.
 	 */
 	private boolean nyadNotKnown;
+	private JPanel pnlMonadAlterControls;
+	private JPanel pnlMonadCoeffPanel;
+	private JPanel pnlMonadEditControls;
+	private JPanel pnlMonadReferences;
+	private CladosField repMode;
+	private Monad repMonad;
+	/*
+	 * This boolean is for knowing whether to render the coefficients. This panel
+	 * doubles as a monad create dialog where no coefficients can exist until after
+	 * a generator signature is given.
+	 */
+	private boolean useFullPanel;
 	protected boolean _editMode;
-	public CladosCalculator _GUI;
 
-	protected JTextField cardname = new JTextField(16);
 	protected JTextField aname = new JTextField(16);
+	protected JTextField cardname = new JTextField(16);
 	protected JTextField foot = new JTextField(16);
 	protected JTextField frame = new JTextField(16);
 	protected JLabel gradeKey = new JLabel();
@@ -205,8 +205,6 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 	 *             manipulated.
 	 */
 	public MonadPanel(CladosCalculator pGUI, Monad pM) {
-		// TODO Why are their four versions of this constructor when switching would
-		// suffice to cope with the differences between the Monad siblings?
 		super();
 		useFullPanel = true;
 		try {
@@ -531,17 +529,6 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		add(pnlMonadEditControls, "West");
 	}
 
-	@SuppressWarnings("unchecked")
-	private void initiateCoeffList() {
-		jCoeffs = new TreeMap<Blade, FieldDisplay<T>>();
-		repMonad.bladeStream().forEach(blade -> {
-			FieldDisplay<T> tSpot = new FieldDisplay<T>((T) CladosFBuilder.copyOf((T) repMonad.getScales().get(blade)),
-					this);
-			tSpot.addFocusListener(this);
-			jCoeffs.put(blade, tSpot);
-		});
-	}
-
 	private void createManagementLayout() {
 		pnlMonadAlterControls = new JPanel();
 		pnlMonadAlterControls.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -681,6 +668,17 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 
 	}
 
+	@SuppressWarnings("unchecked")
+	private void initiateCoeffList() {
+		jCoeffs = new TreeMap<Blade, FieldDisplay<T>>();
+		repMonad.bladeStream().forEach(blade -> {
+			FieldDisplay<T> tSpot = new FieldDisplay<T>((T) CladosFBuilder.copyOf((T) repMonad.getScales().get(blade)),
+					this);
+			tSpot.addFocusListener(this);
+			jCoeffs.put(blade, tSpot);
+		});
+	}
+
 	private void makeNotWritable() {
 		if (pnlMonadReferences != null)
 			pnlMonadReferences.setBackground(clrBackColor);
@@ -694,6 +692,15 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			});
 	}
 
+	private void setReferences() {
+		name.setText(repMonad.getName());
+		aname.setText(repMonad.getAlgebra().getAlgebraName());
+		sig.setText(repMonad.getAlgebra().getGProduct().signature());
+		frame.setText(repMonad.getFrameName());
+		foot.setText(repMonad.getAlgebra().getFoot().getFootName());
+		gradeKey.setText(new StringBuffer().append(repMonad.getGradeKey()).toString());
+	}
+
 	private void setRepMonad() {
 		if (name.getText() != repMonad.getName())
 			repMonad.setName(name.getText());
@@ -704,15 +711,6 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			repMonad.getScales().put(blade, CladosFBuilder.copyOf(spot.displayField));
 		});
 		gradeKey.setText(String.valueOf(repMonad.getGradeKey()));
-	}
-
-	private void setReferences() {
-		name.setText(repMonad.getName());
-		aname.setText(repMonad.getAlgebra().getAlgebraName());
-		sig.setText(repMonad.getAlgebra().getGProduct().signature());
-		frame.setText(repMonad.getFrameName());
-		foot.setText(repMonad.getAlgebra().getFoot().getFootName());
-		gradeKey.setText(new StringBuffer().append(repMonad.getGradeKey()).toString());
 	}
 
 	/**

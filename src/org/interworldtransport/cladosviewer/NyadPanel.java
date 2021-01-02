@@ -274,7 +274,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 			String buildAlgName = new StringBuffer(tMonad.getAlgebra().getAlgebraName()).append("_c").toString();
 			String buildFrameName = new StringBuffer(tMonad.getFrameName()).append("_c").toString();
 			Monad newMonad = CladosGBuilder.createMonadWithAlgebra(
-								tMonad.getCoeff(),	// TODO These might not be arriving in order.
+								tMonad.getScales(),
 								CladosGBuilder.createAlgebraWithFootPlus(
 										tMonad.getAlgebra().getFoot(),
 										tMonad.getAlgebra().getCardinal(), 
