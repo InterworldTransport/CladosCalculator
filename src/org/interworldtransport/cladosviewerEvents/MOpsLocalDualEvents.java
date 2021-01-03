@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MOpsLocalDualEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -38,7 +38,7 @@ import javax.swing.JMenuItem;
  * This class manages events relating to a simple operation... Take the dual of
  * this Monad.
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class MOpsLocalDualEvents implements ActionListener {

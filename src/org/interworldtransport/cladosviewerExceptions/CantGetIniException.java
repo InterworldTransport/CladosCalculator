@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.CantGetIniException<br>
  * -------------------------------------------------------------------- <p>
@@ -29,7 +29,7 @@ package org.interworldtransport.cladosviewerExceptions;
  * This class is thrown when the user interface expects a configuration file and
  * cannot find one.
  *
- * @version 0.85, 2020/09/17
+ * @version 1.0, 2020/09/17
  * @author Dr Alfred W Differ
  *
  */

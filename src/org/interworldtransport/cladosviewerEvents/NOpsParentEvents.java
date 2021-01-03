@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.BOpsEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -36,7 +36,7 @@ import org.interworldtransport.cladosviewer.ViewerMenu;
  * parent.  It could also register with all the components to which its
  * listeners register..maybe. [None of this is done yet, of course.]
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class NOpsParentEvents

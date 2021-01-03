@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.NOpsEqualEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -36,7 +36,7 @@ import javax.swing.JMenuItem;
  * This class manages events relating to the answering of a boolean question. Is
  * the selected nyad equal to the one following it on the stack?
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class NOpsEqualEvents implements ActionListener {

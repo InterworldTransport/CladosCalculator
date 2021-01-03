@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.NOpsIsScalarAtEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -43,7 +43,7 @@ import org.interworldtransport.cladosviewer.NyadPanel;
  * ONCE, this test checks them all and reports 'false' if any of them fail to be
  * pure scalar grade.
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class NOpsIsPScalarAtEvents implements ActionListener {

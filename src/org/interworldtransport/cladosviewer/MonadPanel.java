@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MonadPanel<br>
  * -------------------------------------------------------------------- <p>
@@ -47,7 +47,7 @@ import java.util.*;
  * handles the gui for a single Monad.
  * 
  * 
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  * @param <T>
  */
@@ -709,6 +709,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			FieldDisplay<T> spot = jCoeffs.get(blade); 
 			spot.saveContents();
 			repMonad.getScales().put(blade, CladosFBuilder.copyOf(spot.displayField));
+			repMonad.setGradeKey();
 		});
 		gradeKey.setText(String.valueOf(repMonad.getGradeKey()));
 	}

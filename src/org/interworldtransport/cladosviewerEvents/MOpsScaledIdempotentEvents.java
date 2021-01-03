@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MOpsScaledIdempotentEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -40,7 +40,7 @@ import org.interworldtransport.cladosviewer.NyadPanel;
  * This class manages events relating to the answering of a boolean question. Is
  * the selected monad a multiple of an idempotent?
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class MOpsScaledIdempotentEvents implements ActionListener {

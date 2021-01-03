@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.ToolsCreate<br>
  * -------------------------------------------------------------------- <p>
@@ -35,7 +35,7 @@ import org.interworldtransport.cladosviewer.CreateDialog;
 /**
  * This class shows the Create Nyad dialog box from the menu.
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class ToolsCreate implements ActionListener {

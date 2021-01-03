@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.AboutDialog<br>
  * -------------------------------------------------------------------- <p>
@@ -34,7 +34,7 @@ import javax.swing.border.*;
  * "Help|About" menu on the main Atmosphere application window.
  * It provides information about the application, credit to contributors
  * and the GPL license.
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public final class AboutDialog extends JDialog implements ActionListener

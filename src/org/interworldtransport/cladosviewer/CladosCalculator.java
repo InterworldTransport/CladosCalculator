@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.CladosCalculator<br>
  * -------------------------------------------------------------------- <p>
@@ -49,7 +49,7 @@ import java.io.*;
  * The MonadViewer class will display Nyads and Monads and allow the user to
  * manipulate them via methods similar to old four-function calculators
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  * @since clados 1.0
  */
@@ -448,9 +448,6 @@ public class CladosCalculator extends JFrame implements ActionListener {
 		try (FileInputStream tempSpot = new FileInputStream(fIni);
 				BufferedInputStream tSpot = new BufferedInputStream(tempSpot)) {
 			IniProps = new Properties();
-			// IniProps=new Properties(System.getProperties());
-			// IniProps.load(tSpot); // This loads the standard key/pair properties file
-			// format.
 			IniProps.loadFromXML(tSpot); // This loads an XML formatted key/pair properties file.
 			tSpot.close();
 			tempSpot.close();

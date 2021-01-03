@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.UtilityStatusBar<br>
  * -------------------------------------------------------------------- <p>
@@ -39,7 +39,7 @@ import javax.swing.*;
  * application.
  * <p>
  * 
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 

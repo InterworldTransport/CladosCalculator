@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.ViewerEventModel<br>
  * -------------------------------------------------------------------- <p>
@@ -34,7 +34,7 @@ import org.interworldtransport.cladosviewerEvents.ToolsEvents;
 /** org.interworldtransport.cladosviewer.ViewerEventModel
  *
  *
- * @version 0.85, 2020/09/16
+ * @version 1.0, 2020/09/16
  * @author Dr Alfred W Differ
  */
 public class ViewerEventModel

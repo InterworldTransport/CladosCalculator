@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.NyadPanel<br>
  * -------------------------------------------------------------------- <p>
@@ -25,36 +25,50 @@
 
 package org.interworldtransport.cladosviewer;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.TitledBorder;
+
 import org.interworldtransport.cladosF.CladosField;
 import org.interworldtransport.cladosF.Field;
 import org.interworldtransport.cladosF.Normalizable;
 import org.interworldtransport.cladosF.UnitAbstract;
-import org.interworldtransport.cladosG.*;
+import org.interworldtransport.cladosG.CladosGBuilder;
+import org.interworldtransport.cladosG.Monad;
+import org.interworldtransport.cladosG.Nyad;
 import org.interworldtransport.cladosGExceptions.BadSignatureException;
 import org.interworldtransport.cladosGExceptions.CladosMonadException;
 import org.interworldtransport.cladosGExceptions.CladosNyadException;
 import org.interworldtransport.cladosGExceptions.GeneratorRangeException;
 import org.interworldtransport.cladosviewerExceptions.UtilitiesException;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.TitledBorder;
-
-import java.util.*;
-
 /**
  * org.interworldtransport.cladosviewer.NyadPanel The ViewerPanel class is
  * intended to be the main panel of the Monad Viewer utility.
  * <p>
  * 
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
-
 public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel implements ActionListener {
 	public CladosCalculator _GUI;
 	private Nyad repNyad;
@@ -87,7 +101,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 	 * 
 	 * @param pGUI CladosCalculator This is just a reference to the owner
 	 *             application so error messages can be presented.
-	 * @param pN   NyadRealF This is a reference to the nyad to be displayed and
+	 * @param pN   Nyad This is a reference to the nyad to be displayed and
 	 *             manipulated.
 	 * @throws UtilitiesException    This is the general exception. Could be any
 	 *                               miscellaneous issue. Ready the message to see.
@@ -99,15 +113,12 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 	 *                               currently tracked with a short integer. {--****
 	 */
 	public NyadPanel(CladosCalculator pGUI, Nyad pN) throws UtilitiesException, BadSignatureException {
-		// TODO Why are their four versions of this constructor when switching would
-		// suffice to cope with the differences between the Nyad siblings?
 		super();
 		if (pGUI == null)
 			throw new UtilitiesException("A GUI must be passed to a NyadPanel");
-		_GUI = pGUI;
-
-		if (pN == null)
+		else if (pN == null)
 			throw new UtilitiesException("A Nyad must be passed to this NyadPanel constructor");
+		_GUI = pGUI;
 		repNyad = pN;
 		_repMode = pN.getMode();
 
@@ -189,12 +200,10 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 	 * receives a monad and constructs the appropriate panel.
 	 * <p>
 	 * 
-	 * @param pM MonadComplexD This is the MonadRealF to use to construct a
+	 * @param pM Monad This is the Monad to use to construct a
 	 *           MonadPanel to be appended to this NyadPanel.
 	 */
 	public void addMonadPanel(Monad pM) {
-		// TODO Why are there four versions of this method that do NOT seem to care
-		// about the DivField on the passed Monad?
 		MonadPanel<T> pMP = new MonadPanel<>(_GUI, pM);
 		addMonadPanel(pMP);
 	}
@@ -268,52 +277,17 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 	private void copyMonadCommand() {
 		if (getMonadListSize() <= 0)
 			return; // Nothing to do here. No monad to be copied.
+		Monad tMonad = getMonadPanel(getPaneFocus()).getMonad();
+		String buildName = new StringBuffer(tMonad.getName()).append("_c").toString();
+		String buildAlgName = new StringBuffer(tMonad.getAlgebra().getAlgebraName()).append("_c").toString();
+		String buildFrameName = new StringBuffer(tMonad.getFrameName()).append("_c").toString();
 		try {
-			Monad tMonad = getMonadPanel(getPaneFocus()).getMonad();
-			String buildName = new StringBuffer(tMonad.getName()).append("_c").toString();
-			String buildAlgName = new StringBuffer(tMonad.getAlgebra().getAlgebraName()).append("_c").toString();
-			String buildFrameName = new StringBuffer(tMonad.getFrameName()).append("_c").toString();
-			Monad newMonad = CladosGBuilder.createMonadWithAlgebra(
-								tMonad.getScales(),
-								CladosGBuilder.createAlgebraWithFootPlus(
-										tMonad.getAlgebra().getFoot(),
-										tMonad.getAlgebra().getCardinal(), 
-										tMonad.getAlgebra().getGProduct(), 
-										buildAlgName),
-								buildName, 
-								buildFrameName);
+			Monad newMonad = CladosGBuilder.createMonadWithAlgebra(tMonad.getScales(),
+					CladosGBuilder.createAlgebraWithFootPlus(tMonad.getAlgebra().getFoot(),
+							tMonad.getAlgebra().getCardinal(), tMonad.getAlgebra().getGProduct(), buildAlgName),
+					buildName, buildFrameName);
 			repNyad.appendMonad(newMonad);
 			addMonadPanel(newMonad);
-			
-//			switch (_repMode) {
-//			case REALF -> {
-//				
-//			}
-//			case REALD -> {
-//				Monad newMRD = CladosGBuilder.createMonadWithAlgebra(tMonad.getCoeff(),
-//						CladosGBuilder.createAlgebraWithFootPlus(tMonad.getAlgebra().getFoot(),
-//								tMonad.getAlgebra().getCardinal(), tMonad.getAlgebra().getGProduct(), buildAlgName),
-//						buildName, buildFrameName);
-//				repNyad.appendMonad(newMRD);
-//				addMonadPanel(newMRD);
-//			}
-//			case COMPLEXF -> {
-//				Monad newMCF = CladosGBuilder.createMonadWithAlgebra(tMonad.getCoeff(),
-//						CladosGBuilder.createAlgebraWithFootPlus(tMonad.getAlgebra().getFoot(),
-//								tMonad.getAlgebra().getCardinal(), tMonad.getAlgebra().getGProduct(), buildAlgName),
-//						buildName, buildFrameName);
-//				repNyad.appendMonad(newMCF);
-//				addMonadPanel(newMCF);
-//			}
-//			case COMPLEXD -> {
-//				Monad newMCD = CladosGBuilder.createMonadWithAlgebra(tMonad.getCoeff(),
-//						CladosGBuilder.createAlgebraWithFootPlus(tMonad.getAlgebra().getFoot(),
-//								tMonad.getAlgebra().getCardinal(), tMonad.getAlgebra().getGProduct(), buildAlgName),
-//						buildName, buildFrameName);
-//				repNyad.appendMonad(newMCD);
-//				addMonadPanel(newMCD);
-//			}
-//			}
 		} catch (BadSignatureException es) {
 			ErrorDialog.show("Could not create copy because monad signature is malformed.", "Malformed Signature?");
 		} catch (GeneratorRangeException er) {
@@ -568,7 +542,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 	private void removeMonadTab(int pInd) {
 		if (pInd > monadPanelList.size())
 			return; // Index out of bounds. Don't try
-		if (pInd > monadPanes.getTabCount())
+		else if (pInd > monadPanes.getTabCount())
 			return; // Index out of bounds on the panes. Don't try.
 
 		monadPanes.remove(pInd);

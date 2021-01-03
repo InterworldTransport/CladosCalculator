@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.FieldDisplay<br>
  * -------------------------------------------------------------------- <p>
@@ -49,7 +49,7 @@ import org.interworldtransport.cladosF.UnitAbstract;
  * 
  * @param <D>
  * 
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  * 
  */
@@ -66,7 +66,7 @@ public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends
 	private static final String _REAL = "[R]";
 
 	private MonadPanel<D> _parent;
-	private CladosField _repMode;
+	private CladosField repMode;
 	/**
 	 * The displayField is a copy of the cladosF magnitude that can be safely
 	 * displayed and manipulated without harming the cladosG object using the
@@ -89,19 +89,19 @@ public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends
 			if (pField instanceof ComplexD) {
 				this.setRows(_COMPLEXROWS);
 				this.setColumns(_DOUBLESIZE);
-				_repMode = CladosField.COMPLEXD;
+				repMode = CladosField.COMPLEXD;
 			} else if (pField instanceof ComplexF) {
 				this.setRows(_REALROWS);
 				this.setColumns(_FLOATSIZE);
-				_repMode = CladosField.COMPLEXF;
+				repMode = CladosField.COMPLEXF;
 			} else if (pField instanceof RealD) {
 				this.setRows(_COMPLEXROWS);
 				this.setColumns(_DOUBLESIZE);
-				_repMode = CladosField.REALD;
+				repMode = CladosField.REALD;
 			} else if (pField instanceof RealF) {
 				this.setRows(_REALROWS);
 				this.setColumns(_FLOATSIZE);
-				_repMode = CladosField.REALF;
+				repMode = CladosField.REALF;
 			} else
 				throw new IllegalArgumentException("Offered number isn't a known UnitAbstract child.");
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -121,7 +121,7 @@ public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends
 	 * 
 	 */
 	public void displayContents() {
-		switch (_repMode) {
+		switch (repMode) {
 		case REALF -> setText(
 				new StringBuilder().append(FieldDisplay._REAL).append(((RealF) displayField).getReal()).toString());
 		case REALD -> setText(
@@ -132,6 +132,7 @@ public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends
 		case COMPLEXD -> setText(
 				new StringBuilder().append(FieldDisplay._REAL).append(((ComplexD) displayField).getReal())
 						.append("\n" + FieldDisplay._IMAGINARY).append(((ComplexD) displayField).getImg()).toString());
+		default -> setText("null mode");
 		}
 	}
 
@@ -140,12 +141,13 @@ public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends
 	public void focusGained(FocusEvent e) {
 		if (_parent._editMode) // Only do this when parent MonadPanel is in edit mode.
 		{
-			switch (_parent.getRepMode()) {
-			case REALF -> displayField = (D) RealF.copyOf(_parent._GUI.appFieldBar._repRealF);
-			case REALD -> displayField = (D) RealD.copyOf(_parent._GUI.appFieldBar._repRealD);
-			case COMPLEXF -> displayField = (D) ComplexF.copyOf(_parent._GUI.appFieldBar._repComplexF);
-			case COMPLEXD -> displayField = (D) ComplexD.copyOf(_parent._GUI.appFieldBar._repComplexD);
-			}
+			displayField = CladosFBuilder.copyOf((D) _parent._GUI.appFieldBar.repNumber);
+//			switch (_parent.getRepMode()) {
+//			case REALF -> displayField = CladosFBuilder.copyOf((D) _parent._GUI.appFieldBar.repNumber);
+//			case REALD -> displayField = CladosFBuilder.copyOf(_parent._GUI.appFieldBar._repRealD);
+//			case COMPLEXF -> displayField = CladosFBuilder.copyOf(_parent._GUI.appFieldBar._repComplexF);
+//			case COMPLEXD -> displayField = CladosFBuilder.copyOf(_parent._GUI.appFieldBar._repComplexD);
+//			}
 			displayContents();
 		}
 	}
@@ -169,7 +171,7 @@ public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends
 			int indexOfR = strB.indexOf(_REAL) + _REAL.length();
 			int indexOfI = strB.indexOf(_IMAGINARY) + _IMAGINARY.length();
 
-			switch (_repMode) {
+			switch (repMode) {
 			case REALF -> {
 				displayField = (D) CladosField.REALF.createZERO(displayField);
 				((RealF) displayField).setReal(Float.parseFloat(strB.substring(indexOfR, tBufferLength)));
@@ -209,9 +211,6 @@ public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends
 	 *               presented by this panel.
 	 */
 	public void updateField(D pField) {
-		// TODO Consider re-writing these four updateField methods so they detect the
-		// DivField type and switch on it. There is nothing about the method bodies that
-		// requires distinct methods. They simply use a different builder.
 		if (pField != null) {
 			displayField = (D) CladosFBuilder.copyOf(pField);
 			displayContents();

@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.ViewerMenu<br>
  * -------------------------------------------------------------------- <p>
@@ -36,7 +36,7 @@ import javax.swing.*;
  * to this class should be made in careful coordination with the classes of the
  * event model.
  * 
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 

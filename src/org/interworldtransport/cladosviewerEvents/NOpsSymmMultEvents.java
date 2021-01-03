@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.NOpsSymmMultEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -35,7 +35,7 @@ import javax.swing.JMenuItem;
  * relating to a complex operation. Symmetric Multiply this Monad with another
  * Monad.
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class NOpsSymmMultEvents implements ActionListener {

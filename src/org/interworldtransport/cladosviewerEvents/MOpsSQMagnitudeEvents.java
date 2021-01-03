@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MOpsSQMagnitudeEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -40,7 +40,7 @@ import org.interworldtransport.cladosviewer.*;
  * This class manages events relating to the answering of a simple question.
  * What is the squared magnitude of this Monad?
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class MOpsSQMagnitudeEvents implements ActionListener {

@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.SupportDialog<br>
  * -------------------------------------------------------------------- <p>
@@ -35,7 +35,7 @@ import javax.swing.border.*;
  * "Help|Support" menu on the main Atmosphere application window. It provides
  * information about support for the application.
  * 
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public final class SupportDialog extends JDialog implements ActionListener {

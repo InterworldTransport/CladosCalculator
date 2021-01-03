@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.NOpsAntiSymmMultEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -36,7 +36,7 @@ import javax.swing.JMenuItem;
  * events relating to a complex operation. Antisymmetric Multiply this Monad
  * with another Monad.
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class NOpsAntiSymmMultEvents implements ActionListener {

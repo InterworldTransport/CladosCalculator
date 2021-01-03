@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.OptionsDialog<br>
  * -------------------------------------------------------------------- <p>
@@ -44,7 +44,7 @@ import javax.swing.table.AbstractTableModel;
  * is supposed to show a window that would allow a user to adjust the
  * configuration file from within the Viewer.
  * 
- * @version 0.85,
+ * @version 1.0,
  * @author Dr Alfred W Differ
  */
 public class OptionsDialog extends JDialog implements ActionListener, TableModelListener {

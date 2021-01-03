@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.ViewerPanel<br>
  * -------------------------------------------------------------------- <p>
@@ -57,13 +57,16 @@ import java.util.*;
  * respect to stack operations.
  * <p>
  * 
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 
 public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel implements ActionListener {
 	private static final Color clrBackColor = new Color(255, 255, 220);
 	private static final Dimension square = new Dimension(25, 25);
+	/**
+	 * This is just a reference back to the parent frame of the application.
+	 */
 	public CladosCalculator _GUI;
 	private CladosField _repMode;
 	private JButton btnCopyNyad;
@@ -106,7 +109,7 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 		add(nyadPanes, JTabbedPane.CENTER);
 		nyadPanelList = new ArrayList<NyadPanel<T>>(0);
 
-		initObjects(); // This is the old initializer. TODO change to an XML reader
+		initObjects(); // This is the old initializer.
 	}
 
 	@Override
@@ -296,28 +299,22 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 		add(pnlControlBar, "East");
 	}
 
+	@SuppressWarnings("unchecked")
 	private void eraseNyadCommand() {
 		if (nyadPanes.getTabCount() > 0) {
+			_GUI.appFieldBar.repNumber = null;
+			
 			int point = nyadPanes.getSelectedIndex();
+			
 			switch (getNyadPanel(point).getRepMode()) {
-			case REALF -> {
-				_GUI.appFieldBar._repRealF = null;
+			case REALF:
+			case REALD :
 				_GUI.appFieldBar.setRealText("");
-			}
-			case REALD -> {
-				_GUI.appFieldBar._repRealD = null;
-				_GUI.appFieldBar.setRealText("");
-			}
-			case COMPLEXF -> {
-				_GUI.appFieldBar._repComplexF = null;
+				break;
+			case COMPLEXF:
+			case COMPLEXD:
 				_GUI.appFieldBar.setRealText("");
 				_GUI.appFieldBar.setImgText("");
-			}
-			case COMPLEXD -> {
-				_GUI.appFieldBar._repComplexD = null;
-				_GUI.appFieldBar.setRealText("");
-				_GUI.appFieldBar.setImgText("");
-			}
 			}
 			removeNyadPanel(point);
 		} else {
@@ -325,7 +322,7 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 		}
 	}
 
-	private void initObjects() {
+	private void initObjects() { // TODO change to an XML reader
 		// Look in the conf file and determine how many nyads to initiate and init
 		// NyadPanelList
 		int intCount = validateInitialNyadCount();
@@ -356,9 +353,8 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 		// {max = intOrder}
 		short j = 0;
 		while (j < intCount) {
-			Nyad aNyad = buildANyad(j, intOrd); // the NyadRF bootstrapper
-			try // Here we finally initiate the NyadPanel because the Nyad is actually filled at
-				// this point.
+			Nyad aNyad = buildANyad(j, intOrd); // the Nyad bootstrapper
+			try // Here we finally initiate the NyadPanel because the Nyad is actually exists.
 			{
 				if (aNyad != null) {
 					nyadPanelList.add(j, new NyadPanel<T>(_GUI, aNyad));
@@ -376,7 +372,6 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 			}
 			j++;
 		}
-
 	}
 
 	private void pop() {
@@ -520,13 +515,14 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 	 * to the numbers displayed. The string for the Cardinal IS displayed on a
 	 * monad, though, and not the Field Bar.
 	 * 
-	 * @param pFieldPanel FieldPanel In the owning app, this is the FieldBar object
+	 * @param fieldPanel FieldPanel In the owning app, this is the FieldBar object
 	 *                    that allows for top-level numeric input on the calculator.
 	 *                    The Field Panel offered is registered with this Viewer
 	 *                    Panel so change events can be routed.
 	 */
-	protected void registerFieldPanel(FieldPanel pFieldPanel) {
+	protected <D extends UnitAbstract & Field & Normalizable> void registerFieldPanel(FieldPanel<D> fieldPanel) {
 		nyadPanes.addChangeListener(new ChangeListener() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				if (nyadPanes.getTabCount() > 0) {
@@ -534,12 +530,12 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 						if (nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getTabCount() > 0) {
 							int j = nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getSelectedIndex();
 							MonadPanel<T> tSpot = nyadPanelList.get(nyadPanes.getSelectedIndex()).getMonadPanel(j);
-							pFieldPanel.setField(CladosFBuilder.copyOf(tSpot.getMonad().getScales().getScalar()));
+							fieldPanel.setField((D) CladosFBuilder.copyOf(tSpot.getMonad().getScales().getScalar()));
 							_GUI.appFieldBar.makeWritable();
 						}
 					}
 				} else
-					pFieldPanel.clearFieldType();
+					fieldPanel.clearFieldType();
 			}
 		});
 	}

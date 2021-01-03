@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.CreateDialog<br>
  * -------------------------------------------------------------------- <p>
@@ -63,7 +63,7 @@ import org.interworldtransport.cladosGExceptions.GeneratorRangeException;
  * supposed to show a window that would allow a user to add a new Monad to the
  * stack in the Monad Viewer.
  * 
- * @version 0.86
+ * @version 1.0
  * @author Dr Alfred W Differ
  * @param <T>
  */
