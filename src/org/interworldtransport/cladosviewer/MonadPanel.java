@@ -43,9 +43,10 @@ import javax.swing.border.TitledBorder;
 import java.util.*;
 
 /**
- * org.interworldtransport.cladosviewer.MonadPanel The MonadPanel class directly
- * handles the gui for a single Monad.
- * 
+ * The MonadPanel class directly handles the gui for a single Monad.
+ * <p>
+ * The monad represented by the panel is stored in a private data element.
+ * <p>
  * 
  * @version 1.0
  * @author Dr Alfred W Differ
@@ -54,28 +55,20 @@ import java.util.*;
 
 public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel
 		implements ActionListener, FocusListener {
-	private static final String _IMAGINARY = "[I]";
-	private static final int COEFF_SIZE = 10;
-	private static final Font _ITALICFONT = new Font(Font.SERIF, Font.ITALIC, COEFF_SIZE);
-	private static final Font _PLAINFONT = new Font(Font.SERIF, Font.PLAIN, COEFF_SIZE);
-	private static final String _REAL = "[R]";
+	private static final int _COEFF_SIZE = 10;
+	private static final Font _ITALICFONT = new Font(Font.SERIF, Font.ITALIC, _COEFF_SIZE);
+	private static final Font _PLAINFONT = new Font(Font.SERIF, Font.PLAIN, _COEFF_SIZE);
 	private static final Color clrBackColor = new Color(212, 212, 192);
 	private static final Color clrUnlockColor = new Color(255, 192, 192);
+	private static final String IMAGINARY = "[I]";
+	private static final String REAL = "[R]";
 	private static final Dimension squareLittle = new Dimension(25, 25);
 	private static final Dimension squareMedium = new Dimension(28, 28);
 
 	public CladosCalculator _GUI;
 	private JButton btnChangeOrient;
-	private JButton btnDualLeft;
-	private JButton btnDualRight;
 	private JButton btnEdit;
-	private JButton btnGradeCrop;
-	private JButton btnGradeCut;
-	private JButton btnInvertMonad; // This is NOT multiplicative inverse
-	private JButton btnNormalizeMonad;
 	private JButton btnRestore;
-	private JButton btnReverseMonad;
-	private JButton btnScaleMonad;
 	private JButton btnSync;
 	private ImageIcon iconHorizontal;
 	private ImageIcon iconVertical;
@@ -339,27 +332,24 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			int tBufferLength = strB.length();
 			if (tBufferLength == 0)
 				return; // Nothing to save, so surrender.
-			int tR = MonadPanel._REAL.length();
-			int tI = MonadPanel._IMAGINARY.length();
-			int indexOfR = strB.indexOf(MonadPanel._REAL) + tR;
-			int indexOfI = strB.indexOf(MonadPanel._IMAGINARY) + tI;
+			int tR = MonadPanel.REAL.length();
+			int tI = MonadPanel.IMAGINARY.length();
+			int indexOfR = strB.indexOf(MonadPanel.REAL) + tR;
+			int indexOfI = strB.indexOf(MonadPanel.IMAGINARY) + tI;
 			_GUI.appFieldBar.setField((((FieldDisplay<T>) e.getComponent()).displayField));
+
 			switch (repMode) {
 			case REALF -> {
-				//_GUI.appFieldBar.setField((((FieldDisplay<T>) e.getComponent()).displayField));
 				_GUI.appFieldBar.setWhatFloatR(Float.parseFloat(strB.substring(indexOfR, tBufferLength)));
 			}
 			case REALD -> {
-				//_GUI.appFieldBar.setField((((FieldDisplay<T>) e.getComponent()).displayField));
 				_GUI.appFieldBar.setWhatDoubleR(Double.parseDouble(strB.substring(indexOfR, tBufferLength)));
 			}
 			case COMPLEXF -> {
-				//_GUI.appFieldBar.setField((((FieldDisplay<T>) e.getComponent()).displayField));
 				_GUI.appFieldBar.setWhatFloatR(Float.parseFloat(strB.substring(indexOfR, indexOfI - tI - 1)));
 				_GUI.appFieldBar.setWhatFloatI(Float.parseFloat(strB.substring(indexOfI, tBufferLength)));
 			}
 			case COMPLEXD -> {
-				//_GUI.appFieldBar.setField((((FieldDisplay<T>) e.getComponent()).displayField));
 				_GUI.appFieldBar.setWhatDoubleR(Double.parseDouble(strB.substring(indexOfR, indexOfI - tI - 1)));
 				_GUI.appFieldBar.setWhatDoubleI(Double.parseDouble(strB.substring(indexOfI, tBufferLength)));
 			}
@@ -542,7 +532,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		cn.weighty = 0;
 		cn.gridwidth = 2;
 
-		btnScaleMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/scale.png")));
+		JButton btnScaleMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/scale.png")));
 		btnScaleMonad.setActionCommand("scale");
 		btnScaleMonad.setToolTipText("scale() the monad");
 		btnScaleMonad.setPreferredSize(squareMedium);
@@ -551,7 +541,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadAlterControls.add(btnScaleMonad, cn);
 		cn.gridy++;
 
-		btnNormalizeMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/norm.png")));
+		JButton btnNormalizeMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/norm.png")));
 		btnNormalizeMonad.setActionCommand("normalize");
 		btnNormalizeMonad.setToolTipText("normalize THIS Monad");
 		btnNormalizeMonad.setPreferredSize(squareMedium);
@@ -560,7 +550,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadAlterControls.add(btnNormalizeMonad, cn);
 		cn.gridy++;
 
-		btnInvertMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/invert.png")));
+		JButton btnInvertMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/invert.png")));
 		btnInvertMonad.setActionCommand("invert");
 		btnInvertMonad.setToolTipText("invert [+/-] generators");
 		btnInvertMonad.setPreferredSize(squareMedium);
@@ -569,7 +559,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadAlterControls.add(btnInvertMonad, cn);
 		cn.gridy++;
 
-		btnReverseMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/reverse.png")));
+		JButton btnReverseMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/reverse.png")));
 		btnReverseMonad.setActionCommand("reverse");
 		btnReverseMonad.setToolTipText("reverse [ab->ba] blades");
 		btnReverseMonad.setPreferredSize(squareMedium);
@@ -578,7 +568,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadAlterControls.add(btnReverseMonad, cn);
 		cn.gridy++;
 
-		btnDualLeft = new JButton(new ImageIcon(this.getClass().getResource("/icons/dualleft.png")));
+		JButton btnDualLeft = new JButton(new ImageIcon(this.getClass().getResource("/icons/dualleft.png")));
 		btnDualLeft.setActionCommand("dual>");
 		btnDualLeft.setToolTipText("left Dual of the monad using algebra's PS");
 		btnDualLeft.setPreferredSize(squareMedium);
@@ -587,7 +577,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadAlterControls.add(btnDualLeft, cn);
 		cn.gridy++;
 
-		btnDualRight = new JButton(new ImageIcon(this.getClass().getResource("/icons/dualright.png")));
+		JButton btnDualRight = new JButton(new ImageIcon(this.getClass().getResource("/icons/dualright.png")));
 		btnDualRight.setActionCommand("<dual");
 		btnDualRight.setToolTipText("right Dual of the monad using algebra's PS");
 		btnDualRight.setPreferredSize(squareMedium);
@@ -596,7 +586,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadAlterControls.add(btnDualRight, cn);
 		cn.gridy++;
 
-		btnGradeCrop = new JButton(new ImageIcon(this.getClass().getResource("/icons/gradecrop.png")));
+		JButton btnGradeCrop = new JButton(new ImageIcon(this.getClass().getResource("/icons/gradecrop.png")));
 		btnGradeCrop.setActionCommand("findgrade crop");
 		btnGradeCrop.setToolTipText("crop around findgrade()");
 		btnGradeCrop.setPreferredSize(squareMedium);
@@ -605,7 +595,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadAlterControls.add(btnGradeCrop, cn);
 		cn.gridy++;
 
-		btnGradeCut = new JButton(new ImageIcon(this.getClass().getResource("/icons/gradecut.png")));
+		JButton btnGradeCut = new JButton(new ImageIcon(this.getClass().getResource("/icons/gradecut.png")));
 		btnGradeCut.setActionCommand("findgrade cut");
 		btnGradeCut.setToolTipText("cut this findgrade()");
 		btnGradeCut.setPreferredSize(squareMedium);
@@ -706,7 +696,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			repMonad.setName(name.getText());
 
 		repMonad.bladeStream().forEach(blade -> {
-			FieldDisplay<T> spot = jCoeffs.get(blade); 
+			FieldDisplay<T> spot = jCoeffs.get(blade);
 			spot.saveContents();
 			repMonad.getScales().put(blade, CladosFBuilder.copyOf(spot.displayField));
 			repMonad.setGradeKey();

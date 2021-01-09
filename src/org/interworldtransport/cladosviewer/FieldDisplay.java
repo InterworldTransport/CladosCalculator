@@ -29,7 +29,8 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 
 import org.interworldtransport.cladosF.CladosFBuilder;

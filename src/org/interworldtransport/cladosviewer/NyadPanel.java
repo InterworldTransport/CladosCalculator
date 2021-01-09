@@ -62,8 +62,11 @@ import org.interworldtransport.cladosGExceptions.GeneratorRangeException;
 import org.interworldtransport.cladosviewerExceptions.UtilitiesException;
 
 /**
- * org.interworldtransport.cladosviewer.NyadPanel The ViewerPanel class is
- * intended to be the main panel of the Monad Viewer utility.
+ * The NyadPanel is intended to be the display panel of for a nyad. Simple
+ * enough since most of the functions available at the nyad level are stack
+ * related or comparisons or tests.
+ * <p>
+ * The nyad represented by the panel is stored in a private data element.
  * <p>
  * 
  * @version 1.0
@@ -71,14 +74,8 @@ import org.interworldtransport.cladosviewerExceptions.UtilitiesException;
  */
 public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel implements ActionListener {
 	public CladosCalculator _GUI;
-	private Nyad repNyad;
-	private JButton btnCopyMonad;
 	private JButton btnEditMonad;
-	private JButton btnNewMonad;
-	private JButton btnRemoveMonad;
 	private JButton btnSaveEdits;
-	private JButton btnSwapAbove;
-	private JButton btnSwapBelow;
 	private JButton btnUndoEdits;
 	private final Color clrBackColor = new Color(212, 200, 212);
 	private final Color clrUnlockColor = new Color(255, 192, 192);
@@ -86,14 +83,13 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 	private JLabel nyadFoot = new JLabel();
 	private JTextField nyadName = new JTextField(20);
 	private JLabel nyadOrder = new JLabel();
-	private JPanel pnlControlPanel;
-	private JPanel pnlControlPanel2;
 	private JPanel pnlRefPanel;
+	private Nyad repNyad;
 	private final Dimension square = new Dimension(25, 25);
 	private ImageIcon tabIcon;
-	protected CladosField _repMode;
 	protected ArrayList<MonadPanel<T>> monadPanelList;
 	protected JTabbedPane monadPanes;
+	protected CladosField repMode;
 
 	/**
 	 * The NyadPanel class is intended to be contain a cladosG Nyad in order to
@@ -120,7 +116,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 			throw new UtilitiesException("A Nyad must be passed to this NyadPanel constructor");
 		_GUI = pGUI;
 		repNyad = pN;
-		_repMode = pN.getMode();
+		repMode = pN.getMode();
 
 		setReferences();
 
@@ -154,7 +150,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 		switch (event.getActionCommand()) {
 		case "copy" -> copyMonadCommand(); // It's a little long
 		case "erase" -> removeMonadCommand();
-		case "create" -> CreateDialog.createMonad(_GUI, _repMode);
+		case "create" -> CreateDialog.createMonad(_GUI, repMode);
 		case "push" -> push(); // Swaps the currently selected nyad with the one below it
 		case "pop" -> pop(); // Swaps the currently selected nyad with the one above it
 		case "save" -> {
@@ -200,8 +196,8 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 	 * receives a monad and constructs the appropriate panel.
 	 * <p>
 	 * 
-	 * @param pM Monad This is the Monad to use to construct a
-	 *           MonadPanel to be appended to this NyadPanel.
+	 * @param pM Monad This is the Monad to use to construct a MonadPanel to be
+	 *           appended to this NyadPanel.
 	 */
 	public void addMonadPanel(Monad pM) {
 		MonadPanel<T> pMP = new MonadPanel<>(_GUI, pM);
@@ -255,23 +251,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 	}
 
 	public CladosField getRepMode() {
-		return _repMode;
-	}
-
-	private void makeNotWritable() {
-		if (pnlRefPanel != null)
-			pnlRefPanel.setBackground(clrBackColor);
-		nyadName.setEditable(false);
-	}
-
-	/**
-	 * This method adjusts the JTextArea elements contained on the panel to allow
-	 * for edits.
-	 */
-	private void makeWritable() {
-		if (pnlRefPanel != null)
-			pnlRefPanel.setBackground(clrUnlockColor);
-		nyadName.setEditable(true);
+		return repMode;
 	}
 
 	private void copyMonadCommand() {
@@ -301,7 +281,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 	}
 
 	private void createEditLayout() {
-		pnlControlPanel = new JPanel();
+		JPanel pnlControlPanel = new JPanel();
 		pnlControlPanel.setBackground(clrBackColor);
 
 		pnlControlPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -360,7 +340,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 		pnlRefPanel.setBackground(clrBackColor);
 
 		TitledBorder tWrap = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-				new StringBuffer("DivField | " + _repMode).toString(), TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION,
+				new StringBuffer("DivField | " + repMode).toString(), TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION,
 				new Font(Font.SERIF, Font.PLAIN, 10));
 		pnlRefPanel.setBorder(tWrap);
 		pnlRefPanel.setLayout(new GridBagLayout());
@@ -405,7 +385,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 	}
 
 	private void createStackLayout() {
-		pnlControlPanel2 = new JPanel();
+		JPanel pnlControlPanel2 = new JPanel();
 		pnlControlPanel2.setLayout(new GridBagLayout());
 		pnlControlPanel2.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		pnlControlPanel2.setBackground(clrBackColor);
@@ -421,7 +401,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 		cn.weighty = 0;
 		cn.gridheight = 1;
 		cn.gridwidth = 1;
-		btnSwapBelow = new JButton(new ImageIcon(this.getClass().getResource("/icons/push.png")));
+		JButton btnSwapBelow = new JButton(new ImageIcon(this.getClass().getResource("/icons/push.png")));
 		btnSwapBelow.setActionCommand("push");
 		btnSwapBelow.setToolTipText("push monad down on stack");
 		btnSwapBelow.setPreferredSize(square);
@@ -430,7 +410,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 		pnlControlPanel2.add(btnSwapBelow, cn);
 		cn.gridy++;
 
-		btnSwapAbove = new JButton(new ImageIcon(this.getClass().getResource("/icons/pop.png")));
+		JButton btnSwapAbove = new JButton(new ImageIcon(this.getClass().getResource("/icons/pop.png")));
 		btnSwapAbove.setActionCommand("pop");
 		btnSwapAbove.setToolTipText("pop monad up on stack");
 		btnSwapAbove.setPreferredSize(square);
@@ -439,7 +419,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 		pnlControlPanel2.add(btnSwapAbove, cn);
 		cn.gridy++;
 
-		btnCopyMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/copy.png")));
+		JButton btnCopyMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/copy.png")));
 		btnCopyMonad.setActionCommand("copy");
 		btnCopyMonad.setToolTipText("copy monad to end of stack");
 		btnCopyMonad.setPreferredSize(square);
@@ -448,7 +428,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 		pnlControlPanel2.add(btnCopyMonad, cn);
 		cn.gridy++;
 
-		btnRemoveMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/remove.png")));
+		JButton btnRemoveMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/remove.png")));
 		btnRemoveMonad.setActionCommand("erase");
 		btnRemoveMonad.setToolTipText("remove monad from stack");
 		btnRemoveMonad.setPreferredSize(square);
@@ -457,7 +437,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 		pnlControlPanel2.add(btnRemoveMonad, cn);
 		cn.gridy++;
 
-		btnNewMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/create.png")));
+		JButton btnNewMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/create.png")));
 		btnNewMonad.setActionCommand("create");
 		btnNewMonad.setToolTipText("create new monad");
 		btnNewMonad.setPreferredSize(square);
@@ -470,6 +450,22 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 		pnlControlPanel2.add(new JLabel(), cn);
 
 		add(pnlControlPanel2, "East");
+	}
+
+	private void makeNotWritable() {
+		if (pnlRefPanel != null)
+			pnlRefPanel.setBackground(clrBackColor);
+		nyadName.setEditable(false);
+	}
+
+	/**
+	 * This method adjusts the JTextArea elements contained on the panel to allow
+	 * for edits.
+	 */
+	private void makeWritable() {
+		if (pnlRefPanel != null)
+			pnlRefPanel.setBackground(clrUnlockColor);
+		nyadName.setEditable(true);
 	}
 
 	private void pop() {

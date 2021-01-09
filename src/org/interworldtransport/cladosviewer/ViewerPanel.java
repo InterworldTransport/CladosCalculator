@@ -51,10 +51,9 @@ import javax.swing.event.ChangeListener;
 import java.util.*;
 
 /**
- * org.interworldtransport.cladosviewer.ViewerPanel The ViewerPanel class is
- * intended to be the main panel of the Calculator. It holds the tabbed pane
- * that holds Nyads. It is also aware enough to manage the nyads a bit with
- * respect to stack operations.
+ * The ViewerPanel class is intended to be the center panel of the Calculator.
+ * It holds the tabbed pane that holds Nyads. It is also aware enough to manage
+ * the nyads a bit with respect to stack operations.
  * <p>
  * 
  * @version 1.0
@@ -69,12 +68,6 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 	 */
 	public CladosCalculator _GUI;
 	private CladosField _repMode;
-	private JButton btnCopyNyad;
-	private JButton btnNewNyad;
-	private JButton btnRemoveNyad;
-	private JButton btnSwapAbove;
-	private JButton btnSwapBelow;
-	private JPanel pnlControlBar;
 	private ImageIcon tabIcon;
 	protected ArrayList<NyadPanel<T>> nyadPanelList;
 	protected JTabbedPane nyadPanes;
@@ -232,7 +225,7 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 	}
 
 	private void createStackLayout() {
-		pnlControlBar = new JPanel();
+		JPanel pnlControlBar = new JPanel();
 		pnlControlBar.setLayout(new GridBagLayout());
 		pnlControlBar.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		pnlControlBar.setBackground(clrBackColor);
@@ -248,7 +241,7 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 		cn.weighty = 0;
 		cn.gridheight = 1;
 		cn.gridwidth = 1;
-		btnSwapBelow = new JButton(new ImageIcon(this.getClass().getResource("/icons/push.png")));
+		JButton btnSwapBelow = new JButton(new ImageIcon(this.getClass().getResource("/icons/push.png")));
 		btnSwapBelow.setActionCommand("push");
 		btnSwapBelow.setToolTipText("push nyad down on stack");
 		btnSwapBelow.setPreferredSize(square);
@@ -257,7 +250,7 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 		pnlControlBar.add(btnSwapBelow, cn);
 		cn.gridy++;
 
-		btnSwapAbove = new JButton(new ImageIcon(this.getClass().getResource("/icons/pop.png")));
+		JButton btnSwapAbove = new JButton(new ImageIcon(this.getClass().getResource("/icons/pop.png")));
 		btnSwapAbove.setActionCommand("pop");
 		btnSwapAbove.setToolTipText("pop nyad up on stack");
 		btnSwapAbove.setPreferredSize(square);
@@ -266,7 +259,7 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 		pnlControlBar.add(btnSwapAbove, cn);
 		cn.gridy++;
 
-		btnCopyNyad = new JButton(new ImageIcon(this.getClass().getResource("/icons/copy.png")));
+		JButton btnCopyNyad = new JButton(new ImageIcon(this.getClass().getResource("/icons/copy.png")));
 		btnCopyNyad.setActionCommand("copy");
 		btnCopyNyad.setToolTipText("copy nyad to end of stack");
 		btnCopyNyad.setPreferredSize(square);
@@ -275,7 +268,7 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 		pnlControlBar.add(btnCopyNyad, cn);
 		cn.gridy++;
 
-		btnRemoveNyad = new JButton(new ImageIcon(this.getClass().getResource("/icons/remove.png")));
+		JButton btnRemoveNyad = new JButton(new ImageIcon(this.getClass().getResource("/icons/remove.png")));
 		btnRemoveNyad.setActionCommand("erase");
 		btnRemoveNyad.setToolTipText("remove nyad from stack");
 		btnRemoveNyad.setPreferredSize(square);
@@ -284,7 +277,7 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 		pnlControlBar.add(btnRemoveNyad, cn);
 		cn.gridy++;
 
-		btnNewNyad = new JButton(new ImageIcon(this.getClass().getResource("/icons/create.png")));
+		JButton btnNewNyad = new JButton(new ImageIcon(this.getClass().getResource("/icons/create.png")));
 		btnNewNyad.setActionCommand("create");
 		btnNewNyad.setToolTipText("create new nyad");
 		btnNewNyad.setPreferredSize(square);
@@ -299,16 +292,15 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 		add(pnlControlBar, "East");
 	}
 
-	@SuppressWarnings("unchecked")
 	private void eraseNyadCommand() {
 		if (nyadPanes.getTabCount() > 0) {
 			_GUI.appFieldBar.repNumber = null;
-			
+
 			int point = nyadPanes.getSelectedIndex();
-			
+
 			switch (getNyadPanel(point).getRepMode()) {
 			case REALF:
-			case REALD :
+			case REALD:
 				_GUI.appFieldBar.setRealText("");
 				break;
 			case COMPLEXF:
@@ -516,9 +508,9 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 	 * monad, though, and not the Field Bar.
 	 * 
 	 * @param fieldPanel FieldPanel In the owning app, this is the FieldBar object
-	 *                    that allows for top-level numeric input on the calculator.
-	 *                    The Field Panel offered is registered with this Viewer
-	 *                    Panel so change events can be routed.
+	 *                   that allows for top-level numeric input on the calculator.
+	 *                   The Field Panel offered is registered with this Viewer
+	 *                   Panel so change events can be routed.
 	 */
 	protected <D extends UnitAbstract & Field & Normalizable> void registerFieldPanel(FieldPanel<D> fieldPanel) {
 		nyadPanes.addChangeListener(new ChangeListener() {

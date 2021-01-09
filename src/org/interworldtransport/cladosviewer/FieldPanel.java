@@ -73,7 +73,6 @@ import org.interworldtransport.cladosFExceptions.FieldException;
  * @version 1.0
  * @author Dr Alfred W Differ
  */
-
 public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel
 		implements ActionListener, FocusListener {
 	private static final int FONTSIZE = 12;
@@ -90,88 +89,13 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 	private CladosCalculator _GUI;
 	private CladosField repMode;
 	private final String[] _valLabels = { _REAL, _IMAGINARY };
-	private JButton btnClear;
-	private JButton btnConjugate;
-	private JButton btnInverse;
 	private JButton btnMakeComplex;
 	private JButton btnMakeDouble;
 	private JButton btnMakeFloat;
 	private JButton btnMakeReal;
 	private JPanel pnlDisplays;
 	private ArrayList<JTextField> valDisplays;
-	// protected ComplexD _repComplexD;
-	// protected ComplexF _repComplexF;
-	// protected RealD _repRealD;
 	protected T repNumber;
-
-	/**
-	 * The FieldPanel class is intended to be contain a cladosF Field in much the
-	 * same way as Monad and Nyad panels represent their contents to the calculator
-	 * 
-	 * @param pGUI CladosCalculator This parameter references the owning
-	 *             application. It's there to offer a way to get error messages to
-	 *             the GUI.
-	 * @param pIn  ComplexD This parameter offers one of the DivField objects to
-	 *             display so the panel doesn't make one of its own.
-	 */
-//	public FieldPanel(CladosCalculator pGUI, ComplexD pIn) {
-//		super();
-//		_GUI = pGUI;
-//		repMode = CladosField.COMPLEXD;
-//		_repComplexD = pIn;
-//		setBackground(clrBackColor);
-//		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-//		add(createControlLayout(), BorderLayout.LINE_START);
-//		add(createDisplaysLayout(), BorderLayout.CENTER);
-//		setCoefficientDisplay(pIn);
-//		_GUI.appGeometryView.registerFieldPanel(this);
-//	}
-
-	/**
-	 * The FieldPanel class is intended to be contain a cladosF Field in much the
-	 * same way as Monad and Nyad panels represent their contents to the calculator
-	 * 
-	 * @param pGUI CladosCalculator This parameter references the owning
-	 *             application. It's there to offer a way to get error messages to
-	 *             the GUI.
-	 * @param pIn  ComplexF This parameter offers one of the DivField objects to
-	 *             display so the panel doesn't make one of its own.
-	 */
-//	public FieldPanel(CladosCalculator pGUI, ComplexF pIn) {
-//		super();
-//		_GUI = pGUI;
-//		repMode = CladosField.COMPLEXF;
-//		_repComplexF = pIn;
-//		setBackground(clrBackColor);
-//		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-//		add(createControlLayout(), BorderLayout.LINE_START);
-//		add(createDisplaysLayout(), BorderLayout.CENTER);
-//		setCoefficientDisplay(pIn);
-//		_GUI.appGeometryView.registerFieldPanel(this);
-//	}
-
-	/**
-	 * The FieldPanel class is intended to be contain a cladosF Field in much the
-	 * same way as Monad and Nyad panels represent their contents to the calculator
-	 * 
-	 * @param pGUI CladosCalculator This parameter references the owning
-	 *             application. It's there to offer a way to get error messages to
-	 *             the GUI.
-	 * @param pIn  RealD This parameter offers one of the DivField objects to
-	 *             display so the panel doesn't make one of its own.
-	 */
-//	public FieldPanel(CladosCalculator pGUI, RealD pIn) {
-//		super();
-//		_GUI = pGUI;
-//		repMode = CladosField.REALD;
-//		_repRealD = pIn;
-//		setBackground(clrBackColor);
-//		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-//		add(createControlLayout(), BorderLayout.LINE_START);
-//		add(createDisplaysLayout(), BorderLayout.CENTER);
-//		setCoefficientDisplay(pIn);
-//		_GUI.appGeometryView.registerFieldPanel(this);
-//	}
 
 	/**
 	 * The FieldPanel class is intended to be contain a cladosF Field in much the
@@ -575,7 +499,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		c1.gridheight = 2;
 		c1.gridwidth = 2;
 
-		btnClear = new JButton(new ImageIcon(this.getClass().getResource("/icons/clearIt.png")));
+		JButton btnClear = new JButton(new ImageIcon(this.getClass().getResource("/icons/clearIt.png")));
 		btnClear.setActionCommand("clearIt");
 		btnClear.setPreferredSize(squareLarge);
 		btnClear.setBorder(BorderFactory.createEtchedBorder(0));
@@ -583,7 +507,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlButtons.add(btnClear, c1);
 		c1.gridx += 2;
 
-		btnInverse = new JButton(new ImageIcon(this.getClass().getResource("/icons/inverse.png")));
+		JButton btnInverse = new JButton(new ImageIcon(this.getClass().getResource("/icons/inverse.png")));
 		btnInverse.setActionCommand("inverse");
 		btnInverse.setPreferredSize(squareLarge);
 		btnInverse.setBorder(BorderFactory.createEtchedBorder(0));
@@ -591,7 +515,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlButtons.add(btnInverse, c1);
 		c1.gridx += 2;
 
-		btnConjugate = new JButton(new ImageIcon(this.getClass().getResource("/icons/conjugate.png")));
+		JButton btnConjugate = new JButton(new ImageIcon(this.getClass().getResource("/icons/conjugate.png")));
 		btnConjugate.setActionCommand("conjugate");
 		btnConjugate.setPreferredSize(squareLarge);
 		btnConjugate.setBorder(BorderFactory.createEtchedBorder(0));
@@ -782,7 +706,8 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 	 *               DivField child will be determined and then the FieldBar
 	 *               assigned.
 	 */
-	protected void setField(T pField) {
+	@SuppressWarnings("unchecked")
+	protected <D extends UnitAbstract & Field & Normalizable> void setField(D pField) {
 		if (pField == null) {
 			setBackground(clrBackColor);
 			return;

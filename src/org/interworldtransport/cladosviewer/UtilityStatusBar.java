@@ -44,12 +44,11 @@ import javax.swing.*;
  */
 
 public class UtilityStatusBar extends JPanel implements ActionListener {
-	private static final long serialVersionUID = 7838984392693449770L;
+	private static final long serialVersionUID = -238727771750034691L;
 	private static final int _FONTSIZE = 10;
 	private static final Color _backColor = new Color(255, 255, 222);
 	private static final Dimension square = new Dimension(25, 25);
 	private JTextArea stmesgt;
-	private JButton clearIt;
 
 	/**
 	 * The UtilityStatusBar class is intended to be the status bar of the SailAway
@@ -63,7 +62,7 @@ public class UtilityStatusBar extends JPanel implements ActionListener {
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEtchedBorder());
 
-		clearIt = new JButton(new ImageIcon(this.getClass().getResource("/icons/remove.png")));
+		JButton clearIt = new JButton(new ImageIcon(this.getClass().getResource("/icons/remove.png")));
 		clearIt.setActionCommand("clear");
 		clearIt.setToolTipText("clear the message stack");
 		clearIt.setPreferredSize(square);

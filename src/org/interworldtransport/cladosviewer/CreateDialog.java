@@ -59,17 +59,15 @@ import org.interworldtransport.cladosGExceptions.CladosNyadException;
 import org.interworldtransport.cladosGExceptions.GeneratorRangeException;
 
 /**
- * org.interworldtransport.cladosviewer.CreateDialog The Create Dialog window is
- * supposed to show a window that would allow a user to add a new Monad to the
- * stack in the Monad Viewer.
+ * The Create Dialog window is supposed to show a window that would allow a user
+ * to add a new Monad OR Nyad to the stack.
  * 
  * @version 1.0
  * @author Dr Alfred W Differ
- * @param <T>
+ * @param <T> A CladosF number descends from UnitAbstract and implements Field
+ *            and Normalizable.
  */
 public class CreateDialog<T extends UnitAbstract & Field & Normalizable> extends JDialog implements ActionListener {
-
-	private static final long serialVersionUID = -7986167685794915609L;
 	private static final Font _ITALICFONT = new Font(Font.SERIF, Font.ITALIC, 10);
 	private final static Color _monadColor = new Color(212, 212, 192);
 	private final static Color _nyadColor = new Color(212, 200, 212);
@@ -111,10 +109,8 @@ public class CreateDialog<T extends UnitAbstract & Field & Normalizable> extends
 
 	private CladosCalculator _GUI;
 	private CladosField repMode;
-	private JButton btnClose;
 	private JButton btnGetAlgebra;
 	private JButton btnGetFoot;
-	private JButton btnSave;
 	private Algebra copyAlg;
 	private Foot copyFoot;
 	private MonadPanel<T> monadShort;
@@ -184,7 +180,7 @@ public class CreateDialog<T extends UnitAbstract & Field & Normalizable> extends
 		dialogControls.setBorder(new EmptyBorder(5, 5, 5, 5));
 		dialogControls.setBackground(makeNyad ? _nyadColor : _monadColor);
 
-		btnSave = new JButton(new ImageIcon(this.getClass().getResource("/icons/save.png")));
+		JButton btnSave = new JButton(new ImageIcon(this.getClass().getResource("/icons/save.png")));
 		btnSave.setActionCommand(makeNyad ? "Save Nyad" : "Save Monad");
 		btnSave.setToolTipText(makeNyad ? "Create new nyad. Algebra/Foot or just Foot can be referenced."
 				: "Create new monad. Algebra/Foot can be referenced, but nyad Foot better match.");
@@ -193,7 +189,7 @@ public class CreateDialog<T extends UnitAbstract & Field & Normalizable> extends
 		btnSave.addActionListener(this);
 		dialogControls.add(btnSave);
 
-		btnClose = new JButton(new ImageIcon(this.getClass().getResource("/icons/close.png")));
+		JButton btnClose = new JButton(new ImageIcon(this.getClass().getResource("/icons/close.png")));
 		btnClose.setActionCommand("close");
 		btnClose.setToolTipText("Close the dialog. No further changes.");
 		btnClose.setPreferredSize(square);
@@ -336,9 +332,7 @@ public class CreateDialog<T extends UnitAbstract & Field & Normalizable> extends
 			return; //
 		} // Foot reference match ensured now. Algebra existence ensured too. Moving on.
 		Monad rep = CladosGBuilder.createMonadWithAlgebra(
-				new Scale<T>(repMode, copyAlg.getGBasis(), copyAlg.getCardinal()), 
-				copyAlg,
-				monadShort.name.getText(), 
+				new Scale<T>(repMode, copyAlg.getGBasis(), copyAlg.getCardinal()), copyAlg, monadShort.name.getText(),
 				monadShort.frame.getText());
 		tNSpot.appendMonad(rep);
 		tNSpotP.addMonadPanel(rep);
@@ -346,22 +340,23 @@ public class CreateDialog<T extends UnitAbstract & Field & Normalizable> extends
 
 	private void appendNyad()
 			throws BadSignatureException, GeneratorRangeException, CladosMonadException, CladosNyadException {
-		Foot tFoot = CladosGBuilder.createFoot(monadShort.foot.getText(),monadShort.cardname.getText());
-		
-		Algebra tAlg = CladosGBuilder.createAlgebraWithFoot(tFoot, tFoot.getCardinal(0),
-				monadShort.aname.getText(), monadShort.sig.getText());
+		Foot tFoot = CladosGBuilder.createFoot(monadShort.foot.getText(), monadShort.cardname.getText());
+
+		Algebra tAlg = CladosGBuilder.createAlgebraWithFoot(tFoot, tFoot.getCardinal(0), monadShort.aname.getText(),
+				monadShort.sig.getText());
 		tAlg.setMode(repMode);
-		
+
 		Monad tMonad = CladosGBuilder.createMonadWithAlgebra(
 				new Scale<T>(repMode, tAlg.getGBasis(), tAlg.getCardinal()), tAlg, monadShort.name.getText(),
 				monadShort.frame.getText());
-		
+
 		_GUI.appGeometryView.addNyad(CladosGBuilder.INSTANCE.createNyadUsingMonad(tMonad, "New"));
 	}
 
 	private void appendNyadUsingFoot()
 			throws BadSignatureException, GeneratorRangeException, CladosMonadException, CladosNyadException {
-		// Use Foot in creating new Algebra... then create new monad... then addNyad(new monad).
+		// Use Foot in creating new Algebra... then create new monad... then addNyad(new
+		// monad).
 		Algebra tAlg = CladosGBuilder.createAlgebraWithFoot(copyFoot, copyFoot.getCardinal(0),
 				monadShort.aname.getText(), monadShort.sig.getText());
 		tAlg.setMode(repMode);
@@ -377,9 +372,8 @@ public class CreateDialog<T extends UnitAbstract & Field & Normalizable> extends
 			throws BadSignatureException, GeneratorRangeException, CladosMonadException, CladosNyadException {
 		_GUI.appGeometryView.addNyad(CladosGBuilder.INSTANCE.createNyadUsingMonad(
 
-				CladosGBuilder.createMonadWithAlgebra(
-						new Scale<T>(repMode, copyAlg.getGBasis(), copyAlg.getCardinal()), copyAlg,
-						monadShort.name.getText(), monadShort.frame.getText()),
+				CladosGBuilder.createMonadWithAlgebra(new Scale<T>(repMode, copyAlg.getGBasis(), copyAlg.getCardinal()),
+						copyAlg, monadShort.name.getText(), monadShort.frame.getText()),
 				"New"));
 	}
 
