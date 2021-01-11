@@ -65,6 +65,7 @@ import org.interworldtransport.cladosviewerExceptions.CantGetIniException;
  */
 public class CladosCalculator extends JFrame implements ActionListener {
 
+	private static final long serialVersionUID = -5292410247583942841L;
 	private static final Color _backColor = new Color(255, 255, 222);
 
 	public static void main(String[] args) {
