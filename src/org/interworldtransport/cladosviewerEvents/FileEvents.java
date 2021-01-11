@@ -85,7 +85,12 @@ public class FileEvents {
 			return "Nothing in panels to save.";
 
 		StringBuffer content = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n");
-		content.append("<NyadList size=\"" + _GUI.appGeometryView.getNyadListSize() + "\">\r\n");
+		content.append("<NyadList ");
+		content.append("xmlns=\"https://interworldtransport.org\" ");
+		content.append("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ");
+		content.append("xsi:schemaLocation=\"https://interworldtransport.org clados.xsd\" ");
+		content.append("size=\"");
+		content.append(_GUI.appGeometryView.getNyadListSize()).append("\">\r\n");
 
 		switch (_GUI.IniProps.getProperty("Desktop.File.Snapshot.FullXML")) {
 		case "true" -> {
