@@ -68,6 +68,7 @@ import org.interworldtransport.cladosGExceptions.GeneratorRangeException;
  *            and Normalizable.
  */
 public class CreateDialog<T extends UnitAbstract & Field & Normalizable> extends JDialog implements ActionListener {
+	private static final long serialVersionUID = -3599915768271020504L;
 	private static final Font _ITALICFONT = new Font(Font.SERIF, Font.ITALIC, 10);
 	private final static Color _monadColor = new Color(212, 212, 192);
 	private final static Color _nyadColor = new Color(212, 200, 212);

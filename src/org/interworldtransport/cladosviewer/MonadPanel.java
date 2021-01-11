@@ -55,6 +55,7 @@ import java.util.*;
 
 public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel
 		implements ActionListener, FocusListener {
+	private static final long serialVersionUID = -5906360594213725004L;
 	private static final int _COEFF_SIZE = 10;
 	private static final Font _ITALICFONT = new Font(Font.SERIF, Font.ITALIC, _COEFF_SIZE);
 	private static final Font _PLAINFONT = new Font(Font.SERIF, Font.PLAIN, _COEFF_SIZE);

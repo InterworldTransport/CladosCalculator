@@ -55,16 +55,16 @@ import org.interworldtransport.cladosF.UnitAbstract;
  * 
  */
 public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends JTextArea implements FocusListener {
-	private static final long serialVersionUID = 7705233831398982801L;
-	private static final int _FONTSIZE = 12;
-	private static final int _DOUBLESIZE = 16;
-	private static final int _REALROWS = 1;
 	private static final int _COMPLEXROWS = 2;
+	private static final int _DOUBLESIZE = 16;
 	private static final int _FLOATSIZE = 10;
-	private static final Font _PLAINFONT = new Font(Font.SERIF, Font.PLAIN, _FONTSIZE);
-	private static final Font _ITALICFONT = new Font(Font.SERIF, Font.ITALIC, _FONTSIZE);
+	private static final int _FONTSIZE = 12;
 	private static final String _IMAGINARY = "[I]";
 	private static final String _REAL = "[R]";
+	private static final int _REALROWS = 1;
+	private static final Font ITALICFONT = new Font(Font.SERIF, Font.ITALIC, _FONTSIZE);
+	private static final Font PLAINFONT = new Font(Font.SERIF, Font.PLAIN, _FONTSIZE);
+	private static final long serialVersionUID = 7705233831398982801L;
 
 	private MonadPanel<D> _parent;
 	private CladosField repMode;
@@ -96,7 +96,7 @@ public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends
 				this.setColumns(_FLOATSIZE);
 				repMode = CladosField.COMPLEXF;
 			} else if (pField instanceof RealD) {
-				this.setRows(_COMPLEXROWS);
+				this.setRows(_REALROWS);
 				this.setColumns(_DOUBLESIZE);
 				repMode = CladosField.REALD;
 			} else if (pField instanceof RealF) {
@@ -106,12 +106,12 @@ public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends
 			} else
 				throw new IllegalArgumentException("Offered number isn't a known UnitAbstract child.");
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			setFont(_PLAINFONT);
+			setFont(PLAINFONT);
 			displayField = pField;
 			addFocusListener(this);
 		} else {
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-			setFont(_ITALICFONT);
+			setFont(ITALICFONT);
 			ErrorDialog.show("Null in FieldDisplay.", "Function Parameter Issue");
 			this.setText("null field");
 		}
@@ -143,12 +143,6 @@ public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends
 		if (_parent._editMode) // Only do this when parent MonadPanel is in edit mode.
 		{
 			displayField = CladosFBuilder.copyOf((D) _parent._GUI.appFieldBar.repNumber);
-//			switch (_parent.getRepMode()) {
-//			case REALF -> displayField = CladosFBuilder.copyOf((D) _parent._GUI.appFieldBar.repNumber);
-//			case REALD -> displayField = CladosFBuilder.copyOf(_parent._GUI.appFieldBar._repRealD);
-//			case COMPLEXF -> displayField = CladosFBuilder.copyOf(_parent._GUI.appFieldBar._repComplexF);
-//			case COMPLEXD -> displayField = CladosFBuilder.copyOf(_parent._GUI.appFieldBar._repComplexD);
-//			}
 			displayContents();
 		}
 	}
@@ -194,10 +188,10 @@ public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends
 				((ComplexD) displayField).setImg(Double.parseDouble(strB.substring(indexOfI, tBufferLength)));
 			}
 			}
-			setFont(_PLAINFONT);
+			setFont(PLAINFONT);
 			displayContents();
 		} catch (NumberFormatException e) {
-			setFont(_ITALICFONT);
+			setFont(ITALICFONT);
 			ErrorDialog.show("FieldDisplay must contain parse-able text.\nLook for bad lengths or number formats.",
 					"Parse Issue");
 		}
@@ -216,62 +210,8 @@ public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends
 			displayField = (D) CladosFBuilder.copyOf(pField);
 			displayContents();
 		} else {
-			setFont(_ITALICFONT);
+			setFont(ITALICFONT);
 			this.setText("null display field");
 		}
 	}
-
-	/**
-	 * When a new cladosF number is to be displayed, it is passed in through this
-	 * method.
-	 * 
-	 * @param pField ComplexF This is the ComplexF to be displayed in the text area
-	 *               presented by this panel.
-	 */
-//	@SuppressWarnings("unchecked")
-//	public void updateField(ComplexF pField) {
-//		if (pField != null) {
-//			displayField = (D) ComplexF.copyOf(pField);
-//			displayContents();
-//		} else {
-//			setFont(_ITALICFONT);
-//			this.setText("null C|F field");
-//		}
-//	}
-
-	/**
-	 * When a new cladosF number is to be displayed, it is passed in through this
-	 * method.
-	 * 
-	 * @param pField RealD This is the RealD to be displayed in the text area
-	 *               presented by this panel.
-	 */
-//	@SuppressWarnings("unchecked")
-//	public void updateField(RealD pField) {
-//		if (pField != null) {
-//			displayField = (D) RealD.copyOf(pField);
-//			displayContents();
-//		} else {
-//			setFont(_ITALICFONT);
-//			this.setText("null R|D field");
-//		}
-//	}
-
-	/**
-	 * When a new cladosF number is to be displayed, it is passed in through this
-	 * method.
-	 * 
-	 * @param pField RealF This is the RealF to be displayed in the text area
-	 *               presented by this panel.
-	 */
-//	@SuppressWarnings("unchecked")
-//	public void updateField(RealF pField) {
-//		if (pField != null) {
-//			displayField = (D) RealF.copyOf(pField);
-//			displayContents();
-//		} else {
-//			setFont(_ITALICFONT);
-//			this.setText("null R|F field");
-//		}
-//	}
 }

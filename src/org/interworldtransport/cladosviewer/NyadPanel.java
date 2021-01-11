@@ -73,6 +73,7 @@ import org.interworldtransport.cladosviewerExceptions.UtilitiesException;
  * @author Dr Alfred W Differ
  */
 public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel implements ActionListener {
+	private static final long serialVersionUID = 377115956906661646L;
 	public CladosCalculator _GUI;
 	private JButton btnEditMonad;
 	private JButton btnSaveEdits;

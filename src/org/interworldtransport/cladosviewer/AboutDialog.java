@@ -51,6 +51,7 @@ import javax.swing.border.EmptyBorder;
  * @author Dr Alfred W Differ
  */
 public final class AboutDialog extends JDialog implements ActionListener {
+	private static final long serialVersionUID = -358251200403316601L;
 	private static final Color _backColor = new Color(255, 255, 222);
 	private static final Color _tblBackColor = new Color(212, 212, 192);
 	private CladosCalculator _GUI;

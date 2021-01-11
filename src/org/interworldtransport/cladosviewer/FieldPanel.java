@@ -75,25 +75,26 @@ import org.interworldtransport.cladosFExceptions.FieldException;
  */
 public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel
 		implements ActionListener, FocusListener {
-	private static final int FONTSIZE = 12;
+	private static final long serialVersionUID = -6698059770057179342L;
 	private static final int _DOUBLESIZE = 16;
 	private static final int _FLOATSIZE = 10;
 	private static final String _IMAGINARY = "[I]";
 	private static final String _REAL = "[R]";
-	private static final Font _PLAINFONT = new Font(Font.SERIF, Font.PLAIN, FONTSIZE);
 	private static final Color clrBackColor = new Color(230, 255, 255);
 	private static final Color clrNullColor = new Color(255, 230, 255);
+	private static final int FONTSIZE = 12;
+	private static final Font PLAINFONT = new Font(Font.SERIF, Font.PLAIN, FONTSIZE);
 	private static final Dimension squareLarge = new Dimension(42, 42);
 	private static final Dimension squareMedium = new Dimension(21, 21);
 
 	private CladosCalculator _GUI;
-	private CladosField repMode;
 	private final String[] _valLabels = { _REAL, _IMAGINARY };
 	private JButton btnMakeComplex;
 	private JButton btnMakeDouble;
 	private JButton btnMakeFloat;
 	private JButton btnMakeReal;
 	private JPanel pnlDisplays;
+	private CladosField repMode;
 	private ArrayList<JTextField> valDisplays;
 	protected T repNumber;
 
@@ -586,7 +587,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			for (m = 0; m < 1; m++) {
 				tSpot = new JTextField();
 				tSpot.setColumns(FieldPanel._FLOATSIZE);
-				tSpot.setFont(_PLAINFONT);
+				tSpot.setFont(PLAINFONT);
 				tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				tSpot.addFocusListener(this);
 				valDisplays.add(m, tSpot);
@@ -601,7 +602,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			for (m = 0; m < 1; m++) {
 				tSpot = new JTextField();
 				tSpot.setColumns(FieldPanel._DOUBLESIZE);
-				tSpot.setFont(_PLAINFONT);
+				tSpot.setFont(PLAINFONT);
 				tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				tSpot.addFocusListener(this);
 				valDisplays.add(m, tSpot);
@@ -616,7 +617,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			for (m = 0; m < 2; m++) {
 				tSpot = new JTextField();
 				tSpot.setColumns(FieldPanel._FLOATSIZE);
-				tSpot.setFont(_PLAINFONT);
+				tSpot.setFont(PLAINFONT);
 				tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				tSpot.addFocusListener(this);
 				valDisplays.add(m, tSpot);
@@ -631,7 +632,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			for (m = 0; m < 2; m++) {
 				tSpot = new JTextField();
 				tSpot.setColumns(FieldPanel._DOUBLESIZE);
-				tSpot.setFont(_PLAINFONT);
+				tSpot.setFont(PLAINFONT);
 				tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				tSpot.addFocusListener(this);
 				valDisplays.add(m, tSpot);
