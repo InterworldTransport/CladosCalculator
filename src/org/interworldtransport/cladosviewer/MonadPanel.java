@@ -209,8 +209,8 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			btnChangeOrient = new JButton();
 			btnChangeOrient.setPreferredSize(squareLittle);
 			btnChangeOrient.setBorder(BorderFactory.createEtchedBorder(0));
-			iconHorizontal = new ImageIcon(this.getClass().getResource("/icons/horiz.png"));
-			iconVertical = new ImageIcon(this.getClass().getResource("/icons/vert.png"));
+			iconHorizontal = new ImageIcon(this.getClass().getResource("/resources/horiz.png"));
+			iconVertical = new ImageIcon(this.getClass().getResource("/resources/vert.png"));
 
 			switch (_GUI.IniProps.getProperty("Desktop.Default.Orient")) {
 			case "Vertical" -> {
@@ -480,7 +480,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		cn.weighty = 0;
 		cn.gridwidth = 2;
 
-		btnEdit = new JButton(new ImageIcon(this.getClass().getResource("/icons/edit.png")));
+		btnEdit = new JButton(new ImageIcon(this.getClass().getResource("/resources/edit.png")));
 		btnEdit.setActionCommand("edit");
 		btnEdit.setToolTipText("start edits");
 		btnEdit.setPreferredSize(squareLittle);
@@ -489,7 +489,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadEditControls.add(btnEdit, cn);
 		cn.gridy++;
 
-		btnSync = new JButton(new ImageIcon(this.getClass().getResource("/icons/save.png")));
+		btnSync = new JButton(new ImageIcon(this.getClass().getResource("/resources/save.png")));
 		btnSync.setActionCommand("save");
 		btnSync.setToolTipText("save edits");
 		btnSync.setEnabled(false);
@@ -499,7 +499,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadEditControls.add(btnSync, cn);
 		cn.gridy++;
 
-		btnRestore = new JButton(new ImageIcon(this.getClass().getResource("/icons/restore.png")));
+		btnRestore = new JButton(new ImageIcon(this.getClass().getResource("/resources/restore.png")));
 		btnRestore.setActionCommand("abort");
 		btnRestore.setToolTipText("abandon edits");
 		btnRestore.setEnabled(false);
@@ -533,7 +533,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		cn.weighty = 0;
 		cn.gridwidth = 2;
 
-		JButton btnScaleMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/scale.png")));
+		JButton btnScaleMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/scale.png")));
 		btnScaleMonad.setActionCommand("scale");
 		btnScaleMonad.setToolTipText("scale() the monad");
 		btnScaleMonad.setPreferredSize(squareMedium);
@@ -542,7 +542,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadAlterControls.add(btnScaleMonad, cn);
 		cn.gridy++;
 
-		JButton btnNormalizeMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/norm.png")));
+		JButton btnNormalizeMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/norm.png")));
 		btnNormalizeMonad.setActionCommand("normalize");
 		btnNormalizeMonad.setToolTipText("normalize THIS Monad");
 		btnNormalizeMonad.setPreferredSize(squareMedium);
@@ -551,7 +551,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadAlterControls.add(btnNormalizeMonad, cn);
 		cn.gridy++;
 
-		JButton btnInvertMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/invert.png")));
+		JButton btnInvertMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/invert.png")));
 		btnInvertMonad.setActionCommand("invert");
 		btnInvertMonad.setToolTipText("invert [+/-] generators");
 		btnInvertMonad.setPreferredSize(squareMedium);
@@ -560,7 +560,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadAlterControls.add(btnInvertMonad, cn);
 		cn.gridy++;
 
-		JButton btnReverseMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/reverse.png")));
+		JButton btnReverseMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/reverse.png")));
 		btnReverseMonad.setActionCommand("reverse");
 		btnReverseMonad.setToolTipText("reverse [ab->ba] blades");
 		btnReverseMonad.setPreferredSize(squareMedium);
@@ -569,7 +569,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadAlterControls.add(btnReverseMonad, cn);
 		cn.gridy++;
 
-		JButton btnDualLeft = new JButton(new ImageIcon(this.getClass().getResource("/icons/dualleft.png")));
+		JButton btnDualLeft = new JButton(new ImageIcon(this.getClass().getResource("/resources/dualleft.png")));
 		btnDualLeft.setActionCommand("dual>");
 		btnDualLeft.setToolTipText("left Dual of the monad using algebra's PS");
 		btnDualLeft.setPreferredSize(squareMedium);
@@ -578,7 +578,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadAlterControls.add(btnDualLeft, cn);
 		cn.gridy++;
 
-		JButton btnDualRight = new JButton(new ImageIcon(this.getClass().getResource("/icons/dualright.png")));
+		JButton btnDualRight = new JButton(new ImageIcon(this.getClass().getResource("/resources/dualright.png")));
 		btnDualRight.setActionCommand("<dual");
 		btnDualRight.setToolTipText("right Dual of the monad using algebra's PS");
 		btnDualRight.setPreferredSize(squareMedium);
@@ -587,7 +587,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadAlterControls.add(btnDualRight, cn);
 		cn.gridy++;
 
-		JButton btnGradeCrop = new JButton(new ImageIcon(this.getClass().getResource("/icons/gradecrop.png")));
+		JButton btnGradeCrop = new JButton(new ImageIcon(this.getClass().getResource("/resources/gradecrop.png")));
 		btnGradeCrop.setActionCommand("findgrade crop");
 		btnGradeCrop.setToolTipText("crop around findgrade()");
 		btnGradeCrop.setPreferredSize(squareMedium);
@@ -596,7 +596,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlMonadAlterControls.add(btnGradeCrop, cn);
 		cn.gridy++;
 
-		JButton btnGradeCut = new JButton(new ImageIcon(this.getClass().getResource("/icons/gradecut.png")));
+		JButton btnGradeCut = new JButton(new ImageIcon(this.getClass().getResource("/resources/gradecut.png")));
 		btnGradeCut.setActionCommand("findgrade cut");
 		btnGradeCut.setToolTipText("cut this findgrade()");
 		btnGradeCut.setPreferredSize(squareMedium);

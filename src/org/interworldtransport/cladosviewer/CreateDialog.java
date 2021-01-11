@@ -181,7 +181,7 @@ public class CreateDialog<T extends UnitAbstract & Field & Normalizable> extends
 		dialogControls.setBorder(new EmptyBorder(5, 5, 5, 5));
 		dialogControls.setBackground(makeNyad ? _nyadColor : _monadColor);
 
-		JButton btnSave = new JButton(new ImageIcon(this.getClass().getResource("/icons/save.png")));
+		JButton btnSave = new JButton(new ImageIcon(this.getClass().getResource("/resources/save.png")));
 		btnSave.setActionCommand(makeNyad ? "Save Nyad" : "Save Monad");
 		btnSave.setToolTipText(makeNyad ? "Create new nyad. Algebra/Foot or just Foot can be referenced."
 				: "Create new monad. Algebra/Foot can be referenced, but nyad Foot better match.");
@@ -190,7 +190,7 @@ public class CreateDialog<T extends UnitAbstract & Field & Normalizable> extends
 		btnSave.addActionListener(this);
 		dialogControls.add(btnSave);
 
-		JButton btnClose = new JButton(new ImageIcon(this.getClass().getResource("/icons/close.png")));
+		JButton btnClose = new JButton(new ImageIcon(this.getClass().getResource("/resources/close.png")));
 		btnClose.setActionCommand("close");
 		btnClose.setToolTipText("Close the dialog. No further changes.");
 		btnClose.setPreferredSize(square);

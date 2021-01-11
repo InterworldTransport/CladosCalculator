@@ -459,7 +459,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		c1.weightx = 0;
 		c1.weighty = 0;
 
-		btnMakeReal = new JButton(new ImageIcon(this.getClass().getResource("/icons/real.png")));
+		btnMakeReal = new JButton(new ImageIcon(this.getClass().getResource("/resources/real.png")));
 		btnMakeReal.setActionCommand("makeReal");
 		btnMakeReal.setToolTipText("use real numbers");
 		btnMakeReal.setPreferredSize(squareMedium);
@@ -468,7 +468,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlButtons.add(btnMakeReal, c1);
 		c1.gridy++;
 
-		btnMakeComplex = new JButton(new ImageIcon(this.getClass().getResource("/icons/complex.png")));
+		btnMakeComplex = new JButton(new ImageIcon(this.getClass().getResource("/resources/complex.png")));
 		btnMakeComplex.setActionCommand("makeComplex");
 		btnMakeComplex.setToolTipText("use complex numbers");
 		btnMakeComplex.setPreferredSize(squareMedium);
@@ -478,7 +478,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		c1.gridy = 0;
 		c1.gridx++;
 
-		btnMakeFloat = new JButton(new ImageIcon(this.getClass().getResource("/icons/float.png")));
+		btnMakeFloat = new JButton(new ImageIcon(this.getClass().getResource("/resources/float.png")));
 		btnMakeFloat.setActionCommand("makeFloat");
 		btnMakeFloat.setToolTipText("use floating precision");
 		btnMakeFloat.setPreferredSize(squareMedium);
@@ -487,7 +487,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlButtons.add(btnMakeFloat, c1);
 		c1.gridy++;
 
-		btnMakeDouble = new JButton(new ImageIcon(this.getClass().getResource("/icons/double.png")));
+		btnMakeDouble = new JButton(new ImageIcon(this.getClass().getResource("/resources/double.png")));
 		btnMakeDouble.setActionCommand("makeDouble");
 		btnMakeDouble.setToolTipText("use double precision");
 		btnMakeDouble.setPreferredSize(squareMedium);
@@ -500,7 +500,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		c1.gridheight = 2;
 		c1.gridwidth = 2;
 
-		JButton btnClear = new JButton(new ImageIcon(this.getClass().getResource("/icons/clearIt.png")));
+		JButton btnClear = new JButton(new ImageIcon(this.getClass().getResource("/resources/clearIt.png")));
 		btnClear.setActionCommand("clearIt");
 		btnClear.setPreferredSize(squareLarge);
 		btnClear.setBorder(BorderFactory.createEtchedBorder(0));
@@ -508,7 +508,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlButtons.add(btnClear, c1);
 		c1.gridx += 2;
 
-		JButton btnInverse = new JButton(new ImageIcon(this.getClass().getResource("/icons/inverse.png")));
+		JButton btnInverse = new JButton(new ImageIcon(this.getClass().getResource("/resources/inverse.png")));
 		btnInverse.setActionCommand("inverse");
 		btnInverse.setPreferredSize(squareLarge);
 		btnInverse.setBorder(BorderFactory.createEtchedBorder(0));
@@ -516,7 +516,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		pnlButtons.add(btnInverse, c1);
 		c1.gridx += 2;
 
-		JButton btnConjugate = new JButton(new ImageIcon(this.getClass().getResource("/icons/conjugate.png")));
+		JButton btnConjugate = new JButton(new ImageIcon(this.getClass().getResource("/resources/conjugate.png")));
 		btnConjugate.setActionCommand("conjugate");
 		btnConjugate.setPreferredSize(squareLarge);
 		btnConjugate.setBorder(BorderFactory.createEtchedBorder(0));

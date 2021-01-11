@@ -180,7 +180,7 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 		mainPane.add(controlPanel, "South");
 
 		// Create buttons
-		btnSave = new JButton(new ImageIcon(this.getClass().getResource("/icons/save.png")));
+		btnSave = new JButton(new ImageIcon(this.getClass().getResource("/resources/save.png")));
 		btnSave.setActionCommand("save");
 		btnSave.setToolTipText("Save any changes, then close.");
 		btnSave.setPreferredSize(new Dimension(30, 30));
@@ -188,7 +188,7 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 		btnSave.addActionListener(this);
 		controlPanel.add(btnSave);
 
-		JButton btnClose = new JButton(new ImageIcon(this.getClass().getResource("/icons/close.png")));
+		JButton btnClose = new JButton(new ImageIcon(this.getClass().getResource("/resources/close.png")));
 		btnClose.setActionCommand("close");
 		btnClose.setToolTipText("Close the dialog. No further changes.");
 		btnClose.setPreferredSize(new Dimension(30, 30));

@@ -125,7 +125,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 		setBackground(clrBackColor);
 		setLayout(new BorderLayout());
 
-		tabIcon = new ImageIcon(this.getClass().getResource("/icons/M.png"));
+		tabIcon = new ImageIcon(this.getClass().getResource("/resources/M.png"));
 
 		createEditLayout();
 		createStackLayout();
@@ -293,20 +293,20 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 		cn.anchor = GridBagConstraints.NORTH;
 		makeNotWritable();
 
-		btnSaveEdits = new JButton(new ImageIcon(this.getClass().getResource("/icons/save.png")));
+		btnSaveEdits = new JButton(new ImageIcon(this.getClass().getResource("/resources/save.png")));
 		btnSaveEdits.setActionCommand("save");
 		btnSaveEdits.setToolTipText("save edits to nyad");
 		btnSaveEdits.setBorder(BorderFactory.createEtchedBorder(0));
 		btnSaveEdits.setEnabled(false);
 		btnSaveEdits.setPreferredSize(square);
 
-		btnEditMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/edit.png")));
+		btnEditMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/edit.png")));
 		btnEditMonad.setActionCommand("edit");
 		btnEditMonad.setToolTipText("start edits on nyad");
 		btnEditMonad.setBorder(BorderFactory.createEtchedBorder(0));
 		btnEditMonad.setPreferredSize(square);
 
-		btnUndoEdits = new JButton(new ImageIcon(this.getClass().getResource("/icons/restore.png")));
+		btnUndoEdits = new JButton(new ImageIcon(this.getClass().getResource("/resources/restore.png")));
 		btnUndoEdits.setActionCommand("abort");
 		btnUndoEdits.setToolTipText("abandon edits to nyad");
 		btnUndoEdits.setBorder(BorderFactory.createEtchedBorder(0));
@@ -402,7 +402,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 		cn.weighty = 0;
 		cn.gridheight = 1;
 		cn.gridwidth = 1;
-		JButton btnSwapBelow = new JButton(new ImageIcon(this.getClass().getResource("/icons/push.png")));
+		JButton btnSwapBelow = new JButton(new ImageIcon(this.getClass().getResource("/resources/push.png")));
 		btnSwapBelow.setActionCommand("push");
 		btnSwapBelow.setToolTipText("push monad down on stack");
 		btnSwapBelow.setPreferredSize(square);
@@ -411,7 +411,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 		pnlControlPanel2.add(btnSwapBelow, cn);
 		cn.gridy++;
 
-		JButton btnSwapAbove = new JButton(new ImageIcon(this.getClass().getResource("/icons/pop.png")));
+		JButton btnSwapAbove = new JButton(new ImageIcon(this.getClass().getResource("/resources/pop.png")));
 		btnSwapAbove.setActionCommand("pop");
 		btnSwapAbove.setToolTipText("pop monad up on stack");
 		btnSwapAbove.setPreferredSize(square);
@@ -420,7 +420,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 		pnlControlPanel2.add(btnSwapAbove, cn);
 		cn.gridy++;
 
-		JButton btnCopyMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/copy.png")));
+		JButton btnCopyMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/copy.png")));
 		btnCopyMonad.setActionCommand("copy");
 		btnCopyMonad.setToolTipText("copy monad to end of stack");
 		btnCopyMonad.setPreferredSize(square);
@@ -429,7 +429,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 		pnlControlPanel2.add(btnCopyMonad, cn);
 		cn.gridy++;
 
-		JButton btnRemoveMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/remove.png")));
+		JButton btnRemoveMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/remove.png")));
 		btnRemoveMonad.setActionCommand("erase");
 		btnRemoveMonad.setToolTipText("remove monad from stack");
 		btnRemoveMonad.setPreferredSize(square);
@@ -438,7 +438,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 		pnlControlPanel2.add(btnRemoveMonad, cn);
 		cn.gridy++;
 
-		JButton btnNewMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/create.png")));
+		JButton btnNewMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/create.png")));
 		btnNewMonad.setActionCommand("create");
 		btnNewMonad.setToolTipText("create new monad");
 		btnNewMonad.setPreferredSize(square);
