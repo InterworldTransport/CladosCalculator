@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MOpsGradePartEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -35,7 +35,7 @@ import javax.swing.JMenuItem;
  * This class manages events relating to a simple requirement Limit this Monad
  * to a particular findgrade.
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class MOpsGradePartEvents implements ActionListener {
@@ -85,13 +85,8 @@ public class MOpsGradePartEvents implements ActionListener {
 		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
 
 		try {
-			short tGrade = (short) Float.parseFloat(_parent._GUI.appFieldBar.getRealText());
-			switch (tMSpotPnl.getRepMode()) {
-			case REALF -> tMSpotPnl.getMonadRF().gradePart(tGrade);
-			case REALD -> tMSpotPnl.getMonadRD().gradePart(tGrade);
-			case COMPLEXF -> tMSpotPnl.getMonadCF().gradePart(tGrade);
-			case COMPLEXD -> tMSpotPnl.getMonadCD().gradePart(tGrade);
-			}
+			byte tGrade = Byte.parseByte(_parent._GUI.appFieldBar.getRealText());
+			tMSpotPnl.getMonad().gradePart(tGrade);
 			tMSpotPnl.setCoefficientDisplay();
 			_parent._GUI.appStatusBar
 					.setStatusMsg("-->Selected monad has been cropped around " + tGrade + "-findgrade.\n");

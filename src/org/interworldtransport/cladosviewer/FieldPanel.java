@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.FieldPanel<br>
  * -------------------------------------------------------------------- <p>
@@ -25,22 +25,37 @@
 
 package org.interworldtransport.cladosviewer;
 
-import org.interworldtransport.cladosF.CladosField;
-import org.interworldtransport.cladosF.ComplexD;
-import org.interworldtransport.cladosF.ComplexF;
-import org.interworldtransport.cladosF.DivField;
-import org.interworldtransport.cladosF.RealD;
-import org.interworldtransport.cladosF.RealF;
-import org.interworldtransport.cladosFExceptions.FieldException;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
-import javax.swing.*;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
+
+import org.interworldtransport.cladosF.CladosField;
+import org.interworldtransport.cladosF.ComplexD;
+import org.interworldtransport.cladosF.ComplexF;
+import org.interworldtransport.cladosF.Field;
+import org.interworldtransport.cladosF.Normalizable;
+import org.interworldtransport.cladosF.RealD;
+import org.interworldtransport.cladosF.RealF;
+import org.interworldtransport.cladosF.UnitAbstract;
+import org.interworldtransport.cladosFExceptions.FieldException;
 
 /**
  * The FieldPanel class is intended to be the the numeric input panel for the
@@ -55,38 +70,33 @@ import javax.swing.border.BevelBorder;
  * the scalar is stored for the function to use. That 'scalar' is 'repField'.
  * <p>
  * 
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
-
-public class FieldPanel extends JPanel implements ActionListener, FocusListener {
-	private static final int FONTSIZE = 12;
+public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel
+		implements ActionListener, FocusListener {
+	private static final long serialVersionUID = -6698059770057179342L;
 	private static final int _DOUBLESIZE = 16;
 	private static final int _FLOATSIZE = 10;
 	private static final String _IMAGINARY = "[I]";
 	private static final String _REAL = "[R]";
-	private static final Font _PLAINFONT = new Font(Font.SERIF, Font.PLAIN, FONTSIZE);
 	private static final Color clrBackColor = new Color(230, 255, 255);
 	private static final Color clrNullColor = new Color(255, 230, 255);
+	private static final int FONTSIZE = 12;
+	private static final Font PLAINFONT = new Font(Font.SERIF, Font.PLAIN, FONTSIZE);
 	private static final Dimension squareLarge = new Dimension(42, 42);
 	private static final Dimension squareMedium = new Dimension(21, 21);
 
 	private CladosCalculator _GUI;
-	private CladosField _repMode;
 	private final String[] _valLabels = { _REAL, _IMAGINARY };
-	private JButton btnClear;
-	private JButton btnConjugate;
-	private JButton btnInverse;
 	private JButton btnMakeComplex;
 	private JButton btnMakeDouble;
 	private JButton btnMakeFloat;
 	private JButton btnMakeReal;
 	private JPanel pnlDisplays;
+	private CladosField repMode;
 	private ArrayList<JTextField> valDisplays;
-	protected ComplexD _repComplexD;
-	protected ComplexF _repComplexF;
-	protected RealD _repRealD;
-	protected RealF _repRealF;
+	protected T repNumber;
 
 	/**
 	 * The FieldPanel class is intended to be contain a cladosF Field in much the
@@ -95,14 +105,14 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 	 * @param pGUI CladosCalculator This parameter references the owning
 	 *             application. It's there to offer a way to get error messages to
 	 *             the GUI.
-	 * @param pIn  ComplexD This parameter offers one of the DivField objects to
-	 *             display so the panel doesn't make one of its own.
+	 * @param pIn  CladosF number This parameter offers one of the CladosF numbers
+	 *             to display so the panel doesn't make one of its own.
 	 */
-	public FieldPanel(CladosCalculator pGUI, ComplexD pIn) {
+	public FieldPanel(CladosCalculator pGUI, T pIn) {
 		super();
 		_GUI = pGUI;
-		_repMode = CladosField.COMPLEXD;
-		_repComplexD = pIn;
+		repMode = CladosField.REALF;
+		repNumber = pIn;
 		setBackground(clrBackColor);
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		add(createControlLayout(), BorderLayout.LINE_START);
@@ -111,108 +121,30 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 		_GUI.appGeometryView.registerFieldPanel(this);
 	}
 
-	/**
-	 * The FieldPanel class is intended to be contain a cladosF Field in much the
-	 * same way as Monad and Nyad panels represent their contents to the calculator
-	 * 
-	 * @param pGUI CladosCalculator This parameter references the owning
-	 *             application. It's there to offer a way to get error messages to
-	 *             the GUI.
-	 * @param pIn  ComplexF This parameter offers one of the DivField objects to
-	 *             display so the panel doesn't make one of its own.
-	 */
-	public FieldPanel(CladosCalculator pGUI, ComplexF pIn) {
-		super();
-		_GUI = pGUI;
-		_repMode = CladosField.COMPLEXF;
-		_repComplexF = pIn;
-		setBackground(clrBackColor);
-		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		add(createControlLayout(), BorderLayout.LINE_START);
-		add(createDisplaysLayout(), BorderLayout.CENTER);
-		setCoefficientDisplay(pIn);
-		_GUI.appGeometryView.registerFieldPanel(this);
-	}
-
-	/**
-	 * The FieldPanel class is intended to be contain a cladosF Field in much the
-	 * same way as Monad and Nyad panels represent their contents to the calculator
-	 * 
-	 * @param pGUI CladosCalculator This parameter references the owning
-	 *             application. It's there to offer a way to get error messages to
-	 *             the GUI.
-	 * @param pIn  RealD This parameter offers one of the DivField objects to
-	 *             display so the panel doesn't make one of its own.
-	 */
-	public FieldPanel(CladosCalculator pGUI, RealD pIn) {
-		super();
-		_GUI = pGUI;
-		_repMode = CladosField.REALD;
-		_repRealD = pIn;
-		setBackground(clrBackColor);
-		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		add(createControlLayout(), BorderLayout.LINE_START);
-		add(createDisplaysLayout(), BorderLayout.CENTER);
-		setCoefficientDisplay(pIn);
-		_GUI.appGeometryView.registerFieldPanel(this);
-	}
-
-	/**
-	 * The FieldPanel class is intended to be contain a cladosF Field in much the
-	 * same way as Monad and Nyad panels represent their contents to the calculator
-	 * 
-	 * @param pGUI CladosCalculator This parameter references the owning
-	 *             application. It's there to offer a way to get error messages to
-	 *             the GUI.
-	 * @param pIn  RealF This parameter offers one of the DivField objects to
-	 *             display so the panel doesn't make one of its own.
-	 */
-	public FieldPanel(CladosCalculator pGUI, RealF pIn) {
-		super();
-		_GUI = pGUI;
-		_repMode = CladosField.REALF;
-		_repRealF = pIn;
-		setBackground(clrBackColor);
-		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-		add(createControlLayout(), BorderLayout.LINE_START);
-		add(createDisplaysLayout(), BorderLayout.CENTER);
-		setCoefficientDisplay(pIn);
-		_GUI.appGeometryView.registerFieldPanel(this);
-	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		switch (event.getActionCommand()) {
 		case "clearIt" -> {
-			if (_repMode == CladosField.COMPLEXF | _repMode == CladosField.COMPLEXD)
+			if (repMode == CladosField.COMPLEXF | repMode == CladosField.COMPLEXD)
 				setImgText("");
 			setRealText("");
 		}
 		case "conjugate" -> {
 			try {
-				switch (_repMode) {
-				case REALF:
-					_repRealF = (RealF) CladosField.REALF.createZERO(_repRealF);
-					_repRealF.setReal(Float.parseFloat(getRealText()));
-					setCoefficientDisplay(_repRealF.conjugate());
-					break;
-				case REALD:
-					_repRealD = (RealD) CladosField.REALD.createZERO(_repRealD);
-					_repRealD.setReal(Double.parseDouble(getRealText()));
-					setCoefficientDisplay(_repRealD.conjugate());
-					break;
-				case COMPLEXF:
-					_repComplexF = (ComplexF) CladosField.COMPLEXF.createZERO(_repComplexF);
-					_repComplexF.setReal(Float.parseFloat(getRealText()));
-					_repComplexF.setImg(Float.parseFloat(getImgText()));
-					setCoefficientDisplay(_repComplexF.conjugate());
-					break;
-				case COMPLEXD:
-					_repComplexD = (ComplexD) CladosField.COMPLEXD.createZERO(_repComplexD);
-					_repComplexD.setReal(Double.parseDouble(getRealText()));
-					_repComplexD.setImg(Double.parseDouble(getImgText()));
-					setCoefficientDisplay(_repComplexD.conjugate());
+				switch (repMode) {
+				case REALF -> ((RealF) repNumber).setReal(Float.parseFloat(getRealText()));
+				case REALD -> ((RealD) repNumber).setReal(Double.parseDouble(getRealText()));
+				case COMPLEXF -> {
+					((ComplexF) repNumber).setReal(Float.parseFloat(getRealText()));
+					((ComplexF) repNumber).setImg(Float.parseFloat(getImgText()));
 				}
+				case COMPLEXD -> {
+					((ComplexD) repNumber).setReal(Double.parseDouble(getRealText()));
+					((ComplexD) repNumber).setImg(Double.parseDouble(getImgText()));
+				}
+				}
+				setCoefficientDisplay((T) repNumber.conjugate());
 			} catch (NumberFormatException en) {
 				ErrorDialog.show("Conjugation action halted.\nProbably a parsing error when reading FieldBar.\n"
 						+ en.getMessage(), "Number Format Exception");
@@ -220,29 +152,20 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 		}
 		case "inverse" -> {
 			try {
-				switch (_repMode) {
-				case REALF:
-					_repRealF = (RealF) CladosField.REALF.createZERO(_repRealF);
-					_repRealF.setReal(Float.parseFloat(getRealText()));
-					setCoefficientDisplay(_repRealF.invert());
-					break;
-				case REALD:
-					_repRealD = (RealD) CladosField.REALD.createZERO(_repRealD);
-					_repRealD.setReal(Double.parseDouble(getRealText()));
-					setCoefficientDisplay(_repRealD.invert());
-					break;
-				case COMPLEXF:
-					_repComplexF = (ComplexF) CladosField.COMPLEXF.createZERO(_repComplexF);
-					_repComplexF.setReal(Float.parseFloat(getRealText()));
-					_repComplexF.setImg(Float.parseFloat(getImgText()));
-					setCoefficientDisplay(_repComplexF.invert());
-					break;
-				case COMPLEXD:
-					_repComplexD = (ComplexD) CladosField.COMPLEXD.createZERO(_repComplexD);
-					_repComplexD.setReal(Double.parseDouble(getRealText()));
-					_repComplexD.setImg(Double.parseDouble(getImgText()));
-					setCoefficientDisplay(_repComplexD.invert());
+				switch (repMode) {
+				case REALF -> ((RealF) repNumber).setReal(Float.parseFloat(getRealText()));
+				case REALD -> ((RealD) repNumber).setReal(Double.parseDouble(getRealText()));
+				case COMPLEXF -> {
+					((ComplexF) repNumber).setReal(Float.parseFloat(getRealText()));
+					((ComplexF) repNumber).setImg(Float.parseFloat(getImgText()));
 				}
+				case COMPLEXD -> {
+					((ComplexD) repNumber).setReal(Double.parseDouble(getRealText()));
+					((ComplexD) repNumber).setImg(Double.parseDouble(getImgText()));
+				}
+				}
+				setCoefficientDisplay((T) repNumber.invert());
+
 			} catch (FieldException e) {
 				ErrorDialog.show("Field Exception prevented inversion.\nCardinal=" + e.getSource().getCardinalString()
 						+ "\nSource Message=" + e.getSourceMessage(), "Field Exception");
@@ -258,19 +181,19 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 			}
 			valDisplays.clear();
 			remove(pnlDisplays);
-			if (_repMode == CladosField.REALD) {
-				_repMode = CladosField.REALF;
-				if (_repRealF == null)
-					_repRealF = RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
-			} else if (_repMode == CladosField.COMPLEXD) {
-				_repMode = CladosField.COMPLEXF;
-				if (_repComplexF == null)
-					_repComplexF = ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
+			if (repMode == CladosField.REALD) {
+				repMode = CladosField.REALF;
+				if (repNumber == null) // TODO No. Should not be using iniProp cardinal. Should keep a local one
+					repNumber = (T) RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
+			} else if (repMode == CladosField.COMPLEXD) {
+				repMode = CladosField.COMPLEXF;
+				if (repNumber == null) // TODO No. Should not be using iniProp cardinal. Should keep a local one
+					repNumber = (T) ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
 			}
 			btnMakeDouble.setEnabled(true);
 			btnMakeFloat.setEnabled(false);
 			repaint();
-			_GUI.appGeometryView.setRepMode(_repMode);
+			_GUI.appGeometryView.setRepMode(repMode);
 			add(createDisplaysLayout(), BorderLayout.LINE_END);
 			_GUI.pack();
 		}
@@ -281,19 +204,19 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 			}
 			valDisplays.clear();
 			remove(pnlDisplays);
-			if (_repMode == CladosField.REALF) {
-				_repMode = CladosField.REALD;
-				if (_repRealD == null)
-					_repRealD = RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
-			} else if (_repMode == CladosField.COMPLEXF) {
-				_repMode = CladosField.COMPLEXD;
-				if (_repComplexD == null)
-					_repComplexD = ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
+			if (repMode == CladosField.REALF) {
+				repMode = CladosField.REALD;
+				if (repNumber == null) // TODO No. Should not be using iniProp cardinal. Should keep a local one
+					repNumber = (T) RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
+			} else if (repMode == CladosField.COMPLEXF) {
+				repMode = CladosField.COMPLEXD;
+				if (repNumber == null) // TODO No. Should not be using iniProp cardinal. Should keep a local one
+					repNumber = (T) ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
 			}
 			btnMakeFloat.setEnabled(true);
 			btnMakeDouble.setEnabled(false);
 			repaint();
-			_GUI.appGeometryView.setRepMode(_repMode);
+			_GUI.appGeometryView.setRepMode(repMode);
 			add(createDisplaysLayout(), BorderLayout.LINE_END);
 			_GUI.pack();
 		}
@@ -304,19 +227,19 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 			}
 			valDisplays.clear();
 			remove(pnlDisplays);
-			if (_repMode == CladosField.COMPLEXF) {
-				_repMode = CladosField.REALF;
-				if (_repRealF == null)
-					_repRealF = RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
-			} else if (_repMode == CladosField.COMPLEXD) {
-				_repMode = CladosField.REALD;
-				if (_repRealD == null)
-					_repRealD = RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
+			if (repMode == CladosField.COMPLEXF) {
+				repMode = CladosField.REALF;
+				if (repNumber == null) // TODO No. Should not be using iniProp cardinal. Should keep a local one
+					repNumber = (T) RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
+			} else if (repMode == CladosField.COMPLEXD) {
+				repMode = CladosField.REALD;
+				if (repNumber == null) // TODO No. Should not be using iniProp cardinal. Should keep a local one
+					repNumber = (T) RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
 			}
 			btnMakeComplex.setEnabled(true);
 			btnMakeReal.setEnabled(false);
 			repaint();
-			_GUI.appGeometryView.setRepMode(_repMode);
+			_GUI.appGeometryView.setRepMode(repMode);
 			add(createDisplaysLayout(), BorderLayout.LINE_END);
 			_GUI.pack();
 		}
@@ -327,19 +250,19 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 			}
 			valDisplays.clear();
 			remove(pnlDisplays);
-			if (_repMode == CladosField.REALF) {
-				_repMode = CladosField.COMPLEXF;
-				if (_repComplexF == null)
-					_repComplexF = ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
-			} else if (_repMode == CladosField.REALD) {
-				_repMode = CladosField.COMPLEXD;
-				if (_repComplexD == null)
-					_repComplexD = ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
+			if (repMode == CladosField.REALF) {
+				repMode = CladosField.COMPLEXF;
+				if (repNumber == null)
+					repNumber = (T) ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
+			} else if (repMode == CladosField.REALD) {
+				repMode = CladosField.COMPLEXD;
+				if (repNumber == null)
+					repNumber = (T) ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
 			}
 			btnMakeReal.setEnabled(true);
 			btnMakeComplex.setEnabled(false);
 			repaint();
-			_GUI.appGeometryView.setRepMode(_repMode);
+			_GUI.appGeometryView.setRepMode(repMode);
 			add(createDisplaysLayout(), BorderLayout.LINE_END);
 			_GUI.pack();
 		}
@@ -357,25 +280,25 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 	 */
 	@Override
 	public void focusGained(FocusEvent e) {
-		switch (_repMode) {
+		switch (repMode) {
 		case REALF -> {
-			if (_repRealF != null)
-				setRealText(Float.valueOf(_repRealF.getReal()).toString());
+			if (repNumber != null)
+				setRealText(Float.valueOf(((RealF) repNumber).getReal()).toString());
 		}
 		case REALD -> {
-			if (_repRealD != null)
-				setRealText(Double.valueOf(_repRealD.getReal()).toString());
+			if (repNumber != null)
+				setRealText(Double.valueOf(((RealD) repNumber).getReal()).toString());
 		}
 		case COMPLEXF -> {
-			if (_repComplexD != null) {
-				setRealText(Float.valueOf(_repComplexF.getReal()).toString());
-				setImgText(Float.valueOf(_repComplexF.getImg()).toString());
+			if (repNumber != null) {
+				setRealText(Float.valueOf(((ComplexF) repNumber).getReal()).toString());
+				setImgText(Float.valueOf(((ComplexF) repNumber).getImg()).toString());
 			}
 		}
 		case COMPLEXD -> {
-			if (_repComplexD != null) {
-				setRealText(Double.valueOf(_repComplexD.getReal()).toString());
-				setImgText(Double.valueOf(_repComplexD.getImg()).toString());
+			if (repNumber != null) {
+				setRealText(Double.valueOf(((ComplexD) repNumber).getReal()).toString());
+				setImgText(Double.valueOf(((ComplexD) repNumber).getImg()).toString());
 			}
 		}
 		}
@@ -395,25 +318,25 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 	@Override
 	public void focusLost(FocusEvent e) {
 		try {
-			switch (_repMode) {
+			switch (repMode) {
 			case REALF -> {
-				if (_repRealF != null)
-					_repRealF.setReal(Float.parseFloat(getRealText()));
+				if (repNumber != null)
+					((RealF) repNumber).setReal(Float.parseFloat(getRealText()));
 			}
 			case REALD -> {
-				if (_repRealD != null)
-					_repRealD.setReal(Double.parseDouble(getRealText()));
+				if (repNumber != null)
+					((RealD) repNumber).setReal(Double.parseDouble(getRealText()));
 			}
 			case COMPLEXF -> {
-				if (_repComplexF != null) {
-					_repComplexF.setReal(Float.parseFloat(getRealText()));
-					_repComplexF.setImg(Float.parseFloat(getImgText()));
+				if (repNumber != null) {
+					((ComplexF) repNumber).setReal(Float.parseFloat(getRealText()));
+					((ComplexF) repNumber).setImg(Float.parseFloat(getImgText()));
 				}
 			}
 			case COMPLEXD -> {
-				if (_repComplexD != null) {
-					_repComplexD.setReal(Double.parseDouble(getRealText()));
-					_repComplexD.setImg(Double.parseDouble(getImgText()));
+				if (repNumber != null) {
+					((ComplexD) repNumber).setReal(Double.parseDouble(getRealText()));
+					((ComplexD) repNumber).setImg(Double.parseDouble(getImgText()));
 				}
 			}
 			}
@@ -433,7 +356,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 	}
 
 	public CladosField getRepMode() {
-		return _repMode;
+		return repMode;
 	}
 
 	public void setImgText(String pIn) {
@@ -536,7 +459,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 		c1.weightx = 0;
 		c1.weighty = 0;
 
-		btnMakeReal = new JButton(new ImageIcon(this.getClass().getResource("/icons/real.png")));
+		btnMakeReal = new JButton(new ImageIcon(this.getClass().getResource("/resources/real.png")));
 		btnMakeReal.setActionCommand("makeReal");
 		btnMakeReal.setToolTipText("use real numbers");
 		btnMakeReal.setPreferredSize(squareMedium);
@@ -545,7 +468,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 		pnlButtons.add(btnMakeReal, c1);
 		c1.gridy++;
 
-		btnMakeComplex = new JButton(new ImageIcon(this.getClass().getResource("/icons/complex.png")));
+		btnMakeComplex = new JButton(new ImageIcon(this.getClass().getResource("/resources/complex.png")));
 		btnMakeComplex.setActionCommand("makeComplex");
 		btnMakeComplex.setToolTipText("use complex numbers");
 		btnMakeComplex.setPreferredSize(squareMedium);
@@ -555,7 +478,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 		c1.gridy = 0;
 		c1.gridx++;
 
-		btnMakeFloat = new JButton(new ImageIcon(this.getClass().getResource("/icons/float.png")));
+		btnMakeFloat = new JButton(new ImageIcon(this.getClass().getResource("/resources/float.png")));
 		btnMakeFloat.setActionCommand("makeFloat");
 		btnMakeFloat.setToolTipText("use floating precision");
 		btnMakeFloat.setPreferredSize(squareMedium);
@@ -564,7 +487,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 		pnlButtons.add(btnMakeFloat, c1);
 		c1.gridy++;
 
-		btnMakeDouble = new JButton(new ImageIcon(this.getClass().getResource("/icons/double.png")));
+		btnMakeDouble = new JButton(new ImageIcon(this.getClass().getResource("/resources/double.png")));
 		btnMakeDouble.setActionCommand("makeDouble");
 		btnMakeDouble.setToolTipText("use double precision");
 		btnMakeDouble.setPreferredSize(squareMedium);
@@ -577,7 +500,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 		c1.gridheight = 2;
 		c1.gridwidth = 2;
 
-		btnClear = new JButton(new ImageIcon(this.getClass().getResource("/icons/clearIt.png")));
+		JButton btnClear = new JButton(new ImageIcon(this.getClass().getResource("/resources/clearIt.png")));
 		btnClear.setActionCommand("clearIt");
 		btnClear.setPreferredSize(squareLarge);
 		btnClear.setBorder(BorderFactory.createEtchedBorder(0));
@@ -585,7 +508,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 		pnlButtons.add(btnClear, c1);
 		c1.gridx += 2;
 
-		btnInverse = new JButton(new ImageIcon(this.getClass().getResource("/icons/inverse.png")));
+		JButton btnInverse = new JButton(new ImageIcon(this.getClass().getResource("/resources/inverse.png")));
 		btnInverse.setActionCommand("inverse");
 		btnInverse.setPreferredSize(squareLarge);
 		btnInverse.setBorder(BorderFactory.createEtchedBorder(0));
@@ -593,7 +516,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 		pnlButtons.add(btnInverse, c1);
 		c1.gridx += 2;
 
-		btnConjugate = new JButton(new ImageIcon(this.getClass().getResource("/icons/conjugate.png")));
+		JButton btnConjugate = new JButton(new ImageIcon(this.getClass().getResource("/resources/conjugate.png")));
 		btnConjugate.setActionCommand("conjugate");
 		btnConjugate.setPreferredSize(squareLarge);
 		btnConjugate.setBorder(BorderFactory.createEtchedBorder(0));
@@ -618,7 +541,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 		c2.weightx = 1;
 		c2.weighty = 1;
 
-		switch (_repMode) {
+		switch (repMode) {
 		case REALF -> {
 			for (short m = 0; m < 1; m++) {
 				pnlDisplays.add(new JLabel(_valLabels[m], SwingConstants.CENTER), c2);
@@ -658,13 +581,13 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 
 		int m;
 		JTextField tSpot;
-		switch (_repMode) {
+		switch (repMode) {
 		case REALF -> {
 			valDisplays = new ArrayList<JTextField>(1);
 			for (m = 0; m < 1; m++) {
 				tSpot = new JTextField();
 				tSpot.setColumns(FieldPanel._FLOATSIZE);
-				tSpot.setFont(_PLAINFONT);
+				tSpot.setFont(PLAINFONT);
 				tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				tSpot.addFocusListener(this);
 				valDisplays.add(m, tSpot);
@@ -679,7 +602,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 			for (m = 0; m < 1; m++) {
 				tSpot = new JTextField();
 				tSpot.setColumns(FieldPanel._DOUBLESIZE);
-				tSpot.setFont(_PLAINFONT);
+				tSpot.setFont(PLAINFONT);
 				tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				tSpot.addFocusListener(this);
 				valDisplays.add(m, tSpot);
@@ -694,7 +617,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 			for (m = 0; m < 2; m++) {
 				tSpot = new JTextField();
 				tSpot.setColumns(FieldPanel._FLOATSIZE);
-				tSpot.setFont(_PLAINFONT);
+				tSpot.setFont(PLAINFONT);
 				tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				tSpot.addFocusListener(this);
 				valDisplays.add(m, tSpot);
@@ -709,7 +632,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 			for (m = 0; m < 2; m++) {
 				tSpot = new JTextField();
 				tSpot.setColumns(FieldPanel._DOUBLESIZE);
-				tSpot.setFont(_PLAINFONT);
+				tSpot.setFont(PLAINFONT);
 				tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				tSpot.addFocusListener(this);
 				valDisplays.add(m, tSpot);
@@ -728,10 +651,7 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 	 * Fields should remain.
 	 */
 	protected void clearFieldType() {
-		_repRealF = null;
-		_repRealD = null;
-		_repComplexF = null;
-		_repComplexD = null;
+		repNumber = null;
 	}
 
 	protected void makeNotWritable() {
@@ -750,139 +670,66 @@ public class FieldPanel extends JPanel implements ActionListener, FocusListener 
 	 * This 'set' function simply adjusts the displayed complex number by accepting
 	 * an input and then pushing those parts to values stored in the panel.
 	 * 
-	 * @param pIn ComplexD When resetting the complex number to be displayed, feed
-	 *            the ComplexF in with this parameter.
+	 * @param pIn CladosF number for use when resetting display elements
 	 */
-	protected void setCoefficientDisplay(ComplexD pIn) {
-		// TODO re-write these four setCoefficientDisplay methods to switch on the
-		// _repMode and set on the class type of the DivField offered.
-		if (_repMode == CladosField.COMPLEXD)
-			if (pIn != null) {
-				setRealText(Double.valueOf(pIn.getReal()).toString());
-				setImgText(Double.valueOf(pIn.getImg()).toString());
-				setField(pIn);
-			}
-	}
+	protected void setCoefficientDisplay(T pIn) {
+		if (pIn == null)
+			return;
 
-	/**
-	 * This 'set' function simply adjusts the displayed complex number by accepting
-	 * an input and then pushing those parts to values stored in the panel.
-	 * 
-	 * @param pIn ComplexF When resetting the complex number to be displayed, feed
-	 *            the ComplexF in with this parameter.
-	 */
-	protected void setCoefficientDisplay(ComplexF pIn) {
-		if (_repMode == CladosField.COMPLEXF)
-			if (pIn != null) {
-				setRealText(Float.valueOf(pIn.getReal()).toString());
-				setImgText(Float.valueOf(pIn.getImg()).toString());
-				setField(pIn);
-			}
-	}
-
-	/**
-	 * This 'set' function simply adjusts the displayed complex number by accepting
-	 * an input and then pushing those part(s) to values stored in the panel.
-	 * 
-	 * @param pIn RealD When resetting the real number to be displayed, feed the
-	 *            RealF in with this parameter.
-	 */
-	protected void setCoefficientDisplay(RealD pIn) {
-		if (_repMode == CladosField.REALD)
-			if (pIn != null) {
-				setRealText(Double.valueOf(pIn.getReal()).toString());
-				setField(pIn);
-			}
-	}
-
-	/**
-	 * This 'set' function simply adjusts the displayed complex number by accepting
-	 * an input and then pushing those part(s) to values stored in the panel.
-	 * 
-	 * @param pIn RealF When resetting the real number to be displayed, feed the
-	 *            RealF in with this parameter.
-	 */
-	protected void setCoefficientDisplay(RealF pIn) {
-		if (_repMode == CladosField.REALF)
-			if (pIn != null) {
-				setRealText(Float.valueOf(pIn.getReal()).toString());
-				setField(pIn);
-			}
+		switch (repMode) {
+		case COMPLEXD -> {
+			setRealText(Double.valueOf(((ComplexD) pIn).getReal()).toString());
+			setImgText(Double.valueOf(((ComplexD) pIn).getImg()).toString());
+			setField(pIn);
+		}
+		case COMPLEXF -> {
+			setRealText(Float.valueOf(((ComplexF) pIn).getReal()).toString());
+			setImgText(Float.valueOf(((ComplexF) pIn).getImg()).toString());
+			setField(pIn);
+		}
+		case REALD -> {
+			setRealText(Double.valueOf(((RealD) pIn).getReal()).toString());
+			setField(pIn);
+		}
+		case REALF -> {
+			setRealText(Float.valueOf(((RealF) pIn).getReal()).toString());
+			setField(pIn);
+		}
+		}
 	}
 
 	/**
 	 * This 'set' function accepts a DivField used as context for the division field
 	 * being displayed.
 	 * 
-	 * @param pField DivField Provide the cladosF DivField here so reference match
-	 *               requirements are met on later function calls. The DivField
-	 *               child will be determined and then the FieldBar assigned.
+	 * @param pField CladosF Number Provide the cladosF number here so reference
+	 *               match requirements are met on later function calls. The
+	 *               DivField child will be determined and then the FieldBar
+	 *               assigned.
 	 */
-	@SuppressWarnings("null")
-	protected void setField(DivField pField) {
-		if (pField == null)
+	@SuppressWarnings("unchecked")
+	protected <D extends UnitAbstract & Field & Normalizable> void setField(D pField) {
+		if (pField == null) {
+			setBackground(clrBackColor);
 			return;
-		CladosField test = null;
-		if (pField instanceof RealF)
-			test = CladosField.REALF;
+		}
+		else if (pField instanceof RealF)
+			repMode = CladosField.REALF;
 		else if (pField instanceof RealD)
-			test = CladosField.REALD;
+			repMode = CladosField.REALD;
 		else if (pField instanceof ComplexF)
-			test = CladosField.COMPLEXF;
+			repMode = CladosField.COMPLEXF;
 		else if (pField instanceof ComplexD)
-			test = CladosField.COMPLEXD;
+			repMode = CladosField.COMPLEXD;
+		else
+			return;
 
-		// test will NOT be null at this point because there are only four DivField
-		// descendants. IF CladosField is ever extended to others, though, this WILL
-		// fail.
-		switch (test) {
-		case REALF -> {
-			_repRealF = (RealF) pField;
-			_repRealD = null;
-			_repComplexF = null;
-			_repComplexD = null;
-			if (pField.getCardinal() != null)
-				setBackground(clrBackColor);
-			else
-				setBackground(clrNullColor);
-		}
-		case REALD -> {
-			_repRealF = null;
-			_repRealD = (RealD) pField;
-			_repComplexF = null;
-			_repComplexD = null;
-			if (pField.getCardinal() != null)
-				setBackground(clrBackColor);
-			else
-				setBackground(clrNullColor);
-		}
-		case COMPLEXF -> {
-			_repRealF = null;
-			_repRealD = null;
-			_repComplexF = (ComplexF) pField;
-			_repComplexD = null;
-			if (pField.getCardinal() != null)
-				setBackground(clrBackColor);
-			else
-				setBackground(clrNullColor);
-		}
-		case COMPLEXD -> {
-			_repRealF = null;
-			_repRealD = null;
-			_repComplexF = null;
-			_repComplexD = (ComplexD) pField;
-			if (pField.getCardinal() != null)
-				setBackground(clrBackColor);
-			else
-				setBackground(clrNullColor);
-		}
-		default -> {
-			_repRealF = null;
-			_repRealD = null;
-			_repComplexF = null;
-			_repComplexD = null;
+		repNumber = (T) pField;
+
+		if (pField.getCardinal() != null)
+			setBackground(clrBackColor);
+		else
 			setBackground(clrNullColor);
-		}
-		}
+
 	}
 }

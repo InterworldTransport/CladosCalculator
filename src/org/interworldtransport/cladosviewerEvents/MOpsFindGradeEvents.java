@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MOpsFindGradeEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -36,7 +36,7 @@ import javax.swing.JMenuItem;
  * This class manages events relating to the answering of a simple question.
  * What is the findgrade of the selected monad?
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class MOpsFindGradeEvents implements ActionListener {
@@ -84,12 +84,7 @@ public class MOpsFindGradeEvents implements ActionListener {
 		}
 
 		MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
-		double logGradeKey = switch (tSpot.getRepMode()) {
-		case REALF -> Math.log10(tSpot.getMonadRF().getGradeKey());
-		case REALD -> Math.log10(tSpot.getMonadRD().getGradeKey());
-		case COMPLEXF -> Math.log10(tSpot.getMonadCF().getGradeKey());
-		case COMPLEXD -> Math.log10(tSpot.getMonadCD().getGradeKey());
-		};
+		double logGradeKey =  Math.log10(tSpot.getMonad().getGradeKey());
 
 		if (logGradeKey < 0) {
 			ErrorDialog.show("DivField not recognized.", "DivField Unsupported");

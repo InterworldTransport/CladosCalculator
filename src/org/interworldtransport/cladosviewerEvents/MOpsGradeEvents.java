@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MOpsGradeEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -30,18 +30,16 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
 
-import org.interworldtransport.cladosG.MonadRealF;
-import org.interworldtransport.cladosG.MonadRealD;
-import org.interworldtransport.cladosG.MonadComplexF;
-import org.interworldtransport.cladosG.MonadComplexD;
-
-import org.interworldtransport.cladosviewer.*;
+import org.interworldtransport.cladosG.Monad;
+import org.interworldtransport.cladosviewer.ErrorDialog;
+import org.interworldtransport.cladosviewer.MonadPanel;
+import org.interworldtransport.cladosviewer.NyadPanel;
 
 /**
  * This class manages events relating to the answering of a boolean question. Is
  * the selected monad a particular findgrade?
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class MOpsGradeEvents implements ActionListener {
@@ -89,12 +87,13 @@ public class MOpsGradeEvents implements ActionListener {
 			// Hence the need for a try/catch phrase around all this
 			int grade2Test = (int) Float.parseFloat(_parent._GUI.appFieldBar.getRealText());
 			MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
-			boolean test = switch (tSpot.getRepMode()) {
-			case REALF -> MonadRealF.isGrade(tSpot.getMonadRF(), grade2Test);
-			case REALD -> MonadRealD.isGrade(tSpot.getMonadRD(), grade2Test);
-			case COMPLEXF -> MonadComplexF.isGrade(tSpot.getMonadCF(), grade2Test);
-			case COMPLEXD -> MonadComplexD.isGrade(tSpot.getMonadCD(), grade2Test);
-			};
+			boolean test =  Monad.isGrade(tSpot.getMonad(), grade2Test);
+//					switch (tSpot.getRepMode()) {
+//			case REALF ->
+//			case REALD -> Monad.isGrade(tSpot.getMonad(), grade2Test);
+//			case COMPLEXF -> Monad.isGrade(tSpot.getMonad(), grade2Test);
+//			case COMPLEXD -> Monad.isGrade(tSpot.getMonad(), grade2Test);
+//			};
 			if (test)
 				_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is a pure " + grade2Test + "-findgrade.\n");
 			else

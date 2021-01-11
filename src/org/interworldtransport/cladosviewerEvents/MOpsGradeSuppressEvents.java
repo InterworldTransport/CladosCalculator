@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MOpsGradeSupressEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -36,7 +36,7 @@ import javax.swing.JMenuItem;
  * This class manages events relating to a simple requirement Limit this Monad
  * to everything except a particular findgrade.
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class MOpsGradeSuppressEvents implements ActionListener {
@@ -85,13 +85,8 @@ public class MOpsGradeSuppressEvents implements ActionListener {
 		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
 
 		try {
-			short tGrade = (short) Float.parseFloat(_parent._GUI.appFieldBar.getRealText());
-			switch (tMSpotPnl.getRepMode()) {
-			case REALF -> tMSpotPnl.getMonadRF().gradeSuppress(tGrade);
-			case REALD -> tMSpotPnl.getMonadRD().gradeSuppress(tGrade);
-			case COMPLEXF -> tMSpotPnl.getMonadCF().gradeSuppress(tGrade);
-			case COMPLEXD -> tMSpotPnl.getMonadCD().gradeSuppress(tGrade);
-			}
+			byte tGrade = Byte.parseByte(_parent._GUI.appFieldBar.getRealText());
+			tMSpotPnl.getMonad().gradeSuppress(tGrade);
 			tMSpotPnl.setCoefficientDisplay();
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been cut at " + tGrade + "-findgrade.\n");
 		} catch (NullPointerException eNull) {

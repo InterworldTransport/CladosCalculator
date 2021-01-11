@@ -13,7 +13,6 @@
 	<property 	name="docAPI"		value="docs/api" />
 	<property 	name="lib" 			value="lib" />
 	<property	name="src"			value="src" />
-	<property	name="icons"		value="icons" />
 	<property	name="conf"			value="conf" />
 	<property 	name="clados"		value="org/interworldtransport/clados/" />
 	<property 	name="viewer"		value="org/interworldtransport/cladosviewer/" />
@@ -23,7 +22,7 @@
 CladosCalculator_API_Documentation&lt;br&gt;
 --------------------------------------------------------------------------------
 &lt;br&gt;
-Copyright © 2020 Alfred Differ.  All rights reserved.
+Copyright © 2021 Alfred Differ  All rights reserved.
 &lt;p&gt;
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -61,7 +60,7 @@ along with this program.  If not, see https://www.gnu.org/licenses/."/>
 			depends="prepare"
 			description="Compiles all the Clados Calculator source files" >
 		<javac 	includeantruntime="false"
-				classpath="${lib}/clados.jar"
+				modulepath="${lib}/clados.jar"
 				debug="off"
 				destdir="${build}"
 				nowarn="off"
@@ -81,7 +80,7 @@ along with this program.  If not, see https://www.gnu.org/licenses/."/>
 					overview="${src}/overview.html"
 					packagenames="org.interworldtransport.*"
 					sourcepath="${src}"
-					classpath="${lib}/clados.jar"
+					modulepath="${lib}/clados.jar"
 					verbose="false"
 					windowtitle="Clados Calculator API Documentation">
 		</javadoc>
@@ -94,8 +93,8 @@ along with this program.  If not, see https://www.gnu.org/licenses/."/>
 				index="false"
 				jarfile="CladosCalculator.jar">
 			<fileset dir="${build}" />
-			<fileset dir="${base}" >
-				<include name="icons/*" />
+			<fileset dir="${src}" >
+				<include name="resources/*" />
 			</fileset>
 		</jar>
 	</target>

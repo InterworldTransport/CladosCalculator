@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.NOpsZeroEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -24,10 +24,7 @@
  */
 package org.interworldtransport.cladosviewerEvents;
 
-import org.interworldtransport.cladosG.MonadComplexD;
-import org.interworldtransport.cladosG.MonadComplexF;
-import org.interworldtransport.cladosG.MonadRealD;
-import org.interworldtransport.cladosG.MonadRealF;
+import org.interworldtransport.cladosG.Monad;
 
 import org.interworldtransport.cladosviewer.*;
 
@@ -39,7 +36,7 @@ import javax.swing.JMenuItem;
  * This class manages events relating to the answering of a boolean question. Is
  * the selected monad equivalent to zero?
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class NOpsZeroEvents implements ActionListener {
@@ -79,12 +76,7 @@ public class NOpsZeroEvents implements ActionListener {
 		}
 
 		MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
-		boolean test = switch (tSpot.getRepMode()) {
-		case REALF -> MonadRealF.isGZero(tSpot.getMonadRF());
-		case REALD -> MonadRealD.isGZero(tSpot.getMonadRD());
-		case COMPLEXF -> MonadComplexF.isGZero(tSpot.getMonadCF());
-		case COMPLEXD -> MonadComplexD.isGZero(tSpot.getMonadCD());
-		};
+		boolean test =  Monad.isGZero(tSpot.getMonad());
 
 		if (test)
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is ZERO.\n");

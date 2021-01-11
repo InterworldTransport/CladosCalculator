@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.FileExitEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -32,7 +32,7 @@ import javax.swing.*;
  * org.interworldtransport.cladosviewer.FileExitEvents This class manages all
  * events relating to the exiting of the applicaiton.
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class FileExitEvents implements ActionListener {

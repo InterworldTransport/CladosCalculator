@@ -3,13 +3,13 @@
 <properties>
 <comment>Saved From Clados Calculator Properties Dialog</comment>
 <entry key="User.Institution">Interworld Transport</entry>
-<entry key="Desktop.Image.Key">icons/key.png</entry>
-<entry key="Desktop.Image.Alg">icons/alg.png</entry>
+<entry key="Desktop.Image.Key">resources/key.png</entry>
+<entry key="Desktop.Image.Alg">resources/alg.png</entry>
 <entry key="Desktop.Default.Sig">-+++</entry>
 <entry key="Desktop.Default.Count">1</entry>
 <entry key="Desktop.File.Snapshot">SavedObjects.xml</entry>
-<entry key="Desktop.Image.Sig">icons/sig.png</entry>
-<entry key="Desktop.Image.Cardinal">icons/cardinal.png</entry>
+<entry key="Desktop.Image.Sig">resources/sig.png</entry>
+<entry key="Desktop.Image.Cardinal">resources/cardinal.png</entry>
 <entry key="User.EmailName">adiffer</entry>
 <entry key="Desktop.Default.Cardinal">unitless</entry>
 <entry key="Desktop.Default.BaseName">wkc_</entry>
@@ -18,12 +18,12 @@
 <entry key="User.Name">Alfred Differ</entry>
 <entry key="Desktop.File.Snapshot.FullXML">true</entry>
 <entry key="Desktop.Default.FrameName">gilded</entry>
-<entry key="Desktop.Default.DivField">ComplexD</entry>
+<entry key="Desktop.Default.DivField">RealF</entry>
 <entry key="User.EmailDomain">gmail.com</entry>
 <entry key="Desktop.Default.FootName">wkc</entry>
 <entry key="Desktop.Version">0.86</entry>
 <entry key="Desktop.Default.Orient">Vertical</entry>
-<entry key="Desktop.Image.Foot">icons/foot.png</entry>
-<entry key="Desktop.Image.Frame">icons/frame.png</entry>
+<entry key="Desktop.Image.Foot">resources/foot.png</entry>
+<entry key="Desktop.Image.Frame">resources/frame.png</entry>
 <entry key="Desktop.Default.AlgebraName">motion</entry>
 </properties>

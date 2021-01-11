@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MOpsInvertEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -36,7 +36,7 @@ import javax.swing.JMenuItem;
  * This class manages events relating to a simple operation... Invert this
  * Monad.
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class MOpsInvertEvents implements ActionListener {
@@ -82,13 +82,8 @@ public class MOpsInvertEvents implements ActionListener {
 		}
 
 		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+		tMSpotPnl.getMonad().invert();
 
-		switch (tMSpotPnl.getRepMode()) {
-		case REALF -> tMSpotPnl.getMonadRF().invert();
-		case REALD -> tMSpotPnl.getMonadRD().invert();
-		case COMPLEXF -> tMSpotPnl.getMonadCF().invert();
-		case COMPLEXD -> tMSpotPnl.getMonadCD().invert();
-		}
 		tMSpotPnl.setCoefficientDisplay();
 		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been inverted.\n");
 	}

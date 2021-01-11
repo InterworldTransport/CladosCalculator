@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.ToolsEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -35,7 +35,7 @@ import org.interworldtransport.cladosviewer.ViewerMenu;
  * The controlled listeners will create an event or call their parent. It could
  * also register all the components to which its listeners register....maybe....
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class ToolsEvents {

@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MOpsReverseEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -36,7 +36,7 @@ import org.interworldtransport.cladosviewer.NyadPanel;
  * This class manages events relating to a simple operation... Reverse this
  * Monad.
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class MOpsReverseEvents implements ActionListener {
@@ -82,13 +82,7 @@ public class MOpsReverseEvents implements ActionListener {
 		}
 
 		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
-
-		switch (tMSpotPnl.getRepMode()) {
-		case REALF -> tMSpotPnl.getMonadRF().reverse();
-		case REALD -> tMSpotPnl.getMonadRD().reverse();
-		case COMPLEXF -> tMSpotPnl.getMonadCF().reverse();
-		case COMPLEXD -> tMSpotPnl.getMonadCD().reverse();
-		}
+		tMSpotPnl.getMonad().reverse();
 		tMSpotPnl.setCoefficientDisplay();
 		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been reversed.\n");
 	}

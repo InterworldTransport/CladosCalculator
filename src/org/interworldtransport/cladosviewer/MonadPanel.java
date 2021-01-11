@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MonadPanel<br>
  * -------------------------------------------------------------------- <p>
@@ -27,16 +27,11 @@ package org.interworldtransport.cladosviewer;
 
 import org.interworldtransport.cladosF.CladosFBuilder;
 import org.interworldtransport.cladosF.CladosField;
-import org.interworldtransport.cladosF.ComplexD;
-import org.interworldtransport.cladosF.ComplexF;
-import org.interworldtransport.cladosF.RealD;
-import org.interworldtransport.cladosF.RealF;
-import org.interworldtransport.cladosG.MonadAbstract;
-import org.interworldtransport.cladosG.MonadComplexD;
-import org.interworldtransport.cladosG.MonadComplexF;
-import org.interworldtransport.cladosG.MonadRealD;
-import org.interworldtransport.cladosG.MonadRealF;
-import org.interworldtransport.cladosGExceptions.*;
+import org.interworldtransport.cladosF.Field;
+import org.interworldtransport.cladosF.Normalizable;
+import org.interworldtransport.cladosF.UnitAbstract;
+import org.interworldtransport.cladosG.Blade;
+import org.interworldtransport.cladosG.Monad;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -48,55 +43,37 @@ import javax.swing.border.TitledBorder;
 import java.util.*;
 
 /**
- * org.interworldtransport.cladosviewer.MonadPanel The MonadPanel class directly
- * handles the gui for a single Monad.
+ * The MonadPanel class directly handles the gui for a single Monad.
+ * <p>
+ * The monad represented by the panel is stored in a private data element.
  * <p>
  * 
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
+ * @param <T>
  */
 
-public class MonadPanel extends JPanel implements ActionListener, FocusListener {
-	private static final String _IMAGINARY = "[I]";
-	private static final String _REAL = "[R]";
+public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel
+		implements ActionListener, FocusListener {
+	private static final long serialVersionUID = -5906360594213725004L;
+	private static final int _COEFF_SIZE = 10;
+	private static final Font _ITALICFONT = new Font(Font.SERIF, Font.ITALIC, _COEFF_SIZE);
+	private static final Font _PLAINFONT = new Font(Font.SERIF, Font.PLAIN, _COEFF_SIZE);
 	private static final Color clrBackColor = new Color(212, 212, 192);
 	private static final Color clrUnlockColor = new Color(255, 192, 192);
-	private static final int COEFF_SIZE = 10;
+	private static final String IMAGINARY = "[I]";
+	private static final String REAL = "[R]";
 	private static final Dimension squareLittle = new Dimension(25, 25);
 	private static final Dimension squareMedium = new Dimension(28, 28);
-	private static final Font _PLAINFONT = new Font(Font.SERIF, Font.PLAIN, COEFF_SIZE);
-	private static final Font _ITALICFONT = new Font(Font.SERIF, Font.ITALIC, COEFF_SIZE);
 
-	private ArrayList<FieldDisplay> _jCoeffs;
-	private CladosField _repMode;
-	private MonadComplexD _repMonadCD;
-	private MonadComplexF _repMonadCF;
-	private MonadRealD _repMonadD;
-	private MonadRealF _repMonadF;
+	public CladosCalculator _GUI;
 	private JButton btnChangeOrient;
-	private JButton btnDualLeft;
-	private JButton btnDualRight;
 	private JButton btnEdit;
-	private JButton btnGradeCrop;
-	private JButton btnGradeCut;
-	private JButton btnInvertMonad; // This is NOT multiplicative inverse
-	private JButton btnNormalizeMonad;
 	private JButton btnRestore;
-	private JButton btnReverseMonad;
-	private JButton btnScaleMonad;
 	private JButton btnSync;
 	private ImageIcon iconHorizontal;
 	private ImageIcon iconVertical;
-	private JPanel pnlMonadAlterControls;
-	private JPanel pnlMonadCoeffPanel;
-	private JPanel pnlMonadEditControls;
-	private JPanel pnlMonadReferences;
-	/*
-	 * This boolean is for knowing whether to render the coefficients. This panel
-	 * doubles as a monad create dialog where no coefficients can exist until after
-	 * a generator signature is given.
-	 */
-	private boolean useFullPanel;
+	private TreeMap<Blade, FieldDisplay<T>> jCoeffs;
 	/*
 	 * This boolean is for tracking whether the panel knows its monad is an element
 	 * in a nyad. This panel is embedded in the nyad create dialog to provide
@@ -105,11 +82,22 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 	 * display a Foot. It should force reuse of the nyad's existing Foot.
 	 */
 	private boolean nyadNotKnown;
+	private JPanel pnlMonadAlterControls;
+	private JPanel pnlMonadCoeffPanel;
+	private JPanel pnlMonadEditControls;
+	private JPanel pnlMonadReferences;
+	private CladosField repMode;
+	private Monad repMonad;
+	/*
+	 * This boolean is for knowing whether to render the coefficients. This panel
+	 * doubles as a monad create dialog where no coefficients can exist until after
+	 * a generator signature is given.
+	 */
+	private boolean useFullPanel;
 	protected boolean _editMode;
-	public CladosCalculator _GUI;
 
-	protected JTextField cardname = new JTextField(16);
 	protected JTextField aname = new JTextField(16);
+	protected JTextField cardname = new JTextField(16);
 	protected JTextField foot = new JTextField(16);
 	protected JTextField frame = new JTextField(16);
 	protected JLabel gradeKey = new JLabel();
@@ -129,7 +117,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 	public MonadPanel(CladosCalculator pGUI, boolean noNyad) {
 		super();
 		_GUI = pGUI;
-		_repMode = _GUI.appFieldBar.getRepMode();
+		repMode = _GUI.appFieldBar.getRepMode();
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		setBackground(clrBackColor);
 		setLayout(new BorderLayout());
@@ -207,216 +195,22 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 	 * 
 	 * @param pGUI CladosCalculator This is just a reference to the owner
 	 *             application so error messages can be presented.
-	 * @param pM   MonadComplexD This is a reference to the monad to be displayed
-	 *             and manipulated.
-	 */
-	public MonadPanel(CladosCalculator pGUI, MonadComplexD pM) {
-		super();
-		useFullPanel = true;
-		try {
-			_GUI = pGUI;
-			_repMonadCD = pM;
-			_repMode = CladosField.COMPLEXD;
-
-			btnChangeOrient = new JButton();
-			btnChangeOrient.setPreferredSize(squareLittle);
-			btnChangeOrient.setBorder(BorderFactory.createEtchedBorder(0));
-			iconHorizontal = new ImageIcon(this.getClass().getResource("/icons/horiz.png"));
-			iconVertical = new ImageIcon(this.getClass().getResource("/icons/vert.png"));
-
-			switch (_GUI.IniProps.getProperty("Desktop.Default.Orient")) {
-			case "Vertical" -> {
-				btnChangeOrient.setIcon(iconVertical);
-				btnChangeOrient.setToolTipText("Monad grades as columns");
-			}
-			case "Horizontal" -> {
-				btnChangeOrient.setIcon(iconHorizontal);
-				btnChangeOrient.setToolTipText("Monad grades as rows");
-			}
-			default -> {
-				btnChangeOrient.setIcon(iconVertical);
-				btnChangeOrient.setToolTipText("Monad grades as columns");
-			}
-			}
-			btnChangeOrient.setActionCommand("flip");
-			btnChangeOrient.addActionListener(this);
-
-			setReferences();
-
-			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			setBackground(clrBackColor);
-			setLayout(new BorderLayout());
-
-			this.add(createCoeffLayout(), "Center");
-			setCoefficientDisplay();
-		} catch (NullPointerException enull) {
-			add(new JPanel(null, false), "Center");
-			if (pGUI != null) {
-				StringBuffer mess = new StringBuffer(
-						"Null Pointer Exception. Something is missing on MPanel construction.\n");
-				mess.append(enull.getClass() + "\n");
-				mess.append(enull.getMessage() + "\n");
-				ErrorDialog.show(mess.toString(), "Null Pointer");
-			}
-		} finally {
-			createReferenceLayout();
-			createEditLayout();
-			createManagementLayout();
-		}
-	}
-
-	/**
-	 * The MonadPanel class is intended to hold a single Monad and act as its GUI.
-	 * This constructor is the base one.
-	 * 
-	 * @param pGUI CladosCalculator This is just a reference to the owner
-	 *             application so error messages can be presented.
-	 * @param pM   MonadComplexF This is a reference to the monad to be displayed
-	 *             and manipulated.
-	 */
-	public MonadPanel(CladosCalculator pGUI, MonadComplexF pM) {
-		super();
-		useFullPanel = true;
-		try {
-			_GUI = pGUI;
-			_repMonadCF = pM;
-			_repMode = CladosField.COMPLEXF;
-
-			btnChangeOrient = new JButton();
-			btnChangeOrient.setPreferredSize(squareLittle);
-			btnChangeOrient.setBorder(BorderFactory.createEtchedBorder(0));
-			iconHorizontal = new ImageIcon(this.getClass().getResource("/icons/horiz.png"));
-			iconVertical = new ImageIcon(this.getClass().getResource("/icons/vert.png"));
-
-			switch (_GUI.IniProps.getProperty("Desktop.Default.Orient")) {
-			case "Vertical" -> {
-				btnChangeOrient.setIcon(iconVertical);
-				btnChangeOrient.setToolTipText("Monad grades as columns");
-			}
-			case "Horizontal" -> {
-				btnChangeOrient.setIcon(iconHorizontal);
-				btnChangeOrient.setToolTipText("Monad grades as rows");
-			}
-			default -> {
-				btnChangeOrient.setIcon(iconVertical);
-				btnChangeOrient.setToolTipText("Monad grades as columns");
-			}
-			}
-			btnChangeOrient.setActionCommand("flip");
-			btnChangeOrient.addActionListener(this);
-
-			setReferences();
-
-			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			setBackground(clrBackColor);
-			setLayout(new BorderLayout());
-
-			this.add(createCoeffLayout(), "Center");
-			setCoefficientDisplay();
-		} catch (NullPointerException enull) {
-			add(new JPanel(null, false), "Center");
-			if (pGUI != null) {
-				StringBuffer mess = new StringBuffer(
-						"Null Pointer Exception. Something is missing on MPanel construction.\n");
-				mess.append(enull.getClass() + "\n");
-				mess.append(enull.getMessage() + "\n");
-				ErrorDialog.show(mess.toString(), "Null Pointer");
-			}
-		} finally {
-			createReferenceLayout();
-			createEditLayout();
-			createManagementLayout();
-		}
-	}
-
-	/**
-	 * The MonadPanel class is intended to hold a single Monad and act as its GUI.
-	 * This constructor is the base one.
-	 * 
-	 * @param pGUI CladosCalculator This is just a reference to the owner
-	 *             application so error messages can be presented.
-	 * @param pM   MonadRealD This is a reference to the monad to be displayed and
-	 *             manipulated.
-	 */
-	public MonadPanel(CladosCalculator pGUI, MonadRealD pM) {
-		super();
-		useFullPanel = true;
-		try {
-			_GUI = pGUI;
-			_repMonadD = pM;
-			_repMode = CladosField.REALD;
-
-			btnChangeOrient = new JButton();
-			btnChangeOrient.setPreferredSize(squareLittle);
-			btnChangeOrient.setBorder(BorderFactory.createEtchedBorder(0));
-			iconHorizontal = new ImageIcon(this.getClass().getResource("/icons/horiz.png"));
-			iconVertical = new ImageIcon(this.getClass().getResource("/icons/vert.png"));
-
-			switch (_GUI.IniProps.getProperty("Desktop.Default.Orient")) {
-			case "Vertical" -> {
-				btnChangeOrient.setIcon(iconVertical);
-				btnChangeOrient.setToolTipText("Monad grades as columns");
-			}
-			case "Horizontal" -> {
-				btnChangeOrient.setIcon(iconHorizontal);
-				btnChangeOrient.setToolTipText("Monad grades as rows");
-			}
-			default -> {
-				btnChangeOrient.setIcon(iconVertical);
-				btnChangeOrient.setToolTipText("Monad grades as columns");
-			}
-			}
-			btnChangeOrient.setActionCommand("flip");
-			btnChangeOrient.addActionListener(this);
-
-			setReferences();
-
-			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			setBackground(clrBackColor);
-			setLayout(new BorderLayout());
-
-			this.add(createCoeffLayout(), "Center");
-			setCoefficientDisplay();
-		} catch (NullPointerException enull) {
-			add(new JPanel(null, false), "Center");
-			if (pGUI != null) {
-				StringBuffer mess = new StringBuffer(
-						"Null Pointer Exception. Something is missing on MPanel construction.\n");
-				mess.append(enull.getClass() + "\n");
-				mess.append(enull.getMessage() + "\n");
-				ErrorDialog.show(mess.toString(), "Null Pointer");
-			}
-		} finally {
-			createReferenceLayout();
-			createEditLayout();
-			createManagementLayout();
-		}
-	}
-
-	/**
-	 * The MonadPanel class is intended to hold a single Monad and act as its GUI.
-	 * This constructor is the base one.
-	 * 
-	 * @param pGUI CladosCalculator This is just a reference to the owner
-	 *             application so error messages can be presented.
 	 * @param pM   MonadRealF This is a reference to the monad to be displayed and
 	 *             manipulated.
 	 */
-	public MonadPanel(CladosCalculator pGUI, MonadRealF pM) {
-		// TODO Why are their four versions of this constructor when switching would
-		// suffice to cope with the differences between the Monad siblings?
+	public MonadPanel(CladosCalculator pGUI, Monad pM) {
 		super();
 		useFullPanel = true;
 		try {
 			_GUI = pGUI;
-			_repMonadF = pM;
-			_repMode = CladosField.REALF;
+			repMonad = pM;
+			repMode = pM.getMode();
 
 			btnChangeOrient = new JButton();
 			btnChangeOrient.setPreferredSize(squareLittle);
 			btnChangeOrient.setBorder(BorderFactory.createEtchedBorder(0));
-			iconHorizontal = new ImageIcon(this.getClass().getResource("/icons/horiz.png"));
-			iconVertical = new ImageIcon(this.getClass().getResource("/icons/vert.png"));
+			iconHorizontal = new ImageIcon(this.getClass().getResource("/resources/horiz.png"));
+			iconVertical = new ImageIcon(this.getClass().getResource("/resources/vert.png"));
 
 			switch (_GUI.IniProps.getProperty("Desktop.Default.Orient")) {
 			case "Vertical" -> {
@@ -528,6 +322,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 	 * is similar to what a nyad panel does when it receives focus and updates the
 	 * DivFieldType
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void focusGained(FocusEvent e) {
 		if (e.getComponent() instanceof FieldDisplay & !_editMode) // Only do this when NOT in edit mode.
@@ -538,35 +333,26 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 			int tBufferLength = strB.length();
 			if (tBufferLength == 0)
 				return; // Nothing to save, so surrender.
-			int tR = MonadPanel._REAL.length();
-			int tI = MonadPanel._IMAGINARY.length();
-			int indexOfR = strB.indexOf(MonadPanel._REAL) + tR;
-			int indexOfI = strB.indexOf(MonadPanel._IMAGINARY) + tI;
+			int tR = MonadPanel.REAL.length();
+			int tI = MonadPanel.IMAGINARY.length();
+			int indexOfR = strB.indexOf(MonadPanel.REAL) + tR;
+			int indexOfI = strB.indexOf(MonadPanel.IMAGINARY) + tI;
+			_GUI.appFieldBar.setField((((FieldDisplay<T>) e.getComponent()).displayField));
 
-			switch (_repMode) {
+			switch (repMode) {
 			case REALF -> {
-				_GUI.appFieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldRF));
-				float tSpotRF = Float.parseFloat(strB.substring(indexOfR, tBufferLength));
-				_GUI.appFieldBar.setWhatFloatR(tSpotRF);
+				_GUI.appFieldBar.setWhatFloatR(Float.parseFloat(strB.substring(indexOfR, tBufferLength)));
 			}
 			case REALD -> {
-				_GUI.appFieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldRD));
-				double tSpotRD = Double.parseDouble(strB.substring(indexOfR, tBufferLength));
-				_GUI.appFieldBar.setWhatDoubleR(tSpotRD);
+				_GUI.appFieldBar.setWhatDoubleR(Double.parseDouble(strB.substring(indexOfR, tBufferLength)));
 			}
 			case COMPLEXF -> {
-				_GUI.appFieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldCF));
-				float tSpotCF1 = Float.parseFloat(strB.substring(indexOfR, indexOfI - tI - 1));
-				float tSpotCF2 = Float.parseFloat(strB.substring(indexOfI, tBufferLength));
-				_GUI.appFieldBar.setWhatFloatR(tSpotCF1);
-				_GUI.appFieldBar.setWhatFloatI(tSpotCF2);
+				_GUI.appFieldBar.setWhatFloatR(Float.parseFloat(strB.substring(indexOfR, indexOfI - tI - 1)));
+				_GUI.appFieldBar.setWhatFloatI(Float.parseFloat(strB.substring(indexOfI, tBufferLength)));
 			}
 			case COMPLEXD -> {
-				_GUI.appFieldBar.setField((((FieldDisplay) e.getComponent()).displayFieldCD));
-				double tSpotCD1 = Double.parseDouble(strB.substring(indexOfR, indexOfI - tI - 1));
-				double tSpotCD2 = Double.parseDouble(strB.substring(indexOfI, tBufferLength));
-				_GUI.appFieldBar.setWhatDoubleR(tSpotCD1);
-				_GUI.appFieldBar.setWhatDoubleI(tSpotCD2);
+				_GUI.appFieldBar.setWhatDoubleR(Double.parseDouble(strB.substring(indexOfR, indexOfI - tI - 1)));
+				_GUI.appFieldBar.setWhatDoubleI(Double.parseDouble(strB.substring(indexOfI, tBufferLength)));
 			}
 			}
 		}
@@ -585,79 +371,16 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 	 * @return ArrayList An array list of JTextArea descedents is returned that
 	 *         holds the coefficients of a monad.
 	 */
-	public ArrayList<FieldDisplay> getJCoeffs() {
-		return _jCoeffs;
+	public TreeMap<Blade, FieldDisplay<T>> getJCoeffs() {
+		return jCoeffs;
 	}
 
-	/**
-	 * This method provides to the caller a MonadComplexD held in this panel. It's
-	 * just a typical get method, though. Nothing special.
-	 * 
-	 * @return MonadRealCD
-	 */
-	public MonadComplexD getMonadCD() {
-		return _repMonadCD;
-	}
-
-	/**
-	 * This method provides to the caller a MonadComplexF held in this panel. It's
-	 * just a typical get method, though. Nothing special.
-	 * 
-	 * @return MonadRealCF
-	 */
-	public MonadComplexF getMonadCF() {
-		return _repMonadCF;
-	}
-
-	/**
-	 * This method provides to the caller a MonadRealD held in this panel. It's just
-	 * a typical get method, though. Nothing special.
-	 * 
-	 * @return MonadRealD
-	 */
-	public MonadRealD getMonadRD() {
-		return _repMonadD;
-	}
-
-	/**
-	 * This method provides to the caller a MonadRealF held in this panel. It's just
-	 * a typical get method, though. Nothing special.
-	 * 
-	 * @return MonadRealF
-	 */
-	public MonadRealF getMonadRF() {
-		return _repMonadF;
-	}
-
-	/**
-	 * This method provides to the caller a monad held in this panel based on the
-	 * CladosField requested.
-	 * 
-	 * @param pIn One of the CladosField enumerations
-	 * @return MonadAbstract
-	 */
-	public MonadAbstract getMonad(CladosField pIn) {
-		switch (pIn) {
-		case REALF -> {
-			return _repMonadF;
-		}
-		case REALD -> {
-			return _repMonadD;
-		}
-		case COMPLEXF -> {
-			return _repMonadCF;
-		}
-		case COMPLEXD -> {
-			return _repMonadCD;
-		}
-		default -> {
-			return null;
-		}
-		}
+	public Monad getMonad() {
+		return repMonad;
 	}
 
 	public CladosField getRepMode() {
-		return _repMode;
+		return repMode;
 	}
 
 	/**
@@ -669,42 +392,17 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 	 * It is safe enough to call this from anywhere and at any time. The worst that
 	 * can happen is the user looses some of their changes on the UI.
 	 */
+	@SuppressWarnings("unchecked")
 	public void setCoefficientDisplay() {
-		short j = 0;
-		switch (_repMode) {
-		case REALF -> {
-			for (j = 0; j < _repMonadF.getAlgebra().getBladeCount(); j++) {
-				_jCoeffs.get(j).updateField(_repMonadF.getCoeff(j)); // fodder for the update
-				_jCoeffs.get(j).displayContents();
-			}
-			gradeKey.setText(new StringBuffer().append(_repMonadF.getGradeKey()).toString());
-		}
-		case REALD -> {
-			for (j = 0; j < _repMonadD.getAlgebra().getBladeCount(); j++) {
-				_jCoeffs.get(j).updateField(_repMonadD.getCoeff(j)); // fodder for the update
-				_jCoeffs.get(j).displayContents();
-			}
-			gradeKey.setText(new StringBuffer().append(_repMonadD.getGradeKey()).toString());
-		}
-		case COMPLEXF -> {
-			for (j = 0; j < _repMonadCF.getAlgebra().getBladeCount(); j++) {
-				_jCoeffs.get(j).updateField(_repMonadCF.getCoeff(j)); // fodder for the update
-				_jCoeffs.get(j).displayContents();
-			}
-			gradeKey.setText(new StringBuffer().append(_repMonadCF.getGradeKey()).toString());
-		}
-		case COMPLEXD -> {
-			for (j = 0; j < _repMonadCD.getAlgebra().getBladeCount(); j++) {
-				_jCoeffs.get(j).updateField(_repMonadCD.getCoeff(j)); // fodder for the update
-				_jCoeffs.get(j).displayContents();
-			}
-			gradeKey.setText(new StringBuffer().append(_repMonadCD.getGradeKey()).toString());
-		}
-		}
+		repMonad.bladeStream().forEach(blade -> {
+			jCoeffs.get(blade).updateField((T) repMonad.getScales().get(blade));
+			jCoeffs.get(blade).displayContents();
+		});
+		gradeKey.setText(new StringBuffer().append(repMonad.getGradeKey()).toString());
 	}
 
 	private JPanel createCoeffLayout() {
-		if (_jCoeffs == null) // First time? Create the ArrayList
+		if (jCoeffs == null) // First time? Create the ArrayList
 			initiateCoeffList(); // Listeners get added here the first time and need not be reset
 									// because the panels that display them are just containers... not handlers.
 
@@ -713,36 +411,10 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 
 		pnlMonadCoeffPanel = new JPanel();
 		StringBuffer tB = new StringBuffer();
-		switch (_repMode) {
-		case REALF -> {
-			tB.append(_repMonadF.getAlgebra().getFoot().getFootName() + " | ");
-			tB.append(_repMonadF.getAlgebra().getAlgebraName() + "/" + _repMonadF.getAlgebra().shareCardinal().getType()
-					+ " | ");
-			tB.append(_repMonadF.getAlgebra().getGProduct().getSignature());
-			pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
-		}
-		case REALD -> {
-			tB.append(_repMonadD.getAlgebra().getFoot().getFootName() + " | ");
-			tB.append(_repMonadD.getAlgebra().getAlgebraName() + "/" + _repMonadD.getAlgebra().shareCardinal().getType()
-					+ " | ");
-			tB.append(_repMonadD.getAlgebra().getGProduct().getSignature());
-			pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
-		}
-		case COMPLEXF -> {
-			tB.append(_repMonadCF.getAlgebra().getFoot().getFootName() + " | ");
-			tB.append(_repMonadCF.getAlgebra().getAlgebraName() + "/"
-					+ _repMonadCF.getAlgebra().shareCardinal().getType() + " | ");
-			tB.append(_repMonadCF.getAlgebra().getGProduct().getSignature());
-			pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
-		}
-		case COMPLEXD -> {
-			tB.append(_repMonadCD.getAlgebra().getFoot().getFootName() + " | ");
-			tB.append(_repMonadCD.getAlgebra().getAlgebraName() + "/"
-					+ _repMonadCD.getAlgebra().shareCardinal().getType() + " | ");
-			tB.append(_repMonadCD.getAlgebra().getGProduct().getSignature());
-			pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
-		}
-		}
+		tB.append(repMonad.getAlgebra().getFoot().getFootName() + " | ");
+		tB.append(repMonad.getAlgebra().getAlgebraName() + "/" + repMonad.getAlgebra().getCardinal().getUnit() + " | ");
+		tB.append(repMonad.getAlgebra().getGProduct().signature());
+		pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
 
 		pnlMonadCoeffPanel.setBackground(clrBackColor);
 		pnlMonadCoeffPanel.setLayout(new GridBagLayout());
@@ -758,157 +430,37 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		cn1.ipady = 0;
 
 		if (btnChangeOrient.getIcon().equals(iconVertical)) {
-			short j = 0;
-			short k = 0;
-			JLabel headLabel;
-			short[] tSpot;
-			switch (_repMode) {
-			case REALF -> {
-				for (j = 0; j < _repMonadF.getAlgebra().getGradeCount(); j++) {
-					headLabel = new JLabel(j + "-blades", SwingConstants.CENTER);
-					headLabel.setFont(_PLAINFONT);
-					pnlMonadCoeffPanel.add(headLabel, cn1);
+			repMonad.gradeStream().forEach(grade -> {
+				JLabel headLabel2 = new JLabel(grade + "-blades", SwingConstants.CENTER);
+				headLabel2.setFont(_PLAINFONT);
+				pnlMonadCoeffPanel.add(headLabel2, cn1);
+				cn1.gridy++;
+
+				repMonad.getAlgebra().getGBasis().bladeOfGradeStream((byte) grade).forEach(blade -> {
+					jCoeffs.get(blade).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+					pnlMonadCoeffPanel.add(jCoeffs.get(blade), cn1);
 					cn1.gridy++;
+				});
+				;
+				cn1.gridx++;
+				cn1.gridy = 0;
+			});
+		} else if (btnChangeOrient.getIcon().equals(iconHorizontal)) {
+			repMonad.gradeStream().forEach(grade -> {
+				JLabel headLabel2 = new JLabel(grade + "-blades", SwingConstants.CENTER);
+				headLabel2.setFont(_PLAINFONT);
+				pnlMonadCoeffPanel.add(headLabel2, cn1);
+				cn1.gridx++;
 
-					tSpot = _repMonadF.getAlgebra().getGradeRange(j);
-					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
-						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
-						cn1.gridy++;
-					}
+				repMonad.getAlgebra().getGBasis().bladeOfGradeStream((byte) grade).forEach(blade -> {
+					jCoeffs.get(blade).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+					pnlMonadCoeffPanel.add(jCoeffs.get(blade), cn1);
 					cn1.gridx++;
-					cn1.gridy = 0;
-				}
-			}
-			case REALD -> {
-				for (j = 0; j < _repMonadD.getAlgebra().getGradeCount(); j++) {
-					headLabel = new JLabel(j + "-blades", SwingConstants.CENTER);
-					headLabel.setFont(_PLAINFONT);
-					pnlMonadCoeffPanel.add(headLabel, cn1);
-					cn1.gridy++;
-
-					tSpot = _repMonadD.getAlgebra().getGradeRange(j);
-					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
-						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
-						cn1.gridy++;
-					}
-					cn1.gridx++;
-					cn1.gridy = 0;
-				}
-			}
-			case COMPLEXF -> {
-				for (j = 0; j < _repMonadCF.getAlgebra().getGradeCount(); j++) {
-					headLabel = new JLabel(j + "-blades", SwingConstants.CENTER);
-					headLabel.setFont(_PLAINFONT);
-					pnlMonadCoeffPanel.add(headLabel, cn1);
-					cn1.gridy++;
-
-					tSpot = _repMonadCF.getAlgebra().getGradeRange(j);
-					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
-						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
-						cn1.gridy++;
-					}
-					cn1.gridx++;
-					cn1.gridy = 0;
-				}
-			}
-			case COMPLEXD -> {
-				for (j = 0; j < _repMonadCD.getAlgebra().getGradeCount(); j++) {
-					headLabel = new JLabel(j + "-blades", SwingConstants.CENTER);
-					headLabel.setFont(_PLAINFONT);
-					pnlMonadCoeffPanel.add(headLabel, cn1);
-					cn1.gridy++;
-
-					tSpot = _repMonadCD.getAlgebra().getGradeRange(j);
-					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
-						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
-						cn1.gridy++;
-					}
-					cn1.gridx++;
-					cn1.gridy = 0;
-				}
-			}
-			}
-
-		}
-		if (btnChangeOrient.getIcon().equals(iconHorizontal)) {
-			short j = 0;
-			short k = 0;
-			JLabel headLabel;
-			short[] tSpot;
-			switch (_repMode) {
-			case REALF -> {
-				for (j = 0; j < _repMonadF.getAlgebra().getGradeCount(); j++) {
-					headLabel = new JLabel(j + "-blades", SwingConstants.RIGHT);
-					headLabel.setFont(_PLAINFONT);
-					pnlMonadCoeffPanel.add(headLabel, cn1);
-					cn1.gridx++;
-
-					tSpot = _repMonadF.getAlgebra().getGradeRange(j);
-					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
-						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
-						cn1.gridx++;
-					}
-					cn1.gridx = 0;
-					cn1.gridy++;
-				}
-			}
-			case REALD -> {
-				for (j = 0; j < _repMonadD.getAlgebra().getGradeCount(); j++) {
-					headLabel = new JLabel(j + "-blades", SwingConstants.RIGHT);
-					headLabel.setFont(_PLAINFONT);
-					pnlMonadCoeffPanel.add(headLabel, cn1);
-					cn1.gridx++;
-
-					tSpot = _repMonadD.getAlgebra().getGradeRange(j);
-					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
-						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
-						cn1.gridx++;
-					}
-					cn1.gridx = 0;
-					cn1.gridy++;
-				}
-			}
-			case COMPLEXF -> {
-				for (j = 0; j < _repMonadCF.getAlgebra().getGradeCount(); j++) {
-					headLabel = new JLabel(j + "-blades", SwingConstants.RIGHT);
-					headLabel.setFont(_PLAINFONT);
-					pnlMonadCoeffPanel.add(headLabel, cn1);
-					cn1.gridx++;
-
-					tSpot = _repMonadCF.getAlgebra().getGradeRange(j);
-					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
-						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
-						cn1.gridx++;
-					}
-					cn1.gridx = 0;
-					cn1.gridy++;
-				}
-			}
-			case COMPLEXD -> {
-				for (j = 0; j < _repMonadCD.getAlgebra().getGradeCount(); j++) {
-					headLabel = new JLabel(j + "-blades", SwingConstants.RIGHT);
-					headLabel.setFont(_PLAINFONT);
-					pnlMonadCoeffPanel.add(headLabel, cn1);
-					cn1.gridx++;
-
-					tSpot = _repMonadCD.getAlgebra().getGradeRange(j);
-					for (k = tSpot[0]; k < tSpot[1] + 1; k++) {
-						_jCoeffs.get(k).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-						pnlMonadCoeffPanel.add(_jCoeffs.get(k), cn1);
-						cn1.gridx++;
-					}
-					cn1.gridx = 0;
-					cn1.gridy++;
-				}
-			}
-			}
+				});
+				;
+				cn1.gridy++;
+				cn1.gridx = 0;
+			});
 		}
 		return pnlMonadCoeffPanel;
 	}
@@ -928,7 +480,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		cn.weighty = 0;
 		cn.gridwidth = 2;
 
-		btnEdit = new JButton(new ImageIcon(this.getClass().getResource("/icons/edit.png")));
+		btnEdit = new JButton(new ImageIcon(this.getClass().getResource("/resources/edit.png")));
 		btnEdit.setActionCommand("edit");
 		btnEdit.setToolTipText("start edits");
 		btnEdit.setPreferredSize(squareLittle);
@@ -937,7 +489,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		pnlMonadEditControls.add(btnEdit, cn);
 		cn.gridy++;
 
-		btnSync = new JButton(new ImageIcon(this.getClass().getResource("/icons/save.png")));
+		btnSync = new JButton(new ImageIcon(this.getClass().getResource("/resources/save.png")));
 		btnSync.setActionCommand("save");
 		btnSync.setToolTipText("save edits");
 		btnSync.setEnabled(false);
@@ -947,7 +499,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		pnlMonadEditControls.add(btnSync, cn);
 		cn.gridy++;
 
-		btnRestore = new JButton(new ImageIcon(this.getClass().getResource("/icons/restore.png")));
+		btnRestore = new JButton(new ImageIcon(this.getClass().getResource("/resources/restore.png")));
 		btnRestore.setActionCommand("abort");
 		btnRestore.setToolTipText("abandon edits");
 		btnRestore.setEnabled(false);
@@ -968,45 +520,6 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		add(pnlMonadEditControls, "West");
 	}
 
-	private void initiateCoeffList() {
-		short j = 0;
-		FieldDisplay tSpot;
-		switch (_repMode) {
-		case REALF -> {
-			_jCoeffs = new ArrayList<FieldDisplay>(_repMonadF.getAlgebra().getBladeCount());
-			for (j = 0; j < _repMonadF.getAlgebra().getBladeCount(); j++) {
-				tSpot = new FieldDisplay(CladosFBuilder.copyOf(_repMonadF.getCoeff(j)), this);
-				tSpot.addFocusListener(this);
-				_jCoeffs.add(j, tSpot);
-			}
-		}
-		case REALD -> {
-			_jCoeffs = new ArrayList<FieldDisplay>(_repMonadD.getAlgebra().getBladeCount());
-			for (j = 0; j < _repMonadD.getAlgebra().getBladeCount(); j++) {
-				tSpot = new FieldDisplay(CladosFBuilder.copyOf(_repMonadD.getCoeff(j)), this);
-				tSpot.addFocusListener(this);
-				_jCoeffs.add(j, tSpot);
-			}
-		}
-		case COMPLEXF -> {
-			_jCoeffs = new ArrayList<FieldDisplay>(_repMonadCF.getAlgebra().getBladeCount());
-			for (j = 0; j < _repMonadCF.getAlgebra().getBladeCount(); j++) {
-				tSpot = new FieldDisplay(CladosFBuilder.copyOf(_repMonadCF.getCoeff(j)), this);
-				tSpot.addFocusListener(this);
-				_jCoeffs.add(j, tSpot);
-			}
-		}
-		case COMPLEXD -> {
-			_jCoeffs = new ArrayList<FieldDisplay>(_repMonadCD.getAlgebra().getBladeCount());
-			for (j = 0; j < _repMonadCD.getAlgebra().getBladeCount(); j++) {
-				tSpot = new FieldDisplay(CladosFBuilder.copyOf(_repMonadCD.getCoeff(j)), this);
-				tSpot.addFocusListener(this);
-				_jCoeffs.add(j, tSpot);
-			}
-		}
-		}
-	}
-
 	private void createManagementLayout() {
 		pnlMonadAlterControls = new JPanel();
 		pnlMonadAlterControls.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -1020,7 +533,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		cn.weighty = 0;
 		cn.gridwidth = 2;
 
-		btnScaleMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/scale.png")));
+		JButton btnScaleMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/scale.png")));
 		btnScaleMonad.setActionCommand("scale");
 		btnScaleMonad.setToolTipText("scale() the monad");
 		btnScaleMonad.setPreferredSize(squareMedium);
@@ -1029,7 +542,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		pnlMonadAlterControls.add(btnScaleMonad, cn);
 		cn.gridy++;
 
-		btnNormalizeMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/norm.png")));
+		JButton btnNormalizeMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/norm.png")));
 		btnNormalizeMonad.setActionCommand("normalize");
 		btnNormalizeMonad.setToolTipText("normalize THIS Monad");
 		btnNormalizeMonad.setPreferredSize(squareMedium);
@@ -1038,7 +551,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		pnlMonadAlterControls.add(btnNormalizeMonad, cn);
 		cn.gridy++;
 
-		btnInvertMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/invert.png")));
+		JButton btnInvertMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/invert.png")));
 		btnInvertMonad.setActionCommand("invert");
 		btnInvertMonad.setToolTipText("invert [+/-] generators");
 		btnInvertMonad.setPreferredSize(squareMedium);
@@ -1047,7 +560,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		pnlMonadAlterControls.add(btnInvertMonad, cn);
 		cn.gridy++;
 
-		btnReverseMonad = new JButton(new ImageIcon(this.getClass().getResource("/icons/reverse.png")));
+		JButton btnReverseMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/reverse.png")));
 		btnReverseMonad.setActionCommand("reverse");
 		btnReverseMonad.setToolTipText("reverse [ab->ba] blades");
 		btnReverseMonad.setPreferredSize(squareMedium);
@@ -1056,7 +569,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		pnlMonadAlterControls.add(btnReverseMonad, cn);
 		cn.gridy++;
 
-		btnDualLeft = new JButton(new ImageIcon(this.getClass().getResource("/icons/dualleft.png")));
+		JButton btnDualLeft = new JButton(new ImageIcon(this.getClass().getResource("/resources/dualleft.png")));
 		btnDualLeft.setActionCommand("dual>");
 		btnDualLeft.setToolTipText("left Dual of the monad using algebra's PS");
 		btnDualLeft.setPreferredSize(squareMedium);
@@ -1065,7 +578,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		pnlMonadAlterControls.add(btnDualLeft, cn);
 		cn.gridy++;
 
-		btnDualRight = new JButton(new ImageIcon(this.getClass().getResource("/icons/dualright.png")));
+		JButton btnDualRight = new JButton(new ImageIcon(this.getClass().getResource("/resources/dualright.png")));
 		btnDualRight.setActionCommand("<dual");
 		btnDualRight.setToolTipText("right Dual of the monad using algebra's PS");
 		btnDualRight.setPreferredSize(squareMedium);
@@ -1074,7 +587,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		pnlMonadAlterControls.add(btnDualRight, cn);
 		cn.gridy++;
 
-		btnGradeCrop = new JButton(new ImageIcon(this.getClass().getResource("/icons/gradecrop.png")));
+		JButton btnGradeCrop = new JButton(new ImageIcon(this.getClass().getResource("/resources/gradecrop.png")));
 		btnGradeCrop.setActionCommand("findgrade crop");
 		btnGradeCrop.setToolTipText("crop around findgrade()");
 		btnGradeCrop.setPreferredSize(squareMedium);
@@ -1083,7 +596,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		pnlMonadAlterControls.add(btnGradeCrop, cn);
 		cn.gridy++;
 
-		btnGradeCut = new JButton(new ImageIcon(this.getClass().getResource("/icons/gradecut.png")));
+		JButton btnGradeCut = new JButton(new ImageIcon(this.getClass().getResource("/resources/gradecut.png")));
 		btnGradeCut.setActionCommand("findgrade cut");
 		btnGradeCut.setToolTipText("cut this findgrade()");
 		btnGradeCut.setPreferredSize(squareMedium);
@@ -1102,13 +615,7 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		pnlMonadReferences = new JPanel();
 
 		StringBuffer title = new StringBuffer("Cardinal | ");
-		switch (_repMode) {
-		// We aren't keeping references to details in Monads, so this is fairly safe.
-		case REALF -> title.append(_repMonadF.getCoeff((short) 0).getCardinalString());
-		case REALD -> title.append(_repMonadD.getCoeff((short) 0).getCardinalString());
-		case COMPLEXF -> title.append(_repMonadCF.getCoeff((short) 0).getCardinalString());
-		case COMPLEXD -> title.append(_repMonadCD.getCoeff((short) 0).getCardinalString());
-		} // Could use the Algebra's protonumber instead, though.
+		title.append(repMonad.getScales().getCardinal().getUnit());
 
 		TitledBorder tWrap = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title.toString(),
 				TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, _PLAINFONT);
@@ -1152,6 +659,17 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 
 	}
 
+	@SuppressWarnings("unchecked")
+	private void initiateCoeffList() {
+		jCoeffs = new TreeMap<Blade, FieldDisplay<T>>();
+		repMonad.bladeStream().forEach(blade -> {
+			FieldDisplay<T> tSpot = new FieldDisplay<T>((T) CladosFBuilder.copyOf((T) repMonad.getScales().get(blade)),
+					this);
+			tSpot.addFocusListener(this);
+			jCoeffs.put(blade, tSpot);
+		});
+	}
+
 	private void makeNotWritable() {
 		if (pnlMonadReferences != null)
 			pnlMonadReferences.setBackground(clrBackColor);
@@ -1160,99 +678,31 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 		name.setEditable(false);
 
 		if (useFullPanel)
-			for (FieldDisplay point : _jCoeffs)
-				point.setEditable(false);
-	}
-
-	private void setRepMonad() {
-		try {
-			switch (_repMode) {
-			case REALF -> {
-				if (name.getText() != _repMonadF.getName())
-					_repMonadF.setName(name.getText());
-				RealF[] _repMonadCoeffsF = new RealF[_repMonadF.getAlgebra().getBladeCount()];
-				for (short j = 0; j < _repMonadF.getAlgebra().getBladeCount(); j++) {
-					_jCoeffs.get(j).saveContents();
-					_repMonadCoeffsF[j] = CladosFBuilder.copyOf(_jCoeffs.get(j).displayFieldRF);
-				}
-				_repMonadF.setCoeff(_repMonadCoeffsF);
-				gradeKey.setText(new StringBuffer().append(_repMonadF.getGradeKey()).toString());
-			}
-			case REALD -> {
-				if (name.getText() != _repMonadD.getName())
-					_repMonadD.setName(name.getText());
-				RealD[] _repMonadCoeffsD = new RealD[_repMonadD.getAlgebra().getBladeCount()];
-				for (short k = 0; k < _repMonadD.getAlgebra().getBladeCount(); k++) {
-					_jCoeffs.get(k).saveContents();
-					_repMonadCoeffsD[k] = CladosFBuilder.copyOf(_jCoeffs.get(k).displayFieldRD);
-				}
-				_repMonadD.setCoeff(_repMonadCoeffsD);
-				gradeKey.setText(new StringBuffer().append(_repMonadD.getGradeKey()).toString());
-			}
-			case COMPLEXF -> {
-				if (name.getText() != _repMonadCF.getName())
-					_repMonadCF.setName(name.getText());
-				ComplexF[] _repMonadCoeffsCF = new ComplexF[_repMonadCF.getAlgebra().getBladeCount()];
-				for (short i = 0; i < _repMonadCF.getAlgebra().getBladeCount(); i++) {
-					_jCoeffs.get(i).saveContents();
-					_repMonadCoeffsCF[i] = CladosFBuilder.copyOf(_jCoeffs.get(i).displayFieldCF);
-				}
-				_repMonadCF.setCoeff(_repMonadCoeffsCF);
-				gradeKey.setText(new StringBuffer().append(_repMonadCF.getGradeKey()).toString());
-			}
-			case COMPLEXD -> {
-				if (name.getText() != _repMonadCD.getName())
-					_repMonadCD.setName(name.getText());
-				ComplexD[] _repMonadCoeffsCD = new ComplexD[_repMonadCD.getAlgebra().getBladeCount()];
-				for (short m = 0; m < _repMonadCD.getAlgebra().getBladeCount(); m++) {
-					_jCoeffs.get(m).saveContents();
-					_repMonadCoeffsCD[m] = CladosFBuilder.copyOf(_jCoeffs.get(m).displayFieldCD);
-				}
-				_repMonadCD.setCoeff(_repMonadCoeffsCD);
-				gradeKey.setText(new StringBuffer().append(_repMonadCD.getGradeKey()).toString());
-			}
-			}
-		} catch (CladosMonadException e) {
-			ErrorDialog.show("Could not set at least one of the edited coefficients.\n" + e.getSourceMessage(),
-					"Clados Monad Exception");
-		}
+			repMonad.bladeStream().forEach(blade -> {
+				jCoeffs.get(blade).setEditable(false);
+			});
 	}
 
 	private void setReferences() {
-		switch (_repMode) {
-		case REALF -> {
-			name.setText(_repMonadF.getName());
-			aname.setText(_repMonadF.getAlgebra().getAlgebraName());
-			sig.setText(_repMonadF.getAlgebra().getGProduct().getSignature());
-			frame.setText(_repMonadF.getFrameName());
-			foot.setText(_repMonadF.getAlgebra().getFoot().getFootName());
-			gradeKey.setText(new StringBuffer().append(_repMonadF.getGradeKey()).toString());
-		}
-		case REALD -> {
-			name.setText(_repMonadD.getName());
-			aname.setText(_repMonadD.getAlgebra().getAlgebraName());
-			sig.setText(_repMonadD.getAlgebra().getGProduct().getSignature());
-			frame.setText(_repMonadD.getFrameName());
-			foot.setText(_repMonadD.getAlgebra().getFoot().getFootName());
-			gradeKey.setText(new StringBuffer().append(_repMonadD.getGradeKey()).toString());
-		}
-		case COMPLEXF -> {
-			name.setText(_repMonadCF.getName());
-			aname.setText(_repMonadCF.getAlgebra().getAlgebraName());
-			sig.setText(_repMonadCF.getAlgebra().getGProduct().getSignature());
-			frame.setText(_repMonadCF.getFrameName());
-			foot.setText(_repMonadCF.getAlgebra().getFoot().getFootName());
-			gradeKey.setText(new StringBuffer().append(_repMonadCF.getGradeKey()).toString());
-		}
-		case COMPLEXD -> {
-			name.setText(_repMonadCD.getName());
-			aname.setText(_repMonadCD.getAlgebra().getAlgebraName());
-			sig.setText(_repMonadCD.getAlgebra().getGProduct().getSignature());
-			frame.setText(_repMonadCD.getFrameName());
-			foot.setText(_repMonadCD.getAlgebra().getFoot().getFootName());
-			gradeKey.setText(new StringBuffer().append(_repMonadCD.getGradeKey()).toString());
-		}
-		}
+		name.setText(repMonad.getName());
+		aname.setText(repMonad.getAlgebra().getAlgebraName());
+		sig.setText(repMonad.getAlgebra().getGProduct().signature());
+		frame.setText(repMonad.getFrameName());
+		foot.setText(repMonad.getAlgebra().getFoot().getFootName());
+		gradeKey.setText(new StringBuffer().append(repMonad.getGradeKey()).toString());
+	}
+
+	private void setRepMonad() {
+		if (name.getText() != repMonad.getName())
+			repMonad.setName(name.getText());
+
+		repMonad.bladeStream().forEach(blade -> {
+			FieldDisplay<T> spot = jCoeffs.get(blade);
+			spot.saveContents();
+			repMonad.getScales().put(blade, CladosFBuilder.copyOf(spot.displayField));
+			repMonad.setGradeKey();
+		});
+		gradeKey.setText(String.valueOf(repMonad.getGradeKey()));
 	}
 
 	/**
@@ -1269,8 +719,9 @@ public class MonadPanel extends JPanel implements ActionListener, FocusListener 
 
 		name.setEditable(true);
 		if (useFullPanel)
-			for (FieldDisplay point : _jCoeffs)
-				point.setEditable(true);
+			repMonad.bladeStream().forEach(blade -> {
+				jCoeffs.get(blade).setEditable(true);
+			});
 
 	}
 }

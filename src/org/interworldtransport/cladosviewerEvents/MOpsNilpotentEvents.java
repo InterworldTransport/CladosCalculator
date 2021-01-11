@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MOpsNilpotentEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -25,25 +25,21 @@
 
 package org.interworldtransport.cladosviewerEvents;
 
-import org.interworldtransport.cladosFExceptions.*;
-import org.interworldtransport.cladosG.MonadComplexD;
-import org.interworldtransport.cladosG.MonadComplexF;
-import org.interworldtransport.cladosG.MonadRealD;
-import org.interworldtransport.cladosG.MonadRealF;
-import org.interworldtransport.cladosGExceptions.*;
-
-import org.interworldtransport.cladosviewer.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
 
+import org.interworldtransport.cladosG.Monad;
+import org.interworldtransport.cladosviewer.ErrorDialog;
+import org.interworldtransport.cladosviewer.MonadPanel;
+import org.interworldtransport.cladosviewer.NyadPanel;
+
 /**
  * This class manages events relating to the answering of a boolean question. Is
  * the selected monad nilpotent?
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class MOpsNilpotentEvents implements ActionListener {
@@ -87,34 +83,23 @@ public class MOpsNilpotentEvents implements ActionListener {
 
 		try {
 			int pow2Test = (int) Float.parseFloat(_parent._GUI.appFieldBar.getRealText());
-			boolean test = switch (tSpot.getRepMode()) {
-			case REALF -> MonadRealF.isNilpotent(tSpot.getMonadRF(), pow2Test);
-			case REALD -> MonadRealD.isNilpotent(tSpot.getMonadRD(), pow2Test);
-			case COMPLEXF -> MonadComplexF.isNilpotent(tSpot.getMonadCF(), pow2Test);
-			case COMPLEXD -> MonadComplexD.isNilpotent(tSpot.getMonadCD(), pow2Test);
-			};
+			boolean test = Monad.isNilpotent(tSpot.getMonad(), pow2Test);
+
 			if (test)
 				_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is nilpotent at power=" + pow2Test + ".\n");
 			else
 				_parent._GUI.appStatusBar
 						.setStatusMsg("-->Selected monad is NOT nilpotent at power=" + pow2Test + ".\n");
-		} catch (NullPointerException eNull) // Catch the empty text 'real number' text field on the FieldBar.
-		{
+		} catch (NullPointerException eNull) {
+			// Catch the empty text 'real number' text field on the FieldBar.
 			ErrorDialog.show("Power Nilpotent Test must have a real # in the FieldBar.\nNothing done.",
 					"Null Pointer Exception");
 			return;
-		} catch (NumberFormatException eFormat) // Catch the non-parse-able text 'real number' text field on the
-												// FieldBar.
-		{
+		} catch (NumberFormatException eFormat) {
+			// Catch the non-parse-able text 'real number' text field on the FieldBar.
 			ErrorDialog.show("Power Nilpotent Test must have a parse-able real # in the FieldBar.\nNothing done.",
 					"Number Format Exception");
 			return;
-		} catch (CladosMonadException e) {
-			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n" + e.getSourceMessage(),
-					"Clados Monad Exception");
-		} catch (FieldBinaryException eb) {
-			ErrorDialog.show("Selected monad has an issue.\nNothing done.\n" + eb.getSourceMessage(),
-					"Field Binary Exception");
 		}
 	}
 }

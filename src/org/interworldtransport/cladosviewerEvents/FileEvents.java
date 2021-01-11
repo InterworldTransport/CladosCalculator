@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.FileEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -31,11 +31,6 @@ import org.interworldtransport.cladosviewer.CladosCalculator;
 import org.interworldtransport.cladosviewer.NyadPanel;
 import org.interworldtransport.cladosviewer.ViewerMenu;
 
-import org.interworldtransport.cladosG.NyadRealF;
-import org.interworldtransport.cladosG.NyadRealD;
-import org.interworldtransport.cladosG.NyadComplexF;
-import org.interworldtransport.cladosG.NyadComplexD;
-
 /**
  * This class groups the event listeners associated with the File menu. It may
  * be used in the future to act on events associated with the entire File menu
@@ -44,7 +39,7 @@ import org.interworldtransport.cladosG.NyadComplexD;
  * register with all the components to which its listeners register..maybe.
  * [None of this is done yet, of course.]
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class FileEvents {
@@ -90,29 +85,22 @@ public class FileEvents {
 			return "Nothing in panels to save.";
 
 		StringBuffer content = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n");
-		content.append("<NyadList size=\"" + _GUI.appGeometryView.getNyadListSize() + "\">\r\n");
+		content.append("<NyadList ");
+		content.append("xmlns=\"https://interworldtransport.org\" ");
+		content.append("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ");
+		content.append("xsi:schemaLocation=\"https://interworldtransport.org clados.xsd\" ");
+		content.append("size=\"");
+		content.append(_GUI.appGeometryView.getNyadListSize()).append("\">\r\n");
 
-		// TODO Ugh. Convert the following property to a boolean or Boolean and THEN
-		// switch on it.
 		switch (_GUI.IniProps.getProperty("Desktop.File.Snapshot.FullXML")) {
 		case "true" -> {
-			for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels()) {
-				switch (tempNPN.getRepMode()) {
-				case REALF -> content.append(NyadRealF.toXMLFullString(tempNPN.getNyadRF()));
-				case REALD -> content.append(NyadRealD.toXMLFullString(tempNPN.getNyadRD()));
-				case COMPLEXF -> content.append(NyadComplexF.toXMLFullString(tempNPN.getNyadCF()));
-				case COMPLEXD -> content.append(NyadComplexD.toXMLFullString(tempNPN.getNyadCD()));
-				}
+			for (NyadPanel<?> tempNPN : _GUI.appGeometryView.getNyadPanels()) {
+				content.append(tempNPN.getNyad().toXMLFullString(""));
 			}
 		}
 		case "false" -> {
-			for (NyadPanel tempNPN : _GUI.appGeometryView.getNyadPanels()) {
-				switch (tempNPN.getRepMode()) {
-				case REALF -> content.append(NyadRealF.toXMLString(tempNPN.getNyadRF()));
-				case REALD -> content.append(NyadRealD.toXMLString(tempNPN.getNyadRD()));
-				case COMPLEXF -> content.append(NyadComplexF.toXMLString(tempNPN.getNyadCF()));
-				case COMPLEXD -> content.append(NyadComplexD.toXMLString(tempNPN.getNyadCD()));
-				}
+			for (NyadPanel<?> tempNPN : _GUI.appGeometryView.getNyadPanels()) {
+				content.append(tempNPN.getNyad().toXMLString(""));
 			}
 		}
 		default -> content.append("\n<Empty />\n");

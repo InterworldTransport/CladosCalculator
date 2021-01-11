@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MOpsHasGradeEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -36,7 +36,7 @@ import javax.swing.JMenuItem;
  * This class manages events relating to the answering of a simple question.
  * What is the findgrade of the selected monad?
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class MOpsHasGradeEvents implements ActionListener {
@@ -104,13 +104,8 @@ public class MOpsHasGradeEvents implements ActionListener {
 		}
 
 		MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
-		long tempGradeKey = switch (tSpot.getRepMode()) {
-		case REALF -> tSpot.getMonadRF().getGradeKey();
-		case REALD -> tSpot.getMonadRD().getGradeKey();
-		case COMPLEXF -> tSpot.getMonadCF().getGradeKey();
-		case COMPLEXD -> tSpot.getMonadCD().getGradeKey();
-		};
-
+		long tempGradeKey = tSpot.getMonad().getGradeKey();
+		
 		// We have a tempGradeKey AND a grade2Test. If this were a uniqueness test we'd
 		// just build key2Test=Math.pow(10,grade2Test) and checkfor equality. It isn't
 		// though. What we need here is whether key2Test shows up in the testGradeKey.

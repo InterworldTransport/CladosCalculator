@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.NOpsIsScalarAtEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -24,16 +24,13 @@
  */
 package org.interworldtransport.cladosviewerEvents;
 
-import org.interworldtransport.cladosG.NyadComplexD;
-import org.interworldtransport.cladosG.NyadComplexF;
-import org.interworldtransport.cladosG.NyadRealD;
-import org.interworldtransport.cladosG.NyadRealF;
-
-import org.interworldtransport.cladosviewer.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JMenuItem;
+
+import org.interworldtransport.cladosviewer.ErrorDialog;
+import org.interworldtransport.cladosviewer.NyadPanel;
 
 /**
  * This class manages events relating to the answering of a boolean question. Is
@@ -46,7 +43,7 @@ import javax.swing.JMenuItem;
  * ONCE, this test checks them all and reports 'false' if any of them fail to be
  * pure scalar grade.
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class NOpsIsPScalarAtEvents implements ActionListener {
@@ -92,17 +89,8 @@ public class NOpsIsPScalarAtEvents implements ActionListener {
 			ErrorDialog.show("Nyads using different DivFields.", "Nyad DivField Mismatch");
 			return;
 		}
-
-		boolean test = switch (panelNyadSelected.getRepMode()) {
-		case REALF -> NyadRealF.isPScalarAt(panelNyadNext.getNyadRF(),
-				panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadRF().getAlgebra());
-		case REALD -> NyadRealD.isPScalarAt(panelNyadNext.getNyadRD(),
-				panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadRD().getAlgebra());
-		case COMPLEXF -> NyadComplexF.isPScalarAt(panelNyadNext.getNyadCF(),
-				panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadCF().getAlgebra());
-		case COMPLEXD -> NyadComplexD.isPScalarAt(panelNyadNext.getNyadCD(),
-				panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonadCD().getAlgebra());
-		};
+		boolean test = panelNyadNext.getNyad()
+				.isPScalarAt(panelNyadSelected.getMonadPanel(indxMndPnlSlctd).getMonad().getAlgebra());
 		if (test)
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad's algebra IS PSCALAR in the next nyad.\n");
 		else

@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.HelpAboutEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -33,7 +33,7 @@ import java.awt.event.*;
 /** org.interworldtransport.cladosviewer.HelpAboutEvents
  * This class shows the About dialog box and its related information.
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class HelpAboutEvents implements ActionListener

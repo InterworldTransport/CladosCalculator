@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.SupportDialog<br>
  * -------------------------------------------------------------------- <p>
@@ -35,7 +35,7 @@ import javax.swing.border.*;
  * "Help|Support" menu on the main Atmosphere application window. It provides
  * information about support for the application.
  * 
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public final class SupportDialog extends JDialog implements ActionListener {
@@ -43,7 +43,6 @@ public final class SupportDialog extends JDialog implements ActionListener {
 	private static final Color _backColor = new Color(255, 255, 222);
 	private static final Color _tblBackColor = new Color(212, 212, 192);
 	private CladosCalculator _GUI;
-	private JButton btnClose;
 
 	/**
 	 * The constructor sets up the support/about dialog box and displays it.
@@ -76,8 +75,7 @@ public final class SupportDialog extends JDialog implements ActionListener {
 		closeButtonPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		mainPane.add(closeButtonPane, "South");
 
-		// Create close button
-		btnClose = new JButton(new ImageIcon(this.getClass().getResource("/icons/close.png")));
+		JButton btnClose = new JButton(new ImageIcon(this.getClass().getResource("/resources/close.png")));
 		btnClose.setActionCommand("close");
 		btnClose.setToolTipText("Close the dialog.");
 		btnClose.setPreferredSize(new Dimension(30, 30));

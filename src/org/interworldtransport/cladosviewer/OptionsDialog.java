@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.OptionsDialog<br>
  * -------------------------------------------------------------------- <p>
@@ -25,34 +25,44 @@
 
 package org.interworldtransport.cladosviewer;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * org.interworldtransport.cladosviewer.OptionsDialog The Optons Dialog window
- * is supposed to show a window that would allow a user to adjust the
- * configuration file from within the Viewer.
+ * The Optons Dialog window is supposed to show a window that would allow a user
+ * to adjust the configuration file from within the Viewer.
  * 
- * @version 0.85,
+ * @version 1.0,
  * @author Dr Alfred W Differ
  */
 public class OptionsDialog extends JDialog implements ActionListener, TableModelListener {
-
-	private static final long serialVersionUID = 1385685951107112318L;
+	private static final long serialVersionUID = 6839331358239321665L;
 
 	private class PropTblModel extends AbstractTableModel {
-		private static final long serialVersionUID = 3785462031208177980L;
+		private static final long serialVersionUID = 265869592788704225L;
 		private String[] columnNames = { "Key", "Value" };
 		private Object[][] data;
 
@@ -99,10 +109,8 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 	private static final Color _backColor = new Color(255, 255, 222);
 	private static final Color _tblBackColor = new Color(212, 212, 192);
 	private CladosCalculator _GUI;
-	private JButton btnClose;
 	private JButton btnSave;
 	private JPanel mainPane = new JPanel(new BorderLayout());
-	private JTable propTable;
 	private PropTblModel tblModel = new PropTblModel();
 
 	/**
@@ -119,34 +127,8 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 		mainPane.setBackground(_backColor);
 		setContentPane(mainPane);
 		createControlButtons();
-		addPropTable();
-		setSize(400, 500);
 
-		Point parentLocation = mainWindow.getLocation();
-		int Xloc = (int) parentLocation.getX() + ((mainWindow.getWidth() - 300) / 2);
-		int Yloc = (int) parentLocation.getY(); // + ((mainWindow.getHeight() - 400) / 2);
-		setLocation(Xloc, Yloc);
-		setVisible(true);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent event) {
-		switch (event.getActionCommand()) {
-		case "close" -> dispose();
-		case "save" -> {
-			saveAll(storeItAll());
-			dispose();
-		}
-		}
-	}
-
-	@Override
-	public void tableChanged(TableModelEvent e) {
-		;
-	}
-
-	private void addPropTable() {
-		propTable = new JTable(tblModel);
+		JTable propTable = new JTable(tblModel);
 		propTable.setBackground(_tblBackColor);
 		propTable.setShowHorizontalLines(true);
 		propTable.setDragEnabled(false);
@@ -162,6 +144,33 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 		propTable.setFillsViewportHeight(true);
 		propTable.setAutoCreateRowSorter(true);
 		propTable.getModel().addTableModelListener(this);
+
+		setSize(400, 500);
+
+		Point parentLocation = mainWindow.getLocation();
+		int Xloc = (int) parentLocation.getX() + ((mainWindow.getWidth() - 300) / 2);
+		int Yloc = (int) parentLocation.getY(); // + ((mainWindow.getHeight() - 400) / 2);
+		setLocation(Xloc, Yloc);
+		setVisible(true);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		switch (event.getActionCommand()) {
+		case "close" -> dispose();
+		case "save" -> {
+			Properties unload = new Properties();
+			for (int j = 0; j < tblModel.getRowCount(); j++)
+				unload.put(tblModel.getValueAt(j, 0), tblModel.getValueAt(j, 1));
+			saveAll(unload);
+			dispose();
+		}
+		}
+	}
+
+	@Override
+	public void tableChanged(TableModelEvent e) {
+		;
 	}
 
 	private void createControlButtons() { // Create button panel
@@ -171,7 +180,7 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 		mainPane.add(controlPanel, "South");
 
 		// Create buttons
-		btnSave = new JButton(new ImageIcon(this.getClass().getResource("/icons/save.png")));
+		btnSave = new JButton(new ImageIcon(this.getClass().getResource("/resources/save.png")));
 		btnSave.setActionCommand("save");
 		btnSave.setToolTipText("Save any changes, then close.");
 		btnSave.setPreferredSize(new Dimension(30, 30));
@@ -179,7 +188,7 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 		btnSave.addActionListener(this);
 		controlPanel.add(btnSave);
 
-		btnClose = new JButton(new ImageIcon(this.getClass().getResource("/icons/close.png")));
+		JButton btnClose = new JButton(new ImageIcon(this.getClass().getResource("/resources/close.png")));
 		btnClose.setActionCommand("close");
 		btnClose.setToolTipText("Close the dialog. No further changes.");
 		btnClose.setPreferredSize(new Dimension(30, 30));
@@ -215,12 +224,5 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 			_GUI.IniProps = pIn;
 			fIni = null;
 		}
-	}
-
-	private Properties storeItAll() {
-		Properties unload = new Properties();
-		for (int j = 0; j < tblModel.getRowCount(); j++)
-			unload.put(tblModel.getValueAt(j, 0), tblModel.getValueAt(j, 1));
-		return unload;
 	}
 }

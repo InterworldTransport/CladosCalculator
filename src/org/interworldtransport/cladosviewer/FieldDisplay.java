@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.FieldDisplay<br>
  * -------------------------------------------------------------------- <p>
@@ -29,188 +29,120 @@ import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 
+import org.interworldtransport.cladosF.CladosFBuilder;
 import org.interworldtransport.cladosF.CladosField;
 import org.interworldtransport.cladosF.ComplexD;
 import org.interworldtransport.cladosF.ComplexF;
+import org.interworldtransport.cladosF.Field;
+import org.interworldtransport.cladosF.Normalizable;
 import org.interworldtransport.cladosF.RealD;
 import org.interworldtransport.cladosF.RealF;
+import org.interworldtransport.cladosF.UnitAbstract;
 
 /**
  * The FieldArea class extends JTextArea slightly to keep the cladosF object
  * displayed in the text area close by. Referencing them and keeping them in
  * sync is made easier this way.
- * <p>
  * 
- * @version 0.85
+ * @param <D>
+ * 
+ * @version 1.0
  * @author Dr Alfred W Differ
+ * 
  */
-public class FieldDisplay extends JTextArea implements FocusListener {
-	private static final long serialVersionUID = 7705233831398982801L;
-	private static final int _FONTSIZE = 12;
+public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends JTextArea implements FocusListener {
+	private static final int _COMPLEXROWS = 2;
 	private static final int _DOUBLESIZE = 16;
 	private static final int _FLOATSIZE = 10;
-	private static final Font _PLAINFONT = new Font(Font.SERIF, Font.PLAIN, _FONTSIZE);
-	private static final Font _ITALICFONT = new Font(Font.SERIF, Font.ITALIC, _FONTSIZE);
+	private static final int _FONTSIZE = 12;
 	private static final String _IMAGINARY = "[I]";
 	private static final String _REAL = "[R]";
+	private static final int _REALROWS = 1;
+	private static final Font ITALICFONT = new Font(Font.SERIF, Font.ITALIC, _FONTSIZE);
+	private static final Font PLAINFONT = new Font(Font.SERIF, Font.PLAIN, _FONTSIZE);
+	private static final long serialVersionUID = 7705233831398982801L;
 
-	private MonadPanel _parent;
-	private CladosField _repMode;
+	private MonadPanel<D> _parent;
+	private CladosField repMode;
 	/**
 	 * The displayField is a copy of the cladosF magnitude that can be safely
 	 * displayed and manipulated without harming the cladosG object using the
 	 * original magnitude.
 	 */
-	protected ComplexD displayFieldCD;
-	/**
-	 * The displayField is a copy of the cladosF magnitude that can be safely
-	 * displayed and manipulated without harming the cladosG object using the
-	 * original magnitude.
-	 */
-	protected ComplexF displayFieldCF;
-	/**
-	 * The displayField is a copy of the cladosF magnitude that can be safely
-	 * displayed and manipulated without harming the cladosG object using the
-	 * original magnitude.
-	 */
-	protected RealD displayFieldRD;
-	/**
-	 * The displayField is a copy of the cladosF magnitude that can be safely
-	 * displayed and manipulated without harming the cladosG object using the
-	 * original magnitude.
-	 */
-	protected RealF displayFieldRF;
+	protected D displayField;
 
 	/**
 	 * The FieldPanel class is intended to be the contain a cladosF Field in much
 	 * the same way as Monad and Nyad panels represent their contents to the
 	 * calculator
 	 * 
-	 * @param pField  ComplexD This is the ComplexD to be displayed in the text area
+	 * @param pField  D This is the CladosF number to be displayed in the text area
 	 *                presented by this panel.
 	 * @param pParent MonadPanel This is a reference to the owning MonadPanel
 	 */
-	public FieldDisplay(ComplexD pField, MonadPanel pParent) {
-		super(2, FieldDisplay._DOUBLESIZE); // two rows, extra wide
+	public FieldDisplay(D pField, MonadPanel<D> pParent) {
 		_parent = pParent;
 		if (pField != null) {
+			if (pField instanceof ComplexD) {
+				this.setRows(_COMPLEXROWS);
+				this.setColumns(_DOUBLESIZE);
+				repMode = CladosField.COMPLEXD;
+			} else if (pField instanceof ComplexF) {
+				this.setRows(_REALROWS);
+				this.setColumns(_FLOATSIZE);
+				repMode = CladosField.COMPLEXF;
+			} else if (pField instanceof RealD) {
+				this.setRows(_REALROWS);
+				this.setColumns(_DOUBLESIZE);
+				repMode = CladosField.REALD;
+			} else if (pField instanceof RealF) {
+				this.setRows(_REALROWS);
+				this.setColumns(_FLOATSIZE);
+				repMode = CladosField.REALF;
+			} else
+				throw new IllegalArgumentException("Offered number isn't a known UnitAbstract child.");
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			setFont(_PLAINFONT);
-			displayFieldCD = pField;
+			setFont(PLAINFONT);
+			displayField = pField;
 			addFocusListener(this);
 		} else {
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-			setFont(_ITALICFONT);
-			ErrorDialog.show("Null ComplexD in FieldDisplay.", "Function Parameter Issue");
+			setFont(ITALICFONT);
+			ErrorDialog.show("Null in FieldDisplay.", "Function Parameter Issue");
 			this.setText("null field");
 		}
-		_repMode = CladosField.COMPLEXD;
+
 	}
 
 	/**
-	 * The FieldPanel class is intended to be the contain a cladosF Field in much
-	 * the same way as Monad and Nyad panels represent their contents to the
-	 * calculator
 	 * 
-	 * @param pField  ComplexF This is the ComplexF to be displayed in the text area
-	 *                presented by this panel.
-	 * @param pParent MonadPanel This is a reference to the owning MonadPanel
 	 */
-	public FieldDisplay(ComplexF pField, MonadPanel pParent) {
-		super(2, FieldDisplay._FLOATSIZE);// two rows, not so wide
-		_parent = pParent;
-		if (pField != null) {
-			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			setFont(_PLAINFONT);
-			displayFieldCF = pField;
-			addFocusListener(this);
-		} else {
-			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-			setFont(_ITALICFONT);
-			ErrorDialog.show("Null ComplexF in FieldDisplay.", "Function Parameter Issue");
-			this.setText("null field");
-		}
-		_repMode = CladosField.COMPLEXF;
-	}
-
-	/**
-	 * The FieldPanel class is intended to be the contain a cladosF Field in much
-	 * the same way as Monad and Nyad panels represent their contents to the
-	 * calculator
-	 * 
-	 * @param pField  RealD This is the RealD to be displayed in the text area
-	 *                presented by this panel.
-	 * @param pParent MonadPanel This is a reference to the owning MonadPanel
-	 */
-	public FieldDisplay(RealD pField, MonadPanel pParent) {
-		super(1, FieldDisplay._DOUBLESIZE);// one row, extra wide
-		_parent = pParent;
-		if (pField != null) {
-			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			setFont(_PLAINFONT);
-			displayFieldRD = pField;
-			addFocusListener(this);
-		} else {
-			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-			setFont(_ITALICFONT);
-			ErrorDialog.show("Null RealD in FieldDisplay.", "Function Parameter Issue");
-			this.setText("null field");
-		}
-		_repMode = CladosField.REALD;
-	}
-
-	/**
-	 * The FieldPanel class is intended to be the contain a cladosF Field in much
-	 * the same way as Monad and Nyad panels represent their contents to the
-	 * calculator
-	 * 
-	 * @param pField  RealF This is the RealF to be displayed in the text area
-	 *                presented by this panel.
-	 * @param pParent MonadPanel This is a reference to the owning MonadPanel
-	 */
-	public FieldDisplay(RealF pField, MonadPanel pParent) {
-		super(1, FieldDisplay._FLOATSIZE);// one row, not so wide wide
-		_parent = pParent;
-		if (pField != null) {
-			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			setFont(_PLAINFONT);
-			displayFieldRF = pField;
-			addFocusListener(this);
-		} else {
-			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-			setFont(_ITALICFONT);
-			ErrorDialog.show("Null RealF in FieldDisplay.", "Function Parameter Issue");
-			this.setText("null field");
-		}
-		_repMode = CladosField.REALF;
-	}
-
 	public void displayContents() {
-		switch (_repMode) {
+		switch (repMode) {
 		case REALF -> setText(
-				new StringBuilder().append(FieldDisplay._REAL).append(displayFieldRF.getReal()).toString());
+				new StringBuilder().append(FieldDisplay._REAL).append(((RealF) displayField).getReal()).toString());
 		case REALD -> setText(
-				new StringBuilder().append(FieldDisplay._REAL).append(displayFieldRD.getReal()).toString());
-		case COMPLEXF -> setText(new StringBuilder().append(FieldDisplay._REAL).append(displayFieldCF.getReal())
-				.append("\n" + FieldDisplay._IMAGINARY).append(displayFieldCF.getImg()).toString());
-		case COMPLEXD -> setText(new StringBuilder().append(FieldDisplay._REAL).append(displayFieldCD.getReal())
-				.append("\n" + FieldDisplay._IMAGINARY).append(displayFieldCD.getImg()).toString());
+				new StringBuilder().append(FieldDisplay._REAL).append(((RealD) displayField).getReal()).toString());
+		case COMPLEXF -> setText(
+				new StringBuilder().append(FieldDisplay._REAL).append(((ComplexF) displayField).getReal())
+						.append("\n" + FieldDisplay._IMAGINARY).append(((ComplexF) displayField).getImg()).toString());
+		case COMPLEXD -> setText(
+				new StringBuilder().append(FieldDisplay._REAL).append(((ComplexD) displayField).getReal())
+						.append("\n" + FieldDisplay._IMAGINARY).append(((ComplexD) displayField).getImg()).toString());
+		default -> setText("null mode");
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void focusGained(FocusEvent e) {
 		if (_parent._editMode) // Only do this when parent MonadPanel is in edit mode.
 		{
-			switch (_parent.getRepMode()) {
-			case REALF -> displayFieldRF = RealF.copyOf(_parent._GUI.appFieldBar._repRealF);
-			case REALD -> displayFieldRD = RealD.copyOf(_parent._GUI.appFieldBar._repRealD);
-			case COMPLEXF -> displayFieldCF = ComplexF.copyOf(_parent._GUI.appFieldBar._repComplexF);
-			case COMPLEXD -> displayFieldCD = ComplexD.copyOf(_parent._GUI.appFieldBar._repComplexD);
-			}
+			displayField = CladosFBuilder.copyOf((D) _parent._GUI.appFieldBar.repNumber);
 			displayContents();
 		}
 	}
@@ -220,6 +152,10 @@ public class FieldDisplay extends JTextArea implements FocusListener {
 		;
 	}
 
+	/**
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
 	public void saveContents() // throws UtilitiesException
 	{
 		try {
@@ -230,31 +166,32 @@ public class FieldDisplay extends JTextArea implements FocusListener {
 			int indexOfR = strB.indexOf(_REAL) + _REAL.length();
 			int indexOfI = strB.indexOf(_IMAGINARY) + _IMAGINARY.length();
 
-			switch (_repMode) {
+			switch (repMode) {
 			case REALF -> {
-				displayFieldRF = (RealF) CladosField.REALF.createZERO(displayFieldRF);
-				displayFieldRF.setReal(Float.parseFloat(strB.substring(indexOfR, tBufferLength)));
+				displayField = (D) CladosField.REALF.createZERO(displayField);
+				((RealF) displayField).setReal(Float.parseFloat(strB.substring(indexOfR, tBufferLength)));
 			}
 			case REALD -> {
-				displayFieldRD = (RealD) CladosField.REALD.createZERO(displayFieldRD);
-				displayFieldRD.setReal(Double.parseDouble(strB.substring(indexOfR, tBufferLength)));
+				displayField = (D) CladosField.REALD.createZERO(displayField);
+				((RealD) displayField).setReal(Double.parseDouble(strB.substring(indexOfR, tBufferLength)));
 			}
 			case COMPLEXF -> {
-				displayFieldCF = (ComplexF) CladosField.COMPLEXF.createZERO(displayFieldCF);
-				displayFieldCF.setReal(Float.parseFloat(strB.substring(indexOfR, indexOfI - _IMAGINARY.length() - 1)));
-				displayFieldCF.setImg(Float.parseFloat(strB.substring(indexOfI, tBufferLength)));
+				displayField = (D) CladosField.COMPLEXF.createZERO(displayField);
+				((ComplexF) displayField)
+						.setReal(Float.parseFloat(strB.substring(indexOfR, indexOfI - _IMAGINARY.length() - 1)));
+				((ComplexF) displayField).setImg(Float.parseFloat(strB.substring(indexOfI, tBufferLength)));
 			}
 			case COMPLEXD -> {
-				displayFieldCD = (ComplexD) CladosField.COMPLEXD.createZERO(displayFieldCD);
-				displayFieldCD
+				displayField = (D) CladosField.COMPLEXD.createZERO(displayField);
+				((ComplexD) displayField)
 						.setReal(Double.parseDouble(strB.substring(indexOfR, indexOfI - _IMAGINARY.length() - 1)));
-				displayFieldCD.setImg(Double.parseDouble(strB.substring(indexOfI, tBufferLength)));
+				((ComplexD) displayField).setImg(Double.parseDouble(strB.substring(indexOfI, tBufferLength)));
 			}
 			}
-			setFont(_PLAINFONT);
+			setFont(PLAINFONT);
 			displayContents();
 		} catch (NumberFormatException e) {
-			setFont(_ITALICFONT);
+			setFont(ITALICFONT);
 			ErrorDialog.show("FieldDisplay must contain parse-able text.\nLook for bad lengths or number formats.",
 					"Parse Issue");
 		}
@@ -265,70 +202,16 @@ public class FieldDisplay extends JTextArea implements FocusListener {
 	 * When a new cladosF number is to be displayed, it is passed in through this
 	 * method.
 	 * 
-	 * @param pField ComplexD This is the ComplexD to be displayed in the text area
+	 * @param pField D This is the ComplexD to be displayed in the text area
 	 *               presented by this panel.
 	 */
-	public void updateField(ComplexD pField) {
-		// TODO Consider re-writing these four updateField methods so they detect the
-		// DivField type and switch on it. There is nothing about the method bodies that
-		// requires distinct methods. They simply use a different builder.
+	public void updateField(D pField) {
 		if (pField != null) {
-			displayFieldCD = ComplexD.copyOf(pField);
+			displayField = (D) CladosFBuilder.copyOf(pField);
 			displayContents();
 		} else {
-			setFont(_ITALICFONT);
-			this.setText("null C|D field");
-		}
-	}
-
-	/**
-	 * When a new cladosF number is to be displayed, it is passed in through this
-	 * method.
-	 * 
-	 * @param pField ComplexF This is the ComplexF to be displayed in the text area
-	 *               presented by this panel.
-	 */
-	public void updateField(ComplexF pField) {
-		if (pField != null) {
-			displayFieldCF = ComplexF.copyOf(pField);
-			displayContents();
-		} else {
-			setFont(_ITALICFONT);
-			this.setText("null C|F field");
-		}
-	}
-
-	/**
-	 * When a new cladosF number is to be displayed, it is passed in through this
-	 * method.
-	 * 
-	 * @param pField RealD This is the RealD to be displayed in the text area
-	 *               presented by this panel.
-	 */
-	public void updateField(RealD pField) {
-		if (pField != null) {
-			displayFieldRD = RealD.copyOf(pField);
-			displayContents();
-		} else {
-			setFont(_ITALICFONT);
-			this.setText("null R|D field");
-		}
-	}
-
-	/**
-	 * When a new cladosF number is to be displayed, it is passed in through this
-	 * method.
-	 * 
-	 * @param pField RealF This is the RealF to be displayed in the text area
-	 *               presented by this panel.
-	 */
-	public void updateField(RealF pField) {
-		if (pField != null) {
-			displayFieldRF = RealF.copyOf(pField);
-			displayContents();
-		} else {
-			setFont(_ITALICFONT);
-			this.setText("null R|F field");
+			setFont(ITALICFONT);
+			this.setText("null display field");
 		}
 	}
 }

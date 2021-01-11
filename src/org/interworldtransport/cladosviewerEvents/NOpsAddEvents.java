@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.NOpsAddEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -25,8 +25,6 @@
 
 package org.interworldtransport.cladosviewerEvents;
 
-import org.interworldtransport.cladosFExceptions.FieldBinaryException;
-import org.interworldtransport.cladosGExceptions.*;
 import org.interworldtransport.cladosviewer.*;
 
 import java.awt.event.ActionEvent;
@@ -38,7 +36,7 @@ import javax.swing.JMenuItem;
  *org.interworldtransport.cladosviewerr.COpsAddEvents This class manages events
  * relating to a complex operation. Add to this Monad another Monad.
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class NOpsAddEvents implements ActionListener {
@@ -83,19 +81,8 @@ public class NOpsAddEvents implements ActionListener {
 		MonadPanel temp0 = tSpot.getMonadPanel(indxMndPnlSlctd);
 		MonadPanel temp1 = tSpotPlus.getMonadPanel(indxMndPnlSlctd);
 
-		try {
-			switch (temp0.getRepMode()) {
-			case REALF -> (temp0.getMonadRF()).add(temp1.getMonadRF());
-			case REALD -> (temp0.getMonadRD()).add(temp1.getMonadRD());
-			case COMPLEXF -> (temp0.getMonadCF()).add(temp1.getMonadCF());
-			case COMPLEXD -> (temp0.getMonadCD()).add(temp1.getMonadCD());
+		temp0.getMonad().add(temp1.getMonad());
+		temp0.setCoefficientDisplay();
 
-			}
-			temp0.setCoefficientDisplay();
-		} catch (FieldBinaryException eb) {
-			ErrorDialog.show("Field Binary error between monads.\nNothing done.", "Field Binary Exception");
-		} catch (CladosMonadException e) {
-			ErrorDialog.show("Reference Match Error between monads.\nNothing done.", "Clados Monad Exception");
-		}
 	}
 }

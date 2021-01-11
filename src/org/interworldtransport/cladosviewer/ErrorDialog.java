@@ -15,4 +15,5 @@ public class ErrorDialog {
 		JOptionPane.showMessageDialog(null, message, "Error | " + title, JOptionPane.ERROR_MESSAGE);
 	}
 
+	protected ErrorDialog() {}
 }

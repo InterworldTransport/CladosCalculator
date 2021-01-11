@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.ViewerPanel<br>
  * -------------------------------------------------------------------- <p>
@@ -25,26 +25,15 @@
 
 package org.interworldtransport.cladosviewer;
 
+import org.interworldtransport.cladosF.CladosFBuilder;
 import org.interworldtransport.cladosF.CladosField;
-import org.interworldtransport.cladosF.RealF;
-import org.interworldtransport.cladosF.RealD;
-import org.interworldtransport.cladosF.ComplexF;
-import org.interworldtransport.cladosF.ComplexD;
-
-import org.interworldtransport.cladosG.MonadRealF;
-import org.interworldtransport.cladosG.NyadAbstract;
-import org.interworldtransport.cladosG.MonadRealD;
-import org.interworldtransport.cladosG.MonadComplexF;
-import org.interworldtransport.cladosG.MonadComplexD;
-import org.interworldtransport.cladosG.AlgebraComplexD;
-import org.interworldtransport.cladosG.AlgebraComplexF;
-import org.interworldtransport.cladosG.AlgebraRealD;
-import org.interworldtransport.cladosG.AlgebraRealF;
-import org.interworldtransport.cladosG.CladosGNyad;
-import org.interworldtransport.cladosG.NyadRealF;
-import org.interworldtransport.cladosG.NyadRealD;
-import org.interworldtransport.cladosG.NyadComplexF;
-import org.interworldtransport.cladosG.NyadComplexD;
+import org.interworldtransport.cladosF.Field;
+import org.interworldtransport.cladosF.Normalizable;
+//import org.interworldtransport.cladosF.RealF;
+import org.interworldtransport.cladosF.UnitAbstract;
+import org.interworldtransport.cladosG.Monad;
+import org.interworldtransport.cladosG.Nyad;
+import org.interworldtransport.cladosG.CladosGBuilder;
 
 import org.interworldtransport.cladosGExceptions.*;
 
@@ -62,29 +51,25 @@ import javax.swing.event.ChangeListener;
 import java.util.*;
 
 /**
- * org.interworldtransport.cladosviewer.ViewerPanel The ViewerPanel class is
- * intended to be the main panel of the Calculator. It holds the tabbed pane
- * that holds Nyads. It is also aware enough to manage the nyads a bit with
- * respect to stack operations.
+ * The ViewerPanel class is intended to be the center panel of the Calculator.
+ * It holds the tabbed pane that holds Nyads. It is also aware enough to manage
+ * the nyads a bit with respect to stack operations.
  * <p>
  * 
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 
-public class ViewerPanel extends JPanel implements ActionListener {
+public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel implements ActionListener {
 	private static final Color clrBackColor = new Color(255, 255, 220);
 	private static final Dimension square = new Dimension(25, 25);
+	/**
+	 * This is just a reference back to the parent frame of the application.
+	 */
 	public CladosCalculator _GUI;
 	private CladosField _repMode;
-	private JButton btnCopyNyad;
-	private JButton btnNewNyad;
-	private JButton btnRemoveNyad;
-	private JButton btnSwapAbove;
-	private JButton btnSwapBelow;
-	private JPanel pnlControlBar;
 	private ImageIcon tabIcon;
-	protected ArrayList<NyadPanel> nyadPanelList;
+	protected ArrayList<NyadPanel<T>> nyadPanelList;
 	protected JTabbedPane nyadPanes;
 
 	/**
@@ -107,7 +92,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		createStackLayout();
 
 		// Get the nyad tab image for the nyad panes being constructed
-		tabIcon = new ImageIcon(this.getClass().getResource("/icons/N.png"));
+		tabIcon = new ImageIcon(this.getClass().getResource("/resources/N.png"));
 		_repMode = validateInitialDivField();
 		// The Viewer contains NyadPanels displayed as a JTabbedPanes containing
 		// JScrollPanes containing a NyadPanel each. We initiate the JTabbedPane here
@@ -115,9 +100,9 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		nyadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		// JScrollPanes are used only when a nyadPanel with nyadPanes.addTab()
 		add(nyadPanes, JTabbedPane.CENTER);
-		nyadPanelList = new ArrayList<NyadPanel>(0);
+		nyadPanelList = new ArrayList<NyadPanel<T>>(0);
 
-		initObjects(); // This is the old initializer. TODO change to an XML reader
+		initObjects(); // This is the old initializer.
 	}
 
 	@Override
@@ -136,14 +121,14 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		return nyadPanelList.size();
 	}
 
-	public NyadPanel getNyadPanel(int pInd) {
+	public NyadPanel<T> getNyadPanel(int pInd) {
 		if (pInd < nyadPanelList.size() && pInd >= 0)
 			return nyadPanelList.get(pInd);
 
 		return null;
 	}
 
-	public ArrayList<NyadPanel> getNyadPanels() {
+	public ArrayList<NyadPanel<T>> getNyadPanels() {
 		return nyadPanelList;
 	}
 
@@ -155,145 +140,28 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		return _repMode;
 	}
 
-	private NyadComplexD buildANyadCD(short pWhich, short monadCount) {
-		// TODO Time to re-write these four buildANyad methods to use CladosGNyad
-		// builder instead. Should be able to write one and let the calling object
-		// cast the NyadAbstract.
-		NyadComplexD aNyad = null;
+	@SuppressWarnings("unchecked")
+	private Nyad buildANyad(short pWhich, short monadCount) {
+		Nyad aNyad = null;
+		T keyNumber = null;
 		try {
 			String cnt = new StringBuffer("N").append(pWhich).toString();
-			MonadComplexD aMonad = new MonadComplexD("M", _GUI.IniProps.getProperty("Desktop.Default.AlgebraName"),
-					_GUI.IniProps.getProperty("Desktop.Default.FrameName"),
-					_GUI.IniProps.getProperty("Desktop.Default.FootName"),
-					_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-					ComplexD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal")));
-			aNyad = new NyadComplexD(cnt, aMonad, true);
-			// Now bootstrap the others using the first
-			short m = 1;
-			while (m < monadCount) {
-				String nextMonadName = (new StringBuffer(aMonad.getName()).append(m)).toString();
-				String nextAlgebraName = (new StringBuffer(aMonad.getAlgebra().getAlgebraName()).append(m)).toString();
-				String nextFrameName = (new StringBuffer(aMonad.getFrameName()).append(m)).toString();
-
-				aNyad.createMonad(nextMonadName, nextAlgebraName, nextFrameName,
-						_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-						_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
-				m++;
+			switch (_GUI.IniProps.getProperty("Desktop.Default.DivField")) {
+			case "RealF" -> keyNumber = (T) CladosFBuilder.REALF
+					.createZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
+			case "RealD" -> keyNumber = (T) CladosFBuilder.REALD
+					.createZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
+			case "ComplexF" -> keyNumber = (T) CladosFBuilder.COMPLEXF
+					.createZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
+			case "ComplexD" -> keyNumber = (T) CladosFBuilder.COMPLEXD
+					.createZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
 			}
-		} catch (BadSignatureException es) {
-			ErrorDialog.show("Could not construct a monad due to signature issue.\n" + es.getSourceMessage(),
-					"Bad Signature Exception");
-			return null;
-		} catch (GeneratorRangeException e) {
-			ErrorDialog.show("Cannot construct a monad due to unsupported signature size.\n" + e.getSourceMessage(),
-					"Generator Range Exception");
-			return null;
-		} catch (CladosMonadException em) {
-			ErrorDialog.show("Could not construct first part of the Viewer Panel because monad was malformed.\n"
-					+ em.getSourceMessage(), "Clados Monad Exception");
-			return null;
-		} catch (CladosNyadException en) {
-			ErrorDialog.show("Could not add Nyad to the Viewer Panel.\n" + en.getSourceMessage(),
-					"Clados Nyad Exception");
-			return null;
-		}
-		return aNyad;
-	}
 
-	private NyadComplexF buildANyadCF(short pWhich, short monadCount) {
-		NyadComplexF aNyad = null;
-		try {
-			String cnt = new StringBuffer("N").append(pWhich).toString();
-			MonadComplexF aMonad = new MonadComplexF("M", _GUI.IniProps.getProperty("Desktop.Default.AlgebraName"),
+			Monad aMonad = new Monad("M", _GUI.IniProps.getProperty("Desktop.Default.AlgebraName"),
 					_GUI.IniProps.getProperty("Desktop.Default.FrameName"),
 					_GUI.IniProps.getProperty("Desktop.Default.FootName"),
-					_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-					ComplexF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal")));
-			aNyad = new NyadComplexF(cnt, aMonad, true);
-			// Now bootstrap the others using the first
-			short m = 1;
-			while (m < monadCount) {
-				String nextMonadName = (new StringBuffer(aMonad.getName()).append(m)).toString();
-				String nextAlgebraName = (new StringBuffer(aMonad.getAlgebra().getAlgebraName()).append(m)).toString();
-				String nextFrameName = (new StringBuffer(aMonad.getFrameName()).append(m)).toString();
-
-				aNyad.createMonad(nextMonadName, nextAlgebraName, nextFrameName,
-						_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-						_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
-				m++;
-			}
-		} catch (BadSignatureException es) {
-			ErrorDialog.show("Could not construct a monad due to signature issue.\n" + es.getSourceMessage(),
-					"Bad Signature Exception");
-			return null;
-		} catch (GeneratorRangeException e) {
-			ErrorDialog.show("Cannot construct a monad due to unsupported signature size.\n" + e.getSourceMessage(),
-					"Generator Range Exception");
-			return null;
-		} catch (CladosMonadException em) {
-			ErrorDialog.show("Could not construct first part of the Viewer Panel because monad was malformed.\n"
-					+ em.getSourceMessage(), "Clados Monad Exception");
-			return null;
-		} catch (CladosNyadException en) {
-			ErrorDialog.show("Could not add Nyad to the Viewer Panel.\n" + en.getSourceMessage(),
-					"Clados Nyad Exception");
-			return null;
-		}
-		return aNyad;
-	}
-
-	private NyadRealD buildANyadRD(short pWhich, short monadCount) {
-		NyadRealD aNyad = null;
-		try {
-			String cnt = new StringBuffer("N").append(pWhich).toString();
-			MonadRealD aMonad = new MonadRealD("M", _GUI.IniProps.getProperty("Desktop.Default.AlgebraName"),
-					_GUI.IniProps.getProperty("Desktop.Default.FrameName"),
-					_GUI.IniProps.getProperty("Desktop.Default.FootName"),
-					_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-					RealD.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal")));
-			aNyad = new NyadRealD(cnt, aMonad, true);
-			// Now bootstrap the others using the first
-			short m = 1;
-			while (m < monadCount) {
-				String nextMonadName = (new StringBuffer(aMonad.getName()).append(m)).toString();
-				String nextAlgebraName = (new StringBuffer(aMonad.getAlgebra().getAlgebraName()).append(m)).toString();
-				String nextFrameName = (new StringBuffer(aMonad.getFrameName()).append(m)).toString();
-
-				aNyad.createMonad(nextMonadName, nextAlgebraName, nextFrameName,
-						_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-						_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
-				m++;
-			}
-		} catch (BadSignatureException es) {
-			ErrorDialog.show("Could not construct a monad due to signature issue.\n" + es.getSourceMessage(),
-					"Bad Signature Exception");
-			return null;
-		} catch (GeneratorRangeException e) {
-			ErrorDialog.show("Cannot construct a monad due to unsupported signature size.\n" + e.getSourceMessage(),
-					"Generator Range Exception");
-			return null;
-		} catch (CladosMonadException em) {
-			ErrorDialog.show("Could not construct first part of the Viewer Panel because monad was malformed.\n"
-					+ em.getSourceMessage(), "Clados Monad Exception");
-			return null;
-		} catch (CladosNyadException en) {
-			ErrorDialog.show("Could not add Nyad to the Viewer Panel.\n" + en.getSourceMessage(),
-					"Clados Nyad Exception");
-			return null;
-		}
-		return aNyad;
-	}
-
-	private NyadRealF buildANyadRF(short pWhich, short monadCount) {
-		NyadRealF aNyad = null;
-		try {
-			String cnt = new StringBuffer("N").append(pWhich).toString();
-			MonadRealF aMonad = new MonadRealF("M", _GUI.IniProps.getProperty("Desktop.Default.AlgebraName"),
-					_GUI.IniProps.getProperty("Desktop.Default.FrameName"),
-					_GUI.IniProps.getProperty("Desktop.Default.FootName"),
-					_GUI.IniProps.getProperty("Desktop.Default.Sig"),
-					RealF.newZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal")));
-			aNyad = new NyadRealF(cnt, aMonad, true);
+					_GUI.IniProps.getProperty("Desktop.Default.Sig"), keyNumber);
+			aNyad = new Nyad(cnt, aMonad, true);
 			// Now bootstrap the others using the first
 			short m = 1;
 			while (m < monadCount) {
@@ -336,17 +204,8 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		nyadPanelList.ensureCapacity(endPlus + 1);
 		String buildName = "copied";
 		try {
-			NyadPanel newP = switch (getNyadPanel(getPaneFocus()).getRepMode()) {
-			case REALF -> new NyadPanel(_GUI,
-					(NyadRealF) CladosGNyad.REALF.copyRename(getNyadPanel(getPaneFocus()).getNyadRF(), buildName));
-			case REALD -> new NyadPanel(_GUI,
-					(NyadRealD) CladosGNyad.REALD.copyRename(getNyadPanel(getPaneFocus()).getNyadRD(), buildName));
-			case COMPLEXF -> new NyadPanel(_GUI, (NyadComplexF) CladosGNyad.COMPLEXF
-					.copyRename(getNyadPanel(getPaneFocus()).getNyadCF(), buildName));
-			case COMPLEXD -> new NyadPanel(_GUI, (NyadComplexD) CladosGNyad.COMPLEXD
-					.copyRename(getNyadPanel(getPaneFocus()).getNyadCD(), buildName));
-			default -> null;
-			};
+			NyadPanel<T> newP = new NyadPanel<T>(_GUI,
+					CladosGBuilder.INSTANCE.copyOfNyad(getNyadPanel(getPaneFocus()).getNyad(), buildName));
 			nyadPanelList.add(newP);
 			nyadPanes.addTab((new StringBuffer().append(endPlus)).toString(), tabIcon, new JScrollPane(newP));
 			_GUI.pack();
@@ -366,7 +225,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 	}
 
 	private void createStackLayout() {
-		pnlControlBar = new JPanel();
+		JPanel pnlControlBar = new JPanel();
 		pnlControlBar.setLayout(new GridBagLayout());
 		pnlControlBar.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		pnlControlBar.setBackground(clrBackColor);
@@ -382,7 +241,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		cn.weighty = 0;
 		cn.gridheight = 1;
 		cn.gridwidth = 1;
-		btnSwapBelow = new JButton(new ImageIcon(this.getClass().getResource("/icons/push.png")));
+		JButton btnSwapBelow = new JButton(new ImageIcon(this.getClass().getResource("/resources/push.png")));
 		btnSwapBelow.setActionCommand("push");
 		btnSwapBelow.setToolTipText("push nyad down on stack");
 		btnSwapBelow.setPreferredSize(square);
@@ -391,7 +250,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		pnlControlBar.add(btnSwapBelow, cn);
 		cn.gridy++;
 
-		btnSwapAbove = new JButton(new ImageIcon(this.getClass().getResource("/icons/pop.png")));
+		JButton btnSwapAbove = new JButton(new ImageIcon(this.getClass().getResource("/resources/pop.png")));
 		btnSwapAbove.setActionCommand("pop");
 		btnSwapAbove.setToolTipText("pop nyad up on stack");
 		btnSwapAbove.setPreferredSize(square);
@@ -400,7 +259,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		pnlControlBar.add(btnSwapAbove, cn);
 		cn.gridy++;
 
-		btnCopyNyad = new JButton(new ImageIcon(this.getClass().getResource("/icons/copy.png")));
+		JButton btnCopyNyad = new JButton(new ImageIcon(this.getClass().getResource("/resources/copy.png")));
 		btnCopyNyad.setActionCommand("copy");
 		btnCopyNyad.setToolTipText("copy nyad to end of stack");
 		btnCopyNyad.setPreferredSize(square);
@@ -409,7 +268,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		pnlControlBar.add(btnCopyNyad, cn);
 		cn.gridy++;
 
-		btnRemoveNyad = new JButton(new ImageIcon(this.getClass().getResource("/icons/remove.png")));
+		JButton btnRemoveNyad = new JButton(new ImageIcon(this.getClass().getResource("/resources/remove.png")));
 		btnRemoveNyad.setActionCommand("erase");
 		btnRemoveNyad.setToolTipText("remove nyad from stack");
 		btnRemoveNyad.setPreferredSize(square);
@@ -418,7 +277,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		pnlControlBar.add(btnRemoveNyad, cn);
 		cn.gridy++;
 
-		btnNewNyad = new JButton(new ImageIcon(this.getClass().getResource("/icons/create.png")));
+		JButton btnNewNyad = new JButton(new ImageIcon(this.getClass().getResource("/resources/create.png")));
 		btnNewNyad.setActionCommand("create");
 		btnNewNyad.setToolTipText("create new nyad");
 		btnNewNyad.setPreferredSize(square);
@@ -435,26 +294,19 @@ public class ViewerPanel extends JPanel implements ActionListener {
 
 	private void eraseNyadCommand() {
 		if (nyadPanes.getTabCount() > 0) {
+			_GUI.appFieldBar.repNumber = null;
+
 			int point = nyadPanes.getSelectedIndex();
+
 			switch (getNyadPanel(point).getRepMode()) {
-			case REALF -> {
-				_GUI.appFieldBar._repRealF = null;
+			case REALF:
+			case REALD:
 				_GUI.appFieldBar.setRealText("");
-			}
-			case REALD -> {
-				_GUI.appFieldBar._repRealD = null;
-				_GUI.appFieldBar.setRealText("");
-			}
-			case COMPLEXF -> {
-				_GUI.appFieldBar._repComplexF = null;
+				break;
+			case COMPLEXF:
+			case COMPLEXD:
 				_GUI.appFieldBar.setRealText("");
 				_GUI.appFieldBar.setImgText("");
-			}
-			case COMPLEXD -> {
-				_GUI.appFieldBar._repComplexD = null;
-				_GUI.appFieldBar.setRealText("");
-				_GUI.appFieldBar.setImgText("");
-			}
 			}
 			removeNyadPanel(point);
 		} else {
@@ -462,11 +314,11 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		}
 	}
 
-	private void initObjects() {
+	private void initObjects() { // TODO change to an XML reader
 		// Look in the conf file and determine how many nyads to initiate and init
 		// NyadPanelList
 		int intCount = validateInitialNyadCount();
-		nyadPanelList = new ArrayList<NyadPanel>(intCount);
+		nyadPanelList = new ArrayList<NyadPanel<T>>(intCount);
 
 		// Look in the conf file and determine how many monads in each nyad get
 		// initiated
@@ -480,7 +332,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		{
 			intOrd = 0;
 			intCount = 0;
-			nyadPanelList = new ArrayList<NyadPanel>(0);
+			nyadPanelList = new ArrayList<NyadPanel<T>>(0);
 		}
 		// Note that we re-nitialized the NyadPanelList if no valid DivField is found
 		// for initialization
@@ -493,95 +345,25 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		// {max = intOrder}
 		short j = 0;
 		while (j < intCount) {
-			switch (_repMode) {
-			case REALF -> {
-				NyadRealF aNyadRF = buildANyadRF(j, intOrd); // the NyadRF bootstrapper
-				try // Here we finally initiate the NyadPanel because the Nyad is actually filled at
-					// this point.
-				{
-					if (aNyadRF != null) {
-						nyadPanelList.add(j, new NyadPanel(_GUI, aNyadRF));
-						JScrollPane tempPane = new JScrollPane(nyadPanelList.get(j));
-						tempPane.setWheelScrollingEnabled(true);
-						nyadPanes.addTab(new StringBuffer().append(j).toString(), tabIcon, tempPane);
-					} else
-						ErrorDialog.show("Null NyadRealF for new NyadPanel avoided in initialization step.",
-								"Init Failed");
-				} catch (UtilitiesException eutil) {
-					ErrorDialog.show("Could not create new NyadPanel.\n" + eutil.getSourceMessage() + "\n"
-							+ eutil.getStackTrace().toString(), "Utilities Exception");
-				} catch (BadSignatureException e) {
-					ErrorDialog.show("Could not create a nyad due to signature issue.\n" + e.getSourceMessage() + "\n"
-							+ e.getStackTrace().toString(), "Bad Signature Exception");
-				}
-			}
-			case REALD -> {
-				NyadRealD aNyadRD = buildANyadRD(j, intOrd); // the NyadRD bootstrapper
-				try // Here we finally initiate the NyadPanel because the Nyad is actually filled at
-					// this point.
-				{
-					if (aNyadRD != null) {
-						nyadPanelList.add(j, new NyadPanel(_GUI, aNyadRD));
-						JScrollPane tempPane = new JScrollPane(nyadPanelList.get(j));
-						tempPane.setWheelScrollingEnabled(true);
-						nyadPanes.addTab(new StringBuffer().append(j).toString(), tabIcon, tempPane);
-					} else
-						ErrorDialog.show("Null NyadRealD for new NyadPanel avoided in initialization step.",
-								"Init Failed");
-				} catch (UtilitiesException eutil) {
-					ErrorDialog.show("Could not create new NyadPanel.\n" + eutil.getSourceMessage() + "\n"
-							+ eutil.getStackTrace().toString(), "Utilities Exception");
-				} catch (BadSignatureException e) {
-					ErrorDialog.show("Could not create a nyad due to signature issue.\n" + e.getSourceMessage() + "\n"
-							+ e.getStackTrace().toString(), "Bad Signature Exception");
-				}
-			}
-			case COMPLEXF -> {
-				NyadComplexF aNyadCF = buildANyadCF(j, intOrd); // the NyadCF bootstrapper
-				try // Here we finally initiate the NyadPanel because the Nyad is actually filled at
-					// this point.
-				{
-					if (aNyadCF != null) {
-						nyadPanelList.add(j, new NyadPanel(_GUI, aNyadCF));
-						JScrollPane tempPane = new JScrollPane(nyadPanelList.get(j));
-						tempPane.setWheelScrollingEnabled(true);
-						nyadPanes.addTab(new StringBuffer().append(j).toString(), tabIcon, tempPane);
-					} else
-						ErrorDialog.show("Null NyadComplexF for new NyadPanel avoided in initialization step.",
-								"Init Failed");
-				} catch (UtilitiesException eutil) {
-					ErrorDialog.show("Could not create new NyadPanel.\n" + eutil.getSourceMessage() + "\n"
-							+ eutil.getStackTrace().toString(), "Utilities Exception");
-				} catch (BadSignatureException e) {
-					ErrorDialog.show("Could not create a nyad due to signature issue.\n" + e.getSourceMessage() + "\n"
-							+ e.getStackTrace().toString(), "Bad Signature Exception");
-				}
-			}
-			case COMPLEXD -> {
-				NyadComplexD aNyadCD = buildANyadCD(j, intOrd); // the NyadCD bootstrapper
-				try // Here we finally initiate the NyadPanel because the Nyad is actually filled at
-					// this point.
-				{
-					if (aNyadCD != null) {
-						nyadPanelList.add(j, new NyadPanel(_GUI, aNyadCD));
-						JScrollPane tempPane = new JScrollPane(nyadPanelList.get(j));
-						tempPane.setWheelScrollingEnabled(true);
-						nyadPanes.addTab(new StringBuffer().append(j).toString(), tabIcon, tempPane);
-					} else
-						ErrorDialog.show("Null NyadComplexD for new NyadPanel avoided in initialization step.",
-								"Init Failed");
-				} catch (UtilitiesException eutil) {
-					ErrorDialog.show("Could not create new NyadPanel.\n" + eutil.getSourceMessage() + "\n"
-							+ eutil.getStackTrace().toString(), "Utilities Exception");
-				} catch (BadSignatureException e) {
-					ErrorDialog.show("Could not create a nyad due to signature issue.\n" + e.getSourceMessage() + "\n"
-							+ e.getStackTrace().toString(), "Bad Signature Exception");
-				}
-			}
+			Nyad aNyad = buildANyad(j, intOrd); // the Nyad bootstrapper
+			try // Here we finally initiate the NyadPanel because the Nyad is actually exists.
+			{
+				if (aNyad != null) {
+					nyadPanelList.add(j, new NyadPanel<T>(_GUI, aNyad));
+					JScrollPane tempPane = new JScrollPane(nyadPanelList.get(j));
+					tempPane.setWheelScrollingEnabled(true);
+					nyadPanes.addTab(new StringBuffer().append(j).toString(), tabIcon, tempPane);
+				} else
+					ErrorDialog.show("Null NyadRealF for new NyadPanel avoided in initialization step.", "Init Failed");
+			} catch (UtilitiesException eutil) {
+				ErrorDialog.show("Could not create new NyadPanel.\n" + eutil.getSourceMessage() + "\n"
+						+ eutil.getStackTrace().toString(), "Utilities Exception");
+			} catch (BadSignatureException e) {
+				ErrorDialog.show("Could not create a nyad due to signature issue.\n" + e.getSourceMessage() + "\n"
+						+ e.getStackTrace().toString(), "Bad Signature Exception");
 			}
 			j++;
 		}
-
 	}
 
 	private void pop() {
@@ -599,7 +381,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 			nyadPanes.setTitleAt(where - 1, thisTitle);
 			nyadPanes.setComponentAt(where - 1, thisPane);
 
-			NyadPanel tempPanel = (NyadPanel) nyadPanelList.remove(where - 1);
+			NyadPanel<T> tempPanel = (NyadPanel<T>) nyadPanelList.remove(where - 1);
 			nyadPanelList.add(where, tempPanel);
 
 			revalidate();
@@ -626,7 +408,7 @@ public class ViewerPanel extends JPanel implements ActionListener {
 			nyadPanes.setTitleAt(where + 1, thisTitle);
 			nyadPanes.setComponentAt(where + 1, thisPane);
 
-			NyadPanel tempPanel = (NyadPanel) nyadPanelList.remove(where);
+			NyadPanel<T> tempPanel = (NyadPanel<T>) nyadPanelList.remove(where);
 			nyadPanelList.add(where + 1, tempPanel);
 
 			revalidate();
@@ -669,17 +451,17 @@ public class ViewerPanel extends JPanel implements ActionListener {
 	private int validateInitialNyadCount() {
 		try {
 			int nCount = Integer.parseInt(_GUI.IniProps.getProperty("Desktop.Default.Count"));
-			nyadPanelList = new ArrayList<NyadPanel>(nCount);
+			nyadPanelList = new ArrayList<NyadPanel<T>>(nCount);
 			return nCount;
 		} catch (NullPointerException eNull) {
 			ErrorDialog.show("Desktop.Default.Count from the configuration file appears to be null.\nSet to Zero.",
 					"Null Pointer Exception");
-			nyadPanelList = new ArrayList<NyadPanel>(0);
+			nyadPanelList = new ArrayList<NyadPanel<T>>(0);
 		} catch (NumberFormatException eFormat) {
 			ErrorDialog.show(
 					"Desktop.Default.Count from the configuration file appears to be non-parse-able.\nSet to Zero.",
 					"Null Pointer Exception");
-			nyadPanelList = new ArrayList<NyadPanel>(0);
+			nyadPanelList = new ArrayList<NyadPanel<T>>(0);
 		}
 		return 0;
 	}
@@ -698,20 +480,13 @@ public class ViewerPanel extends JPanel implements ActionListener {
 		return 1;
 	}
 
-	protected void addNyad(CladosField pRep, NyadAbstract pN) {
-
+	protected void addNyad(Nyad pN) {
 		int endPlus = 0;
 		if (nyadPanes.getTabCount() > 0)
 			endPlus = Integer.valueOf(nyadPanes.getTitleAt(nyadPanes.getTabCount() - 1)).intValue() + 1;
 		nyadPanelList.ensureCapacity(endPlus + 1);
 		try {
-			NyadPanel newP = switch (pRep) {
-			case REALF -> new NyadPanel(_GUI, (NyadRealF) pN);
-			case REALD -> new NyadPanel(_GUI, (NyadRealD) pN);
-			case COMPLEXF -> new NyadPanel(_GUI, (NyadComplexF) pN);
-			case COMPLEXD -> new NyadPanel(_GUI, (NyadComplexD) pN);
-			default -> null;
-			};
+			NyadPanel<T> newP = new NyadPanel<T>(_GUI, pN);
 			nyadPanelList.add(newP);
 			nyadPanes.addTab((new StringBuffer().append(endPlus)).toString(), tabIcon, new JScrollPane(newP));
 			_GUI.pack();
@@ -732,35 +507,27 @@ public class ViewerPanel extends JPanel implements ActionListener {
 	 * to the numbers displayed. The string for the Cardinal IS displayed on a
 	 * monad, though, and not the Field Bar.
 	 * 
-	 * @param pFieldPanel FieldPanel In the owning app, this is the FieldBar object
-	 *                    that allows for top-level numeric input on the calculator.
-	 *                    The Field Panel offered is registered with this Viewer
-	 *                    Panel so change events can be routed.
+	 * @param fieldPanel FieldPanel In the owning app, this is the FieldBar object
+	 *                   that allows for top-level numeric input on the calculator.
+	 *                   The Field Panel offered is registered with this Viewer
+	 *                   Panel so change events can be routed.
 	 */
-	protected void registerFieldPanel(FieldPanel pFieldPanel) {
+	protected <D extends UnitAbstract & Field & Normalizable> void registerFieldPanel(FieldPanel<D> fieldPanel) {
 		nyadPanes.addChangeListener(new ChangeListener() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				if (nyadPanes.getTabCount() > 0) {
 					if (nyadPanes.getSelectedIndex() >= 0) {
 						if (nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getTabCount() > 0) {
 							int j = nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getSelectedIndex();
-							MonadPanel tSpot = nyadPanelList.get(nyadPanes.getSelectedIndex()).getMonadPanel(j);
-							switch (tSpot.getRepMode()) {
-							case REALF -> pFieldPanel
-									.setField(AlgebraRealF.shareProtoNumber(tSpot.getMonadRF().getAlgebra()));
-							case REALD -> pFieldPanel
-									.setField(AlgebraRealD.shareProtoNumber(tSpot.getMonadRD().getAlgebra()));
-							case COMPLEXF -> pFieldPanel
-									.setField(AlgebraComplexF.shareProtoNumber(tSpot.getMonadCF().getAlgebra()));
-							case COMPLEXD -> pFieldPanel
-									.setField(AlgebraComplexD.shareProtoNumber(tSpot.getMonadCD().getAlgebra()));
-							}
+							MonadPanel<T> tSpot = nyadPanelList.get(nyadPanes.getSelectedIndex()).getMonadPanel(j);
+							fieldPanel.setField((D) CladosFBuilder.copyOf(tSpot.getMonad().getScales().getScalar()));
 							_GUI.appFieldBar.makeWritable();
 						}
 					}
 				} else
-					pFieldPanel.clearFieldType();
+					fieldPanel.clearFieldType();
 			}
 		});
 	}

@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2020 Alfred Differ.<br>
+ * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.NOpsSubtractEvents<br>
  * -------------------------------------------------------------------- <p>
@@ -25,9 +25,6 @@
 
 package org.interworldtransport.cladosviewerEvents;
 
-import org.interworldtransport.cladosFExceptions.FieldBinaryException;
-import org.interworldtransport.cladosGExceptions.*;
-
 import org.interworldtransport.cladosviewer.*;
 
 import java.awt.event.ActionEvent;
@@ -39,7 +36,7 @@ import javax.swing.JMenuItem;
  * events relating to a complex operation. Subtract from this Monad another
  * Monad.
  *
- * @version 0.85
+ * @version 1.0
  * @author Dr Alfred W Differ
  */
 public class NOpsSubtractEvents implements ActionListener {
@@ -84,22 +81,8 @@ public class NOpsSubtractEvents implements ActionListener {
 		MonadPanel temp0 = tSpot.getMonadPanel(indxMndPnlSlctd);
 		MonadPanel temp1 = tSpotPlus.getMonadPanel(indxMndPnlSlctd);
 
-		try {
-			switch (temp0.getRepMode()) {
-			case REALF -> (temp0.getMonadRF()).subtract(temp1.getMonadRF());
-			case REALD -> (temp0.getMonadRD()).subtract(temp1.getMonadRD());
-			case COMPLEXF -> (temp0.getMonadCF()).subtract(temp1.getMonadCF());
-			case COMPLEXD -> (temp0.getMonadCD()).subtract(temp1.getMonadCD());
-			}
-			temp0.setCoefficientDisplay();
-		} catch (FieldBinaryException eb) {
-			ErrorDialog.show(
-					"Field Binary error between second and first monads.\nNothing done.\n" + eb.getSourceMessage(),
-					"Field Binary Exception");
-		} catch (CladosMonadException e) {
-			ErrorDialog.show(
-					"Reference Match error between second and first monads.\nNothing done.\n" + e.getSourceMessage(),
-					"Clados Monad Exception");
-		}
+		temp0.getMonad().subtract(temp1.getMonad());
+		temp0.setCoefficientDisplay();
+		
 	}
 }
