@@ -92,7 +92,7 @@ public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends
 				this.setColumns(_DOUBLESIZE);
 				repMode = CladosField.COMPLEXD;
 			} else if (pField instanceof ComplexF) {
-				this.setRows(_REALROWS);
+				this.setRows(_COMPLEXROWS);
 				this.setColumns(_FLOATSIZE);
 				repMode = CladosField.COMPLEXF;
 			} else if (pField instanceof RealD) {
@@ -156,8 +156,7 @@ public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public void saveContents() // throws UtilitiesException
-	{
+	public void saveContents() {
 		try {
 			StringBuilder strB = new StringBuilder(getText());
 			int tBufferLength = strB.length();
@@ -205,7 +204,8 @@ public class FieldDisplay<D extends UnitAbstract & Field & Normalizable> extends
 	 * @param pField D This is the ComplexD to be displayed in the text area
 	 *               presented by this panel.
 	 */
-	public void updateField(D pField) {
+	@SuppressWarnings("unchecked")
+	public <T extends UnitAbstract & Field & Normalizable> void updateField(T pField) {
 		if (pField != null) {
 			displayField = (D) CladosFBuilder.copyOf(pField);
 			displayContents();

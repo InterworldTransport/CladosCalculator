@@ -95,12 +95,12 @@ public final class SupportDialog extends JDialog implements ActionListener {
 		StringBuffer content = new StringBuffer();
 		content.append("Clados Calculator ");
 		content.append(_GUI.IniProps.getProperty("Desktop.Version") + "\n\n");
-		content.append("https://github.com/InterworldTransport/CladosViewer\n\n");
+		content.append("https://github.com/InterworldTransport/CladosCalculator\n\n");
 
-		content.append("For support issues that would help us make a better viewer please visit ");
-		content.append("the GitHub home page.  From this page you should be able to find the Viewer's ");
-		content.append("associated docs and support features. Please list your support issues there.\n\n");
-		content.append("For complex support or licensing issues, please contact \nAlfred Differ at adiffer@gmail.com");
+		content.append("For support issues that might help us make a better calculator please visit ");
+		content.append("our GitHub home page. From this page you should be able to find the Calculator's ");
+		content.append("associated docs and support features. Please record your support issues there.\n\n");
+		content.append("For complex support or licensing issues, please contact Alfred Differ.");
 
 		return content.toString();
 	}

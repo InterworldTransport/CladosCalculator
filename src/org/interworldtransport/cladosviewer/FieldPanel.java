@@ -75,7 +75,7 @@ import org.interworldtransport.cladosFExceptions.FieldException;
  */
 public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel
 		implements ActionListener, FocusListener {
-	private static final long serialVersionUID = -6698059770057179342L;
+	private static final long serialVersionUID = 3684491842491909996L;
 	private static final int _DOUBLESIZE = 16;
 	private static final int _FLOATSIZE = 10;
 	private static final String _IMAGINARY = "[I]";
@@ -89,10 +89,10 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 
 	private CladosCalculator _GUI;
 	private final String[] _valLabels = { _REAL, _IMAGINARY };
-	private JButton btnMakeComplex;
-	private JButton btnMakeDouble;
-	private JButton btnMakeFloat;
-	private JButton btnMakeReal;
+	protected JButton btnMakeComplex;
+	protected JButton btnMakeDouble;
+	protected JButton btnMakeFloat;
+	protected JButton btnMakeReal;
 	private JPanel pnlDisplays;
 	private CladosField repMode;
 	private ArrayList<JTextField> valDisplays;
@@ -111,14 +111,24 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 	public FieldPanel(CladosCalculator pGUI, T pIn) {
 		super();
 		_GUI = pGUI;
-		repMode = CladosField.REALF;
+		
 		repNumber = pIn;
-		setBackground(clrBackColor);
+		setRepMode(null);
+
 		setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		add(createControlLayout(), BorderLayout.LINE_START);
 		add(createDisplaysLayout(), BorderLayout.CENTER);
-		setCoefficientDisplay(pIn);
-		_GUI.appGeometryView.registerFieldPanel(this);
+		resetDisplay();
+		
+		if (pIn == null) {
+			setBackground(clrNullColor);
+		} else if (pIn.getCardinal() == null)
+			setBackground(clrNullColor);
+		else
+			setBackground(clrBackColor);
+		
+		if (_GUI != null)
+			_GUI.appGeometryView.registerFieldPanel(this);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -132,18 +142,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		}
 		case "conjugate" -> {
 			try {
-				switch (repMode) {
-				case REALF -> ((RealF) repNumber).setReal(Float.parseFloat(getRealText()));
-				case REALD -> ((RealD) repNumber).setReal(Double.parseDouble(getRealText()));
-				case COMPLEXF -> {
-					((ComplexF) repNumber).setReal(Float.parseFloat(getRealText()));
-					((ComplexF) repNumber).setImg(Float.parseFloat(getImgText()));
-				}
-				case COMPLEXD -> {
-					((ComplexD) repNumber).setReal(Double.parseDouble(getRealText()));
-					((ComplexD) repNumber).setImg(Double.parseDouble(getImgText()));
-				}
-				}
+				resetRepNumber();
 				setCoefficientDisplay((T) repNumber.conjugate());
 			} catch (NumberFormatException en) {
 				ErrorDialog.show("Conjugation action halted.\nProbably a parsing error when reading FieldBar.\n"
@@ -152,20 +151,8 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		}
 		case "inverse" -> {
 			try {
-				switch (repMode) {
-				case REALF -> ((RealF) repNumber).setReal(Float.parseFloat(getRealText()));
-				case REALD -> ((RealD) repNumber).setReal(Double.parseDouble(getRealText()));
-				case COMPLEXF -> {
-					((ComplexF) repNumber).setReal(Float.parseFloat(getRealText()));
-					((ComplexF) repNumber).setImg(Float.parseFloat(getImgText()));
-				}
-				case COMPLEXD -> {
-					((ComplexD) repNumber).setReal(Double.parseDouble(getRealText()));
-					((ComplexD) repNumber).setImg(Double.parseDouble(getImgText()));
-				}
-				}
+				resetRepNumber();
 				setCoefficientDisplay((T) repNumber.invert());
-
 			} catch (FieldException e) {
 				ErrorDialog.show("Field Exception prevented inversion.\nCardinal=" + e.getSource().getCardinalString()
 						+ "\nSource Message=" + e.getSourceMessage(), "Field Exception");
@@ -175,10 +162,12 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			}
 		}
 		case "makeFloat" -> {
-			if (_GUI.appGeometryView.getNyadListSize() != 0) {
-				ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.", "DivField Change");
-				break;
-			}
+			if (_GUI != null)
+				if (_GUI.appGeometryView.getNyadListSize() != 0) {
+					ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.",
+							"DivField Change");
+					break;
+				}
 			valDisplays.clear();
 			remove(pnlDisplays);
 			if (repMode == CladosField.REALD) {
@@ -193,15 +182,19 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			btnMakeDouble.setEnabled(true);
 			btnMakeFloat.setEnabled(false);
 			repaint();
-			_GUI.appGeometryView.setRepMode(repMode);
+			if (_GUI != null)
+				_GUI.appGeometryView.setRepMode(repMode);
 			add(createDisplaysLayout(), BorderLayout.LINE_END);
-			_GUI.pack();
+			if (_GUI != null)
+				_GUI.pack();
 		}
 		case "makeDouble" -> {
-			if (_GUI.appGeometryView.getNyadListSize() != 0) {
-				ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.", "DivField Change");
-				break;
-			}
+			if (_GUI != null)
+				if (_GUI.appGeometryView.getNyadListSize() != 0) {
+					ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.",
+							"DivField Change");
+					break;
+				}
 			valDisplays.clear();
 			remove(pnlDisplays);
 			if (repMode == CladosField.REALF) {
@@ -216,15 +209,19 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			btnMakeFloat.setEnabled(true);
 			btnMakeDouble.setEnabled(false);
 			repaint();
-			_GUI.appGeometryView.setRepMode(repMode);
+			if (_GUI != null)
+				_GUI.appGeometryView.setRepMode(repMode);
 			add(createDisplaysLayout(), BorderLayout.LINE_END);
-			_GUI.pack();
+			if (_GUI != null)
+				_GUI.pack();
 		}
 		case "makeReal" -> {
-			if (_GUI.appGeometryView.getNyadListSize() != 0) {
-				ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.", "DivField Change");
-				break;
-			}
+			if (_GUI != null)
+				if (_GUI.appGeometryView.getNyadListSize() != 0) {
+					ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.",
+							"DivField Change");
+					break;
+				}
 			valDisplays.clear();
 			remove(pnlDisplays);
 			if (repMode == CladosField.COMPLEXF) {
@@ -239,15 +236,19 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			btnMakeComplex.setEnabled(true);
 			btnMakeReal.setEnabled(false);
 			repaint();
-			_GUI.appGeometryView.setRepMode(repMode);
+			if (_GUI != null)
+				_GUI.appGeometryView.setRepMode(repMode);
 			add(createDisplaysLayout(), BorderLayout.LINE_END);
-			_GUI.pack();
+			if (_GUI != null)
+				_GUI.pack();
 		}
 		case "makeComplex" -> {
-			if (_GUI.appGeometryView.getNyadListSize() != 0) {
-				ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.", "DivField Change");
-				break;
-			}
+			if (_GUI != null)
+				if (_GUI.appGeometryView.getNyadListSize() != 0) {
+					ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.",
+							"DivField Change");
+					break;
+				}
 			valDisplays.clear();
 			remove(pnlDisplays);
 			if (repMode == CladosField.REALF) {
@@ -262,9 +263,11 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			btnMakeReal.setEnabled(true);
 			btnMakeComplex.setEnabled(false);
 			repaint();
-			_GUI.appGeometryView.setRepMode(repMode);
+			if (_GUI != null)
+				_GUI.appGeometryView.setRepMode(repMode);
 			add(createDisplaysLayout(), BorderLayout.LINE_END);
-			_GUI.pack();
+			if (_GUI != null)
+				_GUI.pack();
 		}
 		default -> ErrorDialog.show("No detectable command processed.", "Action At FieldBar Attempted");
 		}
@@ -280,28 +283,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 	 */
 	@Override
 	public void focusGained(FocusEvent e) {
-		switch (repMode) {
-		case REALF -> {
-			if (repNumber != null)
-				setRealText(Float.valueOf(((RealF) repNumber).getReal()).toString());
-		}
-		case REALD -> {
-			if (repNumber != null)
-				setRealText(Double.valueOf(((RealD) repNumber).getReal()).toString());
-		}
-		case COMPLEXF -> {
-			if (repNumber != null) {
-				setRealText(Float.valueOf(((ComplexF) repNumber).getReal()).toString());
-				setImgText(Float.valueOf(((ComplexF) repNumber).getImg()).toString());
-			}
-		}
-		case COMPLEXD -> {
-			if (repNumber != null) {
-				setRealText(Double.valueOf(((ComplexD) repNumber).getReal()).toString());
-				setImgText(Double.valueOf(((ComplexD) repNumber).getImg()).toString());
-			}
-		}
-		}
+		resetDisplay();
 	}
 
 	/**
@@ -317,34 +299,7 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 	 */
 	@Override
 	public void focusLost(FocusEvent e) {
-		try {
-			switch (repMode) {
-			case REALF -> {
-				if (repNumber != null)
-					((RealF) repNumber).setReal(Float.parseFloat(getRealText()));
-			}
-			case REALD -> {
-				if (repNumber != null)
-					((RealD) repNumber).setReal(Double.parseDouble(getRealText()));
-			}
-			case COMPLEXF -> {
-				if (repNumber != null) {
-					((ComplexF) repNumber).setReal(Float.parseFloat(getRealText()));
-					((ComplexF) repNumber).setImg(Float.parseFloat(getImgText()));
-				}
-			}
-			case COMPLEXD -> {
-				if (repNumber != null) {
-					((ComplexD) repNumber).setReal(Double.parseDouble(getRealText()));
-					((ComplexD) repNumber).setImg(Double.parseDouble(getImgText()));
-				}
-			}
-			}
-		} catch (NumberFormatException en) {
-			ErrorDialog.show("Couldn't parse FieldBar.\nNo action taken setting the Div Field it represents.",
-					"Parse Issue");
-		}
-
+		resetRepNumber();
 	}
 
 	public String getImgText() {
@@ -672,64 +627,81 @@ public class FieldPanel<T extends UnitAbstract & Field & Normalizable> extends J
 	 * 
 	 * @param pIn CladosF number for use when resetting display elements
 	 */
-	protected void setCoefficientDisplay(T pIn) {
-		if (pIn == null)
+	@SuppressWarnings("unchecked")
+	protected <D extends UnitAbstract & Field & Normalizable> void setCoefficientDisplay(D pIn) {
+		if (pIn == null) {
+			setBackground(clrNullColor);
 			return;
+		} else if (pIn.getCardinal() == null)
+			setBackground(clrNullColor);
+		else
+			setBackground(clrBackColor);
+		
+		repNumber = (T) pIn;
+		setRepMode(pIn);
+		resetDisplay();
+	}
 
+	@SuppressWarnings("unchecked")
+	private <D extends UnitAbstract & Field & Normalizable> void setRepMode(D pIn) {
+		D testIt = (pIn != null ) ? pIn : (D) repNumber;
+
+		if (testIt instanceof RealF) {
+			repMode = CladosField.REALF;
+		} else if (testIt instanceof RealD) {
+			repMode = CladosField.REALD;
+		} else if (testIt instanceof ComplexF) {
+			repMode = CladosField.COMPLEXF;
+		} else if (testIt instanceof ComplexD) {
+			repMode = CladosField.COMPLEXD;
+		} else
+			return;
+	}
+
+	private void resetDisplay() {
+		if (repNumber == null)
+			return;
 		switch (repMode) {
-		case COMPLEXD -> {
-			setRealText(Double.valueOf(((ComplexD) pIn).getReal()).toString());
-			setImgText(Double.valueOf(((ComplexD) pIn).getImg()).toString());
-			setField(pIn);
-		}
-		case COMPLEXF -> {
-			setRealText(Float.valueOf(((ComplexF) pIn).getReal()).toString());
-			setImgText(Float.valueOf(((ComplexF) pIn).getImg()).toString());
-			setField(pIn);
+		case REALF -> {
+			setRealText(Float.valueOf(((RealF) repNumber).getReal()).toString());
 		}
 		case REALD -> {
-			setRealText(Double.valueOf(((RealD) pIn).getReal()).toString());
-			setField(pIn);
+			setRealText(Double.valueOf(((RealD) repNumber).getReal()).toString());
 		}
-		case REALF -> {
-			setRealText(Float.valueOf(((RealF) pIn).getReal()).toString());
-			setField(pIn);
+		case COMPLEXF -> {
+			setRealText(Float.valueOf(((ComplexF) repNumber).getReal()).toString());
+			setImgText(Float.valueOf(((ComplexF) repNumber).getImg()).toString());
+		}
+		case COMPLEXD -> {
+			setRealText(Double.valueOf(((ComplexD) repNumber).getReal()).toString());
+			setImgText(Double.valueOf(((ComplexD) repNumber).getImg()).toString());
 		}
 		}
 	}
 
-	/**
-	 * This 'set' function accepts a DivField used as context for the division field
-	 * being displayed.
-	 * 
-	 * @param pField CladosF Number Provide the cladosF number here so reference
-	 *               match requirements are met on later function calls. The
-	 *               DivField child will be determined and then the FieldBar
-	 *               assigned.
-	 */
-	@SuppressWarnings("unchecked")
-	protected <D extends UnitAbstract & Field & Normalizable> void setField(D pField) {
-		if (pField == null) {
-			setBackground(clrBackColor);
+	private void resetRepNumber() {
+		if (repNumber == null)
 			return;
+		try {
+			switch (repMode) {
+			case REALF -> {
+				((RealF) repNumber).setReal(Float.parseFloat(getRealText()));
+			}
+			case REALD -> {
+				((RealD) repNumber).setReal(Double.parseDouble(getRealText()));
+			}
+			case COMPLEXF -> {
+				((ComplexF) repNumber).setReal(Float.parseFloat(getRealText()));
+				((ComplexF) repNumber).setImg(Float.parseFloat(getImgText()));
+			}
+			case COMPLEXD -> {
+				((ComplexD) repNumber).setReal(Double.parseDouble(getRealText()));
+				((ComplexD) repNumber).setImg(Double.parseDouble(getImgText()));
+			}
+			}
+		} catch (NumberFormatException en) {
+			ErrorDialog.show("Couldn't parse FieldBar.\nNo action taken setting the Number it represents.",
+					"Parse Issue");
 		}
-		else if (pField instanceof RealF)
-			repMode = CladosField.REALF;
-		else if (pField instanceof RealD)
-			repMode = CladosField.REALD;
-		else if (pField instanceof ComplexF)
-			repMode = CladosField.COMPLEXF;
-		else if (pField instanceof ComplexD)
-			repMode = CladosField.COMPLEXD;
-		else
-			return;
-
-		repNumber = (T) pField;
-
-		if (pField.getCardinal() != null)
-			setBackground(clrBackColor);
-		else
-			setBackground(clrNullColor);
-
 	}
 }

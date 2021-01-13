@@ -337,7 +337,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			int tI = MonadPanel.IMAGINARY.length();
 			int indexOfR = strB.indexOf(MonadPanel.REAL) + tR;
 			int indexOfI = strB.indexOf(MonadPanel.IMAGINARY) + tI;
-			_GUI.appFieldBar.setField((((FieldDisplay<T>) e.getComponent()).displayField));
+			_GUI.appFieldBar.setCoefficientDisplay((((FieldDisplay<T>) e.getComponent()).displayField));
 
 			switch (repMode) {
 			case REALF -> {

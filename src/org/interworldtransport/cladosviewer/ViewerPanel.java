@@ -522,7 +522,7 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 						if (nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getTabCount() > 0) {
 							int j = nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getSelectedIndex();
 							MonadPanel<T> tSpot = nyadPanelList.get(nyadPanes.getSelectedIndex()).getMonadPanel(j);
-							fieldPanel.setField((D) CladosFBuilder.copyOf(tSpot.getMonad().getScales().getScalar()));
+							fieldPanel.setCoefficientDisplay((D) CladosFBuilder.copyOf(tSpot.getMonad().getScales().getScalar()));
 							_GUI.appFieldBar.makeWritable();
 						}
 					}
