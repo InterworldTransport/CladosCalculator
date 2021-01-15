@@ -55,7 +55,6 @@ import java.util.*;
 
 public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends JPanel
 		implements ActionListener, FocusListener {
-	private static final long serialVersionUID = -5906360594213725004L;
 	private static final int _COEFF_SIZE = 10;
 	private static final Font _ITALICFONT = new Font(Font.SERIF, Font.ITALIC, _COEFF_SIZE);
 	private static final Font _PLAINFONT = new Font(Font.SERIF, Font.PLAIN, _COEFF_SIZE);
@@ -63,17 +62,17 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 	private static final Color clrUnlockColor = new Color(255, 192, 192);
 	private static final String IMAGINARY = "[I]";
 	private static final String REAL = "[R]";
+	private static final long serialVersionUID = -5906360594213725004L;
 	private static final Dimension squareLittle = new Dimension(25, 25);
 	private static final Dimension squareMedium = new Dimension(28, 28);
 
 	public CladosCalculator _GUI;
 	private JButton btnChangeOrient;
-	private JButton btnEdit;
-	private JButton btnRestore;
-	private JButton btnSync;
+	protected JButton btnEdit;
+	protected JButton btnRestore;
+	protected JButton btnSync;
 	private ImageIcon iconHorizontal;
 	private ImageIcon iconVertical;
-	private TreeMap<Blade, FieldDisplay<T>> jCoeffs;
 	/*
 	 * This boolean is for tracking whether the panel knows its monad is an element
 	 * in a nyad. This panel is embedded in the nyad create dialog to provide
@@ -82,9 +81,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 	 * display a Foot. It should force reuse of the nyad's existing Foot.
 	 */
 	private boolean nyadNotKnown;
-	private JPanel pnlMonadAlterControls;
 	private JPanel pnlMonadCoeffPanel;
-	private JPanel pnlMonadEditControls;
 	private JPanel pnlMonadReferences;
 	private CladosField repMode;
 	private Monad repMonad;
@@ -95,12 +92,13 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 	 */
 	private boolean useFullPanel;
 	protected boolean _editMode;
-
 	protected JTextField aname = new JTextField(16);
+
 	protected JTextField cardname = new JTextField(16);
 	protected JTextField foot = new JTextField(16);
 	protected JTextField frame = new JTextField(16);
 	protected JLabel gradeKey = new JLabel();
+	protected TreeMap<Blade, FieldDisplay<T>> jCoeffs;
 	protected JTextField name = new JTextField(16);
 	protected JTextField sig = new JTextField(16);
 
@@ -142,7 +140,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		cn0.weightx = 0;
 		cn0.weighty = 0;
 
-		pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Cardinal"))), cn0);
+		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/resources/cardinal.png"))), cn0);
 		cn0.gridx++;
 		cardname.setFont(_ITALICFONT);
 		pnlMonadReferences.add(cardname, cn0);
@@ -150,7 +148,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		cn0.gridy++;
 
 		if (nyadNotKnown) {
-			pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot"))), cn0);
+			pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/resources/foot.png"))), cn0);
 			cn0.gridx++;
 			foot.setFont(_ITALICFONT);
 			pnlMonadReferences.add(foot, cn0);
@@ -158,21 +156,21 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			cn0.gridy++;
 		}
 
-		pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Alg"))), cn0);
+		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/resources/alg.png"))), cn0);
 		cn0.gridx++;
 		aname.setFont(_ITALICFONT);
 		pnlMonadReferences.add(aname, cn0);
 		cn0.gridx = 0;
 		cn0.gridy++;
 
-		pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Sig"))), cn0);
+		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/resources/sig.png"))), cn0);
 		cn0.gridx++;
 		sig.setFont(_ITALICFONT);
 		pnlMonadReferences.add(sig, cn0);
 		cn0.gridx = 0;
 		cn0.gridy++;
 
-		pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Frame"))), cn0);
+		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/resources/frame.png"))), cn0);
 		cn0.gridx++;
 		frame.setFont(_PLAINFONT);
 		pnlMonadReferences.add(frame, cn0);
@@ -212,7 +210,9 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 			iconHorizontal = new ImageIcon(this.getClass().getResource("/resources/horiz.png"));
 			iconVertical = new ImageIcon(this.getClass().getResource("/resources/vert.png"));
 
-			switch (_GUI.IniProps.getProperty("Desktop.Default.Orient")) {
+			String orientOption = (_GUI != null) ? _GUI.IniProps.getProperty("Desktop.Default.Orient") : "Vertical";
+
+			switch (orientOption) {
 			case "Vertical" -> {
 				btnChangeOrient.setIcon(iconVertical);
 				btnChangeOrient.setToolTipText("Monad grades as columns");
@@ -466,7 +466,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 	}
 
 	private void createEditLayout() {
-		pnlMonadEditControls = new JPanel();
+		JPanel pnlMonadEditControls = new JPanel();
 		pnlMonadEditControls.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		pnlMonadEditControls.setBackground(clrBackColor);
 		pnlMonadEditControls.setLayout(new GridBagLayout());
@@ -521,7 +521,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 	}
 
 	private void createManagementLayout() {
-		pnlMonadAlterControls = new JPanel();
+		JPanel pnlMonadAlterControls = new JPanel();
 		pnlMonadAlterControls.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		pnlMonadAlterControls.setBackground(clrBackColor);
 		pnlMonadAlterControls.setLayout(new GridBagLayout());
@@ -642,7 +642,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 
 		cn0.weightx = 0;
 
-		pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Frame"))), cn0);
+		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/resources/frame.png"))), cn0);
 		cn0.gridx++;
 		frame.setFont(_PLAINFONT);
 		cn0.weightx = 1;
@@ -650,7 +650,7 @@ public class MonadPanel<T extends UnitAbstract & Field & Normalizable> extends J
 		cn0.weightx = 0.25;
 		cn0.gridx++;
 
-		pnlMonadReferences.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Key"))), cn0);
+		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/resources/key.png"))), cn0);
 		cn0.gridx++;
 		gradeKey.setFont(_PLAINFONT);
 		pnlMonadReferences.add(gradeKey, cn0);

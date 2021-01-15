@@ -75,7 +75,6 @@ public final class AboutDialog extends JDialog implements ActionListener {
 
 		JPanel topspot = new JPanel();
 		topspot.setBackground(_backColor);
-		// String logoFile=_GUI.IniProps.getProperty("Desktop.Image.Header");
 		ImageIcon temp = new ImageIcon(this.getClass().getResource("/resources/clados.png")); // clados.png
 		topspot.add(new JLabel(temp));
 		mainPane.add(topspot, "North");

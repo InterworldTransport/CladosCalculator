@@ -363,7 +363,7 @@ public class NyadPanel<T extends UnitAbstract & Field & Normalizable> extends JP
 
 		cn0.weightx = 0;
 		cn0.ipadx = 20;
-		pnlRefPanel.add(new JLabel(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot"))), cn0);
+		pnlRefPanel.add(new JLabel(new ImageIcon(this.getClass().getResource("/resources/foot.png"))), cn0);
 		cn0.gridx++;
 		nyadFoot.setFont(new Font(Font.SERIF, Font.PLAIN, 12));
 		nyadFoot.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

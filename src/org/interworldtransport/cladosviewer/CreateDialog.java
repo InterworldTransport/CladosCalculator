@@ -149,7 +149,7 @@ public class CreateDialog<T extends UnitAbstract & Field & Normalizable> extends
 		dialogGets.setBorder(new EmptyBorder(5, 5, 5, 5));
 		dialogGets.setBackground(makeNyad ? _nyadColor : _monadColor);
 
-		btnGetFoot = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Foot")));
+		btnGetFoot = new JButton(new ImageIcon(this.getClass().getResource("/resources/foot.png")));
 		btnGetFoot.setActionCommand("getfoot");
 		btnGetFoot.setToolTipText("Get Referenced Foot");
 		btnGetFoot.setPreferredSize(square);
@@ -162,7 +162,7 @@ public class CreateDialog<T extends UnitAbstract & Field & Normalizable> extends
 
 		dialogGets.add(btnGetFoot);
 
-		btnGetAlgebra = new JButton(new ImageIcon(_GUI.IniProps.getProperty("Desktop.Image.Alg")));
+		btnGetAlgebra = new JButton(new ImageIcon(this.getClass().getResource("/resources/alg.png")));
 		btnGetAlgebra.setActionCommand("getalg");
 		btnGetAlgebra.setPreferredSize(square);
 		btnGetAlgebra.setToolTipText("Reference Algebra in selected monad.");

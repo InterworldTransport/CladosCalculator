@@ -96,6 +96,7 @@ public class ViewerPanel<T extends UnitAbstract & Field & Normalizable> extends 
 		_repMode = validateInitialDivField();
 		// The Viewer contains NyadPanels displayed as a JTabbedPanes containing
 		// JScrollPanes containing a NyadPanel each. We initiate the JTabbedPane here
+		
 		nyadPanes = new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.WRAP_TAB_LAYOUT);
 		nyadPanes.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		// JScrollPanes are used only when a nyadPanel with nyadPanes.addTab()
