@@ -16,7 +16,7 @@
 			<Name>wkc_</Name>
 			<Algebra UUID="0e4cfb94-ef82-42f3-a302-2eaebdf3a128" >
 				<Name>motion</Name>
-				<UnitAbstract cardinal="unitless" />
+				<ProtoN cardinal="unitless" />
 				<Frames number="2" >
 					<Frame number="0" name="canonical" />
 					<Frame number="1" name="gilded" />
