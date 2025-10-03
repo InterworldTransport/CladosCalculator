@@ -33,7 +33,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 import javax.swing.border.BevelBorder;
 
-import org.interworldtransport.cladosF.CladosFBuilder;
+import org.interworldtransport.cladosF.FBuilder;
 import org.interworldtransport.cladosF.CladosField;
 import org.interworldtransport.cladosF.ComplexD;
 import org.interworldtransport.cladosF.ComplexF;
@@ -142,7 +142,7 @@ public class FieldDisplay<D extends ProtoN & Field & Normalizable> extends JText
 	public void focusGained(FocusEvent e) {
 		if (_parent._editMode) // Only do this when parent MonadPanel is in edit mode.
 		{
-			displayField = CladosFBuilder.copyOf((D) _parent._GUI.appFieldBar.repNumber);
+			displayField = FBuilder.copyOf((D) _parent._GUI.appFieldBar.repNumber);
 			displayContents();
 		}
 	}
@@ -207,7 +207,7 @@ public class FieldDisplay<D extends ProtoN & Field & Normalizable> extends JText
 	@SuppressWarnings("unchecked")
 	public <T extends ProtoN & Field & Normalizable> void updateField(T pField) {
 		if (pField != null) {
-			displayField = (D) CladosFBuilder.copyOf(pField);
+			displayField = (D) FBuilder.copyOf(pField);
 			displayContents();
 		} else {
 			setFont(ITALICFONT);

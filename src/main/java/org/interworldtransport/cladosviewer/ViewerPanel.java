@@ -25,7 +25,7 @@
 
 package org.interworldtransport.cladosviewer;
 
-import org.interworldtransport.cladosF.CladosFBuilder;
+import org.interworldtransport.cladosF.FBuilder;
 import org.interworldtransport.cladosF.CladosField;
 import org.interworldtransport.cladosF.Field;
 import org.interworldtransport.cladosF.Normalizable;
@@ -33,7 +33,7 @@ import org.interworldtransport.cladosF.Normalizable;
 import org.interworldtransport.cladosF.ProtoN;
 import org.interworldtransport.cladosG.Monad;
 import org.interworldtransport.cladosG.Nyad;
-import org.interworldtransport.cladosG.CladosGBuilder;
+import org.interworldtransport.cladosG.GBuilder;
 
 import org.interworldtransport.cladosGExceptions.*;
 
@@ -148,13 +148,13 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		try {
 			String cnt = new StringBuffer("N").append(pWhich).toString();
 			switch (_GUI.IniProps.getProperty("Desktop.Default.DivField")) {
-			case "RealF" -> keyNumber = (T) CladosFBuilder.REALF
+			case "RealF" -> keyNumber = (T) FBuilder.REALF
 					.createZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
-			case "RealD" -> keyNumber = (T) CladosFBuilder.REALD
+			case "RealD" -> keyNumber = (T) FBuilder.REALD
 					.createZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
-			case "ComplexF" -> keyNumber = (T) CladosFBuilder.COMPLEXF
+			case "ComplexF" -> keyNumber = (T) FBuilder.COMPLEXF
 					.createZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
-			case "ComplexD" -> keyNumber = (T) CladosFBuilder.COMPLEXD
+			case "ComplexD" -> keyNumber = (T) FBuilder.COMPLEXD
 					.createZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
 			}
 
@@ -206,7 +206,7 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		String buildName = "copied";
 		try {
 			NyadPanel<T> newP = new NyadPanel<T>(_GUI,
-					CladosGBuilder.INSTANCE.copyOfNyad(getNyadPanel(getPaneFocus()).getNyad(), buildName));
+					GBuilder.INSTANCE.copyOfNyad(getNyadPanel(getPaneFocus()).getNyad(), buildName));
 			nyadPanelList.add(newP);
 			nyadPanes.addTab((new StringBuffer().append(endPlus)).toString(), tabIcon, new JScrollPane(newP));
 			_GUI.pack();
@@ -523,7 +523,7 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 						if (nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getTabCount() > 0) {
 							int j = nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getSelectedIndex();
 							MonadPanel<T> tSpot = nyadPanelList.get(nyadPanes.getSelectedIndex()).getMonadPanel(j);
-							fieldPanel.setCoefficientDisplay((D) CladosFBuilder.copyOf(tSpot.getMonad().getScales().getScalar()));
+							fieldPanel.setCoefficientDisplay((D) FBuilder.copyOf(tSpot.getMonad().getScales().getScalar()));
 							_GUI.appFieldBar.makeWritable();
 						}
 					}

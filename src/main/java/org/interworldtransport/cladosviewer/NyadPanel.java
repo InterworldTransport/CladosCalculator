@@ -52,7 +52,7 @@ import org.interworldtransport.cladosF.CladosField;
 import org.interworldtransport.cladosF.Field;
 import org.interworldtransport.cladosF.Normalizable;
 import org.interworldtransport.cladosF.ProtoN;
-import org.interworldtransport.cladosG.CladosGBuilder;
+import org.interworldtransport.cladosG.GBuilder;
 import org.interworldtransport.cladosG.Monad;
 import org.interworldtransport.cladosG.Nyad;
 import org.interworldtransport.cladosGExceptions.BadSignatureException;
@@ -263,8 +263,8 @@ public class NyadPanel<T extends ProtoN & Field & Normalizable> extends JPanel i
 		String buildAlgName = new StringBuffer(tMonad.getAlgebra().getAlgebraName()).append("_c").toString();
 		String buildFrameName = new StringBuffer(tMonad.getFrameName()).append("_c").toString();
 		try {
-			Monad newMonad = CladosGBuilder.createMonadWithAlgebra(tMonad.getScales(),
-					CladosGBuilder.createAlgebraWithFootPlus(tMonad.getAlgebra().getFoot(),
+			Monad newMonad = GBuilder.createMonadWithAlgebra(tMonad.getScales(),
+					GBuilder.createAlgebraWithFootPlus(tMonad.getAlgebra().getFoot(),
 							tMonad.getAlgebra().getCardinal(), tMonad.getAlgebra().getGProduct(), buildAlgName),
 					buildName, buildFrameName);
 			repNyad.appendMonad(newMonad);

@@ -2,7 +2,7 @@ package org.interworldtransport.cladosviewer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.interworldtransport.cladosF.CladosFBuilder;
+import org.interworldtransport.cladosF.FBuilder;
 import org.interworldtransport.cladosF.ComplexD;
 import org.interworldtransport.cladosF.ComplexF;
 import org.interworldtransport.cladosF.RealD;
@@ -21,7 +21,7 @@ class FieldDisplayTest {
 
 	@Test
 	public void testRealF() {
-		testDisplay = new FieldDisplay<>((RealF) CladosFBuilder.REALF.createONE("My cardinal"), null);
+		testDisplay = new FieldDisplay<>((RealF) FBuilder.REALF.createONE("My cardinal"), null);
 		assertNotNull(testDisplay);
 		assertEquals(testDisplay.getRows(), 1);
 		assertEquals(testDisplay.getColumns(), 10);
@@ -31,7 +31,7 @@ class FieldDisplayTest {
 		testDisplay.saveContents();
 		float realPart = ((RealF) testDisplay.displayField).getReal();
 		assertEquals(Math.round(realPart*1000), 10005);
-		RealF newThing = (RealF) CladosFBuilder.REALF.createZERO(testDisplay.displayField.getCardinal());
+		RealF newThing = (RealF) FBuilder.REALF.createZERO(testDisplay.displayField.getCardinal());
 		testDisplay.updateField(newThing);
 		realPart =  ((RealF) testDisplay.displayField).getReal();
 		assertEquals(realPart, 0.0f);
@@ -39,7 +39,7 @@ class FieldDisplayTest {
 	
 	@Test
 	public void testRealD() {
-		testDisplay = new FieldDisplay<>((RealD) CladosFBuilder.REALD.createONE("My cardinal"), null);
+		testDisplay = new FieldDisplay<>((RealD) FBuilder.REALD.createONE("My cardinal"), null);
 		assertNotNull(testDisplay);
 		assertEquals(testDisplay.getRows(), 1);
 		assertEquals(testDisplay.getColumns(), 16);
@@ -49,7 +49,7 @@ class FieldDisplayTest {
 		testDisplay.saveContents();
 		double realPart = ((RealD) testDisplay.displayField).getReal();
 		assertEquals(Math.round(realPart*1000), 10005);
-		RealD newThing = (RealD) CladosFBuilder.REALD.createZERO(testDisplay.displayField.getCardinal());
+		RealD newThing = (RealD) FBuilder.REALD.createZERO(testDisplay.displayField.getCardinal());
 		testDisplay.updateField(newThing);
 		realPart =  ((RealD) testDisplay.displayField).getReal();
 		assertEquals(realPart, 0.0d);
@@ -57,7 +57,7 @@ class FieldDisplayTest {
 	
 	@Test
 	public void testComplexF() {
-		testDisplay = new FieldDisplay<>((ComplexF) CladosFBuilder.COMPLEXF.createONE("My cardinal"), null);
+		testDisplay = new FieldDisplay<>((ComplexF) FBuilder.COMPLEXF.createONE("My cardinal"), null);
 		assertNotNull(testDisplay);
 		assertEquals(testDisplay.getRows(), 2);
 		assertEquals(testDisplay.getColumns(), 10);
@@ -69,7 +69,7 @@ class FieldDisplayTest {
 		float imgPart = ((ComplexF) testDisplay.displayField).getImg();
 		assertEquals(Math.round(realPart*1000), 10005);
 		assertEquals(imgPart, 1.0f);
-		ComplexF newThing = (ComplexF) CladosFBuilder.COMPLEXF.createZERO(testDisplay.displayField.getCardinal());
+		ComplexF newThing = (ComplexF) FBuilder.COMPLEXF.createZERO(testDisplay.displayField.getCardinal());
 		testDisplay.updateField(newThing);
 		realPart =  ((ComplexF) testDisplay.displayField).getReal();
 		assertEquals(realPart, 0.0f);
@@ -77,7 +77,7 @@ class FieldDisplayTest {
 	
 	@Test
 	public void testComplexD() {
-		testDisplay = new FieldDisplay<>((ComplexD) CladosFBuilder.COMPLEXD.createONE("My cardinal"), null);
+		testDisplay = new FieldDisplay<>((ComplexD) FBuilder.COMPLEXD.createONE("My cardinal"), null);
 		assertNotNull(testDisplay);
 		assertEquals(testDisplay.getRows(), 2);
 		assertEquals(testDisplay.getColumns(), 16);
@@ -89,7 +89,7 @@ class FieldDisplayTest {
 		double imgPart = ((ComplexD) testDisplay.displayField).getImg();
 		assertEquals(Math.round(realPart*1000), 10005);
 		assertEquals(imgPart, 1.0f);
-		ComplexD newThing = (ComplexD) CladosFBuilder.COMPLEXD.createZERO(testDisplay.displayField.getCardinal());
+		ComplexD newThing = (ComplexD) FBuilder.COMPLEXD.createZERO(testDisplay.displayField.getCardinal());
 		testDisplay.updateField(newThing);
 		realPart =  ((ComplexD) testDisplay.displayField).getReal();
 		assertEquals(realPart, 0.0f);

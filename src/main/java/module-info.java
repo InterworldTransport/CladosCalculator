@@ -6,10 +6,10 @@
  */
 
 module org.interworldtransport.cladoscalculator {
-	exports org.interworldtransport.cladosviewerExceptions;
 	exports org.interworldtransport.cladosviewer;
 	exports org.interworldtransport.cladosviewerEvents;
-
+	exports org.interworldtransport.cladosviewerExceptions;
+	
 	requires transitive java.desktop;
 	requires transitive java.xml;
 	requires transitive org.interworldtransport.clados;

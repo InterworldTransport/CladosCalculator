@@ -39,11 +39,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.interworldtransport.cladosF.Cardinal;
-import org.interworldtransport.cladosF.CladosFCache;
+import org.interworldtransport.cladosF.FCache;
 import org.interworldtransport.cladosF.CladosField;
 import org.interworldtransport.cladosG.Algebra;
-import org.interworldtransport.cladosG.CladosGBuilder;
-import org.interworldtransport.cladosG.CladosGCache;
+import org.interworldtransport.cladosG.GBuilder;
+import org.interworldtransport.cladosG.GCache;
 import org.interworldtransport.cladosG.Foot;
 import org.interworldtransport.cladosG.Monad;
 import org.interworldtransport.cladosG.Nyad;
@@ -94,7 +94,7 @@ public class FileOpenEvents implements ActionListener {
 		NodeList cardNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
 		for (int k = 0; k < cardNodes.getLength(); k++) {
 			Cardinal temp = Cardinal.generate(cardNodes.item(k).getNodeName());
-			CladosFCache.INSTANCE.appendCardinal(temp);
+			FCache.INSTANCE.appendCardinal(temp);
 		}
 	}
 
@@ -103,7 +103,7 @@ public class FileOpenEvents implements ActionListener {
 		XPathExpression expr = pX.compile(path2AllSignatures);
 		NodeList sigNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
 		for (int k = 0; k < sigNodes.getLength(); k++) {
-			CladosGBuilder.createGProduct(sigNodes.item(k).getNodeValue());
+			GBuilder.createGProduct(sigNodes.item(k).getNodeValue());
 		}
 	}
 
@@ -235,11 +235,11 @@ public class FileOpenEvents implements ActionListener {
 			// ----------------
 			buildGProducts(doc, xPathFactory.newXPath());
 			// ----------------
-			// Bases/GProducts built/stored in CladosGBuilder.INSTANCE. Retrieve later.
+			// Bases/GProducts built/stored in GBuilder.INSTANCE. Retrieve later.
 			// ----------------
 			buildCardinals(doc, xPathFactory.newXPath());
 			// ----------------
-			// Cardinals built/stored in CladosFBuilder.INSTANCE. Retrieve later.
+			// Cardinals built/stored in FBuilder.INSTANCE. Retrieve later.
 			// ----------------
 			buildTheFeet(doc, xPathFactory.newXPath());
 			System.out.println("Made it past Foot building.");
@@ -359,7 +359,7 @@ public class FileOpenEvents implements ActionListener {
 		for (int k = 0; k < footNodes.getLength(); k++) {
 			String footname = footNodes.item(k).getNodeValue();
 			if (!foundFeet.keySet().contains(footname))
-				foundFeet.put(footname, CladosGBuilder.createFoot(footname, footname));
+				foundFeet.put(footname, GBuilder.createFoot(footname, footname));
 		}
 
 	}
@@ -397,9 +397,9 @@ public class FileOpenEvents implements ActionListener {
 			// We look up the the GProduct in the Algebra constructor
 
 			// FINALLY we build the new algebra and add it to foundAlgebras.
-			foundAlgebras.put(uuid, CladosGBuilder.createAlgebraWithFootPlus(foundFeet.get(foot2Use),
-					CladosFCache.INSTANCE.findCardinal(card2Use).get(),
-					CladosGCache.INSTANCE.findGProductMap(sig2Use).get(), name2Use));
+			foundAlgebras.put(uuid, GBuilder.createAlgebraWithFootPlus(foundFeet.get(foot2Use),
+					FCache.INSTANCE.findCardinal(card2Use).get(),
+					GCache.INSTANCE.findGProductMap(sig2Use).get(), name2Use));
 			// Each algebra informs its Foot of the Cardinal in use.
 			// That's how a Foot's Cardnal list is rebuilt from the import data.
 		}

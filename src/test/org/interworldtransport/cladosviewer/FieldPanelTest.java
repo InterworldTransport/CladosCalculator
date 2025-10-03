@@ -2,7 +2,7 @@ package org.interworldtransport.cladosviewer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.interworldtransport.cladosF.CladosFBuilder;
+import org.interworldtransport.cladosF.FBuilder;
 import org.interworldtransport.cladosF.CladosField;
 import org.interworldtransport.cladosF.ComplexD;
 import org.interworldtransport.cladosF.ComplexF;
@@ -21,7 +21,7 @@ class FieldPanelTest {
 
 	@Test
 	void testRealF() {
-		RealF tInput = (RealF) CladosFBuilder.REALF.createONE("My cardinal");
+		RealF tInput = (RealF) FBuilder.REALF.createONE("My cardinal");
 		testDisplay = new FieldPanel<>(null, tInput);
 		assertNotNull(testDisplay);
 		assertTrue(testDisplay.getRepMode() == CladosField.REALF);
@@ -41,7 +41,7 @@ class FieldPanelTest {
 
 	@Test
 	void testRealD() {
-		RealD tInput = (RealD) CladosFBuilder.REALD.createONE("My cardinal");
+		RealD tInput = (RealD) FBuilder.REALD.createONE("My cardinal");
 		testDisplay = new FieldPanel<>(null, tInput);
 		assertNotNull(testDisplay);
 		assertTrue(testDisplay.getRepMode() == CladosField.REALD);
@@ -61,7 +61,7 @@ class FieldPanelTest {
 	
 	@Test
 	void testComplexF() {
-		ComplexF tInput = (ComplexF) CladosFBuilder.COMPLEXF.createONE("My cardinal");
+		ComplexF tInput = (ComplexF) FBuilder.COMPLEXF.createONE("My cardinal");
 		testDisplay = new FieldPanel<>(null, tInput);
 		assertNotNull(testDisplay);
 		assertTrue(testDisplay.getRepMode() == CladosField.COMPLEXF);
@@ -83,7 +83,7 @@ class FieldPanelTest {
 	
 	@Test
 	void testComplexD() {
-		ComplexD tInput = (ComplexD) CladosFBuilder.COMPLEXD.createONE("My cardinal");
+		ComplexD tInput = (ComplexD) FBuilder.COMPLEXD.createONE("My cardinal");
 		testDisplay = new FieldPanel<>(null, tInput);
 		assertNotNull(testDisplay);
 		assertTrue(testDisplay.getRepMode() == CladosField.COMPLEXD);

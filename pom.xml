@@ -5,7 +5,7 @@
 
 	<groupId>org.interworldtransport.CladosCalculator</groupId>
 	<artifactId>CladosCalculator</artifactId>
-	<version>1.0</version>
+	<version>2.0</version>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -94,7 +94,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.5.4</version>
 				<configuration>
-					<argLine>-Xmx16G ${argLine}</argLine> <!-- heap size and JaCoCo agent-->
+					<argLine>-Xmx4G ${argLine}</argLine> <!-- heap size and JaCoCo agent-->
 				</configuration>
 			</plugin>
 			<plugin>
@@ -123,7 +123,7 @@
 				<artifactId>maven-project-info-reports-plugin</artifactId>
 				<version>3.9.0</version>
 				<configuration>
-					<webAccessURL>https://github.com/InterworldTransport/CladosViewer</webAccessURL>
+					<webAccessURL>https://github.com/InterworldTransport/CladosCalculator</webAccessURL>
 				</configuration>
       		</plugin>
 		</plugins>

@@ -2,13 +2,13 @@ package org.interworldtransport.cladosviewer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.interworldtransport.cladosF.CladosFBuilder;
+import org.interworldtransport.cladosF.FBuilder;
 import org.interworldtransport.cladosF.CladosField;
 import org.interworldtransport.cladosF.Field;
 import org.interworldtransport.cladosF.Normalizable;
 import org.interworldtransport.cladosF.ProtoN;
 import org.interworldtransport.cladosG.Blade;
-import org.interworldtransport.cladosG.CladosGBuilder;
+import org.interworldtransport.cladosG.GBuilder;
 import org.interworldtransport.cladosG.Monad;
 import org.interworldtransport.cladosGExceptions.BadSignatureException;
 import org.interworldtransport.cladosGExceptions.CladosMonadException;
@@ -27,13 +27,13 @@ class MonadPanelTest {
 	@BeforeEach
 	public <T extends ProtoN & Field & Normalizable> void setUp()
 			throws BadSignatureException, CladosMonadException, GeneratorRangeException {
-		targetRF = CladosGBuilder.createMonadZero((T) CladosFBuilder.REALF.createZERO("card1"), "monad1 name",
+		targetRF = GBuilder.createMonadZero((T) FBuilder.REALF.createZERO("card1"), "monad1 name",
 				"algebra1 name", "frame name", "foot name", "-+++");
-		targetRD = CladosGBuilder.createMonadZero((T) CladosFBuilder.REALD.createZERO("card2"), "monad2 name",
+		targetRD = GBuilder.createMonadZero((T) FBuilder.REALD.createZERO("card2"), "monad2 name",
 				"algebra2 name", "frame name", "foot name", "-+++");
-		targetCF = CladosGBuilder.createMonadZero((T) CladosFBuilder.COMPLEXF.createZERO("card3"), "monad3 name",
+		targetCF = GBuilder.createMonadZero((T) FBuilder.COMPLEXF.createZERO("card3"), "monad3 name",
 				"algebra3 name", "frame name", "foot name", "-+++");
-		targetCD = CladosGBuilder.createMonadZero((T) CladosFBuilder.COMPLEXD.createZERO("card4"), "monad4 name",
+		targetCD = GBuilder.createMonadZero((T) FBuilder.COMPLEXD.createZERO("card4"), "monad4 name",
 				"algebra4 name", "frame name", "foot name", "-+++");
 	}
 

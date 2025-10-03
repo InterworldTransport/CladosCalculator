@@ -48,7 +48,7 @@ import org.interworldtransport.cladosF.Field;
 import org.interworldtransport.cladosF.Normalizable;
 import org.interworldtransport.cladosF.ProtoN;
 import org.interworldtransport.cladosG.Algebra;
-import org.interworldtransport.cladosG.CladosGBuilder;
+import org.interworldtransport.cladosG.GBuilder;
 import org.interworldtransport.cladosG.Foot;
 import org.interworldtransport.cladosG.Monad;
 import org.interworldtransport.cladosG.Nyad;
@@ -332,7 +332,7 @@ public class CreateDialog<T extends ProtoN & Field & Normalizable> extends JDial
 			ErrorDialog.show("Chosen algebraRF had different foot from nyad.\nNO monad added.", "Append Monad failed.");
 			return; //
 		} // Foot reference match ensured now. Algebra existence ensured too. Moving on.
-		Monad rep = CladosGBuilder.createMonadWithAlgebra(
+		Monad rep = GBuilder.createMonadWithAlgebra(
 				new Scale<T>(repMode, copyAlg.getGBasis(), copyAlg.getCardinal()), copyAlg, monadShort.name.getText(),
 				monadShort.frame.getText());
 		tNSpot.appendMonad(rep);
@@ -341,39 +341,39 @@ public class CreateDialog<T extends ProtoN & Field & Normalizable> extends JDial
 
 	private void appendNyad()
 			throws BadSignatureException, GeneratorRangeException, CladosMonadException, CladosNyadException {
-		Foot tFoot = CladosGBuilder.createFoot(monadShort.foot.getText(), monadShort.cardname.getText());
+		Foot tFoot = GBuilder.createFoot(monadShort.foot.getText(), monadShort.cardname.getText());
 
-		Algebra tAlg = CladosGBuilder.createAlgebraWithFoot(tFoot, tFoot.getCardinal(0), monadShort.aname.getText(),
+		Algebra tAlg = GBuilder.createAlgebraWithFoot(tFoot, tFoot.getCardinal(0), monadShort.aname.getText(),
 				monadShort.sig.getText());
 		tAlg.setMode(repMode);
 
-		Monad tMonad = CladosGBuilder.createMonadWithAlgebra(
+		Monad tMonad = GBuilder.createMonadWithAlgebra(
 				new Scale<T>(repMode, tAlg.getGBasis(), tAlg.getCardinal()), tAlg, monadShort.name.getText(),
 				monadShort.frame.getText());
 
-		_GUI.appGeometryView.addNyad(CladosGBuilder.INSTANCE.createNyadUsingMonad(tMonad, "New"));
+		_GUI.appGeometryView.addNyad(GBuilder.INSTANCE.createNyadUsingMonad(tMonad, "New"));
 	}
 
 	private void appendNyadUsingFoot()
 			throws BadSignatureException, GeneratorRangeException, CladosMonadException, CladosNyadException {
 		// Use Foot in creating new Algebra... then create new monad... then addNyad(new
 		// monad).
-		Algebra tAlg = CladosGBuilder.createAlgebraWithFoot(copyFoot, copyFoot.getCardinal(0),
+		Algebra tAlg = GBuilder.createAlgebraWithFoot(copyFoot, copyFoot.getCardinal(0),
 				monadShort.aname.getText(), monadShort.sig.getText());
 		tAlg.setMode(repMode);
 
-		Monad tMonad = CladosGBuilder.createMonadWithAlgebra(
+		Monad tMonad = GBuilder.createMonadWithAlgebra(
 				new Scale<T>(repMode, tAlg.getGBasis(), tAlg.getCardinal()), tAlg, monadShort.name.getText(),
 				monadShort.frame.getText());
 
-		_GUI.appGeometryView.addNyad(CladosGBuilder.INSTANCE.createNyadUsingMonad(tMonad, "New"));
+		_GUI.appGeometryView.addNyad(GBuilder.INSTANCE.createNyadUsingMonad(tMonad, "New"));
 	}
 
 	private void appendNyadUsingAlg()
 			throws BadSignatureException, GeneratorRangeException, CladosMonadException, CladosNyadException {
-		_GUI.appGeometryView.addNyad(CladosGBuilder.INSTANCE.createNyadUsingMonad(
+		_GUI.appGeometryView.addNyad(GBuilder.INSTANCE.createNyadUsingMonad(
 
-				CladosGBuilder.createMonadWithAlgebra(new Scale<T>(repMode, copyAlg.getGBasis(), copyAlg.getCardinal()),
+				GBuilder.createMonadWithAlgebra(new Scale<T>(repMode, copyAlg.getGBasis(), copyAlg.getCardinal()),
 						copyAlg, monadShort.name.getText(), monadShort.frame.getText()),
 				"New"));
 	}

@@ -25,7 +25,7 @@
 
 package org.interworldtransport.cladosviewer;
 
-import org.interworldtransport.cladosF.CladosFBuilder;
+import org.interworldtransport.cladosF.FBuilder;
 import org.interworldtransport.cladosF.CladosField;
 import org.interworldtransport.cladosF.Field;
 import org.interworldtransport.cladosF.Normalizable;
@@ -663,7 +663,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	private void initiateCoeffList() {
 		jCoeffs = new TreeMap<Blade, FieldDisplay<T>>();
 		repMonad.bladeStream().forEach(blade -> {
-			FieldDisplay<T> tSpot = new FieldDisplay<T>((T) CladosFBuilder.copyOf((T) repMonad.getScales().get(blade)),
+			FieldDisplay<T> tSpot = new FieldDisplay<T>((T) FBuilder.copyOf((T) repMonad.getScales().get(blade)),
 					this);
 			tSpot.addFocusListener(this);
 			jCoeffs.put(blade, tSpot);
@@ -699,7 +699,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		repMonad.bladeStream().forEach(blade -> {
 			FieldDisplay<T> spot = jCoeffs.get(blade);
 			spot.saveContents();
-			repMonad.getScales().put(blade, CladosFBuilder.copyOf(spot.displayField));
+			repMonad.getScales().put(blade, FBuilder.copyOf(spot.displayField));
 			repMonad.setGradeKey();
 		});
 		gradeKey.setText(String.valueOf(repMonad.getGradeKey()));

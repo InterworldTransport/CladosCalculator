@@ -27,6 +27,7 @@ package org.interworldtransport.cladosviewerEvents;
 
 import javax.swing.JFileChooser;
 
+import org.interworldtransport.cladosG.Nyad;
 import org.interworldtransport.cladosviewer.CladosCalculator;
 import org.interworldtransport.cladosviewer.NyadPanel;
 import org.interworldtransport.cladosviewer.ViewerMenu;
@@ -95,12 +96,12 @@ public class FileEvents {
 		switch (_GUI.IniProps.getProperty("Desktop.File.Snapshot.FullXML")) {
 		case "true" -> {
 			for (NyadPanel<?> tempNPN : _GUI.appGeometryView.getNyadPanels()) {
-				content.append(tempNPN.getNyad().toXMLFullString(""));
+				content.append(Nyad.toXMLFullString(tempNPN.getNyad(), ""));
 			}
 		}
 		case "false" -> {
 			for (NyadPanel<?> tempNPN : _GUI.appGeometryView.getNyadPanels()) {
-				content.append(tempNPN.getNyad().toXMLString(""));
+				content.append(Nyad.toXMLString(tempNPN.getNyad(), ""));
 			}
 		}
 		default -> content.append("\n<Empty />\n");
