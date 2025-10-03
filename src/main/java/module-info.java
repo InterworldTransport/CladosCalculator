@@ -12,5 +12,5 @@ module org.interworldtransport.cladoscalculator {
 	
 	requires transitive java.desktop;
 	requires transitive java.xml;
-	requires transitive org.interworldtransport.clados;
+	requires org.interworldtransport.clados;
 }
