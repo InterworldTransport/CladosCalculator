@@ -151,11 +151,11 @@ beyond the reference frame test including the list of boolean operations visible
 division operation completes, however, by return the NaN value in the magnitude objects of the first monad.
 
 2) If the second monad is nilpotent, it will have no inverse for geometric reasons. Nilpotents squares vanish, so they are a
-geometric equivalent for zero. The division operation completes, though, by returning the NaN value in the magnitude objects of the
+geometric equivalents for zero. The division operation completes, though, by returning the NaN value in the magnitude objects of the
 first monad.
 
 3) If the second monad is idempotent, it will have no inverse for geometric reasons, but it does not behave like a zero scalar.
-Idempotent squares are the same idempotent, so they behave more like multiplication's identity element, yet they are not that
+Idempotent squares to the same idempotent, so they behave more like multiplication's identity element, yet they are not that
 element. To make matters worse, there is no element in an algebra to be multiplied against an idempotent that 'factors' it from the
 first monad, thus there is no path forward for the division operation to complete. Attempts within the calculator to divide by an
 idempotent will produce errors.
