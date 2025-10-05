@@ -32,6 +32,8 @@ import org.interworldtransport.cladosF.Normalizable;
 import org.interworldtransport.cladosF.ProtoN;
 import org.interworldtransport.cladosG.Blade;
 import org.interworldtransport.cladosG.Monad;
+import org.interworldtransport.cladosG.Scale;
+import org.interworldtransport.cladosGExceptions.CladosMonadException;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -395,7 +397,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	@SuppressWarnings("unchecked")
 	public void setCoefficientDisplay() {
 		repMonad.bladeStream().forEach(blade -> {
-			jCoeffs.get(blade).updateField((T) repMonad.getScales().get(blade));
+			jCoeffs.get(blade).updateField((T) repMonad.getWeights().get(blade));
 			jCoeffs.get(blade).displayContents();
 		});
 		gradeKey.setText(new StringBuffer().append(repMonad.getGradeKey()).toString());
@@ -615,7 +617,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlMonadReferences = new JPanel();
 
 		StringBuffer title = new StringBuffer("Cardinal | ");
-		title.append(repMonad.getScales().getCardinal().getUnit());
+		title.append(repMonad.getWeights().getCardinal().getUnit());
 
 		TitledBorder tWrap = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title.toString(),
 				TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, _PLAINFONT);
@@ -663,7 +665,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	private void initiateCoeffList() {
 		jCoeffs = new TreeMap<Blade, FieldDisplay<T>>();
 		repMonad.bladeStream().forEach(blade -> {
-			FieldDisplay<T> tSpot = new FieldDisplay<T>((T) FBuilder.copyOf((T) repMonad.getScales().get(blade)),
+			FieldDisplay<T> tSpot = new FieldDisplay<T>((T) FBuilder.copyOf((T) repMonad.getWeights().get(blade)),
 					this);
 			tSpot.addFocusListener(this);
 			jCoeffs.put(blade, tSpot);
@@ -692,16 +694,35 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		gradeKey.setText(new StringBuffer().append(repMonad.getGradeKey()).toString());
 	}
 
+	/**
+	* This method saves the displayed numbers as a new Scale and then uses that to replace the weights in the 
+	* monad being represented as this panel.
+	* TO DO: The produced Scale should be sufficient to swap for the monad's one, but Monad doesn't expose 
+	* a method for that. The older, clunky coefficient writer is still there and should be modernized.
+	*/
 	private void setRepMonad() {
 		if (name.getText() != repMonad.getName())
 			repMonad.setName(name.getText());
 
-		repMonad.bladeStream().forEach(blade -> {
+		Scale<T> newScale= new Scale<T>(repMonad.getWeights().getMode(), 	//Create a new Scale for repMonad to use
+										repMonad.getAlgebra().getGBasis(), 
+										repMonad.getWeights().getCardinal() );
+
+		repMonad.bladeStream().forEach(blade -> {							//Build the weights map for the new Scale
 			FieldDisplay<T> spot = jCoeffs.get(blade);
 			spot.saveContents();
-			repMonad.getScales().put(blade, FBuilder.copyOf(spot.displayField));
-			repMonad.setGradeKey();
+			newScale.put(blade, FBuilder.copyOf(spot.displayField));
 		});
+		
+		try {
+			repMonad.setCoeff(newScale.getWeights());
+		}
+		catch (CladosMonadException e) { 	//This should be improved because it breaks in on the Monad
+											//when we went to the trouble of creating a valid Scale that
+											//should have been enough to avoid the risk of an exception.
+			_GUI.appStatusBar.setStatusMsg("Weight setting attempt produced a monad exception");;
+		}
+		
 		gradeKey.setText(String.valueOf(repMonad.getGradeKey()));
 	}
 
