@@ -149,7 +149,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 						+ en.getMessage(), "Number Format Exception");
 			}
 		}
-		case "inverse" -> {
+		case "mainInvolution" -> {
 			try {
 				resetRepNumber();
 				setCoefficientDisplay((T) repNumber.invert());
@@ -463,12 +463,12 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlButtons.add(btnClear, c1);
 		c1.gridx += 2;
 
-		JButton btnInverse = new JButton(new ImageIcon(this.getClass().getResource("/resources/inverse.png")));
-		btnInverse.setActionCommand("inverse");
-		btnInverse.setPreferredSize(squareLarge);
-		btnInverse.setBorder(BorderFactory.createEtchedBorder(0));
-		btnInverse.addActionListener(this);
-		pnlButtons.add(btnInverse, c1);
+		JButton btnmainInvolution = new JButton(new ImageIcon(this.getClass().getResource("/resources/mainInvolution.png")));
+		btnmainInvolution.setActionCommand("mainInvolution");
+		btnmainInvolution.setPreferredSize(squareLarge);
+		btnmainInvolution.setBorder(BorderFactory.createEtchedBorder(0));
+		btnmainInvolution.addActionListener(this);
+		pnlButtons.add(btnmainInvolution, c1);
 		c1.gridx += 2;
 
 		JButton btnConjugate = new JButton(new ImageIcon(this.getClass().getResource("/resources/conjugate.png")));

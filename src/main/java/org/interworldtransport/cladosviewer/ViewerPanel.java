@@ -523,7 +523,7 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 						if (nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getTabCount() > 0) {
 							int j = nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getSelectedIndex();
 							MonadPanel<T> tSpot = nyadPanelList.get(nyadPanes.getSelectedIndex()).getMonadPanel(j);
-							fieldPanel.setCoefficientDisplay((D) FBuilder.copyOf(tSpot.getMonad().getScales().getScalar()));
+							fieldPanel.setCoefficientDisplay((D) FBuilder.copyOf(tSpot.getMonad().getWeights().getScalar()));
 							_GUI.appFieldBar.makeWritable();
 						}
 					}

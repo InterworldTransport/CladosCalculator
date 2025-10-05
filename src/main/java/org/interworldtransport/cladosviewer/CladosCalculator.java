@@ -47,7 +47,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
+//import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 
@@ -157,7 +157,7 @@ public class CladosCalculator extends JFrame implements ActionListener {
 			int indexedMonad = tSpot.getPaneFocus();
 			if (indexedMonad >= 0) {
 				appFieldBar = new FieldPanel<T>(this,
-						(T) tSpot.getNyad().getMonadList(indexedMonad).getScales().getScalar());
+						(T) tSpot.getNyad().getMonadList(indexedMonad).getWeights().getScalar());
 				cp.add(appFieldBar, "North");
 			} else { // Catch the possibility that no monad was created in a nyad
 				appFieldBar = null;

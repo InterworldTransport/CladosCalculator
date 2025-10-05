@@ -1,7 +1,7 @@
 /**
  * <h2>Copyright</h2> © 2021 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
- * ---org.interworldtransport.cladosviewer.MOpsInvertEvents<br>
+ * ---org.interworldtransport.cladosviewer.MOpsMainInvolutionEvents<br>
  * -------------------------------------------------------------------- <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -19,7 +19,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---org.interworldtransport.cladosviewer.MOpsInvertEvents<br>
+ * ---org.interworldtransport.cladosviewer.MOpsMainInvolutionEvents<br>
  * ------------------------------------------------------------------------ <br>
  */
 
@@ -33,13 +33,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 
 /**
- * This class manages events relating to a simple operation... Invert this
- * Monad.
+ * This class manages events relating to a simple operation... The main involution.
  *
  * @version 1.0
  * @author Dr Alfred W Differ
  */
-public class MOpsInvertEvents implements ActionListener {
+public class MOpsMainInvolutionEvents implements ActionListener {
 	protected JMenuItem _control;
 	protected MOpsParentEvents _parent;
 
@@ -51,7 +50,7 @@ public class MOpsInvertEvents implements ActionListener {
 	 * @param pParent        NOpsParentEvents This is a reference to the
 	 *                       NOpsParentEvents parent event handler
 	 */
-	public MOpsInvertEvents(JMenuItem pmniControlled, MOpsParentEvents pParent) {
+	public MOpsMainInvolutionEvents(JMenuItem pmniControlled, MOpsParentEvents pParent) {
 		_control = pmniControlled;
 		_control.addActionListener(this);
 		_parent = pParent;
@@ -82,7 +81,7 @@ public class MOpsInvertEvents implements ActionListener {
 		}
 
 		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
-		tMSpotPnl.getMonad().invert();
+		tMSpotPnl.getMonad().mainInvolution();
 
 		tMSpotPnl.setCoefficientDisplay();
 		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been inverted.\n");

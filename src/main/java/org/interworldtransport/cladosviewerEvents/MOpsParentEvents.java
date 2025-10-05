@@ -47,7 +47,7 @@ public class MOpsParentEvents //implements ActionListener
     public	 	MOpsNormalizeEvents		norm;
     public	 	MOpsLocalDualEvents		dualLeft;
     public	 	MOpsLocalDualEvents		dualRight;
-    public	 	MOpsInvertEvents		invt;
+    public	 	MOpsMainInvolutionEvents		invt;
     public	 	MOpsReverseEvents		rev;
     public		MOpsScaleEvents			scale;
     public	 	MOpsGradePartEvents		gradep;
@@ -81,7 +81,7 @@ public class MOpsParentEvents //implements ActionListener
 		norm = new MOpsNormalizeEvents(			_GUIMenu.mniNormalize, this);
 		dualLeft = new MOpsLocalDualEvents(		_GUIMenu.mniDualLeft, this);
 		dualRight = new MOpsLocalDualEvents(	_GUIMenu.mniDualRight, this);
-		invt = new MOpsInvertEvents(			_GUIMenu.mniInvert, this);
+		invt = new MOpsMainInvolutionEvents(			_GUIMenu.mniInvert, this);
 		rev = new MOpsReverseEvents(			_GUIMenu.mniReverse, this);
 		scale = new MOpsScaleEvents(			_GUIMenu.mniScale, this);
 		gradep = new MOpsGradePartEvents(		_GUIMenu.mniGradeCrop, this);

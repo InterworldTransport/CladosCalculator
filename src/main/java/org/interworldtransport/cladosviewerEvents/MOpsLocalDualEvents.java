@@ -87,11 +87,11 @@ public class MOpsLocalDualEvents implements ActionListener {
 		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
 
 		if (command.equals("dual>")) {
-			tMSpotPnl.getMonad().dualLeft();
+			tMSpotPnl.getMonad().multiplyByPSLeft();
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the left.\n");
 		}
 		if (command.equals("<dual")) {
-			tMSpotPnl.getMonad().dualRight();
+			tMSpotPnl.getMonad().multiplyByPSRight();
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been 'dualed' from the right.\n");
 		}
 		tMSpotPnl.setCoefficientDisplay();

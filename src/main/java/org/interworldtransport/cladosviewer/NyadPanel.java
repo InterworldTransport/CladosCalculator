@@ -263,7 +263,7 @@ public class NyadPanel<T extends ProtoN & Field & Normalizable> extends JPanel i
 		String buildAlgName = new StringBuffer(tMonad.getAlgebra().getAlgebraName()).append("_c").toString();
 		String buildFrameName = new StringBuffer(tMonad.getFrameName()).append("_c").toString();
 		try {
-			Monad newMonad = GBuilder.createMonadWithAlgebra(tMonad.getScales(),
+			Monad newMonad = GBuilder.createMonadWithAlgebra(tMonad.getWeights(),
 					GBuilder.createAlgebraWithFootPlus(tMonad.getAlgebra().getFoot(),
 							tMonad.getAlgebra().getCardinal(), tMonad.getAlgebra().getGProduct(), buildAlgName),
 					buildName, buildFrameName);
