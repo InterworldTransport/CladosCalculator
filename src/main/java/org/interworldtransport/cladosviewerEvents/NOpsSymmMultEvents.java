@@ -1,5 +1,5 @@
 /**
- * <h2>Copyright</h2> © 2021 Alfred Differ<br>
+ * <h2>Copyright</h2> © 2025 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.NOpsSymmMultEvents<br>
  * -------------------------------------------------------------------- <p>

@@ -37,7 +37,7 @@ Check out the Readme.pdf file for more high level descriptions, but prepare your
 
 
 
-## Copyright © 2021 Alfred Differ
+## Copyright © 2025 Alfred Differ
 
 ## org.interworldtransport.*
 
