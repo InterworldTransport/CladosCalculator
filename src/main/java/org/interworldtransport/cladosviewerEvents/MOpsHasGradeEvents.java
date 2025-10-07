@@ -76,7 +76,7 @@ public class MOpsHasGradeEvents implements ActionListener {
 			return;
 		}
 
-		NyadPanel panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
+		NyadPanel<?> panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
 		int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
 		if (indxMndPnlSlctd < 0) {
 			ErrorDialog.show("Has Grade Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
@@ -103,7 +103,7 @@ public class MOpsHasGradeEvents implements ActionListener {
 			return;
 		}
 
-		MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+		MonadPanel<?> tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
 		long tempGradeKey = tSpot.getMonad().getGradeKey();
 		
 		// We have a tempGradeKey AND a grade2Test. If this were a uniqueness test we'd

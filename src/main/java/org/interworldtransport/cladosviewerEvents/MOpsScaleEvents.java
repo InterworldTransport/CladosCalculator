@@ -78,14 +78,14 @@ public class MOpsScaleEvents implements ActionListener {
 			return;
 		}
 
-		NyadPanel tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
+		NyadPanel<?> tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
 		int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
 		if (indxMndPnlSlctd < 0) {
 			ErrorDialog.show("Scale Operation needs one monad in focus.\nNothing done.", "Need Monad In Focus");
 			return;
 		}
 
-		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+		MonadPanel<?> tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
 
 		Monad tMonad = tMSpotPnl.getMonad();
 		switch (tMSpotPnl.getRepMode()) {

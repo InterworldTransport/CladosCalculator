@@ -72,7 +72,7 @@ public class MOpsMagnitudeEvents implements ActionListener {
 			return;
 		}
 
-		NyadPanel tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
+		NyadPanel<?> tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
 
 		int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
 		if (indxMndPnlSlctd < 0) {
@@ -80,7 +80,7 @@ public class MOpsMagnitudeEvents implements ActionListener {
 			return;
 		}
 
-		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(indxMndPnlSlctd);
+		MonadPanel<?> tMSpotPnl = tNSpotPnl.getMonadPanel(indxMndPnlSlctd);
 		switch (tMSpotPnl.getRepMode()) {
 		case REALF -> {
 			RealF scaleRF = tMSpotPnl.getMonad().sqMagnitude();

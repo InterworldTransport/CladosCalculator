@@ -72,14 +72,14 @@ public class MOpsScaledIdempotentEvents implements ActionListener {
 			return;
 		}
 
-		NyadPanel panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
+		NyadPanel<?> panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
 		int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
 		if (indxMndPnlSlctd < 0) {
 			ErrorDialog.show("Scaled Idempotent Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
 			return;
 		}
 
-		MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+		MonadPanel<?> tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
 		boolean test = false;
 		try {
 			test = Monad.isScaledIdempotent(tSpot.getMonad());

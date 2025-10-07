@@ -72,14 +72,14 @@ public class MOpsNilpotentEvents implements ActionListener {
 			return;
 		}
 
-		NyadPanel panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
+		NyadPanel<?> panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
 		int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
 		if (indxMndPnlSlctd < 0) {
 			ErrorDialog.show("Nilpotent Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
 			return;
 		}
 
-		MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+		MonadPanel<?> tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
 
 		try {
 			int pow2Test = (int) Float.parseFloat(_parent._GUI.appFieldBar.getRealText());

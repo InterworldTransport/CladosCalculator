@@ -75,14 +75,14 @@ public class MOpsGradeSuppressEvents implements ActionListener {
 			return;
 		}
 
-		NyadPanel tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
+		NyadPanel<?> tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
 		int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
 		if (indxMndPnlSlctd < 0) {
 			ErrorDialog.show("GradeSuppress Operation needs one monad in focus.\nNothing done.", "Need Monad In Focus");
 			return;
 		}
 
-		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+		MonadPanel<?> tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
 
 		try {
 			byte tGrade = Byte.parseByte(_parent._GUI.appFieldBar.getRealText());

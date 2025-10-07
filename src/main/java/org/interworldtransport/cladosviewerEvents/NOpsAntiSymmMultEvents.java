@@ -68,8 +68,8 @@ public class NOpsAntiSymmMultEvents implements ActionListener {
 			return;
 		}
 
-		NyadPanel tSpot = _parent._GUI.appGeometryView.getNyadPanel(indxNydPnlSlctd);
-		NyadPanel tSpotPlus = _parent._GUI.appGeometryView.getNyadPanel(indxNydPnlSlctd + 1);
+		NyadPanel<?> tSpot = _parent._GUI.appGeometryView.getNyadPanel(indxNydPnlSlctd);
+		NyadPanel<?> tSpotPlus = _parent._GUI.appGeometryView.getNyadPanel(indxNydPnlSlctd + 1);
 
 		int indxMndPnlSlctd = tSpot.getPaneFocus();
 		if (indxMndPnlSlctd < 0 | indxNydPnlSlctd > tSpotPlus.getMonadListSize()) {
@@ -78,8 +78,8 @@ public class NOpsAntiSymmMultEvents implements ActionListener {
 			return;
 		}
 
-		MonadPanel temp0 = tSpot.getMonadPanel(indxMndPnlSlctd);
-		MonadPanel temp1 = tSpotPlus.getMonadPanel(indxMndPnlSlctd);
+		MonadPanel<?> temp0 = tSpot.getMonadPanel(indxMndPnlSlctd);
+		MonadPanel<?> temp1 = tSpotPlus.getMonadPanel(indxMndPnlSlctd);
 
 		temp0.getMonad().multiplyAntisymm(temp1.getMonad());
 		temp0.setCoefficientDisplay();

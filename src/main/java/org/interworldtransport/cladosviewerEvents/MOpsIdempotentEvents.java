@@ -73,13 +73,13 @@ public class MOpsIdempotentEvents implements ActionListener {
 			return;
 		}
 
-		NyadPanel panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
+		NyadPanel<?> panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
 		int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
 		if (indxMndPnlSlctd < 0) {
 			ErrorDialog.show("Idempotent Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
 			return;
 		}
-		MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+		MonadPanel<?> tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
 		boolean test =  Monad.isIdempotent(tSpot.getMonad());
 		if (test)
 			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is idempotent.\n");

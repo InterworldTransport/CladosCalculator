@@ -74,14 +74,14 @@ public class MOpsReverseEvents implements ActionListener {
 			return;
 		}
 
-		NyadPanel tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
+		NyadPanel<?> tNSpotPnl = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
 		int indxMndPnlSlctd = tNSpotPnl.getPaneFocus();
 		if (indxMndPnlSlctd < 0) {
 			ErrorDialog.show("Reverse Operation needs one monad in focus.\nNothing done.", "Need Monad In Focus");
 			return;
 		}
 
-		MonadPanel tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
+		MonadPanel<?> tMSpotPnl = tNSpotPnl.getMonadPanel(tNSpotPnl.getPaneFocus());
 		tMSpotPnl.getMonad().reverse();
 		tMSpotPnl.setCoefficientDisplay();
 		_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been reversed.\n");

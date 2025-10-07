@@ -74,7 +74,7 @@ public class MOpsGradeEvents implements ActionListener {
 			return;
 		}
 
-		NyadPanel panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
+		NyadPanel<?> panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(indexNyadPanelSelected);
 		int indxMndPnlSlctd = panelNyadSelected.getPaneFocus();
 		if (indxMndPnlSlctd < 0) {
 			ErrorDialog.show("Grade Test needs one monad in focus.\nNothing done.", "Need Monad In Focus");
@@ -86,7 +86,7 @@ public class MOpsGradeEvents implements ActionListener {
 			// parseFloat(...getRealText())
 			// Hence the need for a try/catch phrase around all this
 			int grade2Test = (int) Float.parseFloat(_parent._GUI.appFieldBar.getRealText());
-			MonadPanel tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
+			MonadPanel<?> tSpot = panelNyadSelected.getMonadPanel(indxMndPnlSlctd);
 			boolean test =  Monad.isGrade(tSpot.getMonad(), grade2Test);
 //					switch (tSpot.getRepMode()) {
 //			case REALF ->
