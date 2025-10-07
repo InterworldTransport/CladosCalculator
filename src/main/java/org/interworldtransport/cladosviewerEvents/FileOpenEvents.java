@@ -70,10 +70,10 @@ public class FileOpenEvents implements ActionListener {
 	private final static String path2FootNames = "//Algebra/Foot/Name";
 	private final static String path2Mode = "//Pair/*";
 	//private final static String path2MonadNames = "//Monad/Name/text()";
-	private final static String path2Monads = "//Monad";
-	private final static String path2NyadNames = "//Nyad/Name/text()";
+	//private final static String path2Monads = "//Monad";
+	//private final static String path2NyadNames = "//Nyad/Name/text()";
 	private final static String path2Nyads = "//Nyad";
-	private final static String path4NyadCount = "count(//Nyad)";
+	//private final static String path4NyadCount = "count(//Nyad)";
 
 	private final static Optional<Monad> buildAMonad(Node pNode) {
 
@@ -81,10 +81,10 @@ public class FileOpenEvents implements ActionListener {
 		// Name, Algebra, ReferenceFrame, Scales
 		// And GProducts, Bases, and Cardinals already exist as objects
 		
-		Node name = pNode.getFirstChild();
-		String name2Use = name.getTextContent();
+	//	Node name = pNode.getFirstChild();
+	//	String name2Use = name.getTextContent();
 
-		Node alg = name.getNextSibling();
+	//	Node alg = name.getNextSibling();
 
 		return Optional.empty();
 	}
@@ -324,10 +324,10 @@ public class FileOpenEvents implements ActionListener {
 		// Name, Foot, AlgebraList, MonadList
 		for (int k = 0; k < _nyadCount; k++) {
 			Node name = nyadNodes.item(k).getFirstChild();
-			String name2Use = name.getTextContent();
+		//	String name2Use = name.getTextContent();
 
 			Node foot = name.getNextSibling();
-			String foot2Use = foot.getFirstChild().getTextContent();
+		//	String foot2Use = foot.getFirstChild().getTextContent();
 
 			Node monadList = foot.getNextSibling().getNextSibling();
 			NodeList monads = monadList.getChildNodes();

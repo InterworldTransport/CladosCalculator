@@ -28,14 +28,14 @@ public class NyadListXMLParser
 		XPath xpath = xPathfactory.newXPath();
 		
 		String path4NyadCount = "count(//Nyad)";
-		String path4NyadOrder1 = "count(//Nyad[";
-		String path4NyadOrder2 = "]/MonadList/Monad)";
+		//String path4NyadOrder1 = "count(//Nyad[";
+		//String path4NyadOrder2 = "]/MonadList/Monad)";
 		//String path4UsedCladosField = "/NyadList/Nyad[1]/MonadList/Monad[1]/Algebra/";
 		
 		//XPathExpression expr = xpath.	.compile(path4NyadCount);
 		String result = xpath.evaluate(path4NyadCount, doc);
 		System.out.println("Nyad count is "+result);
-		int count = Integer.parseInt(result);
+		//int count = Integer.parseInt(result);
 		
 		
 		xpath.reset();
