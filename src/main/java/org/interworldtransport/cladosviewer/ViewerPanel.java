@@ -92,7 +92,7 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		createStackLayout();
 
 		// Get the nyad tab image for the nyad panes being constructed
-		tabIcon = new ImageIcon(this.getClass().getResource("/resources/N.png"));
+		tabIcon = new ImageIcon(this.getClass().getResource("/img/N.png"));
 		_repMode = validateInitialDivField();
 		// The Viewer contains NyadPanels displayed as a JTabbedPanes containing
 		// JScrollPanes containing a NyadPanel each. We initiate the JTabbedPane here
@@ -242,7 +242,7 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		cn.weighty = 0;
 		cn.gridheight = 1;
 		cn.gridwidth = 1;
-		JButton btnSwapBelow = new JButton(new ImageIcon(this.getClass().getResource("/resources/push.png")));
+		JButton btnSwapBelow = new JButton(new ImageIcon(this.getClass().getResource("/img/push.png")));
 		btnSwapBelow.setActionCommand("push");
 		btnSwapBelow.setToolTipText("push nyad down on stack");
 		btnSwapBelow.setPreferredSize(square);
@@ -251,7 +251,7 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlControlBar.add(btnSwapBelow, cn);
 		cn.gridy++;
 
-		JButton btnSwapAbove = new JButton(new ImageIcon(this.getClass().getResource("/resources/pop.png")));
+		JButton btnSwapAbove = new JButton(new ImageIcon(this.getClass().getResource("/img/pop.png")));
 		btnSwapAbove.setActionCommand("pop");
 		btnSwapAbove.setToolTipText("pop nyad up on stack");
 		btnSwapAbove.setPreferredSize(square);
@@ -260,7 +260,7 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlControlBar.add(btnSwapAbove, cn);
 		cn.gridy++;
 
-		JButton btnCopyNyad = new JButton(new ImageIcon(this.getClass().getResource("/resources/copy.png")));
+		JButton btnCopyNyad = new JButton(new ImageIcon(this.getClass().getResource("/img/copy.png")));
 		btnCopyNyad.setActionCommand("copy");
 		btnCopyNyad.setToolTipText("copy nyad to end of stack");
 		btnCopyNyad.setPreferredSize(square);
@@ -269,7 +269,7 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlControlBar.add(btnCopyNyad, cn);
 		cn.gridy++;
 
-		JButton btnRemoveNyad = new JButton(new ImageIcon(this.getClass().getResource("/resources/remove.png")));
+		JButton btnRemoveNyad = new JButton(new ImageIcon(this.getClass().getResource("/img/remove.png")));
 		btnRemoveNyad.setActionCommand("erase");
 		btnRemoveNyad.setToolTipText("remove nyad from stack");
 		btnRemoveNyad.setPreferredSize(square);
@@ -278,7 +278,7 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlControlBar.add(btnRemoveNyad, cn);
 		cn.gridy++;
 
-		JButton btnNewNyad = new JButton(new ImageIcon(this.getClass().getResource("/resources/create.png")));
+		JButton btnNewNyad = new JButton(new ImageIcon(this.getClass().getResource("/img/create.png")));
 		btnNewNyad.setActionCommand("create");
 		btnNewNyad.setToolTipText("create new nyad");
 		btnNewNyad.setPreferredSize(square);

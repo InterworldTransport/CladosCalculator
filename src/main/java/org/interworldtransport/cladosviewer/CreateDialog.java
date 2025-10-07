@@ -149,7 +149,7 @@ public class CreateDialog<T extends ProtoN & Field & Normalizable> extends JDial
 		dialogGets.setBorder(new EmptyBorder(5, 5, 5, 5));
 		dialogGets.setBackground(makeNyad ? _nyadColor : _monadColor);
 
-		btnGetFoot = new JButton(new ImageIcon(this.getClass().getResource("/resources/foot.png")));
+		btnGetFoot = new JButton(new ImageIcon(this.getClass().getResource("/img/foot.png")));
 		btnGetFoot.setActionCommand("getfoot");
 		btnGetFoot.setToolTipText("Get Referenced Foot");
 		btnGetFoot.setPreferredSize(square);
@@ -162,7 +162,7 @@ public class CreateDialog<T extends ProtoN & Field & Normalizable> extends JDial
 
 		dialogGets.add(btnGetFoot);
 
-		btnGetAlgebra = new JButton(new ImageIcon(this.getClass().getResource("/resources/alg.png")));
+		btnGetAlgebra = new JButton(new ImageIcon(this.getClass().getResource("/img/alg.png")));
 		btnGetAlgebra.setActionCommand("getalg");
 		btnGetAlgebra.setPreferredSize(square);
 		btnGetAlgebra.setToolTipText("Reference Algebra in selected monad.");
@@ -181,7 +181,7 @@ public class CreateDialog<T extends ProtoN & Field & Normalizable> extends JDial
 		dialogControls.setBorder(new EmptyBorder(5, 5, 5, 5));
 		dialogControls.setBackground(makeNyad ? _nyadColor : _monadColor);
 
-		JButton btnSave = new JButton(new ImageIcon(this.getClass().getResource("/resources/save.png")));
+		JButton btnSave = new JButton(new ImageIcon(this.getClass().getResource("/img/save.png")));
 		btnSave.setActionCommand(makeNyad ? "Save Nyad" : "Save Monad");
 		btnSave.setToolTipText(makeNyad ? "Create new nyad. Algebra/Foot or just Foot can be referenced."
 				: "Create new monad. Algebra/Foot can be referenced, but nyad Foot better match.");
@@ -190,7 +190,7 @@ public class CreateDialog<T extends ProtoN & Field & Normalizable> extends JDial
 		btnSave.addActionListener(this);
 		dialogControls.add(btnSave);
 
-		JButton btnClose = new JButton(new ImageIcon(this.getClass().getResource("/resources/close.png")));
+		JButton btnClose = new JButton(new ImageIcon(this.getClass().getResource("/img/close.png")));
 		btnClose.setActionCommand("close");
 		btnClose.setToolTipText("Close the dialog. No further changes.");
 		btnClose.setPreferredSize(square);

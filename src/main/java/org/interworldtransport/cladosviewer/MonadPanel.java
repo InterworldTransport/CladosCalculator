@@ -142,7 +142,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		cn0.weightx = 0;
 		cn0.weighty = 0;
 
-		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/resources/cardinal.png"))), cn0);
+		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/img/cardinal.png"))), cn0);
 		cn0.gridx++;
 		cardname.setFont(_ITALICFONT);
 		pnlMonadReferences.add(cardname, cn0);
@@ -150,7 +150,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		cn0.gridy++;
 
 		if (nyadNotKnown) {
-			pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/resources/foot.png"))), cn0);
+			pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/img/foot.png"))), cn0);
 			cn0.gridx++;
 			foot.setFont(_ITALICFONT);
 			pnlMonadReferences.add(foot, cn0);
@@ -158,21 +158,21 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			cn0.gridy++;
 		}
 
-		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/resources/alg.png"))), cn0);
+		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/img/alg.png"))), cn0);
 		cn0.gridx++;
 		aname.setFont(_ITALICFONT);
 		pnlMonadReferences.add(aname, cn0);
 		cn0.gridx = 0;
 		cn0.gridy++;
 
-		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/resources/sig.png"))), cn0);
+		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/img/sig.png"))), cn0);
 		cn0.gridx++;
 		sig.setFont(_ITALICFONT);
 		pnlMonadReferences.add(sig, cn0);
 		cn0.gridx = 0;
 		cn0.gridy++;
 
-		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/resources/frame.png"))), cn0);
+		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/img/frame.png"))), cn0);
 		cn0.gridx++;
 		frame.setFont(_PLAINFONT);
 		pnlMonadReferences.add(frame, cn0);
@@ -209,8 +209,8 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			btnChangeOrient = new JButton();
 			btnChangeOrient.setPreferredSize(squareLittle);
 			btnChangeOrient.setBorder(BorderFactory.createEtchedBorder(0));
-			iconHorizontal = new ImageIcon(this.getClass().getResource("/resources/horiz.png"));
-			iconVertical = new ImageIcon(this.getClass().getResource("/resources/vert.png"));
+			iconHorizontal = new ImageIcon(this.getClass().getResource("/img/horiz.png"));
+			iconVertical = new ImageIcon(this.getClass().getResource("/img/vert.png"));
 
 			String orientOption = (_GUI != null) ? _GUI.IniProps.getProperty("Desktop.Default.Orient") : "Vertical";
 
@@ -482,7 +482,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		cn.weighty = 0;
 		cn.gridwidth = 2;
 
-		btnEdit = new JButton(new ImageIcon(this.getClass().getResource("/resources/edit.png")));
+		btnEdit = new JButton(new ImageIcon(this.getClass().getResource("/img/edit.png")));
 		btnEdit.setActionCommand("edit");
 		btnEdit.setToolTipText("start edits");
 		btnEdit.setPreferredSize(squareLittle);
@@ -491,7 +491,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlMonadEditControls.add(btnEdit, cn);
 		cn.gridy++;
 
-		btnSync = new JButton(new ImageIcon(this.getClass().getResource("/resources/save.png")));
+		btnSync = new JButton(new ImageIcon(this.getClass().getResource("/img/save.png")));
 		btnSync.setActionCommand("save");
 		btnSync.setToolTipText("save edits");
 		btnSync.setEnabled(false);
@@ -501,7 +501,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlMonadEditControls.add(btnSync, cn);
 		cn.gridy++;
 
-		btnRestore = new JButton(new ImageIcon(this.getClass().getResource("/resources/restore.png")));
+		btnRestore = new JButton(new ImageIcon(this.getClass().getResource("/img/restore.png")));
 		btnRestore.setActionCommand("abort");
 		btnRestore.setToolTipText("abandon edits");
 		btnRestore.setEnabled(false);
@@ -535,7 +535,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		cn.weighty = 0;
 		cn.gridwidth = 2;
 
-		JButton btnScaleMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/scale.png")));
+		JButton btnScaleMonad = new JButton(new ImageIcon(this.getClass().getResource("/img/scale.png")));
 		btnScaleMonad.setActionCommand("scale");
 		btnScaleMonad.setToolTipText("scale() the monad");
 		btnScaleMonad.setPreferredSize(squareMedium);
@@ -544,7 +544,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlMonadAlterControls.add(btnScaleMonad, cn);
 		cn.gridy++;
 
-		JButton btnNormalizeMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/norm.png")));
+		JButton btnNormalizeMonad = new JButton(new ImageIcon(this.getClass().getResource("/img/norm.png")));
 		btnNormalizeMonad.setActionCommand("normalize");
 		btnNormalizeMonad.setToolTipText("normalize THIS Monad");
 		btnNormalizeMonad.setPreferredSize(squareMedium);
@@ -553,7 +553,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlMonadAlterControls.add(btnNormalizeMonad, cn);
 		cn.gridy++;
 
-		JButton btnInvertMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/invert.png")));
+		JButton btnInvertMonad = new JButton(new ImageIcon(this.getClass().getResource("/img/invert.png")));
 		btnInvertMonad.setActionCommand("invert");
 		btnInvertMonad.setToolTipText("invert [+/-] generators");
 		btnInvertMonad.setPreferredSize(squareMedium);
@@ -562,7 +562,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlMonadAlterControls.add(btnInvertMonad, cn);
 		cn.gridy++;
 
-		JButton btnReverseMonad = new JButton(new ImageIcon(this.getClass().getResource("/resources/reverse.png")));
+		JButton btnReverseMonad = new JButton(new ImageIcon(this.getClass().getResource("/img/reverse.png")));
 		btnReverseMonad.setActionCommand("reverse");
 		btnReverseMonad.setToolTipText("reverse [ab->ba] blades");
 		btnReverseMonad.setPreferredSize(squareMedium);
@@ -571,7 +571,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlMonadAlterControls.add(btnReverseMonad, cn);
 		cn.gridy++;
 
-		JButton btnDualLeft = new JButton(new ImageIcon(this.getClass().getResource("/resources/dualleft.png")));
+		JButton btnDualLeft = new JButton(new ImageIcon(this.getClass().getResource("/img/dualleft.png")));
 		btnDualLeft.setActionCommand("dual>");
 		btnDualLeft.setToolTipText("left Dual of the monad using algebra's PS");
 		btnDualLeft.setPreferredSize(squareMedium);
@@ -580,7 +580,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlMonadAlterControls.add(btnDualLeft, cn);
 		cn.gridy++;
 
-		JButton btnDualRight = new JButton(new ImageIcon(this.getClass().getResource("/resources/dualright.png")));
+		JButton btnDualRight = new JButton(new ImageIcon(this.getClass().getResource("/img/dualright.png")));
 		btnDualRight.setActionCommand("<dual");
 		btnDualRight.setToolTipText("right Dual of the monad using algebra's PS");
 		btnDualRight.setPreferredSize(squareMedium);
@@ -589,7 +589,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlMonadAlterControls.add(btnDualRight, cn);
 		cn.gridy++;
 
-		JButton btnGradeCrop = new JButton(new ImageIcon(this.getClass().getResource("/resources/gradecrop.png")));
+		JButton btnGradeCrop = new JButton(new ImageIcon(this.getClass().getResource("/img/gradecrop.png")));
 		btnGradeCrop.setActionCommand("findgrade crop");
 		btnGradeCrop.setToolTipText("crop around findgrade()");
 		btnGradeCrop.setPreferredSize(squareMedium);
@@ -598,7 +598,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlMonadAlterControls.add(btnGradeCrop, cn);
 		cn.gridy++;
 
-		JButton btnGradeCut = new JButton(new ImageIcon(this.getClass().getResource("/resources/gradecut.png")));
+		JButton btnGradeCut = new JButton(new ImageIcon(this.getClass().getResource("/img/gradecut.png")));
 		btnGradeCut.setActionCommand("findgrade cut");
 		btnGradeCut.setToolTipText("cut this findgrade()");
 		btnGradeCut.setPreferredSize(squareMedium);
@@ -644,7 +644,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 
 		cn0.weightx = 0;
 
-		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/resources/frame.png"))), cn0);
+		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/img/frame.png"))), cn0);
 		cn0.gridx++;
 		frame.setFont(_PLAINFONT);
 		cn0.weightx = 1;
@@ -652,7 +652,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		cn0.weightx = 0.25;
 		cn0.gridx++;
 
-		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/resources/key.png"))), cn0);
+		pnlMonadReferences.add(new JLabel(new ImageIcon(this.getClass().getResource("/img/key.png"))), cn0);
 		cn0.gridx++;
 		gradeKey.setFont(_PLAINFONT);
 		pnlMonadReferences.add(gradeKey, cn0);

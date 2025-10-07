@@ -414,7 +414,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		c1.weightx = 0;
 		c1.weighty = 0;
 
-		btnMakeReal = new JButton(new ImageIcon(this.getClass().getResource("/resources/real.png")));
+		btnMakeReal = new JButton(new ImageIcon(this.getClass().getResource("/img/real.png")));
 		btnMakeReal.setActionCommand("makeReal");
 		btnMakeReal.setToolTipText("use real numbers");
 		btnMakeReal.setPreferredSize(squareMedium);
@@ -423,7 +423,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlButtons.add(btnMakeReal, c1);
 		c1.gridy++;
 
-		btnMakeComplex = new JButton(new ImageIcon(this.getClass().getResource("/resources/complex.png")));
+		btnMakeComplex = new JButton(new ImageIcon(this.getClass().getResource("/img/complex.png")));
 		btnMakeComplex.setActionCommand("makeComplex");
 		btnMakeComplex.setToolTipText("use complex numbers");
 		btnMakeComplex.setPreferredSize(squareMedium);
@@ -433,7 +433,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		c1.gridy = 0;
 		c1.gridx++;
 
-		btnMakeFloat = new JButton(new ImageIcon(this.getClass().getResource("/resources/float.png")));
+		btnMakeFloat = new JButton(new ImageIcon(this.getClass().getResource("/img/float.png")));
 		btnMakeFloat.setActionCommand("makeFloat");
 		btnMakeFloat.setToolTipText("use floating precision");
 		btnMakeFloat.setPreferredSize(squareMedium);
@@ -442,7 +442,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlButtons.add(btnMakeFloat, c1);
 		c1.gridy++;
 
-		btnMakeDouble = new JButton(new ImageIcon(this.getClass().getResource("/resources/double.png")));
+		btnMakeDouble = new JButton(new ImageIcon(this.getClass().getResource("/img/double.png")));
 		btnMakeDouble.setActionCommand("makeDouble");
 		btnMakeDouble.setToolTipText("use double precision");
 		btnMakeDouble.setPreferredSize(squareMedium);
@@ -455,7 +455,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		c1.gridheight = 2;
 		c1.gridwidth = 2;
 
-		JButton btnClear = new JButton(new ImageIcon(this.getClass().getResource("/resources/clearIt.png")));
+		JButton btnClear = new JButton(new ImageIcon(this.getClass().getResource("/img/clearIt.png")));
 		btnClear.setActionCommand("clearIt");
 		btnClear.setPreferredSize(squareLarge);
 		btnClear.setBorder(BorderFactory.createEtchedBorder(0));
@@ -463,7 +463,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlButtons.add(btnClear, c1);
 		c1.gridx += 2;
 
-		JButton btnmainInvolution = new JButton(new ImageIcon(this.getClass().getResource("/resources/mainInvolution.png")));
+		JButton btnmainInvolution = new JButton(new ImageIcon(this.getClass().getResource("/img/maininvolution.png")));
 		btnmainInvolution.setActionCommand("mainInvolution");
 		btnmainInvolution.setPreferredSize(squareLarge);
 		btnmainInvolution.setBorder(BorderFactory.createEtchedBorder(0));
@@ -471,7 +471,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		pnlButtons.add(btnmainInvolution, c1);
 		c1.gridx += 2;
 
-		JButton btnConjugate = new JButton(new ImageIcon(this.getClass().getResource("/resources/conjugate.png")));
+		JButton btnConjugate = new JButton(new ImageIcon(this.getClass().getResource("/img/conjugate.png")));
 		btnConjugate.setActionCommand("conjugate");
 		btnConjugate.setPreferredSize(squareLarge);
 		btnConjugate.setBorder(BorderFactory.createEtchedBorder(0));

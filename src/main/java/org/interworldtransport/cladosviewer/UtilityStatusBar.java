@@ -62,7 +62,7 @@ public class UtilityStatusBar extends JPanel implements ActionListener {
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEtchedBorder());
 
-		JButton clearIt = new JButton(new ImageIcon(this.getClass().getResource("/resources/remove.png")));
+		JButton clearIt = new JButton(new ImageIcon(this.getClass().getResource("/img/remove.png")));
 		clearIt.setActionCommand("clear");
 		clearIt.setToolTipText("clear the message stack");
 		clearIt.setPreferredSize(square);
