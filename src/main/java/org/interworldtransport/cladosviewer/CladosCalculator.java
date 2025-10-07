@@ -35,7 +35,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedInputStream;
+//import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -420,15 +420,19 @@ public class CladosCalculator extends JFrame implements ActionListener {
 		File fIni = new File(pConfName);
 		if (!(fIni.exists() & fIni.isFile() & fIni.canWrite()))
 			throw new CantGetIniException("The configuration file is not valid.");
-
-		try (FileInputStream tempSpot = new FileInputStream(fIni);
-				BufferedInputStream tSpot = new BufferedInputStream(tempSpot)) {
-			IniProps = new Properties();
-			IniProps.loadFromXML(tSpot); // This loads an XML formatted key/pair properties file.
-			tSpot.close();
+		
+		IniProps = new Properties();
+		try (FileInputStream tempSpot = new FileInputStream(fIni);) 
+		{
+			//System.out.println("Initial Props is of size: "+IniProps.size());
+			IniProps.loadFromXML(tempSpot); // This loads an XML formatted key/pair properties file.
 			tempSpot.close();
-		} catch (IOException e) {
+		} 
+		catch (IOException e) 
+		{
 			System.out.println("IO Problem:  Incomplete Access to associated INI files.");
+			//System.out.println("At Exception: IniProps is of size: "+IniProps.size());
+			e.printStackTrace();
 			throw new CantGetIniException("No Access to INI file.");
 		}
 	}
