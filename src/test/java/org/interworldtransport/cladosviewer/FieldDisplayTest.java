@@ -7,17 +7,12 @@ import org.interworldtransport.cladosF.ComplexD;
 import org.interworldtransport.cladosF.ComplexF;
 import org.interworldtransport.cladosF.RealD;
 import org.interworldtransport.cladosF.RealF;
-import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class FieldDisplayTest {
 	
 	private FieldDisplay<?> testDisplay;
-
-	@BeforeEach
-	void setUp() throws Exception {
-		
-	}
 
 	@Test
 	public void testRealF() {

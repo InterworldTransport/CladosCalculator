@@ -8,16 +8,12 @@ import org.interworldtransport.cladosF.ComplexD;
 import org.interworldtransport.cladosF.ComplexF;
 import org.interworldtransport.cladosF.RealD;
 import org.interworldtransport.cladosF.RealF;
-import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class FieldPanelTest {
 
 	private FieldPanel<?> testDisplay;
-	
-	@BeforeEach
-	void setUp() throws Exception {
-	}
 
 	@Test
 	void testRealF() {
@@ -29,7 +25,7 @@ class FieldPanelTest {
 		tInput.setReal(10.0049f);
 		testDisplay.setCoefficientDisplay(tInput);
 		RealF tBack = (RealF) testDisplay.repNumber;
-		assertEquals(Math.round(tBack.getReal()*1000), 10005);
+		assertEquals(10005, Math.round(tBack.getReal()*1000));
 		
 		testDisplay.btnMakeDouble.doClick();
 		assertTrue(testDisplay.getRepMode() == CladosField.REALD);
@@ -49,7 +45,7 @@ class FieldPanelTest {
 		tInput.setReal(10.0049d);
 		testDisplay.setCoefficientDisplay(tInput);
 		RealD tBack = (RealD) testDisplay.repNumber;
-		assertEquals(Math.round(tBack.getReal()*1000), 10005);
+		assertEquals(10005, Math.round(tBack.getReal()*1000));
 		
 		testDisplay.btnMakeFloat.doClick();
 		assertTrue(testDisplay.getRepMode() == CladosField.REALF);
@@ -70,8 +66,8 @@ class FieldPanelTest {
 		tInput.setImg(1.0f);
 		testDisplay.setCoefficientDisplay(tInput);
 		ComplexF tBack = (ComplexF) testDisplay.repNumber;
-		assertEquals(Math.round(tBack.getReal()*1000), 10005);
-		assertEquals(tBack.getImg(), 1.0f);
+		assertEquals(10005, Math.round(tBack.getReal()*1000));
+		assertEquals(1.0f, tBack.getImg());
 		
 		testDisplay.btnMakeDouble.doClick();
 		assertTrue(testDisplay.getRepMode() == CladosField.COMPLEXD);
@@ -92,8 +88,8 @@ class FieldPanelTest {
 		tInput.setImg(1.0d);
 		testDisplay.setCoefficientDisplay(tInput);
 		ComplexD tBack = (ComplexD) testDisplay.repNumber;
-		assertEquals(Math.round(tBack.getReal()*1000), 10005);
-		assertEquals(tBack.getImg(), 1.0d);
+		assertEquals(10005, Math.round(tBack.getReal()*1000));
+		assertEquals(1.0d, tBack.getImg());
 		
 		testDisplay.btnMakeFloat.doClick();
 		assertTrue(testDisplay.getRepMode() == CladosField.COMPLEXF);
