@@ -44,16 +44,18 @@ class MonadPanelTest {
 		FieldDisplay<RealF> tSDisplayRF = (FieldDisplay<RealF>) testPanelRF.getJCoeffs().get(tSBlade);
 		FieldDisplay<RealF> tPSDisplayRF = (FieldDisplay<RealF>) testPanelRF.getJCoeffs().get(tPSBlade);
 
+		assertTrue(testPanelRF.btnEdit.getActionCommand()=="edit");
 		testPanelRF.btnEdit.doClick();
+		assertTrue(testPanelRF.btnEdit.getActionCommand()==".edit.");
+
 		tSDisplayRF.setText("[R]1.0");
 		tPSDisplayRF.setText("[R]1.0");
-		System.out.println("Display Scalar:  "+tSDisplayRF.getText());
-		System.out.println("Display PScalar: "+tPSDisplayRF.getText());
 
+		assertTrue(testPanelRF.btnSync.getActionCommand()=="save");
 		testPanelRF.btnSync.doClick();
-		System.out.println("Scalar:   "+RealF.toXMLString(tSDisplayRF.displayField));
-		System.out.println("PScalar:  "+RealF.toXMLString(tPSDisplayRF.displayField));
-		System.out.println("GradeKey: "+testPanelRF.gradeKey.getText());
+		assertTrue(testPanelRF.btnSync.getActionCommand()=="save");
+		//System.out.println("GradeKeyInternal: "+testPanelRF.getMonad().getGradeKey());
+		//System.out.println("GradeKeyPanel   : "+testPanelRF.gradeKey.getText());
 
 		assertEquals("10001", testPanelRF.gradeKey.getText());
 
@@ -101,7 +103,7 @@ class MonadPanelTest {
 		tPSDisplay.setText("[R]0.0"); // not in edit mode, so should fail quietly
 		assertEquals("10000", testPanelRD.gradeKey.getText());
 	}
-/*
+
 	@Test
 	public void testComplexF() throws BadSignatureException, CladosMonadException, GeneratorRangeException {
 		Monad targetCF = GBuilder.createMonadZero(FBuilder.COMPLEXF.createZERO("card3"), "monad3 name",
@@ -124,21 +126,21 @@ class MonadPanelTest {
 		FieldDisplay<?> tPSDisplay = testPanelCF.getJCoeffs().get(tPSBlade);
 
 		testPanelCF.btnEdit.doClick();
-		tSDisplay.setText("[R]1.0");
-		tPSDisplay.setText("[R]1.0");
+		tSDisplay.setText("[R]1.0\n[I]0.0");
+		tPSDisplay.setText("[R]1.0\n[I]0.0");
+
 		testPanelCF.btnSync.doClick();
-		assertEquals(testPanelCF.gradeKey.getText(), "10001");
+		assertEquals("10001", testPanelCF.gradeKey.getText());
 
 		testPanelCF.btnEdit.doClick();
-		tSDisplay.setText("[R]0.0");
+		tSDisplay.setText("[R]0.0\n[I]0.0");
 		testPanelCF.btnSync.doClick();
-		assertEquals(testPanelCF.gradeKey.getText(), "10000");
+		assertEquals("10000", testPanelCF.gradeKey.getText());
 
-		tPSDisplay.setText("[R]0.0"); // not in edit mode, so should fail quietly
-		assertEquals(testPanelCF.gradeKey.getText(), "10000");
+		tPSDisplay.setText("[R]0.0\n[I]0.0"); // not in edit mode, so should fail quietly
+		assertEquals("10000", testPanelCF.gradeKey.getText());
 	}
-*/
-/*
+
 	@Test
 	public void testComplexD() throws BadSignatureException, CladosMonadException, GeneratorRangeException {
 		Monad targetCD = GBuilder.createMonadZero(FBuilder.COMPLEXD.createZERO("card4"), "monad4 name",
@@ -161,20 +163,20 @@ class MonadPanelTest {
 		FieldDisplay<?> tPSDisplay = testPanelCD.getJCoeffs().get(tPSBlade);
 
 		testPanelCD.btnEdit.doClick();
-		tSDisplay.setText("[R]1.0");
-		tPSDisplay.setText("[R]1.0");
+		tSDisplay.setText("[R]1.0\n[I]0.0");
+		tPSDisplay.setText("[R]1.0\n[I]0.0");
 		testPanelCD.btnSync.doClick();
-		assertEquals(testPanelCD.gradeKey.getText(), "10001");
+		assertEquals("10001", testPanelCD.gradeKey.getText());
 
 		testPanelCD.btnEdit.doClick();
-		tSDisplay.setText("[R]0.0");
+		tSDisplay.setText("[R]0.0\n[I]0.0");
 		testPanelCD.btnSync.doClick();
-		assertEquals(testPanelCD.gradeKey.getText(), "10000");
+		assertEquals("10000", testPanelCD.gradeKey.getText());
 
-		tPSDisplay.setText("[R]0.0"); // not in edit mode, so should fail quietly
-		assertEquals(testPanelCD.gradeKey.getText(), "10000");
+		tPSDisplay.setText("[R]0.0\n[I]0.0"); // not in edit mode, so should fail quietly
+		assertEquals("10000", testPanelCD.gradeKey.getText());
 	}
-*/
+
 	@Test
 	public <T extends ProtoN & Field & Normalizable> void testEditMode() throws BadSignatureException, CladosMonadException, GeneratorRangeException {
 		Monad targetRF = GBuilder.createMonadZero(FBuilder.REALF.createZERO("card1"), "monad1 name",

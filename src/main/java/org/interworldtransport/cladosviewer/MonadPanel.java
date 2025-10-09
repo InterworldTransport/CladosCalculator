@@ -715,7 +715,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		});
 		
 		try {
-			repMonad.setCoeff(newScale.getWeights());
+			repMonad.setScale(newScale);
 		}
 		catch (CladosMonadException e) { 	//This should be improved because it breaks in on the Monad
 											//when we went to the trouble of creating a valid Scale that
