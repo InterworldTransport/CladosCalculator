@@ -515,15 +515,15 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	 */
 	protected <D extends ProtoN & Field & Normalizable> void registerFieldPanel(FieldPanel<D> fieldPanel) {
 		nyadPanes.addChangeListener(new ChangeListener() {
-			@SuppressWarnings("unchecked")
+		
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				if (nyadPanes.getTabCount() > 0) {
 					if (nyadPanes.getSelectedIndex() >= 0) {
 						if (nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getTabCount() > 0) {
 							int j = nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getSelectedIndex();
-							MonadPanel<T> tSpot = nyadPanelList.get(nyadPanes.getSelectedIndex()).getMonadPanel(j);
-							fieldPanel.setCoefficientDisplay((D) FBuilder.copyOf(tSpot.getMonad().getWeights().getScalar()));
+							MonadPanel<?> tSpot = nyadPanelList.get(nyadPanes.getSelectedIndex()).getMonadPanel(j);
+							fieldPanel.setCoefficientDisplay(FBuilder.copyOf(tSpot.getMonad().getWeights().getScalar()));
 							_GUI.appFieldBar.makeWritable();
 						}
 					}

@@ -122,7 +122,6 @@ public class CladosCalculator extends JFrame implements ActionListener {
 	 * @param pConfig String This is the path/filename for the configuration file
 	 *                for the viewer
 	 */
-	@SuppressWarnings("unchecked")
 	public <T extends ProtoN & Field & Normalizable> CladosCalculator(String pTitle, String pConfig) {
 		super(pTitle);
 		addWindowListener(new WindowAdapter() {
@@ -153,11 +152,11 @@ public class CladosCalculator extends JFrame implements ActionListener {
 		// FieldBar MUST follow ViewerPanel to make use of protonumbers
 		int indxNPanelSelected = appGeometryView.getPaneFocus();
 		if (indxNPanelSelected >= 0) {
-			NyadPanel<T> tSpot = (NyadPanel<T>) appGeometryView.getNyadPanel(indxNPanelSelected);
+			NyadPanel<?> tSpot = appGeometryView.getNyadPanel(indxNPanelSelected);
 			int indexedMonad = tSpot.getPaneFocus();
 			if (indexedMonad >= 0) {
-				appFieldBar = new FieldPanel<T>(this,
-						(T) tSpot.getNyad().getMonadList(indexedMonad).getWeights().getScalar());
+				appFieldBar = new FieldPanel<>(this,
+						tSpot.getNyad().getMonadList(indexedMonad).getWeights().getScalar());
 				cp.add(appFieldBar, "North");
 			} else { // Catch the possibility that no monad was created in a nyad
 				appFieldBar = null;

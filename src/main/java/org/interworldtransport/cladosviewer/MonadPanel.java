@@ -394,10 +394,9 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	 * It is safe enough to call this from anywhere and at any time. The worst that
 	 * can happen is the user looses some of their changes on the UI.
 	 */
-	@SuppressWarnings("unchecked")
 	public void setCoefficientDisplay() {
 		repMonad.bladeStream().forEach(blade -> {
-			jCoeffs.get(blade).updateField((T) repMonad.getWeights().get(blade));
+			jCoeffs.get(blade).updateField(repMonad.getWeights().get(blade));
 			jCoeffs.get(blade).displayContents();
 		});
 		gradeKey.setText(new StringBuffer().append(repMonad.getGradeKey()).toString());
@@ -665,7 +664,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	private void initiateCoeffList() {
 		jCoeffs = new TreeMap<Blade, FieldDisplay<T>>();
 		repMonad.bladeStream().forEach(blade -> {
-			FieldDisplay<T> tSpot = new FieldDisplay<T>((T) FBuilder.copyOf((T) repMonad.getWeights().get(blade)),
+			FieldDisplay<T> tSpot = new FieldDisplay<>(FBuilder.copyOf((T) repMonad.getWeights().get(blade)),
 					this);
 			tSpot.addFocusListener(this);
 			jCoeffs.put(blade, tSpot);
@@ -704,7 +703,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		if (name.getText() != repMonad.getName())
 			repMonad.setName(name.getText());
 
-		Scale<T> newScale= new Scale<T>(repMonad.getWeights().getMode(), 	//Create a new Scale for repMonad to use
+		Scale<T> newScale= new Scale<>(repMonad.getWeights().getMode(), 	//Create a new Scale for repMonad to use
 										repMonad.getAlgebra().getGBasis(), 
 										repMonad.getWeights().getCardinal() );
 
