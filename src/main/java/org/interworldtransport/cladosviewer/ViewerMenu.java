@@ -2,7 +2,7 @@
  * <h2>Copyright</h2> © 2025 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.ViewerMenu<br>
- * -------------------------------------------------------------------- <p>
+ * -------------------------------------------------------------------- <br>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -10,13 +10,13 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.<p>
+ * GNU Affero General Public License for more details.<br>
  * 
  * Use of this code or executable objects derived from it by the Licensee 
- * states their willingness to accept the terms of the license. <p> 
+ * states their willingness to accept the terms of the license. <br> 
  * 
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<br> 
  * 
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.ViewerMenu<br>
@@ -30,7 +30,7 @@ import javax.swing.*;
 /**
  * org.interworldtransport.cladosviewer.ViewerMenu The ViewerMenu class is
  * intended to be the class that encapsulates the menu used in the Viewer class.
- * <p>
+ * <br>
  * There is nothing especially important about the layout of this class. It
  * should not be instantiated except by the MonadViewer application. Alterations
  * to this class should be made in careful coordination with the classes of the
@@ -42,16 +42,29 @@ import javax.swing.*;
 
 public class ViewerMenu extends JMenuBar {
 	private static final long serialVersionUID = -9157005844074113468L;
-
+	/**
+	 * The controlling application.
+	 */
 	public CladosCalculator _parentGUI;
-
 	/**
 	 * The File Parent Menu for the application.
 	 */
 	public JMenu mnuFile;
+	/**
+	 * The menu item for Open File.
+	 */
 	public JMenuItem mniOpen;
+	/**
+	 * The menu item for Save File.
+	 */
 	public JMenuItem mniSave;
+	/**
+	 * The menu item for Save As File.
+	 */
 	public JMenuItem mniSaveAs;
+	/**
+	 * The menu item for Exit.
+	 */
 	public JMenuItem mniExit;
 
 	/**
@@ -108,15 +121,30 @@ public class ViewerMenu extends JMenuBar {
 	 * The Tools Parent Menu for the application.
 	 */
 	public JMenu mnuTools;
+	/**
+	 * The menu item for showing the Options dialog. This displays the configuration.
+	 */
 	public JMenuItem mniOptions;
+	/**
+	 * The menu item for creating a new Nyad.
+	 */
 	public JMenuItem mniCreateNyad;
+	/**
+	 * The menu item for creating a new Monad in the focused Nyad.
+	 */
 	public JMenuItem mniCreateMonad;
 
 	/**
 	 * The Help Parent Menu for the application.
 	 */
 	public JMenu mnuHelp;
+	/**
+	 * The menu item for showing the dialog desicribing how to get support.
+	 */
 	public JMenuItem mniSupport;
+	/**
+	 * The menu item for showing the About dialog.
+	 */
 	public JMenuItem mniAbout;
 
 	/**

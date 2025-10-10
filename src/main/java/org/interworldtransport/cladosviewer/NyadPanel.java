@@ -2,7 +2,7 @@
  * <h2>Copyright</h2> © 2025 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.NyadPanel<br>
- * -------------------------------------------------------------------- <p>
+ * -------------------------------------------------------------------- <br>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -10,13 +10,13 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.<p>
+ * GNU Affero General Public License for more details.<br>
  * 
  * Use of this code or executable objects derived from it by the Licensee 
- * states their willingness to accept the terms of the license. <p> 
+ * states their willingness to accept the terms of the license. <br> 
  * 
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<br> 
  * 
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.NyadPanel<br>
@@ -65,10 +65,11 @@ import org.interworldtransport.cladosviewerExceptions.UtilitiesException;
  * The NyadPanel is intended to be the display panel of for a nyad. Simple
  * enough since most of the functions available at the nyad level are stack
  * related or comparisons or tests.
- * <p>
+ * <br>
  * The nyad represented by the panel is stored in a private data element.
- * <p>
- * 
+ * <br>
+ * @param <T> ProtoN descendent implementing Field and Normalizable but not the one for Units 
+ * because that is covered in ProtoN.
  * @version 1.0
  * @author Dr Alfred W Differ
  */
@@ -192,10 +193,10 @@ public class NyadPanel<T extends ProtoN & Field & Normalizable> extends JPanel i
 	 * This method supports adding a monad panel to the nyad's list of monads. Be
 	 * aware that no tests are performed to prevent the panel being added. That
 	 * means the nyad might change from strong to weak without notice by this panel.
-	 * <p>
+	 * <br>
 	 * The difference between this one and the other by a similar name is this one
 	 * receives a monad and constructs the appropriate panel.
-	 * <p>
+	 * <br>
 	 * 
 	 * @param pM Monad This is the Monad to use to construct a MonadPanel to be
 	 *           appended to this NyadPanel.

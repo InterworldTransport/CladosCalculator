@@ -2,7 +2,7 @@
  * <h2>Copyright</h2> © 2025 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.ViewerPanel<br>
- * -------------------------------------------------------------------- <p>
+ * -------------------------------------------------------------------- <br>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -10,13 +10,13 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.<p>
+ * GNU Affero General Public License for more details.<br>
  * 
  * Use of this code or executable objects derived from it by the Licensee 
- * states their willingness to accept the terms of the license. <p> 
+ * states their willingness to accept the terms of the license. <br> 
  * 
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<br> 
  * 
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.ViewerPanel<br>
@@ -54,8 +54,9 @@ import java.util.*;
  * The ViewerPanel class is intended to be the center panel of the Calculator.
  * It holds the tabbed pane that holds Nyads. It is also aware enough to manage
  * the nyads a bit with respect to stack operations.
- * <p>
- * 
+ * <br>
+ * @param <T> ProtoN descendent implementing Field and Normalizable but not the one for Units 
+ * because that is covered in ProtoN.
  * @version 1.0
  * @author Dr Alfred W Differ
  */
@@ -69,7 +70,13 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	public CladosCalculator _GUI;
 	private CladosField _repMode;
 	private ImageIcon tabIcon;
+	/**
+	 * This ArrayList has references to all the nyad panels being displayed.
+	 */
 	protected ArrayList<NyadPanel<T>> nyadPanelList;
+	/**
+	 * This tabbed pane is used to display all the nyad panels in nyadPanelList.
+	 */
 	protected JTabbedPane nyadPanes;
 
 	/**
@@ -501,19 +508,19 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	}
 
 	/**
-	 * This is a big deal. By registering the FieldPanel with the ViewerPanel,
+	 * This is a big deal. By registering the EntryRegister with the ViewerPanel,
 	 * change events on monad and nyad panels can register their proto numbers with
 	 * the field panel. This goes on behind the scenes allowing the UI to adjust
 	 * cladosF references on the app's FieldBar so the user need only pay attention
 	 * to the numbers displayed. The string for the Cardinal IS displayed on a
 	 * monad, though, and not the Field Bar.
 	 * 
-	 * @param fieldPanel FieldPanel In the owning app, this is the FieldBar object
+	 * @param EntryRegister EntryRegister In the owning app, this is the FieldBar object
 	 *                   that allows for top-level numeric input on the calculator.
 	 *                   The Field Panel offered is registered with this Viewer
 	 *                   Panel so change events can be routed.
 	 */
-	protected <D extends ProtoN & Field & Normalizable> void registerFieldPanel(FieldPanel<D> fieldPanel) {
+	protected <D extends ProtoN & Field & Normalizable> void registerEntryRegister(EntryRegister<D> EntryRegister) {
 		nyadPanes.addChangeListener(new ChangeListener() {
 		
 			@Override
@@ -523,12 +530,12 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 						if (nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getTabCount() > 0) {
 							int j = nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getSelectedIndex();
 							MonadPanel<?> tSpot = nyadPanelList.get(nyadPanes.getSelectedIndex()).getMonadPanel(j);
-							fieldPanel.setCoefficientDisplay(FBuilder.copyOf(tSpot.getMonad().getWeights().getScalar()));
+							EntryRegister.setCoefficientDisplay(FBuilder.copyOf(tSpot.getMonad().getWeights().getScalar()));
 							_GUI.appFieldBar.makeWritable();
 						}
 					}
 				} else
-					fieldPanel.clearFieldType();
+					EntryRegister.clearFieldType();
 			}
 		});
 	}

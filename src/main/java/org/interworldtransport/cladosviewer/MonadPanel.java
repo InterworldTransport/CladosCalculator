@@ -2,7 +2,7 @@
  * <h2>Copyright</h2> © 2025 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MonadPanel<br>
- * -------------------------------------------------------------------- <p>
+ * -------------------------------------------------------------------- <br>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -10,13 +10,13 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.<p>
+ * GNU Affero General Public License for more details.<br>
  * 
  * Use of this code or executable objects derived from it by the Licensee 
- * states their willingness to accept the terms of the license. <p> 
+ * states their willingness to accept the terms of the license. <br> 
  * 
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<br> 
  * 
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MonadPanel<br>
@@ -46,13 +46,14 @@ import java.util.*;
 
 /**
  * The MonadPanel class directly handles the gui for a single Monad.
- * <p>
+ * <br>
  * The monad represented by the panel is stored in a private data element.
- * <p>
+ * <br>
  * 
  * @version 1.0
  * @author Dr Alfred W Differ
- * @param <T>
+ * @param <T> ProtoN descendent implementing Field and Normalizable but not the one for Units 
+ * because that is covered in ProtoN.
  */
 
 public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
@@ -339,7 +340,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			int tI = MonadPanel.IMAGINARY.length();
 			int indexOfR = strB.indexOf(MonadPanel.REAL) + tR;
 			int indexOfI = strB.indexOf(MonadPanel.IMAGINARY) + tI;
-			_GUI.appFieldBar.setCoefficientDisplay((((FieldDisplay<T>) e.getComponent()).displayField));
+			_GUI.appFieldBar.setCoefficientDisplay((((FieldDisplay<T>) e.getComponent()).fieldCopy));
 
 			switch (repMode) {
 			case REALF -> {
@@ -394,9 +395,10 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	 * It is safe enough to call this from anywhere and at any time. The worst that
 	 * can happen is the user looses some of their changes on the UI.
 	 */
+	@SuppressWarnings("unchecked")
 	public void setCoefficientDisplay() {
 		repMonad.bladeStream().forEach(blade -> {
-			jCoeffs.get(blade).updateField(repMonad.getWeights().get(blade));
+			jCoeffs.get(blade).updateField((T) repMonad.getWeights().get(blade));
 			jCoeffs.get(blade).displayContents();
 		});
 		gradeKey.setText(new StringBuffer().append(repMonad.getGradeKey()).toString());
@@ -710,7 +712,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		repMonad.bladeStream().forEach(blade -> {							//Build the weights map for the new Scale
 			FieldDisplay<T> spot = jCoeffs.get(blade);
 			spot.saveContents();
-			newScale.put(blade, FBuilder.copyOf(spot.displayField));
+			newScale.put(blade, FBuilder.copyOf(spot.fieldCopy));
 		});
 		
 		try {

@@ -2,7 +2,7 @@
  * <h2>Copyright</h2> © 2025 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.FileOpenEvents<br>
- * -------------------------------------------------------------------- <p>
+ * -------------------------------------------------------------------- <br>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -10,13 +10,13 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.<p>
+ * GNU Affero General Public License for more details.<br>
  * 
  * Use of this code or executable objects derived from it by the Licensee 
- * states their willingness to accept the terms of the license. <p> 
+ * states their willingness to accept the terms of the license. <br> 
  * 
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<br> 
  * 
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.FileOpenEvents<br>
@@ -59,7 +59,10 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
+/**
+ * This class implmements the part of the event model that opens data files with monad
+ * and nyad information to be parsed. 
+ */
 public class FileOpenEvents implements ActionListener {
 
 	private final static String path2Algs = "//Algebra";
@@ -144,22 +147,27 @@ public class FileOpenEvents implements ActionListener {
 	private TreeMap<String, Monad> foundMonads;
 	private int _nyadCount;
 	//private ArrayList<String> _nyadNames;
-
 	private TreeMap<String, Nyad> foundNyads;
 	private TreeMap<String, Algebra> foundAlgebras;
 
 	private TreeMap<String, Foot> foundFeet;
 
 	private CladosField repMode;
-
+	/**
+	 * This reference points at the control object in the menu related to this part of the event model. 
+	 * It's open for later possibilities for scripted ations.
+	 */
 	protected JMenuItem _control;
-
+	/**
+	 * This reference points at the parent menu for navigating up and down the object tree. 
+	 * It's open for later possibilities for scripted ations.
+	 */
 	protected FileEvents _parent;
 
 	/**
 	 * The FileOpenEvents class is an event handler called when an XML file is to be
 	 * parsed as a nyadList for the calculator.
-	 * <p>
+	 * <br>
 	 * 
 	 * @param _control JMenuItem that activates this event handler
 	 * @param _parent  FileEvents object that acts as parent of this event handler.

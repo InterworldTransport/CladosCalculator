@@ -1,7 +1,12 @@
 package org.interworldtransport.cladosviewer;
 
 import javax.swing.JOptionPane;
-
+/**
+ * This is just a simple object that spins up a JOptionPane to display an error message.
+ * <br>
+ * There are no constructors, so instance members or methods, and only the one class method 
+ * for constructing the message dialog.
+ */
 public class ErrorDialog {
 	/**
 	 * Shows an error message. That's it.
@@ -15,5 +20,9 @@ public class ErrorDialog {
 		JOptionPane.showMessageDialog(null, message, "Error | " + title, JOptionPane.ERROR_MESSAGE);
 	}
 
+	/**
+	 * This empty statement for the constructor is present only for halting the creation of actual
+	 * instances of this class. Instances aren't needed for anything other than presenting JOptionPane objects
+	 */
 	protected ErrorDialog() {}
 }

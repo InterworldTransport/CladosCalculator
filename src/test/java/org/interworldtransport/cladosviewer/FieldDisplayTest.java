@@ -24,11 +24,11 @@ class FieldDisplayTest {
 		assertEquals(testDisplay.getText(), "[R]1.0");
 		testDisplay.setText("[R]10.0049");
 		testDisplay.saveContents();
-		float realPart = ((RealF) testDisplay.displayField).getReal();
+		float realPart = ((RealF) testDisplay.fieldCopy).getReal();
 		assertEquals(Math.round(realPart*1000), 10005);
-		RealF newThing = (RealF) FBuilder.REALF.createZERO(testDisplay.displayField.getCardinal());
+		RealF newThing = (RealF) FBuilder.REALF.createZERO(testDisplay.fieldCopy.getCardinal());
 		testDisplay.updateField(newThing);
-		realPart =  ((RealF) testDisplay.displayField).getReal();
+		realPart =  ((RealF) testDisplay.fieldCopy).getReal();
 		assertEquals(realPart, 0.0f);
 	}
 	
@@ -42,11 +42,11 @@ class FieldDisplayTest {
 		assertEquals(testDisplay.getText(), "[R]1.0");
 		testDisplay.setText("[R]10.0049");
 		testDisplay.saveContents();
-		double realPart = ((RealD) testDisplay.displayField).getReal();
+		double realPart = ((RealD) testDisplay.fieldCopy).getReal();
 		assertEquals(Math.round(realPart*1000), 10005);
-		RealD newThing = (RealD) FBuilder.REALD.createZERO(testDisplay.displayField.getCardinal());
+		RealD newThing = (RealD) FBuilder.REALD.createZERO(testDisplay.fieldCopy.getCardinal());
 		testDisplay.updateField(newThing);
-		realPart =  ((RealD) testDisplay.displayField).getReal();
+		realPart =  ((RealD) testDisplay.fieldCopy).getReal();
 		assertEquals(realPart, 0.0d);
 	}
 	
@@ -60,13 +60,13 @@ class FieldDisplayTest {
 		assertEquals(testDisplay.getText(), "[R]1.0\n[I]0.0");
 		testDisplay.setText("[R]10.0049\n[I]1.0");
 		testDisplay.saveContents();
-		float realPart = ((ComplexF) testDisplay.displayField).getReal();
-		float imgPart = ((ComplexF) testDisplay.displayField).getImg();
+		float realPart = ((ComplexF) testDisplay.fieldCopy).getReal();
+		float imgPart = ((ComplexF) testDisplay.fieldCopy).getImg();
 		assertEquals(Math.round(realPart*1000), 10005);
 		assertEquals(imgPart, 1.0f);
-		ComplexF newThing = (ComplexF) FBuilder.COMPLEXF.createZERO(testDisplay.displayField.getCardinal());
+		ComplexF newThing = (ComplexF) FBuilder.COMPLEXF.createZERO(testDisplay.fieldCopy.getCardinal());
 		testDisplay.updateField(newThing);
-		realPart =  ((ComplexF) testDisplay.displayField).getReal();
+		realPart =  ((ComplexF) testDisplay.fieldCopy).getReal();
 		assertEquals(realPart, 0.0f);
 	}
 	
@@ -80,13 +80,13 @@ class FieldDisplayTest {
 		assertEquals(testDisplay.getText(), "[R]1.0\n[I]0.0");
 		testDisplay.setText("[R]10.0049\n[I]1.0");
 		testDisplay.saveContents();
-		double realPart = ((ComplexD) testDisplay.displayField).getReal();
-		double imgPart = ((ComplexD) testDisplay.displayField).getImg();
+		double realPart = ((ComplexD) testDisplay.fieldCopy).getReal();
+		double imgPart = ((ComplexD) testDisplay.fieldCopy).getImg();
 		assertEquals(Math.round(realPart*1000), 10005);
 		assertEquals(imgPart, 1.0f);
-		ComplexD newThing = (ComplexD) FBuilder.COMPLEXD.createZERO(testDisplay.displayField.getCardinal());
+		ComplexD newThing = (ComplexD) FBuilder.COMPLEXD.createZERO(testDisplay.fieldCopy.getCardinal());
 		testDisplay.updateField(newThing);
-		realPart =  ((ComplexD) testDisplay.displayField).getReal();
+		realPart =  ((ComplexD) testDisplay.fieldCopy).getReal();
 		assertEquals(realPart, 0.0f);
 	}
 

@@ -2,7 +2,7 @@
  * <h2>Copyright</h2> © 2025 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MOpsParentEvents<br>
- * -------------------------------------------------------------------- <p>
+ * -------------------------------------------------------------------- <br>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -10,13 +10,13 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.<p>
+ * GNU Affero General Public License for more details.<br>
  * 
  * Use of this code or executable objects derived from it by the Licensee 
- * states their willingness to accept the terms of the license. <p> 
+ * states their willingness to accept the terms of the license. <br> 
  * 
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<br> 
  * 
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.MOpsParentEvents<br>
@@ -40,26 +40,81 @@ import org.interworldtransport.cladosviewer.ViewerMenu;
  */
 public class MOpsParentEvents //implements ActionListener
 {
+	/**
+	 * This references the portion of the event model that handles requests for finding grades.
+	 */
     public	 	MOpsFindGradeEvents		findgrade;
-    public	 	MOpsHasGradeEvents		hasgrade;
+    /**
+	 * This references the portion of the event model that handles requests for detecting grades.
+	 */
+	public	 	MOpsHasGradeEvents		hasgrade;
+	/**
+	 * This references the portion of the event model that handles requests for finding magnitudes.
+	 */
     public	 	MOpsMagnitudeEvents		mag;
+	/**
+	 * This references the portion of the event model that handles requests for finding squared magnitudes.
+	 */
     public	 	MOpsSQMagnitudeEvents	sqmag;
+	/**
+	 * This references the portion of the event model that handles requests for normalizing a monad.
+	 */
     public	 	MOpsNormalizeEvents		norm;
+	/**
+	 * This references the portion of the event model that handles requests for multiplying fron the left by the pscalar.
+	 */
     public	 	MOpsLocalDualEvents		dualLeft;
+	/**
+	 * This references the portion of the event model that handles requests for nultiplying from the right by the pscalar.
+	 */
     public	 	MOpsLocalDualEvents		dualRight;
+	/**
+	 * This references the portion of the event model that handles requests for performing the main involution.
+	 */
     public	 	MOpsMainInvolutionEvents		invt;
+	/**
+	 * This references the portion of the event model that handles requests for the second involution = reverse.
+	 */
     public	 	MOpsReverseEvents		rev;
+	/**
+	 * This references the portion of the event model that handles requests for scaling by a number.
+	 */
     public		MOpsScaleEvents			scale;
+	/**
+	 * This references the portion of the event model that handles requests for grade projections.
+	 */
     public	 	MOpsGradePartEvents		gradep;
+	/**
+	 * This references the portion of the event model that handles requests for grade supressions.
+	 */
     public	 	MOpsGradeSuppressEvents	grades;
-    
+    /**
+	 * This references the portion of the event model that handles requests for 'Is this grade X?'.
+	 */
 	public	 	MOpsGradeEvents				grade;
+	/**
+	 * This references the portion of the event model that handles requests for 'Is this multigraded?'.
+	 */
 	public	 	MOpsMultGradeEvents			mgrade;
+	/**
+	 * This references the portion of the event model that handles requests for 'Is this nilpotent?'.
+	 */
     public	 	MOpsNilpotentEvents			nilp;
+	/**
+	 * This references the portion of the event model that handles requests for 'Is this idempotent?'.
+	 */
     public	 	MOpsIdempotentEvents		idemp;
+	/**
+	 * This references the portion of the event model that handles requests for 'Is this a scaled idempotent?'.
+	 */
     public	 	MOpsScaledIdempotentEvents	midemp;
-
+/**
+ * This object points back at the controlling menu for navigation purposes within the app.
+ */
     protected 	ViewerMenu 				_GUIMenu;
+/**
+ * This object points back at the controlling applicatoin for navigation purposes.
+ */
     protected 	CladosCalculator		_GUI;
 
 /** 

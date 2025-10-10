@@ -2,7 +2,7 @@
  * <h2>Copyright</h2> © 2025 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.FieldDisplay<br>
- * -------------------------------------------------------------------- <p>
+ * -------------------------------------------------------------------- <br>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -10,13 +10,13 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.<p>
+ * GNU Affero General Public License for more details.<br>
  * 
  * Use of this code or executable objects derived from it by the Licensee 
- * states their willingness to accept the terms of the license. <p> 
+ * states their willingness to accept the terms of the license. <br> 
  * 
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<br> 
  * 
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.FieldDisplay<br>
@@ -44,12 +44,12 @@ import org.interworldtransport.cladosF.RealF;
 import org.interworldtransport.cladosF.ProtoN;
 
 /**
- * The FieldArea class extends JTextArea slightly to keep the cladosF object
+ * The FieldDisplay class extends JTextArea slightly to keep the cladosF object
  * displayed in the text area close by. Referencing them and keeping them in
  * sync is made easier this way.
- * 
- * @param <D>
- * 
+ * <br>
+ * @param <D> A ProtoN child to be displayed in the JTextArea.
+ * <br>
  * @version 1.0
  * @author Dr Alfred W Differ
  * 
@@ -69,14 +69,14 @@ public class FieldDisplay<D extends ProtoN & Field & Normalizable> extends JText
 	private MonadPanel<D> _parent;
 	private CladosField repMode;
 	/**
-	 * The displayField is a copy of the cladosF magnitude that can be safely
+	 * The fieldCopy is a copy of the cladosF magnitude that can be safely
 	 * displayed and manipulated without harming the cladosG object using the
 	 * original magnitude.
 	 */
-	protected D displayField;
+	protected D fieldCopy;
 
 	/**
-	 * The FieldPanel class is intended to be the contain a cladosF Field in much
+	 * The EntryRegister class is intended to be the contain a cladosF Field in much
 	 * the same way as Monad and Nyad panels represent their contents to the
 	 * calculator
 	 * 
@@ -107,7 +107,7 @@ public class FieldDisplay<D extends ProtoN & Field & Normalizable> extends JText
 				throw new IllegalArgumentException("Offered number isn't a known ProtoN child.");
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 			setFont(PLAINFONT);
-			displayField = pField;
+			fieldCopy = pField;
 			addFocusListener(this);
 		} else {
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
@@ -119,41 +119,55 @@ public class FieldDisplay<D extends ProtoN & Field & Normalizable> extends JText
 	}
 
 	/**
-	 * 
+	 * The number to be displayed is peeled open, text extracted, and then set as the text in this JTextArea.
+	 * Reals of all precision are presented as [R]###. Complex numbers are similar except on two lines with an 
+	 * additional [I]###.
 	 */
 	public void displayContents() {
 		switch (repMode) {
 		case REALF -> setText(
-				new StringBuilder().append(FieldDisplay._REAL).append(((RealF) displayField).getReal()).toString());
+				new StringBuilder().append(FieldDisplay._REAL).append(((RealF) fieldCopy).getReal()).toString());
 		case REALD -> setText(
-				new StringBuilder().append(FieldDisplay._REAL).append(((RealD) displayField).getReal()).toString());
+				new StringBuilder().append(FieldDisplay._REAL).append(((RealD) fieldCopy).getReal()).toString());
 		case COMPLEXF -> setText(
-				new StringBuilder().append(FieldDisplay._REAL).append(((ComplexF) displayField).getReal())
-						.append("\n" + FieldDisplay._IMAGINARY).append(((ComplexF) displayField).getImg()).toString());
+				new StringBuilder().append(FieldDisplay._REAL).append(((ComplexF) fieldCopy).getReal())
+						.append("\n" + FieldDisplay._IMAGINARY).append(((ComplexF) fieldCopy).getImg()).toString());
 		case COMPLEXD -> setText(
-				new StringBuilder().append(FieldDisplay._REAL).append(((ComplexD) displayField).getReal())
-						.append("\n" + FieldDisplay._IMAGINARY).append(((ComplexD) displayField).getImg()).toString());
+				new StringBuilder().append(FieldDisplay._REAL).append(((ComplexD) fieldCopy).getReal())
+						.append("\n" + FieldDisplay._IMAGINARY).append(((ComplexD) fieldCopy).getImg()).toString());
 		default -> setText("null mode");
 		}
 	}
 
+	/**
+	 * When focus is gained AND the Monad Panel is in edit mode, the number represented in the field bar
+	 * is copied and used to over-write the number this display panel presents. After that the text area
+	 * is updated to reflect this.
+	 * <br>
+	 * The end result is the number in the field bar gets copied to this newly in-focus display panel.
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void focusGained(FocusEvent e) {
 		if (_parent._editMode) // Only do this when parent MonadPanel is in edit mode.
 		{
-			displayField = FBuilder.copyOf((D) _parent._GUI.appFieldBar.repNumber);
+			fieldCopy = FBuilder.copyOf((D) _parent._GUI.appFieldBar.repNumber);
 			displayContents();
 		}
 	}
 
+	/**
+	 * Nothing happens when focus is lost. Not yet. Maybe some day it will change.
+	 * Until then this empty method body ensures nothing DOES happen.
+	 */
 	@Override
 	public void focusLost(FocusEvent e) {
 		;
 	}
 
 	/**
-	 * 
+	 * Calls to this method reverse the flow of data setting the represented number to the displayed one.
+	 * The represented number is zero'd out, mode gets checked, text gets parsed, and new 'Zero' is updated.
 	 */
 	@SuppressWarnings("unchecked")
 	public void saveContents() {
@@ -167,24 +181,24 @@ public class FieldDisplay<D extends ProtoN & Field & Normalizable> extends JText
 
 			switch (repMode) {
 			case REALF -> {
-				displayField = (D) CladosField.REALF.createZERO(displayField);
-				((RealF) displayField).setReal(Float.parseFloat(strB.substring(indexOfR, tBufferLength)));
+				fieldCopy = (D) CladosField.REALF.createZERO(fieldCopy);
+				((RealF) fieldCopy).setReal(Float.parseFloat(strB.substring(indexOfR, tBufferLength)));
 			}
 			case REALD -> {
-				displayField = (D) CladosField.REALD.createZERO(displayField);
-				((RealD) displayField).setReal(Double.parseDouble(strB.substring(indexOfR, tBufferLength)));
+				fieldCopy = (D) CladosField.REALD.createZERO(fieldCopy);
+				((RealD) fieldCopy).setReal(Double.parseDouble(strB.substring(indexOfR, tBufferLength)));
 			}
 			case COMPLEXF -> {
-				displayField = (D) CladosField.COMPLEXF.createZERO(displayField);
-				((ComplexF) displayField)
+				fieldCopy = (D) CladosField.COMPLEXF.createZERO(fieldCopy);
+				((ComplexF) fieldCopy)
 						.setReal(Float.parseFloat(strB.substring(indexOfR, indexOfI - _IMAGINARY.length() - 1)));
-				((ComplexF) displayField).setImg(Float.parseFloat(strB.substring(indexOfI, tBufferLength)));
+				((ComplexF) fieldCopy).setImg(Float.parseFloat(strB.substring(indexOfI, tBufferLength)));
 			}
 			case COMPLEXD -> {
-				displayField = (D) CladosField.COMPLEXD.createZERO(displayField);
-				((ComplexD) displayField)
+				fieldCopy = (D) CladosField.COMPLEXD.createZERO(fieldCopy);
+				((ComplexD) fieldCopy)
 						.setReal(Double.parseDouble(strB.substring(indexOfR, indexOfI - _IMAGINARY.length() - 1)));
-				((ComplexD) displayField).setImg(Double.parseDouble(strB.substring(indexOfI, tBufferLength)));
+				((ComplexD) fieldCopy).setImg(Double.parseDouble(strB.substring(indexOfI, tBufferLength)));
 			}
 			}
 			setFont(PLAINFONT);
@@ -198,16 +212,17 @@ public class FieldDisplay<D extends ProtoN & Field & Normalizable> extends JText
 	}
 
 	/**
-	 * When a new cladosF number is to be displayed, it is passed in through this
-	 * method.
-	 * 
-	 * @param pField D This is the ComplexD to be displayed in the text area
+	 * When a new cladosF number is to be displayed, it is passed to this method, 
+	 * copied, inserted into the internal element, and then displayed.
+	 * <br>
+	 * @param <T> 	is the ProtoN child type of pField.
+	 * @param pField This is the ProtoN child to be displayed in the text area
 	 *               presented by this panel.
 	 */
 	@SuppressWarnings("unchecked")
 	public <T extends ProtoN & Field & Normalizable> void updateField(T pField) {
 		if (pField != null) {
-			displayField = (D) FBuilder.copyOf(pField);
+			fieldCopy = (D) FBuilder.copyOf(pField);
 			displayContents();
 		} else {
 			setFont(ITALICFONT);

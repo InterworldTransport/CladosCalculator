@@ -2,7 +2,7 @@
  * <h2>Copyright</h2> © 2025 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.CladosCalculator<br>
- * -------------------------------------------------------------------- <p>
+ * -------------------------------------------------------------------- <br>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -10,13 +10,13 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.<p>
+ * GNU Affero General Public License for more details.<br>
  * 
  * Use of this code or executable objects derived from it by the Licensee 
- * states their willingness to accept the terms of the license. <p> 
+ * states their willingness to accept the terms of the license. <br> 
  * 
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<br> 
  * 
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.CladosCalculator<br>
@@ -59,7 +59,6 @@ import org.interworldtransport.cladosviewerExceptions.CantGetIniException;
 /**
  * The MonadViewer class will display Nyads and Monads and allow the user to
  * manipulate them via methods similar to old four-function calculators
- *
  * @version 1.0
  * @author Dr Alfred W Differ
  * @since clados 1.0
@@ -69,6 +68,12 @@ public class CladosCalculator extends JFrame implements ActionListener {
 	private static final long serialVersionUID = -5292410247583942841L;
 	private static final Color _backColor = new Color(255, 255, 222);
 
+/**
+ * This is the main entry method that starts the calculator. It processes the arguments and then 
+ * initiates the CladosCalculator object that initiates all therest of it.
+ * <br>
+ * @param args Strings for -t (set the window title) and -c for pointing at the config file.
+ */	
 	public static void main(String[] args) {
 		// default string entries in case someone starts this without any arg's at all
 		String TitleName = "Clados Calculator Utility";
@@ -94,7 +99,7 @@ public class CladosCalculator extends JFrame implements ActionListener {
 	 * The Field Display Panel for the application. Located at the top of the GUI
 	 * and intended for numeric inputs.
 	 */
-	public FieldPanel<?> appFieldBar;
+	public EntryRegister<?> appFieldBar;
 	/**
 	 * The Center Display Panel for the application. Located in the center of the
 	 * GUI and intended for display panels.
@@ -108,7 +113,7 @@ public class CladosCalculator extends JFrame implements ActionListener {
 
 	private JPanel pnlControlBar; // global button display for easy menu access
 
-	/*
+	/**
 	 * This is the properties object containing key/value pairs from the config file
 	 * and any system settings that might be useful.
 	 */
@@ -117,6 +122,8 @@ public class CladosCalculator extends JFrame implements ActionListener {
 	/**
 	 * This is the main constructor the the Monad Viewer
 	 * 
+	 * @param <T> ProtoN descendent implementing Field and Normalizable but not the one for Units 
+     * because that is covered in ProtoN.
 	 * @param pTitle  String This is the title string placed at the top of the
 	 *                viewer
 	 * @param pConfig String This is the path/filename for the configuration file
@@ -155,7 +162,7 @@ public class CladosCalculator extends JFrame implements ActionListener {
 			NyadPanel<?> tSpot = appGeometryView.getNyadPanel(indxNPanelSelected);
 			int indexedMonad = tSpot.getPaneFocus();
 			if (indexedMonad >= 0) {
-				appFieldBar = new FieldPanel<>(this,
+				appFieldBar = new EntryRegister<>(this,
 						tSpot.getNyad().getMonadList(indexedMonad).getWeights().getScalar());
 				cp.add(appFieldBar, "North");
 			} else { // Catch the possibility that no monad was created in a nyad
@@ -206,7 +213,9 @@ public class CladosCalculator extends JFrame implements ActionListener {
 		default -> ErrorDialog.show("No detectable command processed.", "Action At Viewer Attempted");
 		}
 	}
-
+/**
+ * This method closes down the application by dereferencing the event model and then exiting.
+ */
 	public void terminateModel() {
 		appEventModel.FileParts.fc = null;
 		System.exit(0);

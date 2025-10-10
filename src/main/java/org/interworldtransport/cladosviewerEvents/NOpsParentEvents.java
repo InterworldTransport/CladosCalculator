@@ -2,7 +2,7 @@
  * <h2>Copyright</h2> © 2025 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.BOpsEvents<br>
- * -------------------------------------------------------------------- <p>
+ * -------------------------------------------------------------------- <br>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -10,13 +10,13 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.<p>
+ * GNU Affero General Public License for more details.<br>
  * 
  * Use of this code or executable objects derived from it by the Licensee 
- * states their willingness to accept the terms of the license. <p> 
+ * states their willingness to accept the terms of the license. <br> 
  * 
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<br> 
  * 
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.BOpsEvents<br>
@@ -41,24 +41,67 @@ import org.interworldtransport.cladosviewer.ViewerMenu;
  */
 public class NOpsParentEvents
 {
+	/**
+	 * This references the portion of the event model that handles requests for 'Is this Zero?'.
+	 */
 	public 		NOpsZeroEvents				zero;
+	/**
+	 * This references the portion of the event model that handles requests for 'Is this equal?'.
+	 */
 	public		NOpsEqualEvents				equal;
+	/**
+	 * This references the portion of the event model that handles requests for 'Is this a strong match?'.
+	 */
 	public 		NOpsRMatchEvents			strgrmatch;
+	/**
+	 * This references the portion of the event model that handles requests for 'Is this a weak match?'.
+	 */
 	public		NOpsRWeakMatchEvents		weakrmatch;
-	
+	/**
+	 * This references the portion of the event model that handles requests for 'Is this algebra included?'.
+	 */
 	public		NOpsHasAlgebraMatchEvents	hasalgebra;
+	/**
+	 * This references the portion of the event model that handles requests for 'Is this a scalar at this algebra?'.
+	 */
 	public		NOpsIsScalarAtEvents		scalarAtAlg;
+	/**
+	 * This references the portion of the event model that handles requests for 'Is this a pscalar at this algebra?'.
+	 */
 	public		NOpsIsPScalarAtEvents		pscalarAtAlg;
-	
+	/**
+	 * This references the portion of the event model that handles requests for adding.
+	 */
 	public		NOpsAddEvents				add;
+	/**
+	 * This references the portion of the event model that handles requests for subtracting.
+	 */
 	public		NOpsSubtractEvents			sub;
+	/**
+	 * This references the portion of the event model that handles requests for left multiplying.
+	 */
 	public		NOpsLMultEvents				lmult;
+	/**
+	 * This references the portion of the event model that handles requests for right multiplying.
+	 */
 	public		NOpsRMultEvents				rmult;
+	/**
+	 * This references the portion of the event model that handles requests for symmetric multiplying.
+	 */
 	public		NOpsSymmMultEvents			symm;
+	/**
+	 * This references the portion of the event model that handles requests for antisymmetric multiplying.
+	 */
 	public		NOpsAntiSymmMultEvents		asymm;
 
-    protected 	ViewerMenu 					_GUIMenu;
-    protected 	CladosCalculator			_GUI;
+/**
+ * This object points back at the controlling menu for navigation purposes within the app.
+ */
+    protected 	ViewerMenu 				_GUIMenu;
+/**
+ * This object points back at the controlling applicatoin for navigation purposes.
+ */
+    protected 	CladosCalculator		_GUI;
 
 /** 
  * This is the default constructor.  The event structure of the

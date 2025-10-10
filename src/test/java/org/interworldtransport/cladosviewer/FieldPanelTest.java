@@ -11,14 +11,14 @@ import org.interworldtransport.cladosF.RealF;
 //import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class FieldPanelTest {
+class EntryRegisterTest {
 
-	private FieldPanel<?> testDisplay;
+	private EntryRegister<?> testDisplay;
 
 	@Test
 	void testRealF() {
 		RealF tInput = (RealF) FBuilder.REALF.createONE("My cardinal");
-		testDisplay = new FieldPanel<>(null, tInput);
+		testDisplay = new EntryRegister<>(null, tInput);
 		assertNotNull(testDisplay);
 		assertTrue(testDisplay.getRepMode() == CladosField.REALF);
 		
@@ -38,7 +38,7 @@ class FieldPanelTest {
 	@Test
 	void testRealD() {
 		RealD tInput = (RealD) FBuilder.REALD.createONE("My cardinal");
-		testDisplay = new FieldPanel<>(null, tInput);
+		testDisplay = new EntryRegister<>(null, tInput);
 		assertNotNull(testDisplay);
 		assertTrue(testDisplay.getRepMode() == CladosField.REALD);
 		
@@ -58,7 +58,7 @@ class FieldPanelTest {
 	@Test
 	void testComplexF() {
 		ComplexF tInput = (ComplexF) FBuilder.COMPLEXF.createONE("My cardinal");
-		testDisplay = new FieldPanel<>(null, tInput);
+		testDisplay = new EntryRegister<>(null, tInput);
 		assertNotNull(testDisplay);
 		assertTrue(testDisplay.getRepMode() == CladosField.COMPLEXF);
 		
@@ -80,7 +80,7 @@ class FieldPanelTest {
 	@Test
 	void testComplexD() {
 		ComplexD tInput = (ComplexD) FBuilder.COMPLEXD.createONE("My cardinal");
-		testDisplay = new FieldPanel<>(null, tInput);
+		testDisplay = new EntryRegister<>(null, tInput);
 		assertNotNull(testDisplay);
 		assertTrue(testDisplay.getRepMode() == CladosField.COMPLEXD);
 		

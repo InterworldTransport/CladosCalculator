@@ -1,8 +1,8 @@
 /**
  * <h2>Copyright</h2> © 2025 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
- * ---org.interworldtransport.cladosviewer.FieldPanel<br>
- * -------------------------------------------------------------------- <p>
+ * ---org.interworldtransport.cladosviewer.EntryRegister<br>
+ * -------------------------------------------------------------------- <br>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -10,16 +10,16 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.<p>
+ * GNU Affero General Public License for more details.<br>
  * 
  * Use of this code or executable objects derived from it by the Licensee 
- * states their willingness to accept the terms of the license. <p> 
+ * states their willingness to accept the terms of the license. <br> 
  * 
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<br> 
  * 
  * ------------------------------------------------------------------------ <br>
- * ---org.interworldtransport.cladosviewer.FieldPanel<br>
+ * ---org.interworldtransport.cladosviewer.EntryRegister<br>
  * ------------------------------------------------------------------------ <br>
  */
 
@@ -58,22 +58,20 @@ import org.interworldtransport.cladosF.ProtoN;
 import org.interworldtransport.cladosFExceptions.FieldException;
 
 /**
- * The FieldPanel class is intended to be the the numeric input panel for the
- * calculator.
- * <p>
- * This is the entry register. On a RPN calculator, it is the bottom of the
- * stack. In this calculator it can't quite be, though. There is no single stack
- * here, so this register is more of a feeder to functions that require a field
- * scalar to combine with elements of the stacks.
- * <p>
- * This about how scalar multiplication works in vector spaces. This is where
- * the scalar is stored for the function to use. That 'scalar' is 'repField'.
- * <p>
- * 
+ * The EntryRegister class is intended to be the the numeric input panel for the calculator.
+ * <br>
+ * RPN calculators have a register at the bottom of the stack. In this calculator 
+ * there is no single stack, but this register acts as if it was for whatever function
+ * is called.
+ * <br>
+ * This register can have more than one portion. Two are required for complex numbers.
+ * <br>
+ * @param <T> ProtoN descendent implementing Field and Normalizable but not the one for Units 
+ * because that is covered in ProtoN.
  * @version 1.0
  * @author Dr Alfred W Differ
  */
-public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
+public class EntryRegister<T extends ProtoN & Field & Normalizable> extends JPanel
 		implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 3684491842491909996L;
 	private static final int _DOUBLESIZE = 16;
@@ -86,29 +84,45 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	private static final Font PLAINFONT = new Font(Font.SERIF, Font.PLAIN, FONTSIZE);
 	private static final Dimension squareLarge = new Dimension(42, 42);
 	private static final Dimension squareMedium = new Dimension(21, 21);
-
+	
 	private CladosCalculator _GUI;
 	private final String[] _valLabels = { _REAL, _IMAGINARY };
-	protected JButton btnMakeComplex;
-	protected JButton btnMakeDouble;
-	protected JButton btnMakeFloat;
-	protected JButton btnMakeReal;
 	private JPanel pnlDisplays;
 	private CladosField repMode;
 	private ArrayList<JTextField> valDisplays;
+	
+	/**
+	 * A Jbutton to be used to shift the panel being used to represent complex numbers
+	 */
+	protected JButton btnMakeComplex;
+	/**
+	 * A Jbutton to be used to shift the panel being used to represent double precision floats
+	 */
+	protected JButton btnMakeDouble;
+	/**
+	 * A Jbutton to be used to shift the panel being used to represent single precision floats
+	 */
+	protected JButton btnMakeFloat;
+	/**
+	 * A Jbutton to be used to shift the panel being used to represent real numbers
+	 */
+	protected JButton btnMakeReal;
+	/**
+	 * This is the ProtoN child object that is the cladosF number represented by the register.
+	 */
 	protected T repNumber;
 
 	/**
-	 * The FieldPanel class is intended to be contain a cladosF Field in much the
-	 * same way as Monad and Nyad panels represent their contents to the calculator
-	 * 
+	 * The EntryRegister class is intended to contain a cladosF Field in much the
+	 * same way as Monad and Nyad panels represent their contents to the calculator.
+	 * <br>
 	 * @param pGUI CladosCalculator This parameter references the owning
 	 *             application. It's there to offer a way to get error messages to
 	 *             the GUI.
 	 * @param pIn  CladosF number This parameter offers one of the CladosF numbers
 	 *             to display so the panel doesn't make one of its own.
 	 */
-	public FieldPanel(CladosCalculator pGUI, T pIn) {
+	public EntryRegister(CladosCalculator pGUI, T pIn) {
 		super();
 		_GUI = pGUI;
 		
@@ -128,7 +142,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			setBackground(clrBackColor);
 		
 		if (_GUI != null)
-			_GUI.appGeometryView.registerFieldPanel(this);
+			_GUI.appGeometryView.registerEntryRegister(this);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -301,23 +315,50 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	public void focusLost(FocusEvent e) {
 		resetRepNumber();
 	}
-
+	/**
+	 * This is a simple gettor that returns a string representation of the register's 
+	 * imaginary value.
+	 * <br>
+	 * @return String that represents the imaginary part of the register's text
+	 */
 	public String getImgText() {
 		return valDisplays.get(1).getText();
 	}
-
+	/**
+	 * This is a simple gettor that returns a string representation of the register's 
+	 * real value.
+	 * <br>
+	 * @return String that represents the real part of the register's text
+	 */
 	public String getRealText() {
 		return valDisplays.get(0).getText();
 	}
 
+	/**
+	 * Simple gettor method ment to hide the private data element so it can't be easily reset. 
+	 * RepMode itself can't be finalized because this register is supposed to remain flexible, 
+	 * so it gets hidden a bit.
+	 * @return  CladosField enumeration representing the type of ProtoN the register currently 
+	 * 			has in it.
+	 */
 	public CladosField getRepMode() {
 		return repMode;
 	}
-
+	/**
+	 * This is a simple settor that takes a string representation of the register's 
+	 * imaginary value and sets it.
+	 * <br>
+	 * @param pIn String that represents the imaginary part of the register's text
+	 */
 	public void setImgText(String pIn) {
 		valDisplays.get(1).setText(pIn);
 	}
-
+	/**
+	 * This is a simple settor that takes a string representation of the register's 
+	 * real value and sets it.
+	 * <br>
+	 * @param pIn String that represents the real part of the register's text
+	 */
 	public void setRealText(String pIn) {
 		valDisplays.get(0).setText(pIn);
 	}
@@ -325,7 +366,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	/**
 	 * This 'set' function simply sets the displayed number (a double) into the
 	 * first imaginary display text field.
-	 * <p>
+	 * <br>
 	 * 
 	 * @param pWhat double Provide the primitive here to adjust what real number is
 	 *              displayed.
@@ -337,7 +378,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	/**
 	 * This 'set' function simply sets the displayed number (a double) into the real
 	 * number display text field.
-	 * <p>
+	 * <br>
 	 * 
 	 * @param pWhat double Provide the primitive here to adjust what real number is
 	 *              displayed.
@@ -349,7 +390,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	/**
 	 * This 'set' function simply sets the displayed number (a float) into the first
 	 * imaginary number display text field.
-	 * <p>
+	 * <br>
 	 * 
 	 * @param pWhat float Provide the primitive here to adjust what real number is
 	 *              displayed.
@@ -361,7 +402,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	/**
 	 * This 'set' function simply sets the displayed number (a float) into the real
 	 * number display text field.
-	 * <p>
+	 * <br>
 	 * 
 	 * @param pWhat float Provide the primitive here to adjust what real number is
 	 *              displayed.
@@ -373,9 +414,9 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	/**
 	 * This 'set' function simply sets the displayed number (an int) into the first
 	 * imaginary display text field.
-	 * <p>
+	 * <br>
 	 * I'm not sure why this method is protected and its siblings are public.
-	 * <p>
+	 * <br>
 	 * 
 	 * @param pWhat int Provide the primitive here to adjust what real number is
 	 *              displayed.
@@ -387,9 +428,9 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	/**
 	 * This 'set' function simply sets the displayed number (an int) into the real
 	 * number display text field.
-	 * <p>
+	 * <br>
 	 * I'm not sure why this method is protected and its siblings are public.
-	 * <p>
+	 * <br>
 	 * 
 	 * @param pWhat int Provide the primitive here to adjust what real number is
 	 *              displayed.
@@ -541,7 +582,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			valDisplays = new ArrayList<JTextField>(1);
 			for (m = 0; m < 1; m++) {
 				tSpot = new JTextField();
-				tSpot.setColumns(FieldPanel._FLOATSIZE);
+				tSpot.setColumns(EntryRegister._FLOATSIZE);
 				tSpot.setFont(PLAINFONT);
 				tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				tSpot.addFocusListener(this);
@@ -556,7 +597,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			valDisplays = new ArrayList<JTextField>(1);
 			for (m = 0; m < 1; m++) {
 				tSpot = new JTextField();
-				tSpot.setColumns(FieldPanel._DOUBLESIZE);
+				tSpot.setColumns(EntryRegister._DOUBLESIZE);
 				tSpot.setFont(PLAINFONT);
 				tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				tSpot.addFocusListener(this);
@@ -571,7 +612,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			valDisplays = new ArrayList<JTextField>(2);
 			for (m = 0; m < 2; m++) {
 				tSpot = new JTextField();
-				tSpot.setColumns(FieldPanel._FLOATSIZE);
+				tSpot.setColumns(EntryRegister._FLOATSIZE);
 				tSpot.setFont(PLAINFONT);
 				tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				tSpot.addFocusListener(this);
@@ -586,7 +627,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			valDisplays = new ArrayList<JTextField>(2);
 			for (m = 0; m < 2; m++) {
 				tSpot = new JTextField();
-				tSpot.setColumns(FieldPanel._DOUBLESIZE);
+				tSpot.setColumns(EntryRegister._DOUBLESIZE);
 				tSpot.setFont(PLAINFONT);
 				tSpot.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 				tSpot.addFocusListener(this);
@@ -609,12 +650,18 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		repNumber = null;
 	}
 
+	/**
+	 * This method does what it says. It makes the register non-editable.
+	 */
 	protected void makeNotWritable() {
 		if (valDisplays != null)
 			for (JTextField point : valDisplays)
 				point.setEditable(false);
 	}
 
+	/**
+	 * This method does what it says. It makes the register editable.
+	 */
 	protected void makeWritable() {
 		if (valDisplays != null)
 			for (JTextField point : valDisplays)
@@ -624,7 +671,7 @@ public class FieldPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	/**
 	 * This 'set' function simply adjusts the displayed complex number by accepting
 	 * an input and then pushing those parts to values stored in the panel.
-	 * 
+	 * @param <D> is the ProtoN child
 	 * @param pIn CladosF number for use when resetting display elements
 	 */
 	@SuppressWarnings("unchecked")

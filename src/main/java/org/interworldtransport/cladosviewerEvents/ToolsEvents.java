@@ -2,7 +2,7 @@
  * <h2>Copyright</h2> © 2025 Alfred Differ<br>
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.ToolsEvents<br>
- * -------------------------------------------------------------------- <p>
+ * -------------------------------------------------------------------- <br>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the
@@ -10,13 +10,13 @@
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.<p>
+ * GNU Affero General Public License for more details.<br>
  * 
  * Use of this code or executable objects derived from it by the Licensee 
- * states their willingness to accept the terms of the license. <p> 
+ * states their willingness to accept the terms of the license. <br> 
  * 
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.<p> 
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.<br> 
  * 
  * ------------------------------------------------------------------------ <br>
  * ---org.interworldtransport.cladosviewer.ToolsEvents<br>
@@ -41,7 +41,15 @@ import org.interworldtransport.cladosviewer.ViewerMenu;
 public class ToolsEvents {
 	public ToolsCreate cr;
 	protected ToolsOptions op;
+	/**
+	 * This reference points to the top level object that is the menu bar. It gets used for
+	 * navigating to other elments in the menus
+	 */
 	protected ViewerMenu _GUIMenu;
+	/**
+	 * This reference points at the top level object that IS the application. It gets used
+	 * for navigating to other elements of the UI.
+	 */
 	protected CladosCalculator _GUI;
 
 	/**
