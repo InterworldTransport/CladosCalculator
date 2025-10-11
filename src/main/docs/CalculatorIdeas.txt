@@ -69,8 +69,8 @@ Addition for monads follows the same rules as the addition operator defined in a
 reference frame checks. If the monads do not share the same algebra object, they fail the reference check. In practice, this is
 handled with a static method associated with the correct monad class. This method compares algebra references in the pair to ensure
 they are the same. At present, the method also compares frame names which act as a soft tag alias for an algebra. Finally, the
-method also checks the soft tag associated with the magnitudes represented by the DivFieldType object. If the magnitudes reference
-the same DivFieldType, they pass this piece of the reference frame match test. Be forewarned, though. What gets checked within this
+method also checks the soft tag associated with the magnitudes represented by the Cardinal object. If the magnitudes reference
+the same Cardinal, they pass this piece of the reference frame match test. Be forewarned, though. What gets checked within this
 static method may change in the future as a physics library counterpart to clados is written. The purpose of the reference match
 test is to prevent non-physical operations from happening.
 
@@ -117,7 +117,7 @@ calculator carefully restricts the map by enforcing reference frame matches on t
 Multiplication of monads follows the rules for multiplication defined in the objects used as magnitudes as well as the rules for
 multiplication in a Clifford algebra except for the additional reference frame checks. This is dictated by reasonable expectations
 for elements of a Clifford algebra. Reference frame checking is done the same way as for addition meaning the referenced algebras
-must match, frame name strings must be the same, and the magnitudes must share a reference to a DivFieldtype.
+must match, frame name strings must be the same, and the magnitudes must share a reference to a Cardinal.
 
 If reference frame tests pass, the multiplication operation numerically multiplies magnitudes and geometrically multiples blades.
 Multigrade results are quite possible. Idempotent and nilpotent results are too. Multiplication of multi-grade monads is
@@ -190,7 +190,7 @@ or fail.
 
 Reference frame matches test that Algebra references point to the same actual object. Algebras with the same name that are not the
 same actual object in memory will not pass. If algebra references match, frame name strings are compared next. All that is necessary
-at this time is that the strings be the same. If they are, the numeric objects are compared. If they refer to the same DivFieldType
+at this time is that the strings be the same. If they are, the numeric objects are compared. If they refer to the same Cardinal
 in memory, this test will pass. As with algebras, it is not enough that their names have the same string representation.
 
 isZero
@@ -404,7 +404,7 @@ copy
 ________
 
 This mutator provides a way to create a new nyad that is a deep copy of the currently selected nyad. New monads are created, but
-references to algebras are re-used. References to DivFieldType's are re-used. A copied nyad should pass a strong reference match test
+references to algebras are re-used. References to Cardinal's are re-used. A copied nyad should pass a strong reference match test
 and an equality test yet be editable without causing its source to change.
 
 create

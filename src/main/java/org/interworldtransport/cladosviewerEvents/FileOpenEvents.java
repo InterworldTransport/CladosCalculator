@@ -112,16 +112,16 @@ public class FileOpenEvents implements ActionListener {
 
 	private static final Optional<CladosField> findMode(Document pDoc, XPath pX) throws XPathExpressionException {
 		XPathExpression expr = pX.compile(path2Mode);
-		NodeList divFieldNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
+		NodeList protoNNodes = (NodeList) expr.evaluate(pDoc, XPathConstants.NODESET);
 
-		if ((divFieldNodes.getLength() >> 1) == 0)
+		if ((protoNNodes.getLength() >> 1) == 0)
 			return Optional.empty();
-		else if (divFieldNodes.getLength() % 2 == 1)
+		else if (protoNNodes.getLength() % 2 == 1)
 			return Optional.empty();
 
-		String first = divFieldNodes.item(1).getNodeName();
-		for (int k = 3; k < divFieldNodes.getLength(); k += 2)
-			if (first != divFieldNodes.item(k).getNodeName())
+		String first = protoNNodes.item(1).getNodeName();
+		for (int k = 3; k < protoNNodes.getLength(); k += 2)
+			if (first != protoNNodes.item(k).getNodeName())
 				return Optional.empty();
 
 		switch (first) {
@@ -282,7 +282,7 @@ public class FileOpenEvents implements ActionListener {
 			// ----------------
 			
 			// TODO parse the XML into the 'defaults' for initiating the calculator.
-			// 'Count', 'Order', 'DivField', etc.
+			// 'Count', 'Order', 'ProtoN', etc.
 
 		} catch (ParserConfigurationException e1) {
 			ErrorDialog.show("Couldn't acquire DocumentBuilderFactory instance.\n" + e1.getMessage(),

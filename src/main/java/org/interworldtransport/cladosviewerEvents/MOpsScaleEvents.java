@@ -76,7 +76,7 @@ public class MOpsScaleEvents implements ActionListener {
 	 * This is the actual action to be performed by this member of the menu. It
 	 * 'scales' the focus monad in the sense of scalar multiplication with the field
 	 * suggested in the field bar. However, it only uses the values in the field
-	 * bar. No DivFieldType matching occurs.
+	 * bar. No Cardinal matching occurs.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent evt) {

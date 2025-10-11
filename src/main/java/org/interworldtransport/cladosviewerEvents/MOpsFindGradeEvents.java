@@ -95,7 +95,7 @@ public class MOpsFindGradeEvents implements ActionListener {
 		double logGradeKey =  Math.log10(tSpot.getMonad().getGradeKey());
 
 		if (logGradeKey < 0) {
-			ErrorDialog.show("DivField not recognized.", "DivField Unsupported");
+			ErrorDialog.show("ProtoN not recognized.", "ProtoN Unsupported");
 			return;
 		}
 

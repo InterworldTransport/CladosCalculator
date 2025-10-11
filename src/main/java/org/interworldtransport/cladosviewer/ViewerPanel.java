@@ -182,7 +182,7 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		T keyNumber = null;
 		try {
 			String cnt = new StringBuffer("N").append(pWhich).toString();
-			switch (_GUI.IniProps.getProperty("Desktop.Default.DivField")) {
+			switch (_GUI.IniProps.getProperty("Desktop.Default.ProtoN")) {
 			case "RealF" -> keyNumber = (T) FBuilder.REALF
 					.createZERO(_GUI.IniProps.getProperty("Desktop.Default.Cardinal"));
 			case "RealD" -> keyNumber = (T) FBuilder.REALD
@@ -364,15 +364,15 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		// Nothing to initialize with this. It gets used when building intial nyads in
 		// 'buildANyad' methods.
 
-		// Look in the conf file and determine the DivField to use during initiation
-		// String sType = validateInitialDivField();
-		if (repMode == null) // No valid DivField found, so don't construct a nyad
+		// Look in the conf file and determine the ProtoN to use during initiation
+		// String sType = validateInitialProtoN();
+		if (repMode == null) // No valid ProtoN found, so don't construct a nyad
 		{
 			intOrd = 0;
 			intCount = 0;
 			nyadPanelList = new ArrayList<NyadPanel<T>>(0);
 		}
-		// Note that we re-nitialized the NyadPanelList if no valid DivField is found
+		// Note that we re-nitialized the NyadPanelList if no valid ProtoN is found
 		// for initialization
 		// sType is the switch mode determining which monad types are used in the
 		// calculator.
@@ -463,7 +463,7 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	private CladosField validateInitialProtoN() {
 		// CladosField nField;
 		try {
-			String sType = _GUI.IniProps.getProperty("Desktop.Default.DivField");
+			String sType = _GUI.IniProps.getProperty("Desktop.Default.ProtoN");
 			switch (sType) {
 			case "RealF" : return CladosField.REALF;
 			case "RealD" : return CladosField.REALD;
@@ -473,11 +473,11 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			}
 		} catch (NullPointerException eNull) {
 			ErrorDialog.show(
-					"Desktop.Default.DivField from the configuration file appears to be null.\nNo nyad will be initialized.",
+					"Desktop.Default.ProtoN from the configuration file appears to be null.\nNo nyad will be initialized.",
 					"Null Pointer Exception");
 		} catch (NumberFormatException eFormat) {
 			ErrorDialog.show(
-					"Desktop.Default.DivField from the configuration file appears to be non-parse-able.\nNo nyad will be initialized.",
+					"Desktop.Default.ProtoN from the configuration file appears to be non-parse-able.\nNo nyad will be initialized.",
 					"Number Format Exception");
 		}
 		return null;

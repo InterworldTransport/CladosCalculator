@@ -32,7 +32,7 @@ import javax.swing.*;
  * intended to be the class that encapsulates the menu used in the Viewer class.
  * <br>
  * There is nothing especially important about the layout of this class. It
- * should not be instantiated except by the MonadViewer application. Alterations
+ * should not be instantiated except by the Calculator application. Alterations
  * to this class should be made in careful coordination with the classes of the
  * event model.
  * 
@@ -255,7 +255,7 @@ public class ViewerMenu extends JMenuBar {
 
 	/**
 	 * The ViewerMenu class is intended to be the class that encapsulates the menu
-	 * used in the MonadViewer Utility. For the sake of maintenance this definition
+	 * used in the Calculator. For the sake of maintenance this definition
 	 * is in a separate class and file.
 	 * 
 	 * @param pParentGUI CladosCalculator This parameter references the owning
@@ -276,7 +276,7 @@ public class ViewerMenu extends JMenuBar {
 		mniExit = new JMenuItem("Exit");
 		mnuFile.add(mniExit);
 
-		mnuNyadOps = new JMenu("Nyad Ops");
+		mnuNyadOps = new JMenu("List Ops");
 		add(mnuNyadOps);
 		mniCreateNyad = new JMenuItem("create nyad");
 		mnuNyadOps.add(mniCreateNyad);
@@ -315,7 +315,7 @@ public class ViewerMenu extends JMenuBar {
 		mniASymm = new JMenuItem("ASymm Multiply");
 		mnuTwoInputNyadOps.add(mniASymm);
 
-		mnuMonadOps = new JMenu("Monad Ops");
+		mnuMonadOps = new JMenu("Multivector Ops");
 		add(mnuMonadOps);
 		mniCreateMonad = new JMenuItem("create monad");
 		mnuMonadOps.add(mniCreateMonad);

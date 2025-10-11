@@ -81,7 +81,7 @@ public class NOpsEqualEvents implements ActionListener {
 		NyadPanel<?> panelNyadSelected = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex);
 		NyadPanel<?> panelNyadNext = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex + 1);
 		if (panelNyadSelected.getRepMode() != panelNyadNext.getRepMode()) {
-			ErrorDialog.show("Nyads using different DivFields.", "Nyad DivField Mismatch");
+			ErrorDialog.show("Nyads using different ProtoNs.", "Nyad ProtoN Mismatch");
 			return;
 		}
 		boolean test = Nyad.isMEqual(panelNyadSelected.getNyad(), panelNyadNext.getNyad());

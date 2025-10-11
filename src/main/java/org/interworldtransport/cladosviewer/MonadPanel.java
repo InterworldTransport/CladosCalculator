@@ -394,7 +394,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	 * This method is overridden to allow the MonadPanel with the focus to update
 	 * the FieldBar with the vales in the FieldArea of the represented monad. This
 	 * is similar to what a nyad panel does when it receives focus and updates the
-	 * DivFieldType
+	 * Cardinal
 	 */
 	@SuppressWarnings("unchecked")
 	@Override

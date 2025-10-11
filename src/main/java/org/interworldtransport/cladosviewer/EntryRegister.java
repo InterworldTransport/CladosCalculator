@@ -196,8 +196,8 @@ public class EntryRegister<T extends ProtoN & Field & Normalizable> extends JPan
 		case "makeFloat" -> {
 			if (_GUI != null)
 				if (_GUI.appGeometryView.getNyadListSize() != 0) {
-					ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.",
-							"DivField Change");
+					ErrorDialog.show("Can't change ProtoN descendent while any nyads are displayed.",
+							"ProtoN Descendent Change");
 					break;
 				}
 			valDisplays.clear();
@@ -223,8 +223,8 @@ public class EntryRegister<T extends ProtoN & Field & Normalizable> extends JPan
 		case "makeDouble" -> {
 			if (_GUI != null)
 				if (_GUI.appGeometryView.getNyadListSize() != 0) {
-					ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.",
-							"DivField Change");
+					ErrorDialog.show("Can't change ProtoN descendent while any nyads are displayed.",
+							"ProtoN Descendent Change");
 					break;
 				}
 			valDisplays.clear();
@@ -250,8 +250,8 @@ public class EntryRegister<T extends ProtoN & Field & Normalizable> extends JPan
 		case "makeReal" -> {
 			if (_GUI != null)
 				if (_GUI.appGeometryView.getNyadListSize() != 0) {
-					ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.",
-							"DivField Change");
+					ErrorDialog.show("Can't change ProtoN descendent while any nyads are displayed.",
+							"ProtoN Descendent Change");
 					break;
 				}
 			valDisplays.clear();
@@ -277,8 +277,8 @@ public class EntryRegister<T extends ProtoN & Field & Normalizable> extends JPan
 		case "makeComplex" -> {
 			if (_GUI != null)
 				if (_GUI.appGeometryView.getNyadListSize() != 0) {
-					ErrorDialog.show("Can't change DivField descendent while any nyads are displayed.",
-							"DivField Change");
+					ErrorDialog.show("Can't change ProtoN descendent while any nyads are displayed.",
+							"ProtoN Descendent Change");
 					break;
 				}
 			valDisplays.clear();
@@ -307,7 +307,7 @@ public class EntryRegister<T extends ProtoN & Field & Normalizable> extends JPan
 
 	/**
 	 * This method is called when focus is gained on the FieldBar. It covers for the
-	 * possibility that the underlying DivField is out of sync with displays, so the
+	 * possibility that the underlying ProtoN is out of sync with displays, so the
 	 * display content is updated
 	 * 
 	 * Any earlier parsing difficulty will get overwritten when focus returns, so
@@ -321,11 +321,11 @@ public class EntryRegister<T extends ProtoN & Field & Normalizable> extends JPan
 	/**
 	 * This method is called when focus is lost on the FieldBar. The actions
 	 * attempted assume that change might have occurred while focus was present.
-	 * Changes might leave the underlying DivField out of sync with what is
-	 * displayed, so the display content is copied down to the DivField.
+	 * Changes might leave the underlying ProtoN out of sync with what is
+	 * displayed, so the display content is copied down to the ProtoN.
 	 * <br>
 	 * Any parsing difficulty results in an exception that simply stops the update.
-	 * That CAN leave the represented DivField out of sync with the display. In that
+	 * That CAN leave the represented ProtoN out of sync with the display. In that
 	 * event, just bring focus back to the FieldBar and fix things so the numbers
 	 * can be parsed successfully.
 	 */

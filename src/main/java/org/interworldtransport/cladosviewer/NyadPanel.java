@@ -425,7 +425,7 @@ public class NyadPanel<T extends ProtoN & Field & Normalizable> extends JPanel i
 		pnlRefPanel.setBackground(clrBackColor);
 
 		TitledBorder tWrap = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-				new StringBuffer("DivField | " + repMode).toString(), TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION,
+				new StringBuffer("ProtoN | " + repMode).toString(), TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION,
 				new Font(Font.SERIF, Font.PLAIN, 10));
 		pnlRefPanel.setBorder(tWrap);
 		pnlRefPanel.setLayout(new GridBagLayout());

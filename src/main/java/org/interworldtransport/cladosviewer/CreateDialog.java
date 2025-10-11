@@ -83,7 +83,7 @@ public class CreateDialog<T extends ProtoN & Field & Normalizable> extends JDial
 	 * @param pGUI  CladosCalculator This parameter references the owning
 	 *              application. Nothing spectacular.
 	 * @param pMode String This string holds the representation model of the calling
-	 *              widget. It will be a DivField static string.
+	 *              widget. It will be a CladosField static string.
 	 * @return CreateDialog This method returns a CreateDialog instance The point of
 	 *         this being static is to enable making the regular constructor private
 	 *         later.
@@ -101,7 +101,7 @@ public class CreateDialog<T extends ProtoN & Field & Normalizable> extends JDial
 	 * @param pGUI  CladosCalculator This parameter references the owning
 	 *              application. Nothing spectacular.
 	 * @param pMode String This string holds the representation model of the calling
-	 *              widget. It will be a DivField static string.
+	 *              widget. It will be a CladosField static string.
 	 * @return CreateDialog This method returns a CreateDialog instance The point of
 	 *         this being static is to enable making the regular constructor private
 	 *         later.
@@ -155,7 +155,7 @@ public class CreateDialog<T extends ProtoN & Field & Normalizable> extends JDial
 	 *                   monad is created or an order-0 nyad with no monad in it to
 	 *                   start.
 	 * @param pDivMode   String This string holds the representation model of the
-	 *                   calling widget. It will be a DivField static string.
+	 *                   calling widget. It will be a CladosField static string.
 	 */
 	private CreateDialog(CladosCalculator mainWindow, boolean makeNyad, CladosField pDivMode) {
 		super(mainWindow, (makeNyad ? "Create Nyad Panel" : "Create Monad Panel"), true);
@@ -166,7 +166,7 @@ public class CreateDialog<T extends ProtoN & Field & Normalizable> extends JDial
 
 		// Create the Dialog's main stage
 		JPanel primaryStage = new JPanel(new BorderLayout());
-		primaryStage.setBorder(BorderFactory.createTitledBorder("DivField | " + repMode));
+		primaryStage.setBorder(BorderFactory.createTitledBorder("ProtoN | " + repMode));
 		primaryStage.setBackground(makeNyad ? _nyadColor : _monadColor);
 		setContentPane(primaryStage);
 

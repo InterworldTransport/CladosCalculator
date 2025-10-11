@@ -94,7 +94,7 @@ public class NOpsIsPScalarAtEvents implements ActionListener {
 		NyadPanel<?> panelNyadNext = _parent._GUI.appGeometryView.getNyadPanel(tNyadIndex + 1);
 
 		if (panelNyadSelected.getRepMode() != panelNyadNext.getRepMode()) {
-			ErrorDialog.show("Nyads using different DivFields.", "Nyad DivField Mismatch");
+			ErrorDialog.show("Nyads using different ProtoNs.", "Nyad ProtoN Mismatch");
 			return;
 		}
 		boolean test = panelNyadNext.getNyad()
