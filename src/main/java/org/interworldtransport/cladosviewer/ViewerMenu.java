@@ -71,50 +71,156 @@ public class ViewerMenu extends JMenuBar {
 	 * The Nyad Operations Parent Menu for the application.
 	 */
 	public JMenu mnuNyadOps;
+	/**
+	 * The menu for all Nyad boolean operations.
+	 */
 	public JMenu mnuNyadBooleanOps;
+	/**
+	 * The menu item for nyad check that can be phrased as "Are they equal?".
+	 */
 	public JMenuItem mniisEqual;
+	/**
+	 * The menu item for nyad check that can be phrased as "Is it Zero?".
+	 */
 	public JMenuItem mniisZero;
+	/**
+	 * The menu item for nyad check that can be phrased as "Are they a strong match?".
+	 */
 	public JMenuItem mniisStrgReferenceMatch;
+	/**
+	 * The menu item for nyad check that can be phrased as "Are they a weak match?".
+	 */
 	public JMenuItem mniisWeakReferenceMatch;
-
+	/**
+	 * The menu for nyad operations that require one input.
+	 */
 	public JMenu mnuOneInputNyadOps;
+	/**
+	 * The menu item for nyad check that can be phrased as "Does it use this Algebra?".
+	 */
 	public JMenuItem mnihasAlgebra;
+	/**
+	 * The menu item for nyad check that can be phrased as "Is it a scalar at this Algebra?".
+	 */
 	public JMenuItem mniisScalarAt;
+	/**
+	 * The menu item for nyad check that can be phrased as "Is it a pscalar at this Algebra?".
+	 */
 	public JMenuItem mniisPScalarAt;
-
+	/**
+	 * The menu for nyad operations that require two inputs.
+	 */
 	public JMenu mnuTwoInputNyadOps;
+	/**
+	 * The menu item for the nyad addition operation.
+	 */
 	public JMenuItem mniAdd;
+	/**
+	 * The menu item for the nyad subtraction operation.
+	 */
 	public JMenuItem mniSubtract;
+	/**
+	 * The menu item for the nyad left multiply operation.
+	 */
 	public JMenuItem mniLeftMultiply;
+	/**
+	 * The menu item for the nyad right multiply operation.
+	 */
 	public JMenuItem mniRightMultiply;
+	/**
+	 * The menu item for the nyad symmetric multiply operation.
+	 */
 	public JMenuItem mniSymm;
+	/**
+	 * The menu item for the nyad antisymmetric multiply operation.
+	 */
 	public JMenuItem mniASymm;
 
 	/**
 	 * The Monad Operations Parent Menu for the application.
 	 */
 	public JMenu mnuMonadOps;
+	/**
+	 * The menu for all monad-in-a-nyad boolean operations.
+	 */
 	public JMenu mnuMonadBooleanOps;
+	/**
+	 * The menu item for checking whether a monad is multigrade.
+	 */
 	public JMenuItem mniisMultiGrade;
+	/**
+	 * The menu item for checking whether a monad is of the grade being checked.
+	 */
 	public JMenuItem mniisGrade;
+	/**
+	 * The menu item for checking whether a monad is nilpotent.
+	 */
 	public JMenuItem mniisNilpotent;
+	/**
+	 * The menu item for checking whether a monad is idempotent.
+	 */
 	public JMenuItem mniisIdempotent;
+	/**
+	 * The menu item for checking whether a monad is a scaled idepmpotent.
+	 */
 	public JMenuItem mniisScaledIdempotent;
 
+	/**
+	 * The parent menu for all monad operations requiring one input.
+	 */
 	public JMenu mnuOneInputMonadOps;
+	/**
+	 * The menu item for checking whether a monad is scalar grade.
+	 */
 	public JMenuItem mniisSGrade;
+	/**
+	 * The menu item for checking whether a monad has the requested grade within.
+	 */
 	public JMenuItem mnihasGrade;
+	/**
+	 * The menu item for generating from the monad its magnitude.
+	 */
 	public JMenuItem mniMagnitudeOf;
+	/**
+	 * The menu item for generating from the monad its square magnitude.
+	 */
 	public JMenuItem mniSQMagnitudeOf;
+	/**
+	 * The menu item for normalizing the monad.
+	 */
 	public JMenuItem mniNormalize;
+	/**
+	 * The menu item for generating from dual of the monad from the left.
+	 */
 	public JMenuItem mniDualLeft;
+	/**
+	 * The menu item for generating from dual of the monad from the right.
+	 */
 	public JMenuItem mniDualRight;
+	/**
+	 * The menu item for performing the main involution on the monad. Generator sign flip.
+	 */
 	public JMenuItem mniInvert;
+	/**
+	 * The menu item for performing the second involution on the monad. Product order flip.
+	 */
 	public JMenuItem mniReverse;
+	/**
+	 * The menu item for scaling the monad.
+	 */
 	public JMenuItem mniScale;
+	/**
+	 * The menu item for cropping the monad to a particular grade.
+	 */
 	public JMenuItem mniGradeCrop;
+	/**
+	 * The menu item for cropping OUT of the monad a particular grade.
+	 */
 	public JMenuItem mniGradeCut;
 
+	/**
+	 * The parent menu for all monad operations requiring one input.
+	 */
 	public JMenu mnuTwoInputMonadOps;
 
 	/**

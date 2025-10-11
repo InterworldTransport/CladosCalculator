@@ -35,6 +35,9 @@ package org.interworldtransport.cladosviewerExceptions;
 public class UtilitiesException extends Exception {
 
 	private static final long serialVersionUID = 6331343927784606625L;
+	/**
+	 * This string is populated by the source of the exception when the exception is thrown.
+	 */
 	public String SourceMessage;
 
 	/**

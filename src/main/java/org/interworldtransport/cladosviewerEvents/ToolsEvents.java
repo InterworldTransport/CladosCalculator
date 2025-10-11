@@ -39,7 +39,13 @@ import org.interworldtransport.cladosviewer.ViewerMenu;
  * @author Dr Alfred W Differ
  */
 public class ToolsEvents {
+	/**
+	 * This references the create menu item within the Tools menu.
+	 */
 	public ToolsCreate cr;
+	/**
+	 * This references the Options menu item within the Tools menu.
+	 */
 	protected ToolsOptions op;
 	/**
 	 * This reference points to the top level object that is the menu bar. It gets used for

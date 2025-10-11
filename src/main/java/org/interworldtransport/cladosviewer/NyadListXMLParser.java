@@ -13,9 +13,25 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
+/**
+ * This class is included on a temporary basis while development of the xml parsers 
+ * is underway. The idea is to learn how to read xml into nyads.
+ */
 public class NyadListXMLParser 
 {
+	/**
+	 * An empty constructor so the object isn't actually constructable.
+	 */
+	public NyadListXMLParser() {}
+
+	/**
+	 * This is the main entry point for the parser and a way to exercise
+	 * the parsing of nyad xml information to open saved objects.
+	 * This class has no specified constructor and only the two class methods
+	 * will be used.
+	 * @param args string array as usual for all main entry functions.
+	 * @throws Exception general object thrown until this parser works properly.
+	 */
     public static void main(String[] args) throws Exception 
     {
  
@@ -49,7 +65,11 @@ public class NyadListXMLParser
 		
         
     }
-    
+    /**
+	 * Class level loader method for turning xml nyads into DOM object trees.
+	 * @param filePath String points to the file to be parsed.
+	 * @return
+	 */
     private static Document loadXMLObjectsToXMLDocument(String filePath) 
     {
         //Parser that produces DOM object trees from XML content

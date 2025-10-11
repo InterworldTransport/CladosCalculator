@@ -110,7 +110,9 @@ public class CladosCalculator extends JFrame implements ActionListener {
 	 * GUI and intended for status information.
 	 */
 	public UtilityStatusBar appStatusBar;
-
+	/**
+	 * This panel wraps arouund all control buttons at the top level of the application.
+	 */
 	private JPanel pnlControlBar; // global button display for easy menu access
 
 	/**

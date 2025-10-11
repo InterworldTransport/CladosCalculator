@@ -111,12 +111,35 @@ public class CreateDialog<T extends ProtoN & Field & Normalizable> extends JDial
 		return new CreateDialog<T>(pGUI, true, pMode);
 	}
 
+	/**
+	 * This reference points back at the owning application and is used for navigating stacks.
+	 */
 	private CladosCalculator _GUI;
+	/**
+	 * A CladosField enumeration representing which ProtoN child is being used in monads.
+	 */
 	private CladosField repMode;
+	/**
+	 * This button is for getting Algebra information when creating new objects. 
+	 * This is how Algebras get re-used and reference matches made.
+	 */
 	private JButton btnGetAlgebra;
+	/**
+	 * This button is for getting Foot information when creating new objects. 
+	 * This is how Foot objects get re-used and reference matches made.
+	 */
 	private JButton btnGetFoot;
+	/**
+	 * This button is for getting an algebra copy when creating new objects. 
+	 */
 	private Algebra copyAlg;
+	/**
+	 * This button is for getting an foot copy when creating new objects. 
+	 */
 	private Foot copyFoot;
+	/**
+	 * This is a single monad panel supporting the construction of one monad.
+	 */
 	private MonadPanel<T> monadShort;
 
 	/**

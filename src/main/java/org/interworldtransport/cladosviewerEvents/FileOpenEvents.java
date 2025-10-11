@@ -152,6 +152,9 @@ public class FileOpenEvents implements ActionListener {
 
 	private TreeMap<String, Foot> foundFeet;
 
+	/**
+	 * A CladosField enumeration representing which ProtoN child is being used in monads.
+	 */
 	private CladosField repMode;
 	/**
 	 * This reference points at the control object in the menu related to this part of the event model. 

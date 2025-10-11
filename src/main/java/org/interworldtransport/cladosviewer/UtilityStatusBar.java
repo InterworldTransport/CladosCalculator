@@ -48,6 +48,10 @@ public class UtilityStatusBar extends JPanel implements ActionListener {
 	private static final int _FONTSIZE = 10;
 	private static final Color _backColor = new Color(255, 255, 222);
 	private static final Dimension square = new Dimension(25, 25);
+	/**
+	 * This text area holds the status message posted to it by any other object that tries
+	 * to inform the user of something.
+	 */
 	private JTextArea stmesgt;
 
 	/**

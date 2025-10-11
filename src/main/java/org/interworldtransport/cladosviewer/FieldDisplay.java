@@ -65,8 +65,13 @@ public class FieldDisplay<D extends ProtoN & Field & Normalizable> extends JText
 	private static final Font ITALICFONT = new Font(Font.SERIF, Font.ITALIC, _FONTSIZE);
 	private static final Font PLAINFONT = new Font(Font.SERIF, Font.PLAIN, _FONTSIZE);
 	private static final long serialVersionUID = 7705233831398982801L;
-
+	/**
+	 * Field displays belong to a monad panel. This reference points back to the parent panel.
+	 */
 	private MonadPanel<D> _parent;
+	/**
+	 * A CladosField enumeration representing which ProtoN child is being used in monads.
+	 */
 	private CladosField repMode;
 	/**
 	 * The fieldCopy is a copy of the cladosF magnitude that can be safely

@@ -68,7 +68,14 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	 * This is just a reference back to the parent frame of the application.
 	 */
 	public CladosCalculator _GUI;
-	private CladosField _repMode;
+	/**
+	 * A CladosField enumeration representing which ProtoN child is being used in monads.
+	 */
+	private CladosField repMode;
+	/**
+	 * This just holds the image icon used for the viewer panel. It probably doesn't have to be listed
+	 * as a class element, but it is for now.
+	 */
 	private ImageIcon tabIcon;
 	/**
 	 * This ArrayList has references to all the nyad panels being displayed.
@@ -86,7 +93,6 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	 * 
 	 * @param pGUI CladosCalculator This parameter references the owning
 	 *             application. Nothing spectacular.
-	 * 
 	 */
 	public ViewerPanel(CladosCalculator pGUI) {
 		super();
@@ -100,7 +106,7 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 
 		// Get the nyad tab image for the nyad panes being constructed
 		tabIcon = new ImageIcon(this.getClass().getResource("/img/N.png"));
-		_repMode = validateInitialDivField();
+		repMode = validateInitialProtoN();
 		// The Viewer contains NyadPanels displayed as a JTabbedPanes containing
 		// JScrollPanes containing a NyadPanel each. We initiate the JTabbedPane here
 		
@@ -112,7 +118,11 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 
 		initObjects(); // This is the old initializer.
 	}
-
+	/**
+	 * This method implements the action performer for the entire panel. Commands are delivered 
+	 * as events. They are parsed to call action performers in the event model that are the
+	 * actual commands behind calculator buttons. So... this method is a giant switch statement.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		switch (event.getActionCommand()) {
@@ -120,32 +130,50 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		case "pop" -> pop(); // Swaps the currently selected nyad with the one above it
 		case "copy" -> copyNyadCommand(); // Clone the selected nyad and place it at the end of the stack
 		case "erase" -> eraseNyadCommand(); // Remove the selected nyad from the stack
-		case "create" -> CreateDialog.createNyad(_GUI, _repMode); // Create a monad for the nyad OR a whole new nyad
+		case "create" -> CreateDialog.createNyad(_GUI, repMode); // Create a monad for the nyad OR a whole new nyad
 		default -> ErrorDialog.show("No detectable command given at ViewerPanel. No action.", "That's Odd");
 		}
 	}
-
+	/**
+	 * An integer informing the call how big the nyad list is in the panel in terms of panels.
+	 * @return integer for the nyad panel list size.
+	 */
 	public int getNyadListSize() {
 		return nyadPanelList.size();
 	}
-
+	/**
+	 * Get the indexed nyad panel from this viewer panel. 
+	 * @param pInd int get the NyadPanel at this integer spot
+	 * @return NyadPanel The MonadPanel at the indicated location.
+	 */
 	public NyadPanel<T> getNyadPanel(int pInd) {
 		if (pInd < nyadPanelList.size() && pInd >= 0)
 			return nyadPanelList.get(pInd);
 
 		return null;
 	}
-
+	/**
+	 * Get the entire nyad panel list from this viewer panel. 
+	 * @return ArrayList of NyadPanels
+	 */
 	public ArrayList<NyadPanel<T>> getNyadPanels() {
 		return nyadPanelList;
 	}
-
+	/**
+	 * An integer index that informs the caller which pane has the focus.
+	 * @return int for the index of the pane with the focus.
+	 */
 	public int getPaneFocus() {
 		return nyadPanes.getSelectedIndex();
 	}
-
+	/**
+	 * A gettor for the viewer panel's mode of representation. 
+	 * It speaks to which descending of ProtoN is being used.
+	 * @return  CladosField the enumeration that stands in for the 
+	 * 			representation mode.
+	 */
 	public CladosField getRepMode() {
-		return _repMode;
+		return repMode;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -321,7 +349,9 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			_GUI.appFieldBar.makeNotWritable();
 		}
 	}
-
+	/**
+	 * This method initiates all nyad panels on applicatoin start.
+	 */
 	private void initObjects() { // TODO change to an XML reader
 		// Look in the conf file and determine how many nyads to initiate and init
 		// NyadPanelList
@@ -336,7 +366,7 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 
 		// Look in the conf file and determine the DivField to use during initiation
 		// String sType = validateInitialDivField();
-		if (_repMode == null) // No valid DivField found, so don't construct a nyad
+		if (repMode == null) // No valid DivField found, so don't construct a nyad
 		{
 			intOrd = 0;
 			intCount = 0;
@@ -373,7 +403,10 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			j++;
 		}
 	}
-
+	/**
+	 * This method pops the selected Nyad upward on the stack if possible. It
+	 * does NOT create any new slots in the stack.
+	 */
 	private void pop() {
 		int where = nyadPanes.getSelectedIndex();
 		if (where > 0) {
@@ -422,27 +455,21 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			revalidate();
 		}
 	}
-
-	private CladosField validateInitialDivField() {
+	/**
+	 * This method looks at the config properties and extracts the mode to use for nyads initiated 
+	 * when the application is first started.
+	 * @return CladosField that should match the initialization mode offered in the config file.
+	 */
+	private CladosField validateInitialProtoN() {
 		// CladosField nField;
 		try {
 			String sType = _GUI.IniProps.getProperty("Desktop.Default.DivField");
 			switch (sType) {
-			case "RealF" -> {
-				return CladosField.REALF;
-			}
-			case "RealD" -> {
-				return CladosField.REALD;
-			}
-			case "ComplexF" -> {
-				return CladosField.COMPLEXF;
-			}
-			case "ComplexD" -> {
-				return CladosField.COMPLEXD;
-			}
-			default -> {
-				return null;
-			}
+			case "RealF" : return CladosField.REALF;
+			case "RealD" : return CladosField.REALD;
+			case "ComplexF" : return CladosField.COMPLEXF;
+			case "ComplexD" : return CladosField.COMPLEXD;
+			default : return null;
 			}
 		} catch (NullPointerException eNull) {
 			ErrorDialog.show(
@@ -455,7 +482,11 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		}
 		return null;
 	}
-
+	/**
+	 * This method looks at the config properties and extracts the list size of the nyads 
+	 * to initiate when the application is first started.
+	 * @return short that should match the initialization key offered in the config file.
+	 */
 	private int validateInitialNyadCount() {
 		try {
 			int nCount = Integer.parseInt(_GUI.IniProps.getProperty("Desktop.Default.Count"));
@@ -473,7 +504,11 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		}
 		return 0;
 	}
-
+	/**
+	 * This method looks at the config properties and extracts the size of the nyad to initiate 
+	 * when the application is first started.
+	 * @return short that should match the initialization key offered in the config file.
+	 */
 	private short validateInitialNyadOrder() {
 		try {
 			return Short.parseShort(_GUI.IniProps.getProperty("Desktop.Default.Order"));
@@ -487,7 +522,11 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		}
 		return 1;
 	}
-
+	/**
+	 * When a new nyad is added to the calculator stack, this method is called with the actual nyad.
+	 * A new nyad panel is created and added to a pane.
+	 * @param pN Nyad to be added to the viewer panel. This is a concatenation process.
+	 */
 	protected void addNyad(Nyad pN) {
 		int endPlus = 0;
 		if (nyadPanes.getTabCount() > 0)
@@ -515,12 +554,14 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	 * to the numbers displayed. The string for the Cardinal IS displayed on a
 	 * monad, though, and not the Field Bar.
 	 * 
-	 * @param EntryRegister EntryRegister In the owning app, this is the FieldBar object
-	 *                   that allows for top-level numeric input on the calculator.
-	 *                   The Field Panel offered is registered with this Viewer
-	 *                   Panel so change events can be routed.
+	 * @param <D> EntryRegister In the owning app, this is the FieldBar object
+	 *            that allows for top-level numeric input on the calculator.
+	 *            The Field Panel offered is registered with this Viewer
+	 *            Panel so change events can be routed.
+	 * @param pRegister	EntryRegister to be used at the input slot for all registers
+	 * 					in this viewer panel
 	 */
-	protected <D extends ProtoN & Field & Normalizable> void registerEntryRegister(EntryRegister<D> EntryRegister) {
+	protected <D extends ProtoN & Field & Normalizable> void registerEntryRegister(EntryRegister<D> pRegister) {
 		nyadPanes.addChangeListener(new ChangeListener() {
 		
 			@Override
@@ -530,16 +571,21 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 						if (nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getTabCount() > 0) {
 							int j = nyadPanelList.get(nyadPanes.getSelectedIndex()).monadPanes.getSelectedIndex();
 							MonadPanel<?> tSpot = nyadPanelList.get(nyadPanes.getSelectedIndex()).getMonadPanel(j);
-							EntryRegister.setCoefficientDisplay(FBuilder.copyOf(tSpot.getMonad().getWeights().getScalar()));
+							pRegister.setCoefficientDisplay(FBuilder.copyOf(tSpot.getMonad().getWeights().getScalar()));
 							_GUI.appFieldBar.makeWritable();
 						}
 					}
 				} else
-					EntryRegister.clearFieldType();
+					pRegister.clearFieldType();
 			}
 		});
 	}
-
+	/**
+	 * This method removes the Nyad panel at the indexed location.
+	 * First it checks to see if the index is valid and then it acts.
+	 * If the index is not valid, it does nothing.
+	 * @param pInd integer index of the nyad panel to be removed.
+	 */
 	protected void removeNyadPanel(int pInd) {
 		if (pInd < nyadPanelList.size() && pInd >= 0) {
 			nyadPanelList.remove(pInd);
@@ -547,8 +593,12 @@ public class ViewerPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		}
 		_GUI.pack();
 	}
-
+	/**
+	 * This is a settor method that accepts a CladosField enumberation and sets the panel's number mode.
+	 * @param pIn 	CladosField enumeration that stands in for the ProtoN child being used in
+	 * 				all represented objects inside this panel.
+	 */
 	protected void setRepMode(CladosField pIn) {
-		_repMode = pIn;
+		repMode = pIn;
 	}
 }

@@ -69,14 +69,38 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	private static final Dimension squareLittle = new Dimension(25, 25);
 	private static final Dimension squareMedium = new Dimension(28, 28);
 
+	/**
+	 * This reference points back at the owning application and is used for navigating stacks.
+	 */
 	public CladosCalculator _GUI;
+	/**
+	 * This button toggles the display of weights from horizontal to verticle and back.
+	 */
 	private JButton btnChangeOrient;
+	/**
+	 * A button for toggling the panel's edit mode between on and off.
+	 */
 	protected JButton btnEdit;
+	/**
+	 * A button for restoring the displayed content to the internal represented monad.
+	 */
 	protected JButton btnRestore;
+	/**
+	 * A button for forcing synchronization between what is displayed and the represented
+	 * Monad. Which way the force is done depends on wheter the panel is in edit mode.
+	 */
 	protected JButton btnSync;
+	/**
+	 * This image icon acts as the label for a toggle between layouts.
+	 * This one represents a horizontal layout.
+	 */
 	private ImageIcon iconHorizontal;
+	/**
+	 * This image icon acts as the label for a toggle between layouts.
+	 * This one represents a vertical layout.
+	 */
 	private ImageIcon iconVertical;
-	/*
+	/**
 	 * This boolean is for tracking whether the panel knows its monad is an element
 	 * in a nyad. This panel is embedded in the nyad create dialog to provide
 	 * information on the first monad to create for a new nyad. If the monad being
@@ -84,25 +108,68 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	 * display a Foot. It should force reuse of the nyad's existing Foot.
 	 */
 	private boolean nyadNotKnown;
-	private JPanel pnlMonadCoeffPanel;
+	/**
+	 * This panel wraps around the Monads weights keeping the related text areas
+	 * separate from weights for a different monad.
+	 */
+	private JPanel pnlMonadCoeffs;
+	/**
+	 * This panel wraps around the Monads reference details keeping the related 
+	 * text areas separate from reference material for a different monad.
+	 */
 	private JPanel pnlMonadReferences;
+	/**
+	 * A CladosField enumeration representing which ProtoN child is being used in monads.
+	 */
 	private CladosField repMode;
+	/**
+	 * This is the monad represented by the panel.
+	 */
 	private Monad repMonad;
-	/*
+	/**
 	 * This boolean is for knowing whether to render the coefficients. This panel
 	 * doubles as a monad create dialog where no coefficients can exist until after
 	 * a generator signature is given.
 	 */
 	private boolean useFullPanel;
+
+	/**
+	 * A boolean for tracking whether the panel is allowing edits to display fields
+	 * that will overwrite the repMonad's details.
+	 */
 	protected boolean _editMode;
+	/**
+	 * A Text input area for displaying the repMonad's algebra name.
+	 */
 	protected JTextField aname = new JTextField(16);
 
+	/**
+	 * A Text input area for displaying the repMonad's cardinal name.
+	 */
 	protected JTextField cardname = new JTextField(16);
+	/**
+	 * A Text input area for displaying the repMonad's Foot name.
+	 */
 	protected JTextField foot = new JTextField(16);
+	/**
+	 * A Text input area for displaying the repMonad's frame name.
+	 */
 	protected JTextField frame = new JTextField(16);
+	/**
+	 * A Text input area for displaying the repMonad's grade key.
+	 */
 	protected JLabel gradeKey = new JLabel();
+	/**
+	 * A tree of Blade, FieldDisplay key/pairs for using in displaying the repMonad's blade weights.
+	 */
 	protected TreeMap<Blade, FieldDisplay<T>> jCoeffs;
+	/**
+	 * A Text input area for displaying the repMonad's name.
+	 */
 	protected JTextField name = new JTextField(16);
+	/**
+	 * A Text input area for displaying the repMonad's signature.
+	 */
 	protected JTextField sig = new JTextField(16);
 
 	/**
@@ -255,7 +322,11 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			createManagementLayout();
 		}
 	}
-
+	/**
+	 * This method implements the action performer for the entire panel. Commands are delivered 
+	 * as events. They are parsed to call action performers in the event model that are the
+	 * actual commands behind calculator buttons. So... this method is a giant switch statement.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		switch (event.getActionCommand()) {
@@ -360,7 +431,10 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			}
 		}
 	}
-
+	/**
+	 * Nothing happens when focus is lost. Not yet. Maybe some day it will change.
+	 * Until then this empty method body ensures nothing DOES happen.
+	 */
 	@Override
 	public void focusLost(FocusEvent e) {
 		;
@@ -377,11 +451,18 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	public TreeMap<Blade, FieldDisplay<T>> getJCoeffs() {
 		return jCoeffs;
 	}
-
+	/**
+	 * Simple gettor method retrieving the Monad represented by this panel.
+	 * @return Monad being represented by this panel.
+	 */
 	public Monad getMonad() {
 		return repMonad;
 	}
-
+	/**
+	 * Simple gettor method retrieving the enumeration that represents the numeric mode
+	 * of the monad represented by this panel.
+	 * @return CladosField enumeration representing the ProtoN child type.
+	 */
 	public CladosField getRepMode() {
 		return repMode;
 	}
@@ -409,18 +490,18 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			initiateCoeffList(); // Listeners get added here the first time and need not be reset
 									// because the panels that display them are just containers... not handlers.
 
-		if (pnlMonadCoeffPanel != null)
-			remove(pnlMonadCoeffPanel);
+		if (pnlMonadCoeffs != null)
+			remove(pnlMonadCoeffs);
 
-		pnlMonadCoeffPanel = new JPanel();
+		pnlMonadCoeffs = new JPanel();
 		StringBuffer tB = new StringBuffer();
 		tB.append(repMonad.getAlgebra().getFoot().getFootName() + " | ");
 		tB.append(repMonad.getAlgebra().getAlgebraName() + "/" + repMonad.getAlgebra().getCardinal().getUnit() + " | ");
 		tB.append(repMonad.getAlgebra().getGProduct().signature());
-		pnlMonadCoeffPanel.setBorder(BorderFactory.createTitledBorder(tB.toString()));
+		pnlMonadCoeffs.setBorder(BorderFactory.createTitledBorder(tB.toString()));
 
-		pnlMonadCoeffPanel.setBackground(clrBackColor);
-		pnlMonadCoeffPanel.setLayout(new GridBagLayout());
+		pnlMonadCoeffs.setBackground(clrBackColor);
+		pnlMonadCoeffs.setLayout(new GridBagLayout());
 
 		GridBagConstraints cn1 = new GridBagConstraints();
 		cn1.insets = new Insets(0, 0, 0, 0);
@@ -436,12 +517,12 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			repMonad.gradeStream().forEach(grade -> {
 				JLabel headLabel2 = new JLabel(grade + "-blades", SwingConstants.CENTER);
 				headLabel2.setFont(_PLAINFONT);
-				pnlMonadCoeffPanel.add(headLabel2, cn1);
+				pnlMonadCoeffs.add(headLabel2, cn1);
 				cn1.gridy++;
 
 				repMonad.getAlgebra().getGBasis().bladeOfGradeStream((byte) grade).forEach(blade -> {
 					jCoeffs.get(blade).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-					pnlMonadCoeffPanel.add(jCoeffs.get(blade), cn1);
+					pnlMonadCoeffs.add(jCoeffs.get(blade), cn1);
 					cn1.gridy++;
 				});
 				;
@@ -452,12 +533,12 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 			repMonad.gradeStream().forEach(grade -> {
 				JLabel headLabel2 = new JLabel(grade + "-blades", SwingConstants.CENTER);
 				headLabel2.setFont(_PLAINFONT);
-				pnlMonadCoeffPanel.add(headLabel2, cn1);
+				pnlMonadCoeffs.add(headLabel2, cn1);
 				cn1.gridx++;
 
 				repMonad.getAlgebra().getGBasis().bladeOfGradeStream((byte) grade).forEach(blade -> {
 					jCoeffs.get(blade).setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-					pnlMonadCoeffPanel.add(jCoeffs.get(blade), cn1);
+					pnlMonadCoeffs.add(jCoeffs.get(blade), cn1);
 					cn1.gridx++;
 				});
 				;
@@ -465,7 +546,7 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 				cn1.gridx = 0;
 			});
 		}
-		return pnlMonadCoeffPanel;
+		return pnlMonadCoeffs;
 	}
 
 	private void createEditLayout() {
@@ -676,8 +757,8 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	private void makeNotWritable() {
 		if (pnlMonadReferences != null)
 			pnlMonadReferences.setBackground(clrBackColor);
-		if (pnlMonadCoeffPanel != null)
-			pnlMonadCoeffPanel.setBackground(clrBackColor);
+		if (pnlMonadCoeffs != null)
+			pnlMonadCoeffs.setBackground(clrBackColor);
 		name.setEditable(false);
 
 		if (useFullPanel)
@@ -736,8 +817,8 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	protected void makeWritable() {
 		if (pnlMonadReferences != null)
 			pnlMonadReferences.setBackground(clrUnlockColor);
-		if (pnlMonadCoeffPanel != null)
-			pnlMonadCoeffPanel.setBackground(clrUnlockColor);
+		if (pnlMonadCoeffs != null)
+			pnlMonadCoeffs.setBackground(clrUnlockColor);
 
 		name.setEditable(true);
 		if (useFullPanel)

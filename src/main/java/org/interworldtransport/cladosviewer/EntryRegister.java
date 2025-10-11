@@ -85,10 +85,28 @@ public class EntryRegister<T extends ProtoN & Field & Normalizable> extends JPan
 	private static final Dimension squareLarge = new Dimension(42, 42);
 	private static final Dimension squareMedium = new Dimension(21, 21);
 	
+	/**
+	 * This reference points back at the owning application and is used for navigating stacks.
+	 */
 	private CladosCalculator _GUI;
+	/**
+	 * This string array is just for convenience in handling labels that influence display
+	 * behaviors for this register. They could probably be set at the class level.
+	 */
 	private final String[] _valLabels = { _REAL, _IMAGINARY };
+	/**
+	 * These panels wrap around the text areas for this register. Updates that change precision
+	 * or real for complex are most easily done by dumping the entire panel and building a new one.
+	 */
 	private JPanel pnlDisplays;
+	/**
+	 * A CladosField enumeration representing which ProtoN child is being used in monads.
+	 */
 	private CladosField repMode;
+	/**
+	 * This array list contains text fields that hold the values being displayed in this register.
+	 * How many are in the list depends on repMode.
+	 */
 	private ArrayList<JTextField> valDisplays;
 	
 	/**
@@ -305,7 +323,7 @@ public class EntryRegister<T extends ProtoN & Field & Normalizable> extends JPan
 	 * attempted assume that change might have occurred while focus was present.
 	 * Changes might leave the underlying DivField out of sync with what is
 	 * displayed, so the display content is copied down to the DivField.
-	 * 
+	 * <br>
 	 * Any parsing difficulty results in an exception that simply stops the update.
 	 * That CAN leave the represented DivField out of sync with the display. In that
 	 * event, just bring focus back to the FieldBar and fix things so the numbers

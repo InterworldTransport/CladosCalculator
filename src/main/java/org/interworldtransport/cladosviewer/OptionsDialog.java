@@ -108,9 +108,21 @@ public class OptionsDialog extends JDialog implements ActionListener, TableModel
 
 	private static final Color _backColor = new Color(255, 255, 222);
 	private static final Color _tblBackColor = new Color(212, 212, 192);
+	/**
+	 * This reference points back at the owning application and is used for navigating stacks.
+	 */
 	private CladosCalculator _GUI;
+	/**
+	 * A simple save button for recording updates to options displayed.
+	 */
 	private JButton btnSave;
+	/**
+	 * This is the main panel in which the options dialog paints anything.
+	 */
 	private JPanel mainPane = new JPanel(new BorderLayout());
+	/**
+	 * This is a layout model for property key pairs.
+	 */
 	private PropTblModel tblModel = new PropTblModel();
 
 	/**

@@ -75,22 +75,80 @@ import org.interworldtransport.cladosviewerExceptions.UtilitiesException;
  */
 public class NyadPanel<T extends ProtoN & Field & Normalizable> extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 377115956906661646L;
+	/**
+	 * This reference points back at the owning application and is used for navigating stacks.
+	 */
 	public CladosCalculator _GUI;
+	/**
+	 * Button for toggling edit mode for a monad.
+	 */
 	private JButton btnEditMonad;
+	/**
+	 * Button for activating the save actions that turn alterations in display 
+	 * fields into adjustments to nyads and monads.
+	 */
 	private JButton btnSaveEdits;
+	/**
+	 * This is an abort button. It resets displays to contents of nyads and monads
+	 * which might overwrite edits to these displays.
+	 */
 	private JButton btnUndoEdits;
+	
+	/**
+	 * This is the color hint that the panel is locked against edits.
+	 */
 	private final Color clrBackColor = new Color(212, 200, 212);
+	/**
+	 * This is the color hint that the panel is unlocked for editing.
+	 */
 	private final Color clrUnlockColor = new Color(255, 192, 192);
-	private JLabel nyadAlgOrder = new JLabel();
-	private JLabel nyadFoot = new JLabel();
-	private JTextField nyadName = new JTextField(20);
-	private JLabel nyadOrder = new JLabel();
-	private JPanel pnlRefPanel;
-	private Nyad repNyad;
+	/**
+	 * A bounding square for small things
+	 */
 	private final Dimension square = new Dimension(25, 25);
+	/**
+	 * This panel wraps all the reference display areas whether they are labels
+	 * or text fields.
+	 */
+	private JPanel pnlRefPanel;
+	/**
+	 * Like a text area but not ever meant to be editable, this object displays
+	 * the number of algebras in the nyad... which might not match nyad order.
+	 */
+	private JLabel nyadAlgOrder = new JLabel();
+	/**
+	 * Like a text area but not ever meant to be editable, this object displays
+	 * the foot name for the nyad.
+	 */
+	private JLabel nyadFoot = new JLabel();
+	/**
+	 * Text area for the nyad's name. It may be altered to updat the nyad.
+	 */
+	private JTextField nyadName = new JTextField(20);
+	/**
+	 * Like a text area but not ever meant to be editable, this object displays
+	 * the number of monads in a nyad.
+	 */
+	private JLabel nyadOrder = new JLabel();
+	/**
+	 * This small icon is the visual label for tabs on the monad panes.
+	 */
 	private ImageIcon tabIcon;
+	/**
+	 * This is the nyad represented by displays in this panel.
+	 */
+	private Nyad repNyad;
+	/**
+	 * An array list of the monad panels representing monads in the represented nyad.
+	 */
 	protected ArrayList<MonadPanel<T>> monadPanelList;
+	/**
+	 * A tabbed pane for displaying the various monad panels in monadPanelList
+	 */
 	protected JTabbedPane monadPanes;
+	/**
+	 * A CladosField enumeration representing which ProtoN child is being used in monads.
+	 */
 	protected CladosField repMode;
 
 	/**
@@ -146,7 +204,11 @@ public class NyadPanel<T extends ProtoN & Field & Normalizable> extends JPanel i
 
 		add(monadPanes, JTabbedPane.CENTER);
 	}
-
+	/**
+	 * This method implements the action performer for the entire panel. Commands are delivered 
+	 * as events. They are parsed to call action performers in the event model that are the
+	 * actual commands behind calculator buttons. So... this method is a giant switch statement.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		switch (event.getActionCommand()) {
@@ -222,13 +284,17 @@ public class NyadPanel<T extends ProtoN & Field & Normalizable> extends JPanel i
 		monadPanes.addTab((new StringBuffer()).append(next).toString(), tabIcon, new JScrollPane(pMP));
 		setReferences();
 	}
-
+	/**
+	 * An integer informing the call how big the monad list is in the panel in terms of panels.
+	 * It is possible for the monad list to be larger or smaller than the nyad's order. 
+	 * Such a condition should be treated as an error.
+	 * @return integer for the monad panel list size.
+	 */
 	public int getMonadListSize() {
 		return monadPanelList.size();
 	}
-
 	/**
-	 * 
+	 * Get the indexed monad panel from this nyad panel. 
 	 * @param pInd int get the MonadPanel at this integer spot
 	 * @return MonadPanel The MonadPanel at the indicated location in the
 	 *         monadPanelList
@@ -239,19 +305,36 @@ public class NyadPanel<T extends ProtoN & Field & Normalizable> extends JPanel i
 			return (MonadPanel<T>) monadPanelList.get(pInd);
 		return null;
 	}
-
+	/**
+	 * A simple gettor that retrieves a reference to the represented Nyad.
+	 * @return Nyad represented in this panel.
+	 */
 	public Nyad getNyad() {
 		return repNyad;
 	}
-
+	/**
+	 * An integer informing the call how big the nyad is.
+	 * It is possible for the nyad's order to be larger or smaller than the panel list 
+	 * representing the monads. Such a condition should be treated as an error.
+	 * @return integer for Nyad order.
+	 */
 	public int getOrder() {
-		return monadPanelList.size();
+		return repNyad.getNyadOrder();
 	}
-
+	/**
+	 * An integer index that informs the caller which pane has the focus.
+	 * @return int for the index of the pane with the focus.
+	 */
 	public int getPaneFocus() {
 		return monadPanes.getSelectedIndex();
 	}
 
+	/**
+	 * A gettor for the nyad panel's mode of representation. 
+	 * It speaks to which descending of ProtoN is being used.
+	 * @return  CladosField the enumeration that stands in for the 
+	 * 			representation mode.
+	 */
 	public CladosField getRepMode() {
 		return repMode;
 	}

@@ -53,6 +53,9 @@ public final class AboutDialog extends JDialog implements ActionListener {
 	private static final long serialVersionUID = -358251200403316601L;
 	private static final Color _backColor = new Color(255, 255, 222);
 	private static final Color _tblBackColor = new Color(212, 212, 192);
+	/**
+	 * This reference points back at the owning application and is used for navigating stacks.
+	 */
 	private CladosCalculator _GUI;
 
 	/**
