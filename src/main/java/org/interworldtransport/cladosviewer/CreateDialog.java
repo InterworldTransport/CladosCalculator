@@ -64,8 +64,7 @@ import org.interworldtransport.cladosGExceptions.GeneratorRangeException;
  * 
  * @version 1.0
  * @author Dr Alfred W Differ
- * @param <T> A CladosF number descends from ProtoN and implements Field
- *            and Normalizable.
+ * @param <T> A CladosF number descends from ProtoN and implements Field and Normalizable.
  */
 public class CreateDialog<T extends ProtoN & Field & Normalizable> extends JDialog implements ActionListener {
 	private static final long serialVersionUID = -3599915768271020504L;
@@ -78,8 +77,8 @@ public class CreateDialog<T extends ProtoN & Field & Normalizable> extends JDial
 	/**
 	 * This is a factory method for creating a new monad to add to the selected
 	 * nyad's stack
-	 * @param <T> ProtoN descendent implementing Field and Normalizable but not the one for Units 
-     * because that is covered in ProtoN.
+	 * @param <T> 	ProtoN descendent implementing Field and Normalizable but not the 
+	 * 				one for Units because that is covered in ProtoN.
 	 * @param pGUI  CladosCalculator This parameter references the owning
 	 *              application. Nothing spectacular.
 	 * @param pMode String This string holds the representation model of the calling
@@ -154,15 +153,15 @@ public class CreateDialog<T extends ProtoN & Field & Normalizable> extends JDial
 	 *                   essentially creates a place holder for a zero monad if a
 	 *                   monad is created or an order-0 nyad with no monad in it to
 	 *                   start.
-	 * @param pDivMode   String This string holds the representation model of the
+	 * @param pMode   String This string holds the representation model of the
 	 *                   calling widget. It will be a CladosField static string.
 	 */
-	private CreateDialog(CladosCalculator mainWindow, boolean makeNyad, CladosField pDivMode) {
+	private CreateDialog(CladosCalculator mainWindow, boolean makeNyad, CladosField pMode) {
 		super(mainWindow, (makeNyad ? "Create Nyad Panel" : "Create Monad Panel"), true);
 		_GUI = mainWindow;
-		if (pDivMode == null)
+		if (pMode == null)
 			throw new IllegalArgumentException("CladosField undefined at dialog creation");
-		repMode = pDivMode;
+		repMode = pMode;
 
 		// Create the Dialog's main stage
 		JPanel primaryStage = new JPanel(new BorderLayout());

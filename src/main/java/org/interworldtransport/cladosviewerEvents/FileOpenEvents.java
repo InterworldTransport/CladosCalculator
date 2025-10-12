@@ -395,15 +395,15 @@ public class FileOpenEvents implements ActionListener {
 			Node name = algNodes.item(j).getFirstChild();
 			String name2Use = name.getTextContent();
 			
-			Node divF = name.getNextSibling();
-			String card2Use = divF.getAttributes().getNamedItem("cardinal").getTextContent();
+			Node proto = name.getNextSibling();
+			String card2Use = proto.getAttributes().getNamedItem("cardinal").getTextContent();
 			// We look up the Cardinal in the Algebra constructor
 			
-			Node foot = divF.getNextSibling().getNextSibling(); // skips Frames sibling
+			Node foot = proto.getNextSibling().getNextSibling(); // skips Frames sibling
 			String foot2Use = foot.getFirstChild().getTextContent();
 			// We find the pre-created foot in a moment
 			
-			Node gp = divF.getNextSibling();
+			Node gp = proto.getNextSibling();
 			String sig2Use = gp.getFirstChild().getTextContent();
 			// We look up the the GProduct in the Algebra constructor
 
