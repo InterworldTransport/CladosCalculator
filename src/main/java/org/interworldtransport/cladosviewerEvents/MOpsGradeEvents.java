@@ -37,7 +37,7 @@ import org.interworldtransport.cladosviewer.NyadPanel;
 
 /**
  * This class manages events relating to the answering of a boolean question. Is
- * the selected monad a particular findgrade?
+ * the selected monad a particular grade?
  *
  * @version 1.0
  * @author Dr Alfred W Differ
@@ -70,7 +70,7 @@ public class MOpsGradeEvents implements ActionListener {
 
 	/**
 	 * This is the actual action to be performed by this member of the menu. The
-	 * Monad with focus is tested to see if it is k-findgrade with k coming from the
+	 * Monad with focus is tested to see if it is k-grade with k coming from the
 	 * real part of FieldBar. If it is (or isn't) the test is reported to the
 	 * StatusBar.
 	 */
@@ -90,7 +90,7 @@ public class MOpsGradeEvents implements ActionListener {
 		}
 
 		try {
-			// Production of the findgrade to be tested could fail hard at
+			// Production of the grade to be tested could fail hard at
 			// parseFloat(...getRealText())
 			// Hence the need for a try/catch phrase around all this
 			int grade2Test = (int) Float.parseFloat(_parent._GUI.appFieldBar.getRealText());
@@ -103,10 +103,10 @@ public class MOpsGradeEvents implements ActionListener {
 //			case COMPLEXD -> Monad.isGrade(tSpot.getMonad(), grade2Test);
 //			};
 			if (test)
-				_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is a pure " + grade2Test + "-findgrade.\n");
+				_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad is a pure " + grade2Test + "-grade.\n");
 			else
 				_parent._GUI.appStatusBar
-						.setStatusMsg("-->Selected monad is NOT a pure " + grade2Test + "-findgrade.\n");
+						.setStatusMsg("-->Selected monad is NOT a pure " + grade2Test + "-grade.\n");
 		} catch (NullPointerException eNull) {
 			// Catch the empty text 'real number' text field on the FieldBar.
 			ErrorDialog.show("Grade Test must have a real # in the FieldBar.\nNothing done.", "Null Pointer Exception");

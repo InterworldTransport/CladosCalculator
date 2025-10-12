@@ -89,7 +89,11 @@ public class NOpsAntiSymmMultEvents implements ActionListener {
 		MonadPanel<?> temp0 = tSpot.getMonadPanel(indxMndPnlSlctd);
 		MonadPanel<?> temp1 = tSpotPlus.getMonadPanel(indxMndPnlSlctd);
 
-		temp0.getMonad().multiplyAntisymm(temp1.getMonad());
-		temp0.setCoefficientDisplay();
+		try {
+			temp0.getMonad().multiplyAntisymm(temp1.getMonad());
+			temp0.setCoefficientDisplay();
+		} catch (IllegalArgumentException e) {
+			ErrorDialog.show(e.getMessage(), "Antisymmetric multiplication failed.");
+		}
 	}
 }

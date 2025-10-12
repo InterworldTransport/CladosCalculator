@@ -32,8 +32,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 
 /**
- *org.interworldtransport.cladosviewerr.COpsLMultEvents This class manages
- * events relating to a complex operation. Left multiply this Monad by another
+ * This class manages events relating to a binary operation. Left multiply.
  * Monad.
  *
  * @version 1.0
@@ -89,7 +88,12 @@ public class NOpsLMultEvents implements ActionListener {
 		MonadPanel<?> temp0 = tSpot.getMonadPanel(indxMndPnlSlctd);
 		MonadPanel<?> temp1 = tSpotPlus.getMonadPanel(indxMndPnlSlctd);
 
-		temp0.getMonad().multiplyLeft(temp1.getMonad());
-		temp0.setCoefficientDisplay();
+		try {
+			temp0.getMonad().multiplyLeft(temp1.getMonad());
+			temp0.setCoefficientDisplay();
+		} catch (IllegalArgumentException e) {
+			ErrorDialog.show(e.getMessage(), "Left Multiplication failed.");
+		}	
+
 	}
 }

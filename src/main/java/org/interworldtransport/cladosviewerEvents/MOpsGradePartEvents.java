@@ -33,7 +33,7 @@ import javax.swing.JMenuItem;
 
 /**
  * This class manages events relating to a simple requirement Limit this Monad
- * to a particular findgrade.
+ * to a particular grade.
  *
  * @version 1.0
  * @author Dr Alfred W Differ
@@ -67,10 +67,10 @@ public class MOpsGradePartEvents implements ActionListener {
 	/**
 	 * This is the actual action to be performed by this member of the menu. This is
 	 * the classic GradePart method. It is typically used to get scalar parts.
-	 * Basically, the monad in focus is cropped around the findgrade that should be
+	 * Basically, the monad in focus is cropped around the grade that should be
 	 * kept as is.
 	 * 
-	 * A future version of the method must use the findgrade represented in the
+	 * A future version of the method must use the grade represented in the
 	 * reference frame instead. Fourier decomposition is done against that frame and
 	 * not the canonical one most of the time. That means the getPart(short) method
 	 * will channel through the ReferenceFrame of the monad.
@@ -97,7 +97,7 @@ public class MOpsGradePartEvents implements ActionListener {
 			tMSpotPnl.getMonad().gradePart(tGrade);
 			tMSpotPnl.setCoefficientDisplay();
 			_parent._GUI.appStatusBar
-					.setStatusMsg("-->Selected monad has been cropped around " + tGrade + "-findgrade.\n");
+					.setStatusMsg("-->Selected monad has been cropped around " + tGrade + "-grade.\n");
 		} catch (NullPointerException eNull) {
 			ErrorDialog.show("GradePart Operation must have a real # in the FieldBar.\nNothing done.",
 					"Null Pointer Exception");

@@ -334,9 +334,9 @@ public class ViewerMenu extends JMenuBar {
 
 		mnuOneInputMonadOps = new JMenu("OneOtherInput(this)");
 		mnuMonadOps.add(mnuOneInputMonadOps);
-		mniisSGrade = new JMenuItem("unique findgrade?");
+		mniisSGrade = new JMenuItem("unique grade?");
 		mnuOneInputMonadOps.add(mniisSGrade);
-		mnihasGrade = new JMenuItem("has findgrade?");
+		mnihasGrade = new JMenuItem("has grade?");
 		mnuOneInputMonadOps.add(mnihasGrade);
 		mniMagnitudeOf = new JMenuItem("magnitude?");
 		mnuOneInputMonadOps.add(mniMagnitudeOf);
@@ -354,9 +354,9 @@ public class ViewerMenu extends JMenuBar {
 		mnuOneInputMonadOps.add(mniReverse);
 		mniScale = new JMenuItem("scale");
 		mnuOneInputMonadOps.add(mniScale);
-		mniGradeCrop = new JMenuItem("findgrade crop");
+		mniGradeCrop = new JMenuItem("grade crop");
 		mnuOneInputMonadOps.add(mniGradeCrop);
-		mniGradeCut = new JMenuItem("findgrade cut");
+		mniGradeCut = new JMenuItem("grade cut");
 		mnuOneInputMonadOps.add(mniGradeCut);
 
 		mnuTwoInputMonadOps = new JMenu("TwoFullInputs");

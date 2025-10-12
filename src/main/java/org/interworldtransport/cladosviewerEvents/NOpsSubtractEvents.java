@@ -89,8 +89,12 @@ public class NOpsSubtractEvents implements ActionListener {
 		MonadPanel<?> temp0 = tSpot.getMonadPanel(indxMndPnlSlctd);
 		MonadPanel<?> temp1 = tSpotPlus.getMonadPanel(indxMndPnlSlctd);
 
-		temp0.getMonad().subtract(temp1.getMonad());
-		temp0.setCoefficientDisplay();
+		try {
+			temp0.getMonad().subtract(temp1.getMonad());
+			temp0.setCoefficientDisplay();
+		} catch (IllegalArgumentException e) {
+			ErrorDialog.show(e.getMessage(), "Subtraction failed.");
+		}
 		
 	}
 }

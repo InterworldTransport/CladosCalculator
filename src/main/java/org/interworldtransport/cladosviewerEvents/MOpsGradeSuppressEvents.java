@@ -34,7 +34,7 @@ import javax.swing.JMenuItem;
 
 /**
  * This class manages events relating to a simple requirement Limit this Monad
- * to everything except a particular findgrade.
+ * to everything except a particular grade.
  *
  * @version 1.0
  * @author Dr Alfred W Differ
@@ -68,9 +68,9 @@ public class MOpsGradeSuppressEvents implements ActionListener {
 	/**
 	 * This is the actual action to be performed by this member of the menu. This is
 	 * the complement of the GradePart method. Basically, the monad in focus has a
-	 * particular findgrade sliced out (set to zero) while others are kept as is.
+	 * particular grade sliced out (set to zero) while others are kept as is.
 	 * 
-	 * A future version of the method must use the findgrade represented in the
+	 * A future version of the method must use the grade represented in the
 	 * reference frame instead. Fourier decomposition is done against that frame and
 	 * not the canonical one most of the time. That means the getSuppress(short)
 	 * method will channel through the ReferenceFrame of the monad.
@@ -96,7 +96,7 @@ public class MOpsGradeSuppressEvents implements ActionListener {
 			byte tGrade = Byte.parseByte(_parent._GUI.appFieldBar.getRealText());
 			tMSpotPnl.getMonad().gradeSuppress(tGrade);
 			tMSpotPnl.setCoefficientDisplay();
-			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been cut at " + tGrade + "-findgrade.\n");
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad has been cut at " + tGrade + "-grade.\n");
 		} catch (NullPointerException eNull) {
 			ErrorDialog.show("GradeSuppress Operation must have a real # in the FieldBar.\nNothing done.",
 					"Null Pointer Exception");

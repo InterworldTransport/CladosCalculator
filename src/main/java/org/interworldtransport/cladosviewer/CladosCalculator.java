@@ -206,10 +206,10 @@ public class CladosCalculator extends JFrame implements ActionListener {
 		case "nilpotent" -> appEventModel.MOpsParts.nilp.actionPerformed(event);
 		case "idempotent" -> appEventModel.MOpsParts.idemp.actionPerformed(event);
 		case "scaled idempotent" -> appEventModel.MOpsParts.midemp.actionPerformed(event);
-		case "is findgrade" -> appEventModel.MOpsParts.grade.actionPerformed(event);
+		case "is grade" -> appEventModel.MOpsParts.grade.actionPerformed(event);
 		case "is mgrade" -> appEventModel.MOpsParts.mgrade.actionPerformed(event);
-		case "is findgrade!" -> appEventModel.MOpsParts.findgrade.actionPerformed(event);
-		case "has findgrade" -> appEventModel.MOpsParts.hasgrade.actionPerformed(event);
+		case "is grade!" -> appEventModel.MOpsParts.grade.actionPerformed(event);
+		case "has grade" -> appEventModel.MOpsParts.hasgrade.actionPerformed(event);
 		case "magnitude of" -> appEventModel.MOpsParts.mag.actionPerformed(event);
 		case "sqmagnitude of" -> appEventModel.MOpsParts.sqmag.actionPerformed(event);
 		default -> ErrorDialog.show("No detectable command processed.", "Action At Viewer Attempted");
@@ -377,7 +377,7 @@ public class CladosCalculator extends JFrame implements ActionListener {
 
 		// button double
 		JButton btnIsGrade = new JButton(new ImageIcon(this.getClass().getResource("/img/grade.png")));
-		btnIsGrade.setActionCommand("is findgrade");
+		btnIsGrade.setActionCommand("is grade");
 		btnIsGrade.setToolTipText("has this unique grade?");
 		btnIsGrade.setPreferredSize(square);
 		btnIsGrade.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
@@ -396,7 +396,7 @@ public class CladosCalculator extends JFrame implements ActionListener {
 		cn.gridy++;
 
 		JButton btnHasGrade = new JButton(new ImageIcon(this.getClass().getResource("/img/hasgrade.png")));
-		btnHasGrade.setActionCommand("has findgrade");
+		btnHasGrade.setActionCommand("has grade");
 		btnHasGrade.setToolTipText("has this grade?");
 		btnHasGrade.setPreferredSize(square);
 		btnHasGrade.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
@@ -405,7 +405,7 @@ public class CladosCalculator extends JFrame implements ActionListener {
 		cn.gridx++;
 
 		JButton btnWhatGrade = new JButton(new ImageIcon(this.getClass().getResource("/img/whatgrade.png")));
-		btnWhatGrade.setActionCommand("is findgrade!");
+		btnWhatGrade.setActionCommand("is grade!");
 		btnWhatGrade.setToolTipText("what unique grade?");
 		btnWhatGrade.setPreferredSize(square);
 		btnWhatGrade.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));

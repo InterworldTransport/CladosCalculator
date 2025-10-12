@@ -330,8 +330,8 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		switch (event.getActionCommand()) {
-		case "findgrade crop" -> _GUI.appEventModel.MOpsParts.gradep.actionPerformed(event);
-		case "findgrade cut" -> _GUI.appEventModel.MOpsParts.grades.actionPerformed(event);
+		case "grade crop" -> _GUI.appEventModel.MOpsParts.gradep.actionPerformed(event);
+		case "grade cut" -> _GUI.appEventModel.MOpsParts.grades.actionPerformed(event);
 		case "scale" -> _GUI.appEventModel.MOpsParts.scale.actionPerformed(event);
 		case "normalize" -> _GUI.appEventModel.MOpsParts.norm.actionPerformed(event);
 		case "invert" -> _GUI.appEventModel.MOpsParts.invt.actionPerformed(event);
@@ -672,8 +672,8 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		cn.gridy++;
 
 		JButton btnGradeCrop = new JButton(new ImageIcon(this.getClass().getResource("/img/gradecrop.png")));
-		btnGradeCrop.setActionCommand("findgrade crop");
-		btnGradeCrop.setToolTipText("crop around findgrade()");
+		btnGradeCrop.setActionCommand("grade crop");
+		btnGradeCrop.setToolTipText("crop around grade()");
 		btnGradeCrop.setPreferredSize(squareMedium);
 		btnGradeCrop.setBorder(BorderFactory.createEtchedBorder(0));
 		btnGradeCrop.addActionListener(this);
@@ -681,8 +681,8 @@ public class MonadPanel<T extends ProtoN & Field & Normalizable> extends JPanel
 		cn.gridy++;
 
 		JButton btnGradeCut = new JButton(new ImageIcon(this.getClass().getResource("/img/gradecut.png")));
-		btnGradeCut.setActionCommand("findgrade cut");
-		btnGradeCut.setToolTipText("cut this findgrade()");
+		btnGradeCut.setActionCommand("grade cut");
+		btnGradeCut.setToolTipText("cut this grade()");
 		btnGradeCut.setPreferredSize(squareMedium);
 		btnGradeCut.setBorder(BorderFactory.createEtchedBorder(0));
 		btnGradeCut.addActionListener(this);

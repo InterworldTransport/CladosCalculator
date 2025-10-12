@@ -34,7 +34,7 @@ import javax.swing.JMenuItem;
 
 /**
  * This class manages events relating to the answering of a simple question.
- * What is the findgrade of the selected monad?
+ * Does the selected monad have the grade listed in the entry register?
  *
  * @version 1.0
  * @author Dr Alfred W Differ
@@ -66,12 +66,15 @@ public class MOpsHasGradeEvents implements ActionListener {
 	}
 
 	/**
-	 * This is the actual action to be performed by this member of the menu. Find
-	 * the log of the gradeKey of the selected Monad and see if it is an integer. If
-	 * so, monad is of a single findgrade... so show the log of the gradeKey = monad
-	 * findgrade
-	 * 
-	 * A future version of the method must use the findgrade represented in the
+	 * This is the actual action to be performed by this member of the menu. 
+	 * Parse the real portion of the entry register and then check the grade key
+	 * of the selected monad to see if the grade is present. The actual check
+	 * involves taking the truncated log_10 of the monad's grade key and looping 
+	 * through a 'highest grade' removal loop until a testable key is produced. 
+	 * If the loop stops with a match for the grade to be tested, the action reports
+	 * a positive hit. Otherwise it reports a miss.
+	 * <br>
+	 * A future version of the method must use the grade represented in the
 	 * reference frame instead. Fourier decomposition is done against that frame and
 	 * not the canonical one most of the time. That means the getGradeKey() method
 	 * will channel through the ReferenceFrame of the monad.
@@ -91,7 +94,7 @@ public class MOpsHasGradeEvents implements ActionListener {
 			return;
 		}
 
-		// Production of the findgrade to be tested could fail hard at
+		// Production of the grade to be tested could fail hard at
 		// parseFloat(...getRealText())
 		// Hence the need for a try/catch phrase around all this;
 		int grade2Test = 0;
@@ -122,9 +125,9 @@ public class MOpsHasGradeEvents implements ActionListener {
 		// 10^grade2test shows up.
 
 		// Finding the log10 of tempGradeKey and truncating to an integer reveals the
-		// largest findgrade in the key. If that is larger than grade2Test, we simply
+		// largest grade in the key. If that is larger than grade2Test, we simply
 		// remove that from the key and build a new key (a long integer) based on what's
-		// left. Loop through this until the reduced findgrade key has the same number
+		// left. Loop through this until the reduced grade key has the same number
 		// of digits (or less) than key2Test and we are ready to try the actual hasGrade
 		// test.
 
@@ -137,15 +140,15 @@ public class MOpsHasGradeEvents implements ActionListener {
 		// At this point, reducedMaxGrade will either BE grade2Test or smaller.
 		if (reducedMaxGrade < grade2Test)
 			_parent._GUI.appStatusBar
-					.setStatusMsg("-->Selected monad does NOT not have findgrade " + grade2Test + ".\n");
-		else if (grade2Test > 0) // We know reducedMasGrade == grade2Test
-			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad HAS findgrade " + grade2Test + ".\n");
+					.setStatusMsg("-->Selected monad does NOT not have grade " + grade2Test + ".\n");
+		else if (grade2Test > 0) // We know reducedMaxGrade == grade2Test
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad HAS grade " + grade2Test + ".\n");
 		else if (tempGradeKey == 1) // We know grade2Test == 0 and reducedMasGrade == grade2Test
-			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad HAS scalar findgrade... possibly zero.\n");
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad HAS scalar grade... possibly zero.\n");
 		else // We know tempGradeKey > 1 and reducedMasGrade == grade2Test
-			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad does NOT have scalar findgrade.\n");
-		// This last phrase works because monads with higher findgrade blades don't have
-		// scalar parts if the scalar coeff is zero. The only time a zero scalar
+			_parent._GUI.appStatusBar.setStatusMsg("-->Selected monad does NOT have scalar grade.\n");
+		// This last phrase works because monads with higher grade blades don't have
+		// scalar parts if the scalar weight is zero. The only time a zero scalar
 		// coefficient is acceptable is when no higher blade is contained in the monad.
 	}
 }
